@@ -1,0 +1,54 @@
+{
+  "name": "docs_gm",
+  "version": "1.0.0",
+  "description": "A GameMakerStudio 2.0 command line documentation generator",
+  "main": "dist/Main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhm-ciberman/docs_gm.git"
+  },
+  "keywords": [
+    "gamemaker",
+    "gms2",
+    "docs",
+    "documentation",
+    "generator",
+    "game",
+    "maker",
+    "gms",
+    "jsdoc"
+  ],
+  "author": "Javier Ciberman Mora",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jhm-ciberman/docs_gm/issues"
+  },
+  "homepage": "https://github.com/jhm-ciberman/docs_gm#readme",
+  "bin": {
+    "docs_gm": "dist/bin/docs_gm.js"
+  },
+  "devDependencies": {
+    "@types/commander": "^2.9.1",
+    "@types/fs-extra": "^4.0.0",
+    "@types/globby": "^0.6.0",
+    "@types/minimatch": "^2.0.29",
+    "@types/node": "^8.0.17",
+    "@types/nunjucks": "0.0.32",
+    "@types/open": "0.0.29",
+    "jest": "^20.0.4",
+    "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "commander": "^2.11.0",
+    "comment-parser": "^0.3.2",
+    "del": "^3.0.0",
+    "fs-extra": "^4.0.1",
+    "globby": "^6.1.0",
+    "minimatch": "^3.0.4",
+    "nunjucks": "^3.0.1",
+    "open": "0.0.5"
+  }
+}
