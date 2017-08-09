@@ -5,6 +5,7 @@ import GMS1Resource from "./GMS1Resource";
 import GMS1Project from "./GMS1Project";
 import GMS1Folder from "./GMS1Folder";
 import ScriptParser from "../doc_generator/ScriptParser";
+import DocScript from "../docs_models/DocScript";
 import { GMScript } from "../GMInterfaces";
 
 export default class GMS1Script extends GMS1Resource implements GMScript {
@@ -38,19 +39,23 @@ export default class GMS1Script extends GMS1Resource implements GMScript {
         return this;
     }
 
-    public parse() {
+    public parse():DocScript[] {
         if (!this.subScripts.has(this.name)) {
             throw "Please call first loadGML() before parse the current GMScript";
         }
-        var result = [];
+        var result:DocScript[] = [];
         for (var [name, content] of this.subScripts.entries()) {
             // This lines converts the triple slash comments ( ///comment)
     		// to a @function JSDoc comments
     		var str = content
     			.replace(/\/\/\/ ?(.*)\n/g, "/**\n * @function $1 \n */\n")
-    			.replace(/ ?\*\/\n\/\*\* ?\n/g, "");
+    			//.replace(/ ?\*\/\n\/\*\* ?\n/g, "");
 
-            result.push(ScriptParser.parse(str, name));
+            var script = ScriptParser.parse(str, name);
+            if (script) {
+                result.push(script);
+            }
+
         }
         return result;
     }

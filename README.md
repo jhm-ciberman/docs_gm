@@ -37,7 +37,7 @@ and run it with:
 - Easily customizable template engine.
 - OnePage and Multipage documentations.
 - Supports a lot of JSDoc tags!
-
+- Markdown supported! 
 
 ## ☁️ Installation
 
@@ -163,7 +163,7 @@ The `template.json` file describes your template, and each design that your temp
 #### Design
 
  - `"name"`: **{string}** (required)  The name of the design. (All lower case, no spaces). Examples: `"onepage-blue"`, "`multipage-big-footer`", `"standard"`
- - `"copy"`: **{string}** (optional)  An array of files to copy for this design. The array can be a glob. More info about globs [here](https://github.com/isaacs/node-glob). You can also use [negated globs](https://github.com/sindresorhus/globby). If omited, the default for the `"copy"` will be `["./**/*", "!template.json", "*.njk", "!package.json"]`. (All files and folders will be copied except for template.json, package.json and all files with *.njk extension).
+ - `"copy"`: **{string}** (optional)  An array of files to copy for this design. The array can be a glob. More info about globs [here](https://github.com/isaacs/node-glob). You can also use [negated globs](https://github.com/sindresorhus/globby). If omited, the default for the `"copy"` will be `["**/*", "!template.json", "!*.njk", "!package.json"]`. (All files and folders will be copied except for template.json, package.json and all files with *.njk extension).
  - `"pages"`: **{Page[]}** (required)  An array with the pages of the documentation that needs to be processed with the template engine.
 
 #### Page
@@ -226,6 +226,7 @@ Represents a single script of the GameMaker project.
 - `params` **{DocParam[]}** An array of DocParams objects. Representing each parameter or argument of the script.
 - `returns` **{DocReturns}** A DocReturns object, representing the returned value of the script.
 - `return` (Alias for `returns`)
+- `examples` **{DocExample[]}** An array of DocExample objects. Representing each usage example code provided for the script.
 
 #### DocParam
 
@@ -243,6 +244,13 @@ Represents a returned value of a script.
 - `type`:  **{string}** The type of the returned value.
 - `description`:  **{string}** The description of the returned value
 
+
+#### DocExample
+
+Represents a single script usage Example
+
+- `code`: **{string}** The code for the Example
+- `caption`: **{string}** The example caption (not supported for now, wait for a next update)
 
 #### Examples
 

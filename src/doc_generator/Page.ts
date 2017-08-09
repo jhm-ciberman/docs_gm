@@ -10,25 +10,19 @@ export default class Page {
 
     private template:Template;
     private data:TemplateJSONPage;
-    private nunjucksTemplate: nunjucks.Template;
+    private env: nunjucks.Environment;
     constructor(template:Template, data:TemplateJSONPage) {
         this.template = template;
         this.data = data;
-        nunjucks.configure({ autoescape: true })
-    }
-
-    public async load() {
-        var file = path.resolve(this.template.folder, this.data.in);
-        var str = await fse.readFile(file, 'utf8');
-        this.nunjucksTemplate = nunjucks.compile(str);
-
+        this.env = nunjucks.configure(template.folder, { autoescape: false });
     }
 
     public async render(docProject:DocProject) {
+        var template = this.env.getTemplate(this.data.in, true);
         var it = this._getFeedPages(docProject);
         for (var feedPage of it) {
             const data = {page: feedPage};
-            var str = this.nunjucksTemplate.render(data);
+            var str = template.render(data);
             var out = nunjucks.renderString(this.data.out, data);
             var file = path.resolve(this.template.config.outFolder, out);
             await fse.outputFile(file, str);

@@ -12,7 +12,7 @@ export default class Template {
     public data:TemplateJSON;
     public folder:string;
     public pages:Page[] = [];
-    public copy:string[] = ["./**/*", "!template.json", "*.njk", "!package.json"];
+    public copy:string[] = ["**/*", "!template.json", "!*.njk", "!package.json"];
     constructor(config:OutputConfig) {
         this.config = config;
         this.folder = path.resolve(this.config.templatesFolder, this.config.templateName);
@@ -31,7 +31,6 @@ export default class Template {
         this.copy = design.copy || this.copy;
         for (var page of design.pages) {
             var p = new Page(this, page);
-            await p.load();
             this.pages.push(p);
         }
     }
@@ -55,16 +54,13 @@ export default class Template {
         for (var page of this.pages) {
             await page.render(docProject);
         }
-
-        for (var copyGlob of this.copy) {
-            var outputRoot = path.resolve(this.config.outFolder);
-            var files = await globby(copyGlob, {cwd: this.folder});
-            for (var file of files) {
-                var outputFile = path.resolve(outputRoot, file);
-                var inputFile = path.resolve(this.folder, file);
-                console.log(`COPYING: ${file}`);
-                await fse.copy(inputFile, outputFile);
-            }
+        var outputRoot = path.resolve(this.config.outFolder);
+        var files = await globby(this.copy, {cwd: this.folder});
+        for (var file of files) {
+            var outputFile = path.resolve(outputRoot, file);
+            var inputFile = path.resolve(this.folder, file);
+            console.log(`COPYING: ${file}`);
+            await fse.copy(inputFile, outputFile);
         }
 
     }

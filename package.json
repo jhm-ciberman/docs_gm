@@ -38,6 +38,7 @@
     "@types/node": "^8.0.17",
     "@types/nunjucks": "0.0.32",
     "@types/open": "0.0.29",
+    "@types/showdown": "^1.4.32",
     "@types/xml2js": "^0.4.0",
     "typescript": "^2.4.2"
   },
@@ -50,6 +51,7 @@
     "minimatch": "^3.0.4",
     "nunjucks": "^3.0.1",
     "open": "0.0.5",
+    "showdown": "^1.7.2",
     "xml2js": "^0.4.17"
   }
 }

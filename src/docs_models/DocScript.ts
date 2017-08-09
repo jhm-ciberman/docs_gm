@@ -1,5 +1,6 @@
 import DocParam from "./DocParam";
 import DocReturns from "./DocReturns";
+import DocExample from "./DocExample";
 
 /**
  * Represents a single script of the GameMaker project.
@@ -34,5 +35,10 @@ export default class DocScript {
     get return() {
         return this.returns;
     }
+
+    /**
+     * The Script usage examples
+     */
+    public examples:DocExample[] = [];
 
 }

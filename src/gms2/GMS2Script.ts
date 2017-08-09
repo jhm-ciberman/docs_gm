@@ -4,6 +4,7 @@ import * as fse from "fs-extra";
 import GMS2Resource from "./GMS2Resource";
 import GMProject from "./GMS2Project";
 import ScriptParser from "../doc_generator/ScriptParser";
+import DocScript from "../docs_models/DocScript";
 import {GMScript} from "../GMInterfaces";
 
 export default class GMS2Script extends GMS2Resource implements GMScript {
@@ -27,7 +28,7 @@ export default class GMS2Script extends GMS2Resource implements GMScript {
 		return this;
 	}
 
-	public parse() {
+	public parse():DocScript[] {
         if (!this.text) {
             throw "Please call first loadGML() before parse the current GMScript";
         }
@@ -38,7 +39,8 @@ export default class GMS2Script extends GMS2Resource implements GMScript {
 			.replace(/\/\/\/ ?(.*)\n/g, "/**\n * $1 \n */\n")
 			.replace(/ ?\*\/\n\/\*\* ?\n/g, "");
 
-		return [ScriptParser.parse(str, this.name)];
+		var scr = ScriptParser.parse(str, this.name);
+		return scr ? [scr] : [];
 	}
 
 };
