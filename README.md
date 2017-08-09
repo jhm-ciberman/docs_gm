@@ -1,12 +1,34 @@
 # docs_gm
 > The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2
 
------
+<!--
+to generate Table of contents, install:
+    $ npm install -g markdown-toc
+and run it with:
+    $ markdown-toc -i README.md
+-->
 
+<!-- toc -->
 
-[TOC]
+- [✅ Features](#%E2%9C%85-features)
+- [☁️ Installation](#%E2%98%81%EF%B8%8F-installation)
+- [❓ How to use it](#%E2%9D%93-how-to-use-it)
+  * [First: Document your project](#first-document-your-project)
+  * [Second: Run gm_docs from the command line](#second-run-gm_docs-from-the-command-line)
+- [📝Creating custom templates](#%F0%9F%93%9Dcreating-custom-templates)
+  * [template.json](#templatejson)
+    + [Template](#template)
+    + [Design](#design)
+    + [Page](#page)
+  * [Template Pages](#template-pages)
+    + [DocPage](#docpage)
+    + [DocProject](#docproject)
+    + [DocScript](#docscript)
+    + [DocParam](#docparam)
+    + [DocReturns](#docreturns)
+    + [Examples](#examples)
 
-
+<!-- tocstop -->
 
 ## ✅ Features
 
@@ -15,9 +37,6 @@
 - Easily customizable template engine.
 - OnePage and Multipage documentations.
 - Supports a lot of JSDoc tags!
-
-
-----------
 
 
 ## ☁️ Installation
