@@ -4,7 +4,7 @@
   "description": "A GameMakerStudio 2.0 command line documentation generator",
   "main": "dist/Main.js",
   "scripts": {
-    "test": "jest"
+    "test": "echo \"No tests defined\" && exit 0"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "gms",
     "jsdoc"
   ],
-  "author": "Javier Ciberman Mora",
+  "author": "Javier \"Ciberman\" Mora",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jhm-ciberman/docs_gm/issues"
@@ -38,7 +38,7 @@
     "@types/node": "^8.0.17",
     "@types/nunjucks": "0.0.32",
     "@types/open": "0.0.29",
-    "jest": "^20.0.4",
+    "@types/xml2js": "^0.4.0",
     "typescript": "^2.4.2"
   },
   "dependencies": {
@@ -49,6 +49,7 @@
     "globby": "^6.1.0",
     "minimatch": "^3.0.4",
     "nunjucks": "^3.0.1",
-    "open": "0.0.5"
+    "open": "0.0.5",
+    "xml2js": "^0.4.17"
   }
 }

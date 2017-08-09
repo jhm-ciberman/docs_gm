@@ -1,11 +1,10 @@
+import * as nunjucks from "nunjucks";
+import * as path from "path";
+import * as fse from "fs-extra";
 
-import nunjucks = require("nunjucks");
-import minimatch = require("minimatch");
-import path = require("path");
-import fse = require("fs-extra");
 import Template from "./Template";
-import DocProject from "./docs_models/DocProject";
-import DocPage from "./docs_models/DocPage";
+import DocProject from "../docs_models/DocProject";
+import DocPage from "../docs_models/DocPage";
 
 export default class Page {
 
@@ -15,6 +14,7 @@ export default class Page {
     constructor(template:Template, data:TemplateJSONPage) {
         this.template = template;
         this.data = data;
+        nunjucks.configure({ autoescape: true })
     }
 
     public async load() {
@@ -27,8 +27,9 @@ export default class Page {
     public async render(docProject:DocProject) {
         var it = this._getFeedPages(docProject);
         for (var feedPage of it) {
-            var str = this.nunjucksTemplate.render(feedPage);
-            var out = nunjucks.renderString(this.data.out, feedPage);
+            const data = {page: feedPage};
+            var str = this.nunjucksTemplate.render(data);
+            var out = nunjucks.renderString(this.data.out, data);
             var file = path.resolve(this.template.config.outFolder, out);
             await fse.outputFile(file, str);
         }
@@ -41,6 +42,7 @@ export default class Page {
             case "script":
                 for (var script of docProject.scripts) {
                     page = new DocPage();
+                    page.project = docProject;
                     page.script = script;
                     yield page;
                 }
@@ -48,6 +50,7 @@ export default class Page {
             case "scripts":
                 page = new DocPage();
                 page.scripts = docProject.scripts;
+                page.project = docProject;
                 yield page;
                 break;
         }

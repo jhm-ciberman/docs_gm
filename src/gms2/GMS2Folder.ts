@@ -1,16 +1,14 @@
+import GMS2Resource from "./GMS2Resource";
+import GMS2Project from "./GMS2Project";
+import {GMFolder} from "../GMInterfaces";
 
-import GMResource from "./GMResource";
-import GMProject from "./GMProject";
-import minimatch = require("minimatch");
-
-
-export default class GMFolder extends GMResource {
+export default class GMS2Folder extends GMS2Resource implements GMFolder {
 
 	public folderName:string;
 	private childrenIDs:string[];
-	public children:GMResource[] = [];
+	public children:GMS2Resource[] = [];
 	public topLevelName:string;
-	constructor(data:GMFolderData, project:GMProject) {
+	constructor(data:GMS2FolderData, project:GMS2Project) {
 		super(data, project);
 		this.folderName = data.folderName;
 		this.childrenIDs = data.children;
@@ -18,17 +16,18 @@ export default class GMFolder extends GMResource {
 	}
 
 
-	findChildren() {
+	public async load() {
 		for (var id of this.childrenIDs) {
-			var r = this.project.resources.get(id);
+			var r = this.project.getResourceById(id);
 			if (r) {
 				this.children.push(r);
 				r.parent = this;
-				if (r instanceof GMFolder) {
-					r.findChildren(); //recursive
+				if (r instanceof GMS2Folder) {
+					r.load(); //recursive
 				}
 			}
 		}
+		return this;
 	}
 
 	public print(spaces:number = 0) {

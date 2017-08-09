@@ -1,14 +1,10 @@
+import * as globby from "globby";
+import * as path from "path";
+import * as fse from "fs-extra";
 
 import OutputConfig from "./OutputConfig";
-import DocProject from "./docs_models/DocProject";
+import DocProject from "../docs_models/DocProject";
 import Page from "./Page";
-
-import globby = require("globby");
-import path = require("path");
-import fse = require("fs-extra");
-
-const ROOT = path.dirname((require as any).main.filename);
-const TEMPLATE_ROOT = path.join(ROOT, "./templates/");
 
 export default class Template {
 
@@ -16,7 +12,7 @@ export default class Template {
     public data:TemplateJSON;
     public folder:string;
     public pages:Page[] = [];
-    public copy:string[] = [];
+    public copy:string[] = ["./**/*", "!template.json", "*.njk", "!package.json"];
     constructor(config:OutputConfig) {
         this.config = config;
         this.folder = path.resolve(this.config.templatesFolder, this.config.templateName);
@@ -32,7 +28,7 @@ export default class Template {
 
         var design = this._findDesignByName(this.config.design);
 
-        this.copy = this.copy.concat(design.copy);
+        this.copy = design.copy || this.copy;
         for (var page of design.pages) {
             var p = new Page(this, page);
             await p.load();

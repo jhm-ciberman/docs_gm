@@ -2,7 +2,7 @@
 // Project: comment-parser
 // Definitions by: Javier "Ciberman" Mora <https://github.com/jhm-ciberman/>
 
-declare module "comment-parser" {
+declare namespace CommentParser {
     interface Comment {
         tags: Tag[];
         line: number;
@@ -22,8 +22,9 @@ declare module "comment-parser" {
         parsers?: [(str:string, data:any) => {source:string, data:any}];
         dotted_names?: boolean;
     }
+}
 
-    function parse(str: string, opts?:Options): [Comment];
-
+declare module "comment-parser" {
+    function parse(str: string, opts?:CommentParser.Options): [CommentParser.Comment];
     export = parse;
 }
