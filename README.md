@@ -72,11 +72,11 @@ For example:  In the script `my_script`
  * coffe, and bake a cake. It will return the
  * index of the generated breakfast.
  *
- * @param coffe_type {string} The type of coffee
+ * @param {string} coffe_type - The type of coffee
  * you want
- * @param cakes_number {integer} The number of cakes
+ * @param {integer} cakes_number - The number of cakes
  * to bake.
- * @param [clean_after_work] {boolean} Specify if the
+ * @param {boolean} [clean_after_work] - Specify if the
  * table must be cleaned after the baking process.
  * The default is true.
  *
