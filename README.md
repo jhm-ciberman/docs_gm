@@ -1,5 +1,8 @@
 # docs_gm
+[![npm](https://img.shields.io/npm/dt/docs_gm.svg)](https://www.npmjs.com/package/docs_gm)
 > The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2
+
+![docs_gm: The fantastic documentation generator for GM:S & GMS2](img/docs_gm_logo.png)
 
 <!--
 to generate Table of contents, install:
@@ -37,7 +40,7 @@ and run it with:
 - Easily customizable template engine.
 - OnePage and Multipage documentations.
 - Supports a lot of JSDoc tags!
-- Markdown supported! 
+- Markdown supported!
 
 ## ☁️ Installation
 

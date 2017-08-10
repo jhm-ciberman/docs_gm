@@ -1,10 +1,11 @@
 {
   "name": "docs_gm",
-  "version": "1.0.0",
-  "description": "A GameMakerStudio 2.0 command line documentation generator",
+  "version": "0.1.0",
+  "description": "The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2",
   "main": "dist/Main.js",
   "scripts": {
-    "test": "echo \"No tests defined\" && exit 0"
+    "test": "echo \"No tests defined\" && exit 0",
+    "prepublishOnly": "rm -rf ./dist/ && tsc -p ."
   },
   "repository": {
     "type": "git",
@@ -13,6 +14,8 @@
   "keywords": [
     "gamemaker",
     "gms2",
+    "gms1",
+    "gms",
     "docs",
     "documentation",
     "generator",
