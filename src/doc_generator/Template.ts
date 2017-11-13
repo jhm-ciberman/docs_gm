@@ -8,12 +8,12 @@ import Page from "./Page";
 
 export default class Template {
 
-    public config :OutputConfig;
-    public data:TemplateJSON;
-    public folder:string;
-    public pages:Page[] = [];
-    public copy:string[] = ["**/*", "!template.json", "!*.njk", "!package.json"];
-    constructor(config:OutputConfig) {
+    public config: OutputConfig;
+    public data: TemplateJSON;
+    public folder: string;
+    public pages: Page[] = [];
+    public copy: string[] = ["**/*", "!template.json", "!*.njk", "!package.json"];
+    constructor(config: OutputConfig) {
         this.config = config;
         this.folder = path.resolve(this.config.templatesFolder, this.config.templateName);
     }
@@ -36,7 +36,7 @@ export default class Template {
     }
 
 
-    private _findDesignByName(name?:string):TemplateJSONDesign {
+    private _findDesignByName(name?: string): TemplateJSONDesign {
         if (name) {
             var d = this.data.designs.find(value => value.name === name)
             if (!d) throw "Design not found";
@@ -50,12 +50,12 @@ export default class Template {
         }
     }
 
-    public async generateDocs(docProject:DocProject) {
+    public async generateDocs(docProject: DocProject) {
         for (var page of this.pages) {
             await page.render(docProject);
         }
         var outputRoot = path.resolve(this.config.outFolder);
-        var files = await globby(this.copy, {cwd: this.folder});
+        var files = await globby(this.copy, { cwd: this.folder });
         for (var file of files) {
             var outputFile = path.resolve(outputRoot, file);
             var inputFile = path.resolve(this.folder, file);

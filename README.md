@@ -66,7 +66,7 @@ You will need to document your scripts following JSDoc syntax. You can learn mor
 For example:  In the script `my_script`
 
 ```js
-/// my_script(coffe_type, cokes_number [, clean_after_work]);
+/// my_script(coffe_type, cakes_number [, clean_after_work]);
 /**
  * This script will do a lot of things. Like make
  * coffe, and bake a cake. It will return the
@@ -80,7 +80,7 @@ For example:  In the script `my_script`
  * table must be cleaned after the baking process.
  * The default is true.
  *
- * @returns {Cake} The index of the generated
+ * @returns {Breakfast} The index of the generated
  * breakfast.
  */
 

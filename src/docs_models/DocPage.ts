@@ -11,7 +11,7 @@ export default class DocPage {
      * The DocProject object representing the GameMaker Project
      * that you are creating the documentation for.
      */
-    public project:DocProject;
+    public project: DocProject;
 
     /**
      * A DocScript object representing the SINGLE script your must document
@@ -19,7 +19,7 @@ export default class DocPage {
      * The `script` property is only available when you set the value of
      * `"feedwith": "script"` in your `template.json` file.
      */
-    public script:DocScript;
+    public script: DocScript;
 
 
     /**
@@ -29,6 +29,6 @@ export default class DocPage {
      * when you set the value of `"feedwith": "scripts"` in your
      * `template.json` file.
      */
-    public scripts:DocScript[];
+    public scripts: DocScript[];
 
 }

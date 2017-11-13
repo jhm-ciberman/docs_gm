@@ -1,14 +1,14 @@
 import GMS2Resource from "./GMS2Resource";
 import GMS2Project from "./GMS2Project";
-import {GMFolder} from "../GMInterfaces";
+import { GMFolder } from "../GMInterfaces";
 
 export default class GMS2Folder extends GMS2Resource implements GMFolder {
 
-	public folderName:string;
-	private childrenIDs:string[];
-	public children:GMS2Resource[] = [];
-	public topLevelName:string;
-	constructor(data:GMS2FolderData, project:GMS2Project) {
+	public folderName: string;
+	private childrenIDs: string[];
+	public children: GMS2Resource[] = [];
+	public topLevelName: string;
+	constructor(data: GMS2FolderData, project: GMS2Project) {
 		super(data, project);
 		this.folderName = data.folderName;
 		this.childrenIDs = data.children;
@@ -30,17 +30,17 @@ export default class GMS2Folder extends GMS2Resource implements GMFolder {
 		return this;
 	}
 
-	public print(spaces:number = 0) {
+	public print(spaces: number = 0) {
 		var sp = "  ".repeat(spaces);
-        console.log(`${sp}+ ${this.folderName}`);
+		console.log(`${sp}+ ${this.folderName}`);
 		spaces++;
 		for (var child of this.children) {
 			child.print(spaces);
 		}
 	}
 
-	get fullpath():string {
-        return (this.parent ? this.parent.fullpath : "/") + this.folderName + "/";
-    }
+	get fullpath(): string {
+		return (this.parent ? this.parent.fullpath : "/") + this.folderName + "/";
+	}
 
 };

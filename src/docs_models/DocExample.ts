@@ -7,10 +7,10 @@ export default class DocReturns {
     /**
      * The escaped code of the example
      */
-    public code:string|null = null;
+    public code: string | null = null;
 
     /**
      * The caption of the code
      */
-    public caption:string|null = null;
+    public caption: string | null = null;
 }

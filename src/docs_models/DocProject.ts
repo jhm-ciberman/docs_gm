@@ -11,7 +11,7 @@ export default class DocProject {
      * You can use it for titles, or descriptions inside
      * your documentation.
      */
-    public name:string = "";
+    public name: string = "";
 
     /**
      * An array of ALL the scripts of the project included in
@@ -22,7 +22,7 @@ export default class DocProject {
      * to include in your **Page**. You must use the values
      * of DocPage insted.
      */
-    public scripts:DocScript[] = [];
+    public scripts: DocScript[] = [];
 
 
 

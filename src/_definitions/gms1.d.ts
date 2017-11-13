@@ -1,21 +1,21 @@
 
 
 declare interface GMS1ProjectData {
-    Configs:any;
-    NewExtensions:any;
-    TutorialState:any;
-    sounds:[GMS1FolderData];
-    sprites:[GMS1FolderData];
-    backgrounds:[GMS1FolderData];
-    paths:[GMS1FolderData];
-    scripts:[GMS1FolderData];
-    fonts:[GMS1FolderData];
-    objects:[GMS1FolderData];
-    rooms:[GMS1FolderData];
+    Configs: any;
+    NewExtensions: any;
+    TutorialState: any;
+    sounds: [GMS1FolderData];
+    sprites: [GMS1FolderData];
+    backgrounds: [GMS1FolderData];
+    paths: [GMS1FolderData];
+    scripts: [GMS1FolderData];
+    fonts: [GMS1FolderData];
+    objects: [GMS1FolderData];
+    rooms: [GMS1FolderData];
 }
 
 declare interface GMS1FolderData {
-    $ :{name :string};
+    $: { name: string };
     sounds?: GMS1FolderData[];
     sound?: string[];
     sprites?: GMS1FolderData[];

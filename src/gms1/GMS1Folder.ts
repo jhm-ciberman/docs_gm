@@ -1,14 +1,14 @@
 import GMS1Project from "./GMS1Project";
 import GMS1Resource from "./GMS1Resource";
 import GMS1Script from "./GMS1Script";
-import {GMFolder} from "../GMInterfaces";
+import { GMFolder } from "../GMInterfaces";
 
 export default class GMS1Folder extends GMS1Resource implements GMFolder {
 
 
 
-    public children:GMS1Resource[] = [];
-    constructor(data:GMS1FolderData, project:GMS1Project, parent:GMS1Folder|null) {
+    public children: GMS1Resource[] = [];
+    constructor(data: GMS1FolderData, project: GMS1Project, parent: GMS1Folder | null) {
         super(project, parent, data.$.name);
         this.project = project;
         this.project.addResource(this, "folder");
@@ -29,7 +29,7 @@ export default class GMS1Folder extends GMS1Resource implements GMFolder {
         return this;
     }
 
-    public print(spaces:number = 0) {
+    public print(spaces: number = 0) {
         var sp = "  ".repeat(spaces);
         console.log(`${sp}+ ${this.name}`);
         spaces++;

@@ -3,9 +3,9 @@ import GMS1Folder from "./GMS1Folder";
 
 export default class GMS1Resource {
     public project: GMS1Project;
-    public parent: GMS1Folder|null;
-    public name:string;
-    constructor(project:GMS1Project, parent:GMS1Folder|null, name:string) {
+    public parent: GMS1Folder | null;
+    public name: string;
+    constructor(project: GMS1Project, parent: GMS1Folder | null, name: string) {
         this.project = project;
         this.parent = parent;
         this.name = name;
@@ -16,11 +16,11 @@ export default class GMS1Resource {
         return this;
     }
 
-    get fullpath():string {
+    get fullpath(): string {
         return (this.parent ? this.parent.fullpath : "") + this.name;
     }
 
-    public print(spaces:number = 0) {
+    public print(spaces: number = 0) {
         var sp = "  ".repeat(spaces);
         console.log(`${sp}- ${this.name}`);
     }

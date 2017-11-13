@@ -8,20 +8,20 @@ import DocPage from "../docs_models/DocPage";
 
 export default class Page {
 
-    private template:Template;
-    private data:TemplateJSONPage;
+    private template: Template;
+    private data: TemplateJSONPage;
     private env: nunjucks.Environment;
-    constructor(template:Template, data:TemplateJSONPage) {
+    constructor(template: Template, data: TemplateJSONPage) {
         this.template = template;
         this.data = data;
         this.env = nunjucks.configure(template.folder, { autoescape: false });
     }
 
-    public async render(docProject:DocProject) {
+    public async render(docProject: DocProject) {
         var template = this.env.getTemplate(this.data.in, true);
         var it = this._getFeedPages(docProject);
         for (var feedPage of it) {
-            const data = {page: feedPage};
+            const data = { page: feedPage };
             var str = template.render(data);
             var out = nunjucks.renderString(this.data.out, data);
             var file = path.resolve(this.template.config.outFolder, out);
@@ -30,8 +30,8 @@ export default class Page {
 
     }
 
-    private * _getFeedPages(docProject:DocProject) {
-        var page:DocPage;
+    private * _getFeedPages(docProject: DocProject) {
+        var page: DocPage;
         switch (this.data.feedwith) {
             case "script":
                 for (var script of docProject.scripts) {

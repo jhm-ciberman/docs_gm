@@ -5,14 +5,14 @@ import GMS2Resource from "./GMS2Resource";
 import GMProject from "./GMS2Project";
 import ScriptParser from "../doc_generator/ScriptParser";
 import DocScript from "../docs_models/DocScript";
-import {GMScript} from "../GMInterfaces";
+import { GMScript } from "../GMInterfaces";
 
 export default class GMS2Script extends GMS2Resource implements GMScript {
 
-	public name:string;
-	public isCompatibility:boolean;
-	private text:string|undefined = undefined;
-	constructor(data:GMS2ScriptData, project:GMProject) {
+	public name: string;
+	public isCompatibility: boolean;
+	private text: string | undefined = undefined;
+	constructor(data: GMS2ScriptData, project: GMProject) {
 		super(data, project);
 		this.isCompatibility = data.IsCompatibility;
 	}
@@ -28,10 +28,10 @@ export default class GMS2Script extends GMS2Resource implements GMScript {
 		return this;
 	}
 
-	public parse():DocScript[] {
-        if (!this.text) {
-            throw "Please call first loadGML() before parse the current GMScript";
-        }
+	public parse(): DocScript[] {
+		if (!this.text) {
+			throw "Please call first loadGML() before parse the current GMScript";
+		}
 
 		// This lines converts the triple slash comments ( ///comment)
 		// to JSDoc comments

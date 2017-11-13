@@ -12,7 +12,7 @@ export default class ScriptParser {
         simplifiedAutoLink: true,
         literalMidWordUnderscores: true,
         literalMidWordAsterisks: true,
-        tables:true,
+        tables: true,
         openLinksInNewWindow: true,
         omitExtraWLInCodeBlocks: true,
         noHeaderId: true
@@ -20,7 +20,7 @@ export default class ScriptParser {
 
 
 
-    static parse(str:string, name:string):DocScript|null {
+    static parse(str: string, name: string): DocScript | null {
         var comments = parse(str);
         var script = new DocScript();
         script.name = name;
@@ -47,7 +47,7 @@ export default class ScriptParser {
     /**
      * @returns true if some data could be extracted from the tag
      */
-    private static _parseTag(tag:CommentParser.Tag, script:DocScript):boolean {
+    private static _parseTag(tag: CommentParser.Tag, script: DocScript): boolean {
         switch (tag.tag.toLowerCase()) {
             case "param":
             case "arg":
@@ -85,7 +85,7 @@ export default class ScriptParser {
     }
 
     //TODO: reconstruct tag from tag.source.
-    private static _reconstructTag(tag:CommentParser.Tag):string {
+    private static _reconstructTag(tag: CommentParser.Tag): string {
         var strArr = [];
         if (tag.type) {
             strArr.push(`{${tag.type}}`);
@@ -99,21 +99,21 @@ export default class ScriptParser {
         return strArr.join(" ");
     }
 
-    private static _makeHtml(text:string):string {
+    private static _makeHtml(text: string): string {
         return this._markdown.makeHtml(text);
     }
 
-    
-    private static _escapeHtml(str:string):string {
+
+    private static _escapeHtml(str: string): string {
         // Source: https://github.com/mozilla/nunjucks/blob/f1edabf48fc9acae38972cb19497b1072e901965/src/lib.js
-        const escapeMap:any = {
+        const escapeMap: any = {
             '&': '&amp;',
             '"': '&quot;',
             '\'': '&#39;',
             '<': '&lt;',
             '>': '&gt;'
         };
-        return str.replace(/[&"'<>]/g, (ch:string) => {
+        return str.replace(/[&"'<>]/g, (ch: string) => {
             return escapeMap[ch] as string;
         });
     }
@@ -122,7 +122,7 @@ export default class ScriptParser {
      * Strips the initial slash
      * Example: "- Hello" turns into "Hello"
      */
-    private static _stripInitialSlash(str:string):string {
+    private static _stripInitialSlash(str: string): string {
         return str.replace(/^- /, "");
     }
 
@@ -130,7 +130,7 @@ export default class ScriptParser {
      * Strips the initial Line Feeds
      * Example: "\n\nHi\n" turns into "Hi\n"
      */
-    private static _stripInitialLineFeeds(str:string):string {
+    private static _stripInitialLineFeeds(str: string): string {
         return str.replace(/^\n*/, "");
     }
 
@@ -140,7 +140,7 @@ export default class ScriptParser {
      * "<p>Hi</p>" is turned in "Hi"
      * But "<p>Foo</p><p>bar</p>" is preserved as is.
      */
-    private static _compactHtmlSingleParagraph(str:string):string {
+    private static _compactHtmlSingleParagraph(str: string): string {
         var m = /<p>([\s\S]*?)<\/p>/g.exec(str);
         return (m && m.length == 2) ? m[1] : str;
     }

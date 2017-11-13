@@ -39,17 +39,17 @@ export default class GMS1Script extends GMS1Resource implements GMScript {
         return this;
     }
 
-    public parse():DocScript[] {
+    public parse(): DocScript[] {
         if (!this.subScripts.has(this.name)) {
             throw "Please call first loadGML() before parse the current GMScript";
         }
-        var result:DocScript[] = [];
+        var result: DocScript[] = [];
         for (var [name, content] of this.subScripts.entries()) {
             // This lines converts the triple slash comments ( ///comment)
-    		// to a @function JSDoc comments
-    		var str = content
-    			.replace(/\/\/\/ ?(.*)\n/g, "/**\n * @function $1 \n */\n")
-    			//.replace(/ ?\*\/\n\/\*\* ?\n/g, "");
+            // to a @function JSDoc comments
+            var str = content
+                .replace(/\/\/\/ ?(.*)\n/g, "/**\n * @function $1 \n */\n")
+            //.replace(/ ?\*\/\n\/\*\* ?\n/g, "");
 
             var script = ScriptParser.parse(str, name);
             if (script) {
@@ -60,7 +60,7 @@ export default class GMS1Script extends GMS1Resource implements GMScript {
         return result;
     }
 
-    public print(spaces:number = 0) {
+    public print(spaces: number = 0) {
         var sp = "  ".repeat(spaces);
         if (this.subScripts.size > 1) {
             console.log(`${sp}- ${this.name} [${this.subScripts.size} subscripts]`);

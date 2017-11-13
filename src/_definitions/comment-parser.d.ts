@@ -19,12 +19,12 @@ declare namespace CommentParser {
         source: string;
     }
     interface Options {
-        parsers?: [(str:string, data:any) => {source:string, data:any}];
+        parsers?: [(str: string, data: any) => { source: string, data: any }];
         dotted_names?: boolean;
     }
 }
 
 declare module "comment-parser" {
-    function parse(str: string, opts?:CommentParser.Options): [CommentParser.Comment];
+    function parse(str: string, opts?: CommentParser.Options): [CommentParser.Comment];
     export = parse;
 }
