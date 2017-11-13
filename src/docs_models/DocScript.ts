@@ -46,4 +46,9 @@ export default class DocScript {
      */
     public private: boolean = false; 
 
+    /**
+     * Is an undocumented script?
+     */
+    public undocumented: boolean = true; 
+
 }

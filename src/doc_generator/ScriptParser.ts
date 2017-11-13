@@ -39,55 +39,58 @@ export default class ScriptParser {
         for (var [name, text] of script.subScripts()) {
             var docScript = this._parseGMLString(name, text);
             
-
-            if (docScript) {
-                if (docScript.private && this._config.ignorePrivateScripts) {
+            if (this._config.markUnderscoreScriptsAsPrivate && name.charAt(0) === "_") {
+                docScript.private = true;
+            }
+            if (docScript.private && this._config.ignorePrivateScripts) {
+                continue;
+            }
+            if (docScript.undocumented) {
+                if (this._config.warnUndocumentedScripts) {
+                    console.log(`> WARNING: Script "${name}" is undocumented.`);
+                }
+                if (this._config.ignoreUndocumentedScripts) {
                     continue;
                 }
-                arr.push(docScript);
-            } else if (this._config.warnMissingDocs) {
-                console.log(`> WARNING: Script "${name}" has no documentation.`);
+            }
+            if (!docScript.description) {
+                if (this._config.warnNoDescriptionScripts) {
+                    console.log(`> WARNING: Script "${name}" has no description.`);
+                }
+                if (this._config.ignoreNoDescriptionScripts) {
+                    continue;
+                }
             }
             
+            
+            
+            arr.push(docScript); 
         }
         return arr;
     }
 
     /**
      * Parses a gml script string and extracts all the documentation for a passed script
-     * and returns a new DocScript object. If no documentation is found, null 
-     * is returned
+     * and returns a new DocScript object.
      * @param name The script name
      * @param text The script content
-     * @returns A new DocStript object or a null if no documentation is found
+     * @returns A new DocStript object
      */
-    public _parseGMLString(name:string, text: string): DocScript | null {
+    private _parseGMLString(name:string, text: string): DocScript {
 
         var comments = parse(text);
 
         var script = new DocScript();
         script.name = name;
 
-        if (this._config.markUnderscoreScriptsAsPrivate && name.charAt(0) === "_") {
-            script.private = true; 
-        }
-
-        var noContent = true;
         for (var comment of comments) {
             if (comment.description) {
-                noContent = false;
+                script.undocumented = false;
                 script.description = this._makeHtml(comment.description);
             }
             for (var tag of comment.tags) {
-                var parsed = this._parseTag(tag, script);
-                if (parsed && noContent) {
-                    noContent = false;
-                }
+                this._parseTag(tag, script);
             }
-        }
-        
-        if (noContent) {
-            return null;
         }
         return script;
     }
@@ -112,25 +115,44 @@ export default class ScriptParser {
                 str = this._compactHtmlSingleParagraph(str);
                 param.description = str;
                 script.params.push(param);
-                return true;
+                script.undocumented = false; 
+                break;
             case "description":
             case "desc":
+            case "private": // Private works in the same way as a description
                 var text = this._reconstructTag(tag);
                 script.description = this._makeHtml(text);
-                return true;
+                script.undocumented = false; 
+                if (tag.tag.toLowerCase() === "private") {
+                    script.private = true; 
+                }
+                break;
             case "returns":
             case "return":
                 script.returns = script.returns || new DocReturns();
                 script.returns.description = tag.description;
                 script.returns.type = tag.type;
-                return true;
+                script.undocumented = false; 
+                break;
             case "example":
                 var example = new DocExample();
                 var str = this._reconstructTag(tag);
                 str = this._stripInitialLineFeeds(str);
                 example.code = this._escapeHtml(str);
                 script.examples.push(example);
-                return true;
+                script.undocumented = false; 
+                break;
+            case "function": 
+                var name = this._reconstructTag(tag);
+                if (name != script.name && this._config.warnMismatchingFunctionName) {
+                    console.log(`> WARNING: Script "${script.name}" has a mismatching @function name "${name}"`);
+                }
+                break;
+            default:
+                if (this._config.warnUnrecognizedTags) {
+                    console.log(`> WARNING: Unrecognized tag "${tag.tag.toLowerCase()}" at script "${script.name}"`);
+                }
+                return false;
         }
         return false;
     }

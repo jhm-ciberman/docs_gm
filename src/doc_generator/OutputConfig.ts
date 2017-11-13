@@ -33,14 +33,37 @@ export default class OutputConfig {
     public markUnderscoreScriptsAsPrivate: boolean = true; 
 
     /**
-     * Warn about scripts with no documentation
-     */
-    public warnMissingDocs: boolean = true; 
-
-    /**
      * Ignore private scripts when generating documentation
      */
     public ignorePrivateScripts: boolean = true; 
 
+    /**
+     * Ignore undocumented scripts
+     */
+    public ignoreUndocumentedScripts: boolean = true;
 
+    /**
+     * Warn about scripts with no documentation
+     */
+    public warnUndocumentedScripts: boolean = true; 
+
+    /**
+     * Warn about unrecognized JSDoc tags
+     */
+    public warnUnrecognizedTags: boolean = true;
+
+    /**
+     * Warn about mismatching script name and "function" JSDoc tags.
+     */
+    public warnMismatchingFunctionName: boolean = true; 
+
+    /**
+     * Warn about scripts with no description
+     */
+    public warnNoDescriptionScripts: boolean = true;
+
+    /**
+     * Ignore scripts with no description
+     */
+    public ignoreNoDescriptionScripts: boolean = true; 
 }
