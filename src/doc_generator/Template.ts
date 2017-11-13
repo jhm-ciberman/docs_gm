@@ -4,20 +4,51 @@ import * as fse from "fs-extra";
 
 import OutputConfig from "./OutputConfig";
 import DocProject from "../docs_models/DocProject";
-import Page from "./Page";
+import Page from "./TemplatePage";
 
+/**
+ * Represents a Documentation HTML Template
+ */
 export default class Template {
 
-    public config: OutputConfig;
+    /**
+     * The output configuration object
+     */
+    //public config: OutputConfig;
+
+    /**
+     * The TemplateJSON data
+     */
     public data: TemplateJSON;
+
+    /**
+     * The folder of the template
+     */
     public folder: string;
+
+    /**
+     * An array with the pages of the template
+     */
     public pages: Page[] = [];
+
+    /**
+     * An array with the globs ussed when copying files from the input template folder to the
+     * output documentation folder.
+     */
     public copy: string[] = ["**/*", "!template.json", "!*.njk", "!package.json"];
-    constructor(config: OutputConfig) {
-        this.config = config;
-        this.folder = path.resolve(this.config.templatesFolder, this.config.templateName);
+
+    /**
+     * Creates a new Template object
+     * @param folder the folder that contains the template
+     */
+    constructor(folder: string) {
+        this.folder = folder;
     }
 
+    /**
+     * Loads the template
+     * @returns A promise
+     */
     public async load() {
         var template = path.resolve(this.folder, "template.json");
         if (!fse.existsSync(template)) {
@@ -26,35 +57,46 @@ export default class Template {
         var str = await fse.readFile(template, 'utf8');
         this.data = JSON.parse(str);
 
-        var design = this._findDesignByName(this.config.design);
-
-        this.copy = design.copy || this.copy;
-        for (var page of design.pages) {
-            var p = new Page(this, page);
-            this.pages.push(p);
-        }
+        
     }
 
-
+    /**
+     * Find a Design by name. If no design name is specified, }
+     * the first design will be returned.
+     * @param name The optional name of the design
+     * @returns The JSON Design data object
+     */
     private _findDesignByName(name?: string): TemplateJSONDesign {
+        if (this.data.designs.length === 0) {
+            throw "Template contains no designs";
+        }
         if (name) {
             var d = this.data.designs.find(value => value.name === name)
             if (!d) throw "Design not found";
             return d;
         } else {
-            if (!this.data.designs[0]) {
-                throw "Template contains no designs";
-            } else {
-                return this.data.designs[0];
-            }
+            return this.data.designs[0];
         }
     }
 
-    public async generateDocs(docProject: DocProject) {
-        for (var page of this.pages) {
-            await page.render(docProject);
+    /**
+     * Generates the documentation for the specified project. The DocProject
+     * must be already loaded.
+     * @param docProject The DocProject to generate the documentation for
+     * @param config The configuration to use
+     */
+    public async generateDocs(docProject: DocProject, config: OutputConfig) {
+        var outputRoot = path.resolve(config.outFolder);
+
+        var design = this._findDesignByName(config.design);
+
+        this.copy = design.copy || this.copy;
+        for (var page of design.pages) {
+            var p = new Page(this, page);
+            await p.render(docProject, outputRoot);
         }
-        var outputRoot = path.resolve(this.config.outFolder);
+
+        
         var files = await globby(this.copy, { cwd: this.folder });
         for (var file of files) {
             var outputFile = path.resolve(outputRoot, file);

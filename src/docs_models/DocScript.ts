@@ -41,4 +41,9 @@ export default class DocScript {
      */
     public examples: DocExample[] = [];
 
+    /**
+     * Is a private script?
+     */
+    public private: boolean = false; 
+
 }

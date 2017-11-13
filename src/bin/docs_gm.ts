@@ -17,14 +17,18 @@ function setFilter(value:string) {
 }
 
 async function generateDoumentation(projectPath?:string) {
+
 	console.log("Loading Project...");
 	var project = await Main.loadProject(projectPath);
+
 	console.log("Loading Resource Tree...");
 	await project.load();
+
 	console.log("Generating documentation... ");
-	var doc = new Documentation(project, config);
-	await doc.generate();
+	await Documentation.generate(project, config);
+
 	console.log("Ready!");
+	
 	var url = path.resolve(config.outFolder, "index.html");
 	console.log(`Opening ${url}`);
 	open(url);

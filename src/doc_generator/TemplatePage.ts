@@ -6,25 +6,42 @@ import Template from "./Template";
 import DocProject from "../docs_models/DocProject";
 import DocPage from "../docs_models/DocPage";
 
-export default class Page {
+/**
+ * Represents one Page for one Design of one Template
+ */
+export default class TemplatePage {
 
     private template: Template;
+
     private data: TemplateJSONPage;
+
     private env: nunjucks.Environment;
+
+    /**
+     * Creates a new TemplatePage
+     * @param template The template to use to generate the Documentation page
+     * @param data The data to populate the Page with
+     */
     constructor(template: Template, data: TemplateJSONPage) {
         this.template = template;
         this.data = data;
         this.env = nunjucks.configure(template.folder, { autoescape: false });
     }
 
-    public async render(docProject: DocProject) {
+    /**
+     * Generates all the HTML files corresponding to this TemplatePage
+     * @param docProject the DocProject to generate the pages for
+     * @param outFolder The output folder for the HTML files
+     * @returns A promise
+     */
+    public async render(docProject: DocProject, outFolder:string) {
         var template = this.env.getTemplate(this.data.in, true);
         var it = this._getFeedPages(docProject);
         for (var feedPage of it) {
             const data = { page: feedPage };
             var str = template.render(data);
             var out = nunjucks.renderString(this.data.out, data);
-            var file = path.resolve(this.template.config.outFolder, out);
+            var file = path.resolve(outFolder, out);
             await fse.outputFile(file, str);
         }
 

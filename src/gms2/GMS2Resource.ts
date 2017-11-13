@@ -9,6 +9,8 @@ export default class GMS2Resource extends GMModel implements GMResource {
     public project: GMProject;
     public name: string;
     public id: string = "";
+
+    
     constructor(data: GMS2ResourceData, project: GMProject) {
         super(data);
         this.project = project;

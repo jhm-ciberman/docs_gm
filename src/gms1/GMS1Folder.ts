@@ -5,9 +5,14 @@ import { GMFolder } from "../GMInterfaces";
 
 export default class GMS1Folder extends GMS1Resource implements GMFolder {
 
-
-
     public children: GMS1Resource[] = [];
+
+    /**
+     * Creates a new Folder Resource
+     * @param data The YOYO model data of the folder
+     * @param project The base project for the folder
+     * @param parent The parent folder for this folder
+     */
     constructor(data: GMS1FolderData, project: GMS1Project, parent: GMS1Folder | null) {
         super(project, parent, data.$.name);
         this.project = project;
@@ -22,14 +27,22 @@ export default class GMS1Folder extends GMS1Resource implements GMFolder {
 
     }
 
-    public async load() {
+    /**
+     * Loads all the resources in the folder
+     * @returns A promise
+     */
+    public async load(): Promise<this> {
         for (var resource of this.children) {
             await resource.load();
         }
         return this;
     }
 
-    public print(spaces: number = 0) {
+    /**
+     * Print itself to the console for debug purposes
+     * @param spaces The number of spaces to use
+     */
+    public print(spaces: number = 0): void {
         var sp = "  ".repeat(spaces);
         console.log(`${sp}+ ${this.name}`);
         spaces++;

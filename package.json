@@ -5,7 +5,8 @@
   "main": "dist/Main.js",
   "scripts": {
     "test": "echo \"No tests defined\" && exit 0",
-    "prepublishOnly": "rm -rf ./dist/ && tsc -p ."
+    "prepublishOnly": "rm -rf ./dist/ && tsc -p .",
+    "watch": "tsc -p . --watch"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
     "@types/open": "0.0.29",
     "@types/showdown": "^1.4.32",
     "@types/xml2js": "^0.4.0",
+    "tslint": "^5.8.0",
     "typescript": "^2.4.2"
   },
   "dependencies": {

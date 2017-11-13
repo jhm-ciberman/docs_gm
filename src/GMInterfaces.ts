@@ -1,4 +1,3 @@
-import DocScript from "./docs_models/DocScript";
 
 export interface GMProject {
     path: string;
@@ -9,7 +8,11 @@ export interface GMProject {
 }
 
 export interface GMProjectStatic {
-    //new():GMProject;
+    /**
+	 * Loads the specified GMS2 project
+	 * @param file The file path of the project to load
+	 * @returns A Promise with the created GMS2Project
+	 */
     loadProject(file: string): Promise<GMProject>
 }
 
@@ -27,5 +30,8 @@ export interface GMFolder extends GMResource {
 }
 
 export interface GMScript extends GMResource {
-    parse(): DocScript[];
+    /**
+     * Returns an iterator with the name and text of each subscript in this script
+     */
+    subScripts(): IterableIterator<[string, string]>;
 }
