@@ -3,12 +3,14 @@ import * as globby from "globby";
 import GMS1Project from "./gms1/GMS1Project";
 import GMS2Project from "./gms2/GMS2Project";
 import { GMProject } from "./GMInterfaces";
-
+import Reporter from "./Reporter";
 /**
  * Main Class of the docs_gm plugin
  */
-export default class Main {
+export default class DocsGM {
 
+
+	public static console:Reporter = new Reporter(); 
 	/**
 	 * Loads a specified GMS1 or GMS2 Project
 	 * @param GMProjectPath The project path to load

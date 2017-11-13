@@ -20,6 +20,11 @@ export default class GMS1Project implements GMProject {
      */
     public path: string;
 
+    /**
+     * Project's name
+     */
+    public name: string;
+
     private _data: GMS1ProjectData;
 
     private _topLevelFolders: Map<string, GMS1Folder> = new Map();
@@ -39,6 +44,7 @@ export default class GMS1Project implements GMProject {
     private constructor(data: GMS1ProjectData, GMProjectPath: string) {
         this._data = data;
         this.path = GMProjectPath;
+        this.name = path.basename(path.resolve(this.path)); 
     }
 
     /**

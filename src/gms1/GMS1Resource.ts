@@ -1,5 +1,6 @@
 import GMS1Project from "./GMS1Project";
 import GMS1Folder from "./GMS1Folder";
+import DocsGM from "../DocsGM";
 
 export default class GMS1Resource {
 
@@ -52,6 +53,6 @@ export default class GMS1Resource {
      */
     public print(spaces: number = 0) {
         var sp = "  ".repeat(spaces);
-        console.log(`${sp}- ${this.name}`);
+        DocsGM.console.debug(`${sp}- ${this.name}`);
     }
 }

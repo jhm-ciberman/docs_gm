@@ -2,6 +2,7 @@ import GMModel from "./GMS2Model";
 import GMProject from "./GMS2Project";
 import GMFolder from "./GMS2Folder";
 import { GMResource } from "../GMInterfaces";
+import DocsGM from "../DocsGM";
 
 export default class GMS2Resource extends GMModel implements GMResource {
 
@@ -19,7 +20,7 @@ export default class GMS2Resource extends GMModel implements GMResource {
 
     public print(spaces: number = 0) {
         var sp = "  ".repeat(spaces);
-        console.log(`${sp}- ${this.name}`);
+        DocsGM.console.debug(`${sp}- ${this.name}`);
     }
 
     get fullpath(): string {

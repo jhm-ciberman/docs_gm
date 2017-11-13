@@ -1,6 +1,7 @@
 import GMS2Resource from "./GMS2Resource";
 import GMS2Project from "./GMS2Project";
 import { GMFolder } from "../GMInterfaces";
+import DocsGM from "../DocsGM";
 
 export default class GMS2Folder extends GMS2Resource implements GMFolder {
 
@@ -55,7 +56,7 @@ export default class GMS2Folder extends GMS2Resource implements GMFolder {
      */
 	public print(spaces: number = 0) {
 		var sp = "  ".repeat(spaces);
-		console.log(`${sp}+ ${this.folderName}`);
+		DocsGM.console.debug(`${sp}+ ${this.folderName}`);
 		spaces++; 
 		for (var child of this.children) {
 			child.print(spaces);

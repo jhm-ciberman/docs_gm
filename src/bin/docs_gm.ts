@@ -4,7 +4,7 @@ import * as program from "commander";
 import * as path from "path";
 import open = require("open");
 
-import Main from "../Main";
+import DocsGM from "../DocsGM";
 import Documentation from "../doc_generator/Documentation";
 import OutputConfig from "../doc_generator/OutputConfig";
 
@@ -18,19 +18,19 @@ function setFilter(value:string) {
 
 async function generateDoumentation(projectPath?:string) {
 
-	console.log("Loading Project...");
-	var project = await Main.loadProject(projectPath);
+	DocsGM.console.info("Loading Project...");
+	var project = await DocsGM.loadProject(projectPath);
 
-	console.log("Loading Resource Tree...");
+	DocsGM.console.info("Loading Resource Tree...");
 	await project.load();
 
-	console.log("Generating documentation... ");
+	DocsGM.console.info("Generating documentation... ");
 	await Documentation.generate(project, config);
 
-	console.log("Ready!");
+	DocsGM.console.info("Ready!");
 	
 	var url = path.resolve(config.outFolder, "index.html");
-	console.log(`Opening ${url}`);
+	DocsGM.console.info(`Opening ${url}`);
 	open(url);
 }
 

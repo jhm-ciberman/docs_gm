@@ -7,6 +7,7 @@ import DocReturns from "../docs_models/DocReturns";
 import DocExample from "../docs_models/DocExample";
 import OutputConfig from "./OutputConfig";
 import {GMScript} from "../GMInterfaces";
+import DocsGM from "../DocsGM";
 
 export default class ScriptParser {
 
@@ -47,7 +48,7 @@ export default class ScriptParser {
             }
             if (docScript.undocumented) {
                 if (this._config.warnUndocumentedScripts) {
-                    console.log(`> WARNING: Script "${name}" is undocumented.`);
+                    DocsGM.console.warn(`> WARNING: Script "${name}" is undocumented.`);
                 }
                 if (this._config.ignoreUndocumentedScripts) {
                     continue;
@@ -55,7 +56,7 @@ export default class ScriptParser {
             }
             if (!docScript.description) {
                 if (this._config.warnNoDescriptionScripts) {
-                    console.log(`> WARNING: Script "${name}" has no description.`);
+                    DocsGM.console.warn(`> WARNING: Script "${name}" has no description.`);
                 }
                 if (this._config.ignoreNoDescriptionScripts) {
                     continue;
@@ -145,12 +146,12 @@ export default class ScriptParser {
             case "function": 
                 var name = this._reconstructTag(tag);
                 if (name != script.name && this._config.warnMismatchingFunctionName) {
-                    console.log(`> WARNING: Script "${script.name}" has a mismatching @function name "${name}"`);
+                    DocsGM.console.warn(`> WARNING: Script "${script.name}" has a mismatching @function name "${name}"`);
                 }
                 break;
             default:
                 if (this._config.warnUnrecognizedTags) {
-                    console.log(`> WARNING: Unrecognized tag "${tag.tag.toLowerCase()}" at script "${script.name}"`);
+                    DocsGM.console.warn(`> WARNING: Unrecognized tag "${tag.tag.toLowerCase()}" at script "${script.name}"`);
                 }
                 return false;
         }

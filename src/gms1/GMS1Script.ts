@@ -5,6 +5,7 @@ import GMS1Resource from "./GMS1Resource";
 import GMS1Project from "./GMS1Project";
 import GMS1Folder from "./GMS1Folder";
 import { GMScript } from "../GMInterfaces";
+import DocsGM from "../DocsGM";
 
 /**
  * Represents a GMS1 Script. Can contain subscripts. 
@@ -75,9 +76,9 @@ export default class GMS1Script extends GMS1Resource implements GMScript {
     public print(spaces: number = 0) {
         var sp = "  ".repeat(spaces);
         if (this._subScripts.size > 1) {
-            console.log(`${sp}- ${this.name} [${this._subScripts.size} subscripts]`);
+            DocsGM.console.debug(`${sp}- ${this.name} [${this._subScripts.size} subscripts]`);
         } else {
-            console.log(`${sp}- ${this.name}`);
+            DocsGM.console.debug(`${sp}- ${this.name}`);
         }
 
     }

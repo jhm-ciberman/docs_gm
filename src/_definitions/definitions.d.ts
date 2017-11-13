@@ -12,7 +12,7 @@ declare interface TemplateJSONDesign {
 	copy: string[],
 	pages: TemplateJSONPage[]
 }
-declare interface  TemplateJSONPage {
+declare interface TemplateJSONPage {
     in: string;
 	out: string;
 	feedwith: string;

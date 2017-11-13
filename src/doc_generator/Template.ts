@@ -5,6 +5,7 @@ import * as fse from "fs-extra";
 import OutputConfig from "./OutputConfig";
 import DocProject from "../docs_models/DocProject";
 import Page from "./TemplatePage";
+import DocsGM from "../DocsGM";
 
 /**
  * Represents a Documentation HTML Template
@@ -101,7 +102,7 @@ export default class Template {
         for (var file of files) {
             var outputFile = path.resolve(outputRoot, file);
             var inputFile = path.resolve(this.folder, file);
-            console.log(`COPYING: ${file}`);
+            DocsGM.console.info(`COPYING: ${file}`);
             await fse.copy(inputFile, outputFile);
         }
 

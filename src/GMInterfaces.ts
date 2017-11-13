@@ -1,6 +1,7 @@
 
 export interface GMProject {
     path: string;
+    name: string;
     load(): Promise<this>;
     print(spaces?: number): void;
     find(pattern: string, type?: string): GMResource[];

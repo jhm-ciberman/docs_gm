@@ -28,6 +28,7 @@ export default class Documentation {
 
         var parser = new ScriptParser(config);
         var docProject = new DocProject();
+        docProject.name = project.name;
         for (var script of scripts) {
             await script.load(); 
             var scrArr = parser.parseScript(script);

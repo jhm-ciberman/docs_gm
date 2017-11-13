@@ -8,6 +8,7 @@ import GMS2Model from "./GMS2Model";
 import GMS2Script from "./GMS2Script";
 import { GMProject, GMProjectStatic } from "../GMInterfaces";
 import { staticImplements } from "../_decorators/decorators";
+import DocsGM from "../DocsGM";
 
 /**
  * Represents a GameMaker Studio 2 Project
@@ -20,6 +21,11 @@ export default class GMS2Project extends GMS2Model implements GMProject {
 	 * The path of the GMS2 Project
 	 */
 	public path: string;
+
+	/**
+	 * Project's name
+	 */
+	public name: string;
 
 	/** key: type, value: GMS2Resource[] **/
 	private _resourcesByType: Map<string, GMS2Resource[]> = new Map();
@@ -40,6 +46,7 @@ export default class GMS2Project extends GMS2Model implements GMProject {
 		super(data);
 		this.path = GMProjectPath;
 		this._data = data;
+		this.name = path.basename(path.resolve(this.path)); 
 	}
 
 
