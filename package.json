@@ -1,6 +1,6 @@
 {
   "name": "docs_gm",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2",
   "main": "dist/DocsGM.js",
   "scripts": {
