@@ -5,7 +5,7 @@ export default class Reporter {
     }
 
     public debug(...str:any[]) {
-        console.debug(...str);
+        console.log(...str);
     }
 
     public info(...str: any[]) {
@@ -13,10 +13,12 @@ export default class Reporter {
     }
 
     public warn(...str: any[]) {
+        str[0] = "> WARNING: " + str[0];
         console.warn(...str);
     }
 
     public error(...str: any[]) {
+        str[0] = "> ERROR: " + str[0];
         console.error(...str);
     }
 

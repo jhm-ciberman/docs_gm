@@ -8,7 +8,6 @@ import GMS2Model from "./GMS2Model";
 import GMS2Script from "./GMS2Script";
 import { GMProject, GMProjectStatic } from "../GMInterfaces";
 import { staticImplements } from "../_decorators/decorators";
-import DocsGM from "../DocsGM";
 
 /**
  * Represents a GameMaker Studio 2 Project

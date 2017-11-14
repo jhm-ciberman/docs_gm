@@ -67,11 +67,11 @@ export default class Template {
      * @param name The optional name of the design
      * @returns The JSON Design data object
      */
-    private _findDesignByName(name?: string): TemplateJSONDesign {
+    private _findDesignByName(name: string = ""): TemplateJSONDesign {
         if (this.data.designs.length === 0) {
             throw "Template contains no designs";
         }
-        if (name) {
+        if (name != "") {
             var d = this.data.designs.find(value => value.name === name)
             if (!d) throw "Design not found";
             return d;

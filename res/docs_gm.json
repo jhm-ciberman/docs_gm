@@ -1,93 +1,90 @@
-export default class OutputConfig {
-
-    /**
-     * The design name. If empty, it will use the first design in the designs list.
-     */
-    public design: string = "";
-
+{
     /**
      * The template name to use
      */
-    public templateName: string = "basic";
+    "templateName": "basic",
+        
+    /**
+     * The design name. If empty, it will use the first design in the designs list.
+     */
+    "design": "", 
 
     /**
      * The glob pattern to use to include files in the project documentation
      */
-    public pattern: string = "**/*";
+    "pattern": "**/*", 
 
     /**
      * The output folder of the documentation
      */
-    public outFolder: string = "./docs/"
+    "outFolder": "./docs/",
 
     /**
-     * The folder where the templates are located. If empty, the default templates folder will be used
+     * The folder where the templates are located. If empty, the default template folder will be used. 
      */
-    public templatesFolder: string = "";
+    "templatesFolder": "", 
 
     /**
      * Mark scripts names starting with underscore as private scripts
      */
-    public markUnderscoreScriptsAsPrivate: boolean = true; 
+    "markUnderscoreScriptsAsPrivate": true, 
 
     /**
      * Ignore private scripts when generating documentation
      */
-    public ignorePrivateScripts: boolean = true; 
+    "ignorePrivateScripts": true, 
 
     /**
      * Ignore undocumented scripts
      */
-    public ignoreUndocumentedScripts: boolean = true;
+    "ignoreUndocumentedScripts": true, 
 
     /**
      * Warn about scripts with no documentation
      */
-    public warnUndocumentedScripts: boolean = true; 
+    "warnUndocumentedScripts": true, 
 
     /**
      * Warn about unrecognized JSDoc tags
      */
-    public warnUnrecognizedTags: boolean = true;
+    "warnUnrecognizedTags": true, 
 
     /**
      * Warn about mismatching script name and "function" JSDoc tags.
      */
-    public warnMismatchingFunctionName: boolean = true; 
+    "warnMismatchingFunctionName": true, 
 
     /**
      * Warn about scripts with no description
      */
-    public warnNoDescriptionScripts: boolean = true;
+    "warnNoDescriptionScripts": true, 
 
     /**
      * Ignore scripts with no description
      */
-    public ignoreNoDescriptionScripts: boolean = true; 
+    "ignoreNoDescriptionScripts": true, 
 
     /**
      * Warn about scripts with a mismatching number of arguments.
      * For example, if the scripts has documentation for 4 arguments but the GML code uses 6 arguments. 
      */
-    public warnMismatchingArgumentsScripts: boolean = true;
+    "warnMismatchingArgumentsScripts": true, 
 
     /**
      * Ignore scripts with a mismatching number of arguments.
      * For example, if the scripts has documentation for 4 arguments but the GML code uses 6 arguments.
      */
-    public ignoreMismatchingArgumentsScripts: boolean = false;
+    "ignoreMismatchingArgumentsScripts": false, 
 
     /**
      * Warn about scripts with undocumented arguments.
      * For example, if a script has documentation for 0 arguments, but the GML code uses arguments.  
      */
-    public warnUndocumentedArgumentsScripts: boolean = true;
+    "warnUndocumentedArgumentsScripts": true, 
 
     /**
      * Ignore scripts with undocumented arguments.
      * For example, if a script has documentation for 0 arguments, but the GML code uses arguments.
      */
-    public ignoreUndocumentedArgumentsScripts: boolean = false;
-
-
+    "ignoreUndocumentedArgumentsScripts": false
 }

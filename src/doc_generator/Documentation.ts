@@ -14,9 +14,13 @@ export default class Documentation {
 
     /**
      * Generates the documentation files for the project.
-     * @return Promise
+     * @return Promise with the path of the output folder
      */
-    public static async generate(project:GMProject, config: OutputConfig): Promise<void> {
+    public static async generate(project:GMProject, config?: OutputConfig): Promise<string> {
+        if (!config) {
+            config = new OutputConfig();
+        }
+
         var scripts = project.find(config.pattern, "script") as GMScript[];
         scripts.sort((a, b) => {
             return a.name.localeCompare(b.name);
@@ -35,10 +39,17 @@ export default class Documentation {
             docProject.scripts = docProject.scripts.concat(scrArr);
         }
 
-        var folder = path.resolve(config.templatesFolder, config.templateName);
+        if (config.templatesFolder != "") {
+            var folder = path.resolve(config.templatesFolder, config.templateName);
+        } else {
+            var folder = path.resolve(__dirname, "../../templates/", config.templateName);
+        }
+        
         var template = new Template(folder);
         await template.load();
         await template.generateDocs(docProject, config);
+
+        return config.outFolder;
     }
 
 }
