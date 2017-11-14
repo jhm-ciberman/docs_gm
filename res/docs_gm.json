@@ -1,5 +1,10 @@
 {
     /**
+     * docs_gm configuration file.
+     * The file uses JSON5 format. So, it suports comments.
+     */
+
+    /**
      * The template name to use
      */
     "templateName": "basic",
@@ -87,4 +92,6 @@
      * For example, if a script has documentation for 0 arguments, but the GML code uses arguments.
      */
     "ignoreUndocumentedArgumentsScripts": false
+
+
 }

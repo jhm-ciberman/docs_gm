@@ -229,6 +229,8 @@ export default class ScriptParser {
                 script.undocumented = false; 
                 break;
             case "function": 
+            case "func":
+            case "method":
                 var name = this._reconstructTag(tag);
                 if (name != script.name && this._config.warnMismatchingFunctionName) {
                     DocsGM.console.warn(`Script "${script.name}" has a mismatching @function name "${name}"`);
