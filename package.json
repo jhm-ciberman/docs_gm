@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2",
   "main": "dist/DocsGM.js",
+  "types": "dist/DocsGM.d.ts",
   "scripts": {
     "test": "echo \"No tests defined\" && exit 0",
     "prepublishOnly": "rm -rf ./dist/ && tsc -p .",
