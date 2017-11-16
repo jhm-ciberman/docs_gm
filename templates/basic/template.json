@@ -6,7 +6,7 @@
     "designs": {
         "onepage": {
             "pages": [
-                {"in": "index.njk", "out": "index.html", "feedwith": "scripts"}
+                {"in": "index-onepage.njk", "out": "index.html", "feedwith": "scripts"}
             ]
         }
     }
