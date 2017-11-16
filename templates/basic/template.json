@@ -2,12 +2,12 @@
     "author": "Javier \"Ciberman\" Mora",
     "description": "A basic HTML documentation template",
     "web": "https://github.com/jhm-ciberman/docs_gm",
-    "designs": [
-        {
-            "name": "onepage",
+    "defaultDesign": "onepage",
+    "designs": {
+        "onepage": {
             "pages": [
                 {"in": "index.njk", "out": "index.html", "feedwith": "scripts"}
             ]
         }
-    ]
+    }
 }

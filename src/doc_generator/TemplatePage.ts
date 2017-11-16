@@ -13,7 +13,7 @@ export default class TemplatePage {
 
     private template: Template;
 
-    private data: TemplateJSONPage;
+    private data: TemplateJSON.Page;
 
     private env: nunjucks.Environment;
 
@@ -22,7 +22,7 @@ export default class TemplatePage {
      * @param template The template to use to generate the Documentation page
      * @param data The data to populate the Page with
      */
-    constructor(template: Template, data: TemplateJSONPage) {
+    constructor(template: Template, data: TemplateJSON.Page) {
         this.template = template;
         this.data = data;
         this.env = nunjucks.configure(template.folder, { autoescape: false });

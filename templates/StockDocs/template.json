@@ -2,13 +2,14 @@
     "author": "Egrappler",
     "description": "A simple modern HTML documentation template",
     "web": "https://www.egrappler.com/free-product-documentation-html-template/",
-    "designs": [
-        {
-            "name": "onepage",
+    "defaultDesign": "onepage",
+    "designs": {
+        "onepage": {
+            "name": "",
             "copy": ["css/**/*", "js/**/*"],
             "pages": [
                 {"in": "index.njk", "out": "index.html", "feedwith": "scripts"}
             ]
         }
-    ]
+    }
 }

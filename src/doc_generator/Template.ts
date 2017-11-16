@@ -20,7 +20,7 @@ export default class Template {
     /**
      * The TemplateJSON data
      */
-    public data: TemplateJSON;
+    public data: TemplateJSON.Root;
 
     /**
      * The folder of the template
@@ -67,17 +67,16 @@ export default class Template {
      * @param name The optional name of the design
      * @returns The JSON Design data object
      */
-    private _findDesignByName(name: string = ""): TemplateJSONDesign {
-        if (this.data.designs.length === 0) {
+    private _findDesignByName(name: string = ""): TemplateJSON.Design {
+        if (Object.keys(this.data.designs).length === 0) {
             throw "Template contains no designs";
         }
-        if (name != "") {
-            var d = this.data.designs.find(value => value.name === name)
-            if (!d) throw "Design not found";
-            return d;
-        } else {
-            return this.data.designs[0];
+        if (name === "") {
+            name = this.data.defaultDesign;
         }
+        var d = this.data.designs[name];
+        if (!d) throw `Design ${name} not found`;
+        return d;
     }
 
     /**
