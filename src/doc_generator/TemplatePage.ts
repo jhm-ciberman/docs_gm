@@ -5,6 +5,7 @@ import * as fse from "fs-extra";
 import Template from "./Template";
 import DocProject from "../docs_models/DocProject";
 import DocPage from "../docs_models/DocPage";
+import * as TemplateJSON from "./TemplateJSON";
 
 /**
  * Represents one Page for one Design of one Template

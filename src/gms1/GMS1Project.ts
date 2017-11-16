@@ -7,6 +7,7 @@ import { GMProject, GMProjectStatic } from "../GMInterfaces";
 import { staticImplements } from "../_decorators/decorators";
 import GMS1Folder from "./GMS1Folder";
 import GMS1Resource from "./GMS1Resource";
+import * as GMS1Descriptor from "./GMS1Descriptor";
 
 /**
  * Represents a GMS1 Project. The object should be created 
@@ -25,7 +26,7 @@ export default class GMS1Project implements GMProject {
      */
     public name: string;
 
-    private _data: GMS1ProjectData;
+    private _descriptor: GMS1Descriptor.Root;
 
     private _topLevelFolders: Map<string, GMS1Folder> = new Map();
 
@@ -41,8 +42,8 @@ export default class GMS1Project implements GMProject {
      * @param GMProjectPath The path of the GMS1 Project
      * 
      */
-    private constructor(data: GMS1ProjectData, GMProjectPath: string) {
-        this._data = data;
+    private constructor(data: GMS1Descriptor.Root, GMProjectPath: string) {
+        this._descriptor = data;
         this.path = GMProjectPath;
         this.name = path.basename(path.resolve(this.path)); 
     }
@@ -52,7 +53,7 @@ export default class GMS1Project implements GMProject {
      * @return A promise with the current instance for easy chaining
      */
     public async load(): Promise<this> {
-        var scriptsFolder = new GMS1Folder(this._data.scripts[0], this, null);
+        var scriptsFolder = new GMS1Folder(this._descriptor.scripts[0], this, null);
         await scriptsFolder.load();
         this._topLevelFolders.set("scripts", scriptsFolder);
         return this;
@@ -111,8 +112,8 @@ export default class GMS1Project implements GMProject {
      */
     static async loadProject(file: string): Promise<GMS1Project> {
         var string = await fse.readFile(file, "utf8");
-        var data: any = await GMS1Project._xmlParse(string);
-        return new GMS1Project(data.assets as GMS1ProjectData, path.dirname(file));
+        var data:GMS1Descriptor.Root = await GMS1Project._xmlParse(string);
+        return new GMS1Project(data, path.dirname(file));
     }
 
     /**

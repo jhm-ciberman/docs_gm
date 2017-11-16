@@ -8,6 +8,7 @@ import GMS2Model from "./GMS2Model";
 import GMS2Script from "./GMS2Script";
 import { GMProject, GMProjectStatic } from "../GMInterfaces";
 import { staticImplements } from "../_decorators/decorators";
+import * as GMS2Descriptor from "./GMS2Descriptor";
 
 /**
  * Represents a GameMaker Studio 2 Project
@@ -15,7 +16,6 @@ import { staticImplements } from "../_decorators/decorators";
 @staticImplements<GMProjectStatic>()
 export default class GMS2Project extends GMS2Model implements GMProject {
 
-	
 	/**
 	 * The path of the GMS2 Project
 	 */
@@ -29,7 +29,7 @@ export default class GMS2Project extends GMS2Model implements GMProject {
 	/** key: type, value: GMS2Resource[] **/
 	private _resourcesByType: Map<string, GMS2Resource[]> = new Map();
 
-	private _data: GMS2ProjectData;
+	private _data: GMS2Descriptor.Project;
 
 	/** key: ResourceID, value: GMS2Resource **/
 	private _resourcesById: Map<string, GMS2Resource> = new Map();
@@ -41,7 +41,7 @@ export default class GMS2Project extends GMS2Model implements GMProject {
 	 * @param data The JSON data of the project to load
 	 * @param GMProjectPath The path of the GMS2 Project
 	 */
-	private constructor(data: GMS2ProjectData, GMProjectPath: string) {
+	private constructor(data: GMS2Descriptor.Project, GMProjectPath: string) {
 		super(data);
 		this.path = GMProjectPath;
 		this._data = data;
@@ -143,7 +143,7 @@ export default class GMS2Project extends GMS2Model implements GMProject {
 		for (var resource of this._data.resources) {
 			var file = path.resolve(this.path, resource.Value.resourcePath);
 			var string = await fse.readFile(file, "utf8");
-			var data: GMS2ResourceData = JSON.parse(string);
+			var data: GMS2Descriptor.Resource = JSON.parse(string);
 			var res = this._createFromData(data);
 			res.id = resource.Key;
 			var type = resource.Value.resourceType.split("GM").join("").toLowerCase();
@@ -160,12 +160,12 @@ export default class GMS2Project extends GMS2Model implements GMProject {
 	 * Creates a GMS2Resource from a YOYO model data
 	 * @param modelData The YOYO model data to create the GMS2Resource from
 	 */
-	private _createFromData(modelData: GMS2ResourceData): GMS2Resource {
+	private _createFromData(modelData: GMS2Descriptor.Resource): GMS2Resource {
 		switch (modelData.modelName) {
 			case "GMFolder":
-				return new GMS2Folder(modelData as GMS2FolderData, this);
+				return new GMS2Folder(modelData as GMS2Descriptor.Folder, this);
 			case "GMScript":
-				return new GMS2Script(modelData as GMS2ScriptData, this);
+				return new GMS2Script(modelData as GMS2Descriptor.Script, this);
 			default:
 				return new GMS2Resource(modelData, this);
 		}

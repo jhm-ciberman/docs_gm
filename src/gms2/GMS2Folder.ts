@@ -2,6 +2,7 @@ import GMS2Resource from "./GMS2Resource";
 import GMS2Project from "./GMS2Project";
 import { GMFolder } from "../GMInterfaces";
 import DocsGM from "../DocsGM";
+import * as GMS2Descriptor from "./GMS2Descriptor";
 
 export default class GMS2Folder extends GMS2Resource implements GMFolder {
 
@@ -26,7 +27,7 @@ export default class GMS2Folder extends GMS2Resource implements GMFolder {
 	 */
 	private _childrenIDs: string[];
 
-	constructor(data: GMS2FolderData, project: GMS2Project) {
+	constructor(data: GMS2Descriptor.Folder, project: GMS2Project) {
 		super(data, project);
 		this.folderName = data.folderName;
 		this._childrenIDs = data.children;

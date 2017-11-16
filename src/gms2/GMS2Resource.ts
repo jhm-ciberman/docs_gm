@@ -3,6 +3,7 @@ import GMProject from "./GMS2Project";
 import GMFolder from "./GMS2Folder";
 import { GMResource } from "../GMInterfaces";
 import DocsGM from "../DocsGM";
+import * as GMS2Descriptor from "./GMS2Descriptor";
 
 export default class GMS2Resource extends GMModel implements GMResource {
 
@@ -12,7 +13,7 @@ export default class GMS2Resource extends GMModel implements GMResource {
     public id: string = "";
 
     
-    constructor(data: GMS2ResourceData, project: GMProject) {
+    constructor(data: GMS2Descriptor.Resource, project: GMProject) {
         super(data);
         this.project = project;
         this.name = data.name;

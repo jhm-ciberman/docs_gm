@@ -6,7 +6,7 @@ import OutputConfig from "./OutputConfig";
 import DocProject from "../docs_models/DocProject";
 import Page from "./TemplatePage";
 import DocsGM from "../DocsGM";
-
+import * as TemplateJSON from "./templateJSON";
 /**
  * Represents a Documentation HTML Template
  */

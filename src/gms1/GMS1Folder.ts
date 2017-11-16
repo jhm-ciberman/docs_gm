@@ -3,6 +3,8 @@ import GMS1Resource from "./GMS1Resource";
 import GMS1Script from "./GMS1Script";
 import DocsGM from "../DocsGM";
 import { GMFolder } from "../GMInterfaces";
+import * as GMS1Descriptor from "./GMS1Descriptor";
+
 
 export default class GMS1Folder extends GMS1Resource implements GMFolder {
 
@@ -14,7 +16,7 @@ export default class GMS1Folder extends GMS1Resource implements GMFolder {
      * @param project The base project for the folder
      * @param parent The parent folder for this folder
      */
-    constructor(data: GMS1FolderData, project: GMS1Project, parent: GMS1Folder | null) {
+    constructor(data: GMS1Descriptor.Folder, project: GMS1Project, parent: GMS1Folder | null) {
         super(project, parent, data.$.name);
         this.project = project;
         this.project.addResource(this, "folder");

@@ -4,6 +4,7 @@ import * as fse from "fs-extra";
 import GMS2Resource from "./GMS2Resource";
 import GMProject from "./GMS2Project";
 import { GMScript } from "../GMInterfaces";
+import * as GMS2Descriptor from "./GMS2Descriptor";
 
 export default class GMS2Script extends GMS2Resource implements GMScript {
 
@@ -24,7 +25,7 @@ export default class GMS2Script extends GMS2Resource implements GMScript {
 	 * @param data The YOYO model data for the script
 	 * @param project The base project for the script
 	 */
-	constructor(data: GMS2ScriptData, project: GMProject) {
+	constructor(data: GMS2Descriptor.Script, project: GMProject) {
 		super(data, project);
 		this.isCompatibility = data.IsCompatibility;
 	}
