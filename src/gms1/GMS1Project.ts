@@ -112,8 +112,9 @@ export default class GMS1Project implements GMProject {
      */
     static async loadProject(file: string): Promise<GMS1Project> {
         var string = await fse.readFile(file, "utf8");
-        var data:GMS1Descriptor.Root = await GMS1Project._xmlParse(string);
-        return new GMS1Project(data, path.dirname(file));
+        // "assets" is the root XML node of the document, but we call Root at the content of that node
+        var data: {assets: GMS1Descriptor.Root} = await GMS1Project._xmlParse(string);
+        return new GMS1Project(data.assets, path.dirname(file));
     }
 
     /**
