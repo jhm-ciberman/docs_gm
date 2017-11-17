@@ -1,4 +1,5 @@
 # docs_gm
+
 [![npm](https://img.shields.io/npm/dt/docs_gm.svg)](https://www.npmjs.com/package/docs_gm)
 > The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2
 
@@ -64,6 +65,7 @@ if (argument[0] === "latte") {
 }
 return foo;
 ```
+
 docs_gm supports both `/// triple slash comments` and `/** JSDoc single line and multiline comments */`
 
 The following JSDoc tags are supported by gm_docs:
@@ -110,18 +112,16 @@ You can create custom HTML templates and use them with docs_gm. Refer to [this p
 
 ## Contribute
 
-I would love to see people interested in contribute to docs_gm. If you have some idea, or bug, you can send a Issue in the github page. 
+I would love to see people interested in contribute to docs_gm. If you have some idea, or bug, you can send a Issue in the github page.
 
-If you want to contribute with the code, create a fork, clone it in your local computer (`git clone <REPO URL>`) and then run `npm install` to install all dependencies. 
+If you want to contribute with the code, create a fork, clone it in your local computer (`git clone <REPO URL>`) and then run `npm install` to install all dependencies.
 
-If you use Visual Studio Code as your editor, the project will have configured some tasks to compile and build the typescript faster. 
+If you use Visual Studio Code as your editor, the project will have configured some tasks to compile and build the typescript faster.
 
 If not, you can allways run `tsc --project . --watch` to start the typescript compiler for the current project directory in watch mode. (Will recompile after any change).
 
-Also, it's recomended that you run `tslint --project .` to lint the project. 
+Also, it's recomended that you run `tslint --project .` to lint the project.
 
-When you are ready, send a pull request. 
+When you are ready, send a pull request.
 
-Remember that all the latest code is in the `develop` git branch. Never develop new features on  `master`. 
-
-
+Remember that all the latest code is in the `develop` git branch. Never develop new features on  `master`.
