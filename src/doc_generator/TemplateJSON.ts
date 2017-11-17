@@ -1,26 +1,25 @@
 /////////// docs_gm template.json file
 
-export interface Root {
+export interface IRoot {
 	author: string;
 	description: string;
 	web: string;
 	defaultDesign: string;
-	designs: DesignsMap;
+	designs: IDesignsMap;
 }
 
-export interface DesignsMap {
-	[key: string]: Design;
+export interface IDesignsMap {
+	[key: string]: IDesign;
 }
 
-export interface Design {
+export interface IDesign {
 	name: string;
 	copy?: string[];
-	pages: Page[];
+	pages: IPage[];
 }
 
-export interface Page {
+export interface IPage {
 	in: string;
 	out: string;
-	feedWith: string;
+	feedWith: "script" | "scripts";
 }
-

@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"No tests defined\" && exit 0",
     "prepublishOnly": "rm -rf ./dist/ && tsc -p .",
-    "watch": "tsc -p . --watch"
+    "watch": "tsc -p . --watch",
+    "lint": "tslint --project . -t verbose"
   },
   "repository": {
     "type": "git",

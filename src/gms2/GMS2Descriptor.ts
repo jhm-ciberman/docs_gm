@@ -1,12 +1,12 @@
-// GameMaker Studio 2 *.json project 
+// GameMaker Studio 2 *.json project
 
-export interface Model {
+export interface IModel {
 	id: string;
 	modelName: string;
 	mvc: string;
 }
 
-export interface Project extends Model {
+export interface IProject extends IModel {
 	resources: [{
 		Key: string;
 		Value: {
@@ -17,17 +17,17 @@ export interface Project extends Model {
 	}];
 }
 
-export interface Resource extends Model {
+export interface IResource extends IModel {
 	name: string;
 }
 
-export interface Folder extends Resource {
+export interface IFolder extends IResource {
 	folderName: string;
 	localisedFolderName: string;
 	children: string[];
 }
 
-export interface Script extends Resource {
+export interface IScript extends IResource {
 	name: string;
 	IsDnD: boolean;
 	IsCompatibility: boolean;

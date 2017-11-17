@@ -1,135 +1,142 @@
-import * as xml2js from "xml2js";
-import * as path from "path";
 import * as fse from "fs-extra";
 import * as minimatch from "minimatch";
+import * as path from "path";
+import * as xml2js from "xml2js";
 
-import { GMProject, GMProjectStatic } from "../GMInterfaces";
 import { staticImplements } from "../_decorators/decorators";
+import { IGMProject, IGMProjectStatic } from "../GMInterfaces";
+import * as GMS1Descriptor from "./GMS1Descriptor";
 import GMS1Folder from "./GMS1Folder";
 import GMS1Resource from "./GMS1Resource";
-import * as GMS1Descriptor from "./GMS1Descriptor";
 
 /**
- * Represents a GMS1 Project. The object should be created 
+ * Represents a GMS1 Project. The object should be created
  * ussing the factory static method loadProject.
  */
-@staticImplements<GMProjectStatic>()
-export default class GMS1Project implements GMProject {
+@staticImplements<IGMProjectStatic>()
+export default class GMS1Project implements IGMProject {
 
-    /**
-     * The path of the project
-     */
-    public path: string;
+	/**
+	 * Loads the specified GMS1 project
+	 * @param file The file path of the project to load
+	 * @returns A Promise with the GMS1Project
+	 */
+	public static async loadProject(file: string): Promise<GMS1Project> {
+		const str = await fse.readFile(file, "utf8");
+		// "assets" is the root XML node of the document, but we call Root at the content of that node
+		const data: { assets: GMS1Descriptor.IRoot } = await GMS1Project._xmlParse(str);
+		return new GMS1Project(data.assets, path.dirname(file));
+	}
 
-    /**
-     * Project's name
-     */
-    public name: string;
+	/**
+	 * Parses an XML string and returns the data parsed
+	 * @param string The XML string to parse
+	 * @return A promise with the data parsed
+	 */
+	private static _xmlParse(str: string): Promise<any> {
+		return new Promise((accept) => {
+			xml2js.parseString(str, (err, result) => {
+				if (err) { throw err; }
+				accept(result);
+			});
+		});
+	}
 
-    private _descriptor: GMS1Descriptor.Root;
+	/**
+	 * The path of the project
+	 */
+	public path: string;
 
-    private _topLevelFolders: Map<string, GMS1Folder> = new Map();
+	/**
+	 * Project's name
+	 */
+	public name: string;
 
-    private _resources: GMS1Resource[] = [];
+	/**
+	 * Project *.yyz descriptor data
+	 */
+	private _descriptor: GMS1Descriptor.IRoot;
 
-    /** key: type, value: GMS2Resource[] **/
-    private _resourcesByType: Map<string, GMS1Resource[]> = new Map();
+	/**
+	 * A map with the top level folders. Key is the top level folder name, and the value is the folder.
+	 */
+	private _topLevelFolders: Map<string, GMS1Folder> = new Map();
 
-    /**
-     * @private 
-     * Creates a new GMS1 Project
-     * @param data The data of the GMS1 Project
-     * @param GMProjectPath The path of the GMS1 Project
-     * 
-     */
-    private constructor(data: GMS1Descriptor.Root, GMProjectPath: string) {
-        this._descriptor = data;
-        this.path = GMProjectPath;
-        this.name = path.basename(path.resolve(this.path)); 
-    }
+	/** An array with all the resources in the resource tree */
+	private _resources: GMS1Resource[] = [];
 
-    /**
-     * Loads the project
-     * @return A promise with the current instance for easy chaining
-     */
-    public async load(): Promise<this> {
-        var scriptsFolder = new GMS1Folder(this._descriptor.scripts[0], this, null);
-        await scriptsFolder.load();
-        this._topLevelFolders.set("scripts", scriptsFolder);
-        return this;
-    }
+	/**
+	 * A map with all the resources filtered by type
+	 * Key is the resource type, and the value is an array with all the resource of that type.
+	 */
+	private _resourcesByType: Map<string, GMS1Resource[]> = new Map();
 
-    /**
+	/**
+	 * @private
+	 * Creates a new GMS1 Project
+	 * @param data The data of the GMS1 Project
+	 * @param GMProjectPath The path of the GMS1 Project
+	 */
+	private constructor(data: GMS1Descriptor.IRoot, gmProjectPath: string) {
+		this._descriptor = data;
+		this.path = gmProjectPath;
+		this.name = path.basename(path.resolve(this.path));
+	}
+
+	/**
+	 * Loads the project
+	 * @return A promise with the current instance for easy chaining
+	 */
+	public async load(): Promise<this> {
+		const scriptsFolder = new GMS1Folder(this._descriptor.scripts[0], this, null);
+		await scriptsFolder.load();
+		this._topLevelFolders.set("scripts", scriptsFolder);
+		return this;
+	}
+
+	/**
 	 * Prints the folder structure of the project in the console for debug
 	 * @param spaces Number of spaces to use
 	 */
-    public print(spaces: number = 0): void {
-        for (var folder of this._topLevelFolders.values()) {
-            folder.print(spaces);
-        }
-    }
+	public print(spaces: number = 0): void {
+		for (const folder of this._topLevelFolders.values()) {
+			folder.print(spaces);
+		}
+	}
 
-    /**
+	/**
 	 * Adds a GMS2Resource to the project
 	 * @param resource The GMS2Resource to add
 	 * @param type The resource type
 	 */
-    public addResource(resource: GMS1Resource, type: string): void {
-        if (this._resourcesByType.has(type)) {
-            (this._resourcesByType.get(type) as GMS1Resource[]).push(resource);
-        } else {
-            this._resourcesByType.set(type, [resource]);
-        }
-        this._resources.push(resource);
-    }
+	public addResource(resource: GMS1Resource, type: string): void {
+		if (this._resourcesByType.has(type)) {
+			(this._resourcesByType.get(type) as GMS1Resource[]).push(resource);
+		} else {
+			this._resourcesByType.set(type, [resource]);
+		}
+		this._resources.push(resource);
+	}
 
-    /**
+	/**
 	 * Search all the resources that match certain pattern
 	 * @param pattern The glob pattern to use to find files
 	 * @param type The optional resource type
 	 * @returns An array with the GMS2Resources found
 	 */
-    public find(pattern: string, type: string = ""): GMS1Resource[] {
-        var results: GMS1Resource[] = []
-        var it = (type === "")
-            ? this._resources.values()
-            : this._resourcesByType.get(type);
-        if (it) {
-            for (var resource of it) {
-                if (minimatch(resource.fullpath, pattern, { matchBase: true })) {
-                    results.push(resource)
-                }
-            }
-        }
-        return results;
-    }
-
-
-    /**
-     * Loads the specified GMS1 project
-     * @param file The file path of the project to load
-     * @returns A Promise with the GMS1Project
-     */
-    static async loadProject(file: string): Promise<GMS1Project> {
-        var string = await fse.readFile(file, "utf8");
-        // "assets" is the root XML node of the document, but we call Root at the content of that node
-        var data: {assets: GMS1Descriptor.Root} = await GMS1Project._xmlParse(string);
-        return new GMS1Project(data.assets, path.dirname(file));
-    }
-
-    /**
-     * Parses an XML string and returns the data parsed
-     * @param string The XML string to parse
-     * @return A promise with the data parsed
-     */
-    private static _xmlParse(string: string): Promise<any> {
-        return new Promise(accept => {
-            xml2js.parseString(string, (err, result) => {
-                if (err) throw err;
-                accept(result);
-            });
-        });
-    }
-
+	public find(pattern: string, type: string = ""): GMS1Resource[] {
+		const results: GMS1Resource[] = [];
+		const it = (type === "")
+			? this._resources.values()
+			: this._resourcesByType.get(type);
+		if (it) {
+			for (const resource of it) {
+				if (minimatch(resource.fullpath, pattern, { matchBase: true })) {
+					results.push(resource);
+				}
+			}
+		}
+		return results;
+	}
 
 }

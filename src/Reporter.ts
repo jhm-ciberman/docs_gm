@@ -1,25 +1,47 @@
+/* tslint:disable:no-console */
+/*
+This is the only class allowed to have console.log as an output
+All other classes should use the Reporter class.
+Normally, you can access the reporter class via DocsGM.reporter.
+For example: DocsGM.reporter.info("hi");
+*/
+
+/**
+ * Console Reporter
+ */
 export default class Reporter {
 
-    public constructor() {
+	/**
+	 * Shows a debug string on the screen
+	 * @param str The string
+	 */
+	public debug(...str: any[]) {
+		console.log(...str);
+	}
 
-    }
+	/**
+	 * Shows an info string on the screen
+	 * @param str The string
+	 */
+	public info(...str: any[]) {
+		console.info(...str);
+	}
 
-    public debug(...str:any[]) {
-        console.log(...str);
-    }
+	/**
+	 * Shows a warn string on the screen
+	 * @param str The string
+	 */
+	public warn(...str: any[]) {
+		str[0] = "> WARNING: " + str[0];
+		console.warn(...str);
+	}
 
-    public info(...str: any[]) {
-        console.info(...str);
-    }
-
-    public warn(...str: any[]) {
-        str[0] = "> WARNING: " + str[0];
-        console.warn(...str);
-    }
-
-    public error(...str: any[]) {
-        console.error(...str);
-    }
-
+	/**
+	 * Shows an error string on the screen
+	 * @param str The string
+	 */
+	public error(...str: any[]) {
+		console.error(...str);
+	}
 
 }

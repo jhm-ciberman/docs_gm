@@ -1,35 +1,35 @@
 // GameMaker:Studio 1 *.xml project data
 
-export interface Root {
-    Configs: any;
-    NewExtensions: any;
-    TutorialState: any;
-    sounds: [Folder];
-    sprites: [Folder];
-    backgrounds: [Folder];
-    paths: [Folder];
-    scripts: [Folder];
-    fonts: [Folder];
-    objects: [Folder];
-    rooms: [Folder];
+export interface IRoot {
+	Configs: any;
+	NewExtensions: any;
+	TutorialState: any;
+	sounds: [IFolder];
+	sprites: [IFolder];
+	backgrounds: [IFolder];
+	paths: [IFolder];
+	scripts: [IFolder];
+	fonts: [IFolder];
+	objects: [IFolder];
+	rooms: [IFolder];
 }
 
-export interface Folder {
-    $: { name: string };
-    sounds?: Folder[];
-    sound?: string[];
-    sprites?: Folder[];
-    sprite?: string[];
-    backgrounds?: Folder[];
-    background?: string[];
-    paths?: Folder[];
-    path?: string[];
-    scripts?: Folder[];
-    script?: string[];
-    fonts?: Folder[];
-    font?: string[];
-    objects?: Folder[];
-    object?: string[];
-    rooms?: Folder[];
-    room?: string[];
+export interface IFolder {
+	$: { name: string };
+	sounds?: IFolder[];
+	sound?: string[];
+	sprites?: IFolder[];
+	sprite?: string[];
+	backgrounds?: IFolder[];
+	background?: string[];
+	paths?: IFolder[];
+	path?: string[];
+	scripts?: IFolder[];
+	script?: string[];
+	fonts?: IFolder[];
+	font?: string[];
+	objects?: IFolder[];
+	object?: string[];
+	rooms?: IFolder[];
+	room?: string[];
 }

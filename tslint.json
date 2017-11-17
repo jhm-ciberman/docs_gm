@@ -1,0 +1,22 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "variable-name": [
+            true,
+            "ban-keywords",
+            "check-format",
+            "allow-leading-underscore"
+        ],
+        "indent": [
+            true,
+            "tabs",
+            4
+        ],
+        "completed-docs": [true, "classes", "functions","methods", "properties"]
+    },
+    "rulesDirectory": []
+}
