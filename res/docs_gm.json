@@ -7,7 +7,7 @@
     /**
      * The template name to use
      */
-    "templateName": "basic",
+    "template": "basic",
         
     /**
      * The design name. If empty, it will use the first design in the designs list.
@@ -22,7 +22,7 @@
     /**
      * The output folder of the documentation
      */
-    "outFolder": "./docs/",
+    "out": "./docs/",
 
     /**
      * The folder where the templates are located. If empty, the default template folder will be used. 

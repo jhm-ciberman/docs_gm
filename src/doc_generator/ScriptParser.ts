@@ -6,7 +6,7 @@ import DocParam from "../docs_models/DocParam";
 import DocReturns from "../docs_models/DocReturns";
 import DocExample from "../docs_models/DocExample";
 import OutputConfig from "./OutputConfig";
-import {GMScript} from "../GMInterfaces";
+import { GMScript } from "../GMInterfaces";
 import DocsGM from "../DocsGM";
 
 
@@ -40,7 +40,7 @@ export default class ScriptParser {
     private _findArrayArgumentsRegex: RegExp = /[\s{(]argument\[([0-9]+)\][\s;})]/g;
 
     private _findReturnRegex: RegExp = /[\s{(;]return[\s;})]/;
-    
+
     /**
      * Creates a ScriptParser instance
      */
@@ -62,11 +62,11 @@ export default class ScriptParser {
      * Parses a GMScript 
      * @param script An array with DocScript objects
      */
-    public parseScript(script:GMScript): DocScript[] {
+    public parseScript(script: GMScript): DocScript[] {
         var arr = [];
         for (var [name, text] of script.subScripts()) {
             var docScript = this._extractDocumentation(name, text);
-            
+
             if (this._config.markUnderscoreScriptsAsPrivate && name.charAt(0) === "_") {
                 docScript.private = true;
             }
@@ -89,7 +89,7 @@ export default class ScriptParser {
                     continue;
                 }
             }
-            
+
             var features = this._extractGMLFeatures(text);
             var docsN = docScript.params.length;
             var argsN = features.argumentCount;
@@ -109,8 +109,8 @@ export default class ScriptParser {
                     continue;
                 }
             }
-            
-            arr.push(docScript); 
+
+            arr.push(docScript);
         }
         return arr;
     }
@@ -122,7 +122,7 @@ export default class ScriptParser {
      * @param text The script content
      * @returns A new DocStript object
      */
-    private _extractDocumentation(name:string, text: string): DocScript {
+    private _extractDocumentation(name: string, text: string): DocScript {
 
         var comments = parse(text);
 
@@ -148,7 +148,7 @@ export default class ScriptParser {
      * @param text The GML code to parse
      * @return a GMLFeatures object
      */
-    private _extractGMLFeatures(text:string):GMLFeatures {
+    private _extractGMLFeatures(text: string): GMLFeatures {
         // Removes single and multiline comments.
         // See: https://stackoverflow.com/questions/5989315/regex-for-match-replacing-javascript-comments-both-multiline-and-inline
         text = text.replace(this._removeCommentsRegex, '$1');
@@ -166,13 +166,13 @@ export default class ScriptParser {
         var result: RegExpExecArray | null;
         // Match: argument0, argument1, argument2... etc.
         while (result = this._findFixedArgumentsRegex.exec(text)) {
-            data.argumentCount = Math.max(data.argumentCount, parseInt(result[0]) + 1);
+            data.argumentCount = Math.max(data.argumentCount, parseInt(result[1]) + 1);
         }
 
         // March argument[0], argument[1], argument[2]... etc
         while (result = this._findArrayArgumentsRegex.exec(text)) {
-            data.argumentCount = Math.max(data.argumentCount, parseInt(result[0]) + 1);
-            data.optionalArguments = true; 
+            data.argumentCount = Math.max(data.argumentCount, parseInt(result[1]) + 1);
+            data.optionalArguments = true;
         }
 
         //Match return statements
@@ -201,16 +201,16 @@ export default class ScriptParser {
                 str = this._compactHtmlSingleParagraph(str);
                 param.description = str;
                 script.params.push(param);
-                script.undocumented = false; 
+                script.undocumented = false;
                 break;
             case "description":
             case "desc":
             case "private": // Private works in the same way as a description
                 var text = this._reconstructTag(tag);
                 script.description = this._makeHtml(text);
-                script.undocumented = false; 
+                script.undocumented = false;
                 if (tag.tag.toLowerCase() === "private") {
-                    script.private = true; 
+                    script.private = true;
                 }
                 break;
             case "returns":
@@ -218,7 +218,7 @@ export default class ScriptParser {
                 script.returns = script.returns || new DocReturns();
                 script.returns.description = tag.description;
                 script.returns.type = tag.type;
-                script.undocumented = false; 
+                script.undocumented = false;
                 break;
             case "example":
                 var example = new DocExample();
@@ -226,9 +226,9 @@ export default class ScriptParser {
                 str = this._stripInitialLineFeeds(str);
                 example.code = this._escapeHtml(str);
                 script.examples.push(example);
-                script.undocumented = false; 
+                script.undocumented = false;
                 break;
-            case "function": 
+            case "function":
             case "func":
             case "method":
                 var name = this._reconstructTag(tag);
