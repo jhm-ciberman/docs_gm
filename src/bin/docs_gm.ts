@@ -21,11 +21,7 @@ async function generate(projectPath?: string, opts?: OutputConfig) {
 		config = new OutputConfig();
 	}
 	if (opts) {
-		Object.getOwnPropertyNames(opts).forEach(element => {
-			console.log(element, (opts as any)[element]);
-		});
 		config = Object.assign(config, opts);
-		
 	}
 	
 	DocsGM.console.info("Loading Resource Tree...");
