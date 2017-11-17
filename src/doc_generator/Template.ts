@@ -86,7 +86,7 @@ export default class Template {
      * @param config The configuration to use
      */
     public async generateDocs(docProject: DocProject, config: OutputConfig) {
-        var outputRoot = path.resolve(config.outFolder);
+        var outputRoot = path.resolve(config.out);
 
         var design = this._findDesignByName(config.design);
 

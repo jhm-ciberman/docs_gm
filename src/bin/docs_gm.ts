@@ -4,12 +4,12 @@ import * as program from "commander";
 import * as path from "path";
 import open = require("open");
 var packageJSON = require("../../package.json");
-import DocsGM from "../DocsGM";
-import Documentation from "../doc_generator/Documentation";
+import { DocsGM, OutputConfig } from "../index";
 
+var overrideConfig = new OutputConfig();
 
-async function generate(projectPath?:string) {
-
+async function generate(projectPath?: string, opts?: OutputConfig) {
+	
 	DocsGM.console.info("Loading Project...");
 	var project = await DocsGM.loadProject(projectPath);
 
@@ -18,15 +18,24 @@ async function generate(projectPath?:string) {
 
 	if (!config) {
 		DocsGM.console.info("Configuration not found. Ussing default configuration.");
+		config = new OutputConfig();
 	}
+	if (opts) {
+		Object.getOwnPropertyNames(opts).forEach(element => {
+			console.log(element, (opts as any)[element]);
+		});
+		config = Object.assign(config, opts);
+		
+	}
+	
 	DocsGM.console.info("Loading Resource Tree...");
 	await project.load();
 
 	DocsGM.console.info("Generating documentation... ");
-	var outFolder = await Documentation.generate(project, config);
+	var outFolder = await DocsGM.generate(project, config);
 
 	DocsGM.console.info("Ready!");
-	
+
 	var url = path.resolve(outFolder, "index.html");
 	DocsGM.console.info(`Opening ${url}`);
 	open(url);
@@ -70,10 +79,14 @@ program
 program
 	.command("generate [path]")
 	.description("Generates the documentation HTML files for the specified project path")
-	.action((path) => {
-		generate(path).catch(err => {
+	.option( "--design <name>", "The design name. If empty, it will use the first design in the designs list.", value => { overrideConfig.design = value; } )
+	.option( "--template <name>", "The template name to use", value => { overrideConfig.template = value; })
+	.option("--out <path>", "The output folder of the documentation", value => { overrideConfig.out = value; })
+	.option("-p, --pattern <glob>", "The glob pattern to use to include files in the project documentation", value => { overrideConfig.pattern = value; })
+	.action( path => {
+		generate(path, overrideConfig).catch(err => {
 			DocsGM.console.error(err);
-		})
+		});
 	});
 
 

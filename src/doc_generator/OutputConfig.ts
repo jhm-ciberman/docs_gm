@@ -8,7 +8,7 @@ export default class OutputConfig {
     /**
      * The template name to use
      */
-    public templateName: string = "basic";
+    public template: string = "basic";
 
     /**
      * The glob pattern to use to include files in the project documentation
@@ -18,7 +18,7 @@ export default class OutputConfig {
     /**
      * The output folder of the documentation
      */
-    public outFolder: string = "./docs/"
+    public out: string = "./docs/"
 
     /**
      * The folder where the templates are located. If empty, the default templates folder will be used

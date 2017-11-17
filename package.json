@@ -2,8 +2,8 @@
   "name": "docs_gm",
   "version": "0.2.0",
   "description": "The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2",
-  "main": "dist/DocsGM.js",
-  "types": "dist/DocsGM.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"No tests defined\" && exit 0",
     "prepublishOnly": "rm -rf ./dist/ && tsc -p .",

@@ -1,14 +1,18 @@
 import * as path from "path";
 import * as globby from "globby";
-import GMS1Project from "./gms1/GMS1Project";
-import GMS2Project from "./gms2/GMS2Project";
-import { GMProject } from "./GMInterfaces";
-import Reporter from "./Reporter";
 import * as fse from "fs-extra";
 import * as os from "os";
 import * as JSON5 from "json5";
-import OutputConfig from "./doc_generator/OutputConfig";
 
+import GMS1Project from "./gms1/GMS1Project";
+import GMS2Project from "./gms2/GMS2Project";
+import Reporter from "./Reporter";
+import OutputConfig from "./doc_generator/OutputConfig";
+import DocProject from "./docs_models/DocProject";
+import Template from "./doc_generator/Template";
+import ScriptParser from "./doc_generator/ScriptParser";
+
+import { GMProject, GMScript } from "./GMInterfaces";
 
 /**
  * Main Class of the docs_gm plugin
@@ -16,9 +20,10 @@ import OutputConfig from "./doc_generator/OutputConfig";
 export default class DocsGM {
 
 	/**
-	 * The reporter used to log all the information lines shown on the console
+	 * The reporter instance used to log all the information lines shown on the console.
+	 * You can change it for your own reporte
 	 */
-	public static console:Reporter = new Reporter(); 
+	public static console: Reporter = new Reporter();
 
 	/**
 	 * Loads a specified GMS1 or GMS2 Project
@@ -45,7 +50,7 @@ export default class DocsGM {
 			default:
 				throw `Unrecognized project extension: "${ext}"`;
 		}
-		
+
 	}
 
 	/**
@@ -70,7 +75,7 @@ export default class DocsGM {
 	 * @param jsonOrProjectPath The path to the JSON file or to the GameMaer project
 	 * @returns A promise with the created OutputConfig object or null if the file does not exists
 	 */
-	static async loadConfig(jsonOrProjectPath:string = "."):Promise<OutputConfig|undefined> {
+	static async loadConfig(jsonOrProjectPath: string = "."): Promise<OutputConfig | undefined> {
 		if (path.extname(jsonOrProjectPath) === "json") {
 			var jsonPath = path.resolve(jsonOrProjectPath, "datafiles/docs_gm.json");
 		} else {
@@ -82,10 +87,48 @@ export default class DocsGM {
 			return undefined;
 		}
 		var data = JSON5.parse(str);
-		var config = new OutputConfig(); 
+		var config = new OutputConfig();
 		return Object.assign(config, data);
 	}
 
+	/**
+ * Generates the documentation files for the project.
+ * @return Promise with the path of the output folder
+ */
+	public static async generate(project: GMProject, config?: OutputConfig): Promise<string> {
+		if (!config) {
+			config = new OutputConfig();
+		}
 
+		var scripts = project.find(config.pattern, "script") as GMScript[];
+		scripts.sort((a, b) => {
+			return a.name.localeCompare(b.name);
+		});
+
+		if (scripts.length == 0) {
+			throw "No resources found";
+		}
+
+		var parser = new ScriptParser(config);
+		var docProject = new DocProject();
+		docProject.name = project.name;
+		for (var script of scripts) {
+			await script.load();
+			var scrArr = parser.parseScript(script);
+			docProject.scripts = docProject.scripts.concat(scrArr);
+		}
+
+		if (config.templatesFolder != "") {
+			var folder = path.resolve(config.templatesFolder, config.template);
+		} else {
+			var folder = path.resolve(__dirname, "../templates/", config.template);
+		}
+
+		var template = new Template(folder);
+		await template.load();
+		await template.generateDocs(docProject, config);
+
+		return config.out;
+	}
 
 };
