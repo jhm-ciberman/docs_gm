@@ -32,7 +32,7 @@ docs_gm
 
 ## ❓ How to use it
 
-### First: Document your project
+### > First: Document your project
 
 You will need to document your scripts following JSDoc syntax. You can learn more about in the [official JSDoc website](http://usejsdoc.org/)
 
@@ -76,7 +76,7 @@ The following JSDoc tags are supported by gm_docs:
 - [`@example`](http://usejsdoc.org/tags-example.html)
 - More tags will be supported in the next updates
 
-### Second: Run gm_docs from the command line
+### > Second: Run gm_docs from the command line
 
 Navigate to the directory you have your GameMaker project. For example, for GameMaker:
 
@@ -102,7 +102,26 @@ If you want to change the default (Ugly) configuration run the following command
 docs_gm init
 ```
 
+You must follow the instructions that appears on the console and then you can edit the configuration file with any text editor and re-run `docs_gm generate`.
+
 ## Custom templates
 
 You can create custom HTML templates and use them with docs_gm. Refer to [this page](./docs/custom_templates.md) for how to create a custom template.
+
+## Contribute
+
+I would love to see people interested in contribute to docs_gm. If you have some idea, or bug, you can send a Issue in the github page. 
+
+If you want to contribute with the code, create a fork, clone it in your local computer (`git clone <REPO URL>`) and then run `npm install` to install all dependencies. 
+
+If you use Visual Studio Code as your editor, the project will have configured some tasks to compile and build the typescript faster. 
+
+If not, you can allways run `tsc --project . --watch` to start the typescript compiler for the current project directory in watch mode. (Will recompile after any change).
+
+Also, it's recomended that you run `tslint --project .` to lint the project. 
+
+When you are ready, send a pull request. 
+
+Remember that all the latest code is in the `develop` git branch. Never develop new features on  `master`. 
+
 
