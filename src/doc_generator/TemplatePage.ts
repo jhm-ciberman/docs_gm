@@ -50,7 +50,7 @@ export default class TemplatePage {
 
     private * _getFeedPages(docProject: DocProject) {
         var page: DocPage;
-        switch (this.data.feedwith) {
+        switch (this.data.feedWith) {
             case "script":
                 for (var script of docProject.scripts) {
                     page = new DocPage();

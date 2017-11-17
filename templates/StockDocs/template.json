@@ -8,7 +8,7 @@
             "name": "",
             "copy": ["css/**/*", "js/**/*"],
             "pages": [
-                {"in": "index.njk", "out": "index.html", "feedwith": "scripts"}
+                {"in": "index.njk", "out": "index.html", "feedWith": "scripts"}
             ]
         }
     }

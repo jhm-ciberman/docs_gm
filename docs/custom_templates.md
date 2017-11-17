@@ -30,7 +30,7 @@ The `template.json` file describes your template, and each design that your temp
             "name": "onepage",
             "copy": ["css/**/*", "js/**/*"],
             "pages": [
-                {"in": "index.njk", "out": "index.html", "feedwith": "scripts"}
+                {"in": "index.njk", "out": "index.html", "feedWith": "scripts"}
             ]
         }
     ]
@@ -54,7 +54,7 @@ The `template.json` file describes your template, and each design that your temp
 
 - `"in"`: **{string}** (required)  The name of the input file. This file will be loaded by the template engine. Normally, your template pages will be html files, but with the extension `*.njk`, indicating that are [Nunjucks templates](https://mozilla.github.io/nunjucks/). Examples: `"index.njk"`, `"script.njk"`
 - `"out"`: **{string}** (required)  The output filename. This is the name the file will have in the finished documentation. You can also place [Nunjucks tags](https://mozilla.github.io/nunjucks/templating.html) inside the output name to create dynamic names. More info about dynamic names, below. Examples: `"index.html"`, `"{{ page.script.name }}.html"`
-- `"feedwith"`: **{string}** (required)  Specify what type of data needs docs_gm to provide or feed to your template page. More info about supported `"feedwith"` types below.
+- `"feedWith"`: **{string}** (required)  Specify what type of data needs docs_gm to provide or feed to your template page. More info about supported `"feedWith"` types below.
 
 ## Template Pages
 
@@ -90,10 +90,10 @@ As you can see, you can iterate over an array to access all the scripts.
 The DocPage represents a single page of your Documentation.  It has the following properties:
 
 - `project`: **{ DocProject }** The DocProject object representing the GameMaker Project that you are creating the documentation for.
-- `script`: **{DocScript}** A DocScript object representing the SINGLE script your must document in the current template page. This is only used in multipage templates. The `script` property is only available when you set the value of `"feedwith": "script"` in your `template.json` file.
-- `scripts`: **{DocScript}** An array of DocScript objects representing ALL the scripts script your must document in the current template page. This is only used in singlepage templates. The `script` property is only available when you set the value of `"feedwith": "scripts"` in your `template.json` file.
+- `script`: **{DocScript}** A DocScript object representing the SINGLE script your must document in the current template page. This is only used in multipage templates. The `script` property is only available when you set the value of `"feedWith": "script"` in your `template.json` file.
+- `scripts`: **{DocScript}** An array of DocScript objects representing ALL the scripts script your must document in the current template page. This is only used in singlepage templates. The `script` property is only available when you set the value of `"feedWith": "scripts"` in your `template.json` file.
 
-**NOTE: Only `script` or `scripts` will be available at the same time. This is determined by the value of `"feedwith"` in your `template.json` file.**
+**NOTE: Only `script` or `scripts` will be available at the same time. This is determined by the value of `"feedWith"` in your `template.json` file.**
 
 ### DocProject
 

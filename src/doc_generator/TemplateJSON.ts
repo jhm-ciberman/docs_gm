@@ -21,6 +21,6 @@ export interface Design {
 export interface Page {
 	in: string;
 	out: string;
-	feedwith: string;
+	feedWith: string;
 }
 
