@@ -15,6 +15,13 @@ in the page showing them one after another.
     {# Main header of the page #}
     <h1>{{ page.project.name }} Documentation</h1>
 
+    {# Prints the table of contents #}
+    <ul id="table-of-contents">
+    {% for script in page.scripts %}
+        <a href="#{{ script.name }}"><li>{{ script.name }}</li></a>
+    {% endfor %}
+    </ul>
+
     {# Loops over all the scripts of the project #}
     {% for script in page.scripts %}
 
