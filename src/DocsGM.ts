@@ -124,8 +124,7 @@ export default class DocsGM {
 			var folder = path.resolve(__dirname, "../templates/", config.template);
 		}
 
-		var template = new Template(folder);
-		await template.load();
+		var template = await Template.loadFrom(folder);
 		await template.generateDocs(docProject, config);
 
 		return config.out;
