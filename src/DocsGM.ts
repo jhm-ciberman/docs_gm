@@ -79,9 +79,9 @@ export default class DocsGM {
 		let jsonPath: string;
 		let str: string;
 		if (path.extname(jsonOrProjectPath) === "json") {
-			jsonPath = path.resolve(jsonOrProjectPath, "datafiles/docs_gm.json");
-		} else {
 			jsonPath = path.resolve(jsonOrProjectPath);
+		} else {
+			jsonPath = path.resolve(jsonOrProjectPath, "datafiles/docs_gm.json");
 		}
 		try {
 			str = await fse.readFile(jsonPath, "utf8");
