@@ -8,7 +8,7 @@ import { DocsGM, OutputConfig } from "../index";
 // tslint:disable-next-line: no-var-requires
 const packageJSON = require("../../package.json");
 
-const overrideConfig = new OutputConfig();
+const overrideConfig = {} as OutputConfig;
 
 /**
  * Generates the documentation for a given project
