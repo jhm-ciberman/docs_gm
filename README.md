@@ -114,7 +114,7 @@ You can create custom HTML templates and use them with docs_gm. Refer to [this p
 
 I would love to see people interested in contribute to docs_gm. If you have some idea, or bug, you can send a Issue in the github page.
 
-If you want to contribute with the code, create a fork, clone it in your local computer (`git clone <REPO URL>`) and then run `npm install` to install all dependencies.
+If you want to contribute with the code, first create a fork, then clone it in your local computer (`git clone <REPO URL>`) and then run `npm install` to install all dependencies.
 
 If you use Visual Studio Code as your editor, the project will have configured some tasks to compile and build the typescript faster.
 
@@ -125,3 +125,8 @@ Also, it's recomended that you run `tslint --project .` to lint the project.
 When you are ready, send a pull request.
 
 Remember that all the latest code is in the `develop` git branch. Never develop new features on  `master`.
+
+## Contributors
+
+- Javier "Ciberman" Mora ([@jhm-ciberman](https://github.com/jhm-ciberman/)) Maintainer
+- Peter Hagen ([@phgn0](https://github.com/phgn0))
