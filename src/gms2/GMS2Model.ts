@@ -1,4 +1,4 @@
-import * as GMS2Descriptor from "./GMS2Descriptor";
+import * as GMS2Descriptor from "./IGMS2Descriptor";
 
 /**
  * Represents any YoYo games model in their Model View Controller system.

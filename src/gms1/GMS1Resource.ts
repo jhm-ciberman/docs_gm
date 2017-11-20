@@ -1,4 +1,4 @@
-import DocsGM from "../DocsGM";
+import ReporterManager from "../reporter/ReporterManager";
 import GMS1Folder from "./GMS1Folder";
 import GMS1Project from "./GMS1Project";
 
@@ -56,6 +56,6 @@ export default class GMS1Resource {
 	 */
 	public print(spaces: number = 0) {
 		const sp = "  ".repeat(spaces);
-		DocsGM.console.debug(`${sp}- ${this.name}`);
+		ReporterManager.reporter.debug(`${sp}- ${this.name}`);
 	}
 }

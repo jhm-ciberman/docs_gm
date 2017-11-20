@@ -4,7 +4,7 @@ import * as path from "path";
 import * as xml2js from "xml2js";
 
 import { staticImplements } from "../_decorators/decorators";
-import { IGMProject, IGMProjectStatic } from "../GMInterfaces";
+import { IGMProject, IGMProjectStatic } from "../IGMInterfaces";
 import * as GMS1Descriptor from "./GMS1Descriptor";
 import GMS1Folder from "./GMS1Folder";
 import GMS1Resource from "./GMS1Resource";

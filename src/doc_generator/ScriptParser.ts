@@ -1,12 +1,11 @@
 import parse = require("comment-parser");
 import * as showdown from "showdown";
-
 import DocExample from "../docs_models/DocExample";
 import DocParam from "../docs_models/DocParam";
 import DocReturns from "../docs_models/DocReturns";
 import DocScript from "../docs_models/DocScript";
-import DocsGM from "../DocsGM";
-import { IGMScript } from "../GMInterfaces";
+import { IGMScript } from "../IGMInterfaces";
+import ReporterManager from "../reporter/ReporterManager";
 import OutputConfig from "./OutputConfig";
 
 interface IGMLFeatures {
@@ -98,7 +97,7 @@ export default class ScriptParser {
 			}
 			if (docScript.undocumented) {
 				if (this._config.warnUndocumentedScripts) {
-					DocsGM.console.warn(`Script "${name}" is undocumented.`);
+					ReporterManager.reporter.warn(`Script "${name}" is undocumented.`);
 				}
 				if (this._config.ignoreUndocumentedScripts) {
 					continue;
@@ -106,7 +105,7 @@ export default class ScriptParser {
 			}
 			if (!docScript.description) {
 				if (this._config.warnNoDescriptionScripts) {
-					DocsGM.console.warn(`Script "${name}" has no description.`);
+					ReporterManager.reporter.warn(`Script "${name}" has no description.`);
 				}
 				if (this._config.ignoreNoDescriptionScripts) {
 					continue;
@@ -118,7 +117,7 @@ export default class ScriptParser {
 			const argsN = features.argumentCount;
 			if (docsN === 0) {
 				if (this._config.warnUndocumentedArgumentsScripts) {
-					DocsGM.console.warn(`Script "${name}" uses arguments but does not have any @param JSDoc comment.`);
+					ReporterManager.reporter.warn(`Script "${name}" uses arguments but does not have any @param JSDoc comment.`);
 				}
 				if (this._config.ignoreUndocumentedArgumentsScripts) {
 					continue;
@@ -126,7 +125,7 @@ export default class ScriptParser {
 			}
 			if (argsN !== docsN) {
 				if (this._config.warnMismatchingArgumentsScripts) {
-					DocsGM.console.warn(`Script "${name}" uses ${argsN} but has documentation for ${docsN} arguments.`);
+					ReporterManager.reporter.warn(`Script "${name}" uses ${argsN} but has documentation for ${docsN} arguments.`);
 				}
 				if (this._config.ignoreMismatchingArgumentsScripts) {
 					continue;
@@ -245,12 +244,12 @@ export default class ScriptParser {
 			case "method":
 				const name = this._reconstructTag(tag);
 				if (name !== script.name && this._config.warnMismatchingFunctionName) {
-					DocsGM.console.warn(`Script "${script.name}" has a mismatching @function name "${name}"`);
+					ReporterManager.reporter.warn(`Script "${script.name}" has a mismatching @function name "${name}"`);
 				}
 				break;
 			default:
 				if (this._config.warnUnrecognizedTags) {
-					DocsGM.console.warn(`Unrecognized tag "${tag.tag.toLowerCase()}" at script "${script.name}"`);
+					ReporterManager.reporter.warn(`Unrecognized tag "${tag.tag.toLowerCase()}" at script "${script.name}"`);
 				}
 				return false;
 		}

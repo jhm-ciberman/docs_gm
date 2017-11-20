@@ -1,10 +1,10 @@
 import * as fse from "fs-extra";
 import * as path from "path";
 
-import { IGMScript } from "../GMInterfaces";
-import * as GMS2Descriptor from "./GMS2Descriptor";
-import GMProject from "./GMS2Project";
+import { IGMScript } from "../IGMInterfaces";
 import GMS2Resource from "./GMS2Resource";
+import * as GMS2Descriptor from "./IGMS2Descriptor";
+import IGMS2Project from "./IGMS2Project";
 
 /**
  * Represents a GMS2 Script
@@ -31,7 +31,7 @@ export default class GMS2Script extends GMS2Resource implements IGMScript {
 	 * @param data The YOYO model data for the script
 	 * @param project The base project for the script
 	 */
-	constructor(data: GMS2Descriptor.IScript, project: GMProject) {
+	constructor(data: GMS2Descriptor.IScript, project: IGMS2Project) {
 		super(data, project);
 		this.isCompatibility = data.IsCompatibility;
 	}

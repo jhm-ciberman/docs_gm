@@ -1,8 +1,7 @@
 import * as fse from "fs-extra";
 import * as path from "path";
-
-import DocsGM from "../DocsGM";
-import { IGMScript } from "../GMInterfaces";
+import { IGMScript } from "../IGMInterfaces";
+import ReporterManager from "../reporter/ReporterManager";
 import GMS1Folder from "./GMS1Folder";
 import GMS1Project from "./GMS1Project";
 import GMS1Resource from "./GMS1Resource";
@@ -86,9 +85,9 @@ export default class GMS1Script extends GMS1Resource implements IGMScript {
 	public print(spaces: number = 0) {
 		const sp = "  ".repeat(spaces);
 		if (this._subScripts.size > 1) {
-			DocsGM.console.debug(`${sp}- ${this.name} [${this._subScripts.size} subscripts]`);
+			ReporterManager.reporter.debug(`${sp}- ${this.name} [${this._subScripts.size} subscripts]`);
 		} else {
-			DocsGM.console.debug(`${sp}- ${this.name}`);
+			ReporterManager.reporter.debug(`${sp}- ${this.name}`);
 		}
 
 	}

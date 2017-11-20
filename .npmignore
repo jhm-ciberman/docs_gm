@@ -1,3 +1,5 @@
 src/
 tsconfig.json
+*.spec.js
+*.mock.ts
 .vscode

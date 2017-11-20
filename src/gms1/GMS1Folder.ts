@@ -1,5 +1,5 @@
-import DocsGM from "../DocsGM";
-import { IGMFolder } from "../GMInterfaces";
+import { IGMFolder } from "../IGMInterfaces";
+import ReporterManager from "../reporter/ReporterManager";
 import * as GMS1Descriptor from "./GMS1Descriptor";
 import GMS1Project from "./GMS1Project";
 import GMS1Resource from "./GMS1Resource";
@@ -52,7 +52,7 @@ export default class GMS1Folder extends GMS1Resource implements IGMFolder {
 	 */
 	public print(spaces: number = 0): void {
 		const sp = "  ".repeat(spaces);
-		DocsGM.console.debug(`${sp}+ ${this.name}`);
+		ReporterManager.reporter.debug(`${sp}+ ${this.name}`);
 		spaces++;
 		for (const child of this.children) {
 			child.print(spaces);

@@ -1,24 +1,24 @@
-import DocsGM from "../DocsGM";
-import { IGMResource } from "../GMInterfaces";
-import * as GMS2Descriptor from "./GMS2Descriptor";
-import GMFolder from "./GMS2Folder";
-import GMModel from "./GMS2Model";
-import GMProject from "./GMS2Project";
+import { IGMResource } from "../IGMInterfaces";
+import ReporterManager from "../reporter/ReporterManager";
+import GMS2Folder from "./GMS2Folder";
+import GMS2Model from "./GMS2Model";
+import * as IGMS2Descriptor from "./IGMS2Descriptor";
+import IGMS2Project from "./IGMS2Project";
 
 /**
  * Represents a Generic GMS2 Resource
  */
-export default class GMS2Resource extends GMModel implements IGMResource {
+export default class GMS2Resource extends GMS2Model implements IGMResource {
 
 	/**
 	 * The parent folder of this resource
 	 */
-	public parent: GMFolder | null = null;
+	public parent: GMS2Folder | null = null;
 
 	/**
 	 * The project of wich this resource belongs to
 	 */
-	public project: GMProject;
+	public project: IGMS2Project;
 
 	/**
 	 * The resource name
@@ -26,16 +26,11 @@ export default class GMS2Resource extends GMModel implements IGMResource {
 	public name: string;
 
 	/**
-	 * The resource id
-	 */
-	public id: string = "";
-
-	/**
 	 * Creates a new resource instance
 	 * @param data The data to populate
 	 * @param project The project which this resource belongs to
 	 */
-	constructor(data: GMS2Descriptor.IResource, project: GMProject) {
+	constructor(data: IGMS2Descriptor.IResource, project: IGMS2Project) {
 		super(data);
 		this.project = project;
 		this.name = data.name;
@@ -47,7 +42,7 @@ export default class GMS2Resource extends GMModel implements IGMResource {
 	 */
 	public print(spaces: number = 0) {
 		const sp = "  ".repeat(spaces);
-		DocsGM.console.debug(`${sp}- ${this.name}`);
+		ReporterManager.reporter.debug(`${sp}- ${this.name}`);
 	}
 
 	/**

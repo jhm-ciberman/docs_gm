@@ -3,18 +3,18 @@ import * as minimatch from "minimatch";
 import * as path from "path";
 
 import { staticImplements } from "../_decorators/decorators";
-import { IGMProject, IGMProjectStatic } from "../GMInterfaces";
-import * as GMS2Descriptor from "./GMS2Descriptor";
+import { IGMProjectStatic } from "../IGMInterfaces";
 import GMS2Folder from "./GMS2Folder";
 import GMS2Model from "./GMS2Model";
 import GMS2Resource from "./GMS2Resource";
 import GMS2Script from "./GMS2Script";
-
+import * as GMS2Descriptor from "./IGMS2Descriptor";
+import IGMS2Project from "./IGMS2Project";
 /**
  * Represents a GameMaker Studio 2 Project
  */
 @staticImplements<IGMProjectStatic>()
-export default class GMS2Project extends GMS2Model implements IGMProject {
+export default class GMS2Project extends GMS2Model implements IGMS2Project {
 
 	/**
 	 * Loads the specified GMS2 project

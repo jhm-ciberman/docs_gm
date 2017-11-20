@@ -1,3 +1,5 @@
+import IReporter from "./IReporter";
+
 /* tslint:disable:no-console */
 /*
 This is the only class allowed to have console.log as an output
@@ -9,7 +11,7 @@ For example: DocsGM.reporter.info("hi");
 /**
  * Console Reporter
  */
-export default class Reporter {
+export default class ConsoleReporter implements IReporter {
 
 	/**
 	 * Shows a debug string on the screen

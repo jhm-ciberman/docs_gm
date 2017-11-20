@@ -10,20 +10,13 @@ import Template from "./doc_generator/Template";
 import DocProject from "./docs_models/DocProject";
 import GMS1Project from "./gms1/GMS1Project";
 import GMS2Project from "./gms2/GMS2Project";
-import Reporter from "./Reporter";
 
-import { IGMProject, IGMScript } from "./GMInterfaces";
+import { IGMProject, IGMScript } from "./IGMInterfaces";
 
 /**
  * Main Class of the docs_gm plugin
  */
 export default class DocsGM {
-
-	/**
-	 * The reporter instance used to log all the information lines shown on the console.
-	 * You can change it for your own reporte
-	 */
-	public static console: Reporter = new Reporter();
 
 	/**
 	 * Loads a specified GMS1 or GMS2 Project

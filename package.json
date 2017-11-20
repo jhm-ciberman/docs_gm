@@ -5,9 +5,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"No tests defined\" && exit 0",
+    "test": "jest",
     "prepublishOnly": "rm -rf ./dist/ && tsc -p .",
     "watch": "tsc -p . --watch",
+    "clean": "rm -rf ./dist/",
     "lint": "tslint --project . -t verbose"
   },
   "repository": {
@@ -36,10 +37,24 @@
   "bin": {
     "docs_gm": "dist/bin/docs_gm.js"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex___OLD": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ]
+  },
   "devDependencies": {
     "@types/commander": "^2.9.1",
     "@types/fs-extra": "^4.0.0",
     "@types/globby": "^0.6.0",
+    "@types/jest": "^21.1.6",
     "@types/json5": "0.0.29",
     "@types/minimatch": "^2.0.29",
     "@types/node": "^8.0.17",
@@ -47,6 +62,8 @@
     "@types/open": "0.0.29",
     "@types/showdown": "^1.4.32",
     "@types/xml2js": "^0.4.0",
+    "jest": "^21.2.1",
+    "ts-jest": "^21.2.3",
     "tslint": "^5.8.0",
     "typescript": "^2.4.2"
   },

@@ -3,7 +3,7 @@ import * as globby from "globby";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
 import DocProject from "../docs_models/DocProject";
-import DocsGM from "../DocsGM";
+import ReporterManager from "../reporter/ReporterManager";
 import Page from "./Page";
 import Template from "./Template";
 import * as TemplateJSON from "./templateJSON";
@@ -60,7 +60,7 @@ export default class Design {
 		for (const file of files) {
 			const outputFile = path.resolve(outputFolder, file);
 			const inputFile = path.resolve(this._template.folder, file);
-			DocsGM.console.info(`COPYING: ${file}`);
+			ReporterManager.reporter.info(`COPYING: ${file}`);
 			await fse.copy(inputFile, outputFile);
 		}
 	}

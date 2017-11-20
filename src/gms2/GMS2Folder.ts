@@ -1,8 +1,8 @@
-import DocsGM from "../DocsGM";
-import { IGMFolder } from "../GMInterfaces";
-import * as GMS2Descriptor from "./GMS2Descriptor";
-import GMS2Project from "./GMS2Project";
+import { IGMFolder } from "../IGMInterfaces";
+import ReporterManager from "../reporter/ReporterManager";
 import GMS2Resource from "./GMS2Resource";
+import * as GMS2Descriptor from "./IGMS2Descriptor";
+import IGMS2Project from "./IGMS2Project";
 
 /**
  * Represents any folder in the resource tree of GMS2
@@ -30,7 +30,7 @@ export default class GMS2Folder extends GMS2Resource implements IGMFolder {
 	 */
 	private _childrenIDs: string[];
 
-	constructor(data: GMS2Descriptor.IFolder, project: GMS2Project) {
+	constructor(data: GMS2Descriptor.IFolder, project: IGMS2Project) {
 		super(data, project);
 		this.folderName = data.folderName;
 		this._childrenIDs = data.children;
@@ -60,7 +60,7 @@ export default class GMS2Folder extends GMS2Resource implements IGMFolder {
 	 */
 	public print(spaces: number = 0) {
 		const sp = "  ".repeat(spaces);
-		DocsGM.console.debug(`${sp}+ ${this.folderName}`);
+		ReporterManager.reporter.debug(`${sp}+ ${this.folderName}`);
 		spaces++;
 		for (const child of this.children) {
 			child.print(spaces);
