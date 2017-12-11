@@ -12,7 +12,7 @@ it("should extract basic data", () => {
 	};
 
 	const model = new MockGMS2Model(modelData);
-
+	expect(true).toBe(true);
 	expect(model.mvc).toBe("123");
 	expect(model.modelName).toBe("foo");
 	expect(model.id).toBe("bar");
