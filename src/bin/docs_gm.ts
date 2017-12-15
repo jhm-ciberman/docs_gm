@@ -3,7 +3,7 @@
 import * as program from "commander";
 import open = require("open");
 import * as path from "path";
-import { ReporterManager, OutputConfig } from "../index";
+import { DocsGM, OutputConfig, ReporterManager } from "../index";
 
 // tslint:disable-next-line: no-var-requires
 const packageJSON = require("../../package.json");
@@ -51,23 +51,29 @@ async function init() {
 
 	const file = await DocsGM.exportConfig();
 
-	ReporterManager.reporter.info("Base configuration file was created at: ");
-	ReporterManager.reporter.info(file);
-	ReporterManager.reporter.info("Now, you need to add the configuration to your project. ");
-	ReporterManager.reporter.info("");
-	ReporterManager.reporter.info("Instructions:");
-	ReporterManager.reporter.info("1 - Open your project in GameMaker:Studio or GameMaker Studio 2.");
-	ReporterManager.reporter.info("2 - Right click on the \"Included Files\" folder in the resource tree.");
-	ReporterManager.reporter.info("3 - Click on \"Insert Included File\".");
-	ReporterManager.reporter.info("3 - Navigate to the following path and select the file docs_gm.json.");
-	ReporterManager.reporter.info(file);
-	ReporterManager.reporter.info("4 - Click on the added resource and select Platforms: \"None\". Then save your project.");
-	ReporterManager.reporter.info("");
-	ReporterManager.reporter.info("When you are ready, you can run the \"docs_gm generate\" command from the ");
-	ReporterManager.reporter.info("command line to create the documentation for your project. ");
-	ReporterManager.reporter.info("Check the online documentation of docs_gm for more info. ");
-	ReporterManager.reporter.info("If you want to edit the configuration right click on the docs_gm.json file on");
-	ReporterManager.reporter.info("your project and selct \"Show in explorer\". Then edit the JSON file with any text editor.");
+	const strings = [
+		"Base configuration file was created at: ",
+		file,
+		"Now, you need to add the configuration to your project. ",
+		"",
+		"Instructions:",
+		"1 - Open your project in GameMaker:Studio or GameMaker Studio 2.",
+		"2 - Right click on the \"Included Files\" folder in the resource tree.",
+		"3 - Click on \"Insert Included File\".",
+		"3 - Navigate to the following path and select the file docs_gm.json.",
+		file,
+		"4 - Click on the added resource and select Platforms: \"None\". Then save your project.",
+		"",
+		"When you are ready, you can run the \"docs_gm generate\" command from the ",
+		"command line to create the documentation for your project. ",
+		"Check the online documentation of docs_gm for more info. ",
+		"If you want to edit the configuration right click on the docs_gm.json file on",
+		"your project and select \"Show in explorer\". Then edit the JSON file with any text editor.",
+	];
+
+	for (const str of strings) {
+		ReporterManager.reporter.info(str);
+	}
 }
 
 program

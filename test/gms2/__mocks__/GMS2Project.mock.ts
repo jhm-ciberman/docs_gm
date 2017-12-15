@@ -1,6 +1,6 @@
-import { IGMResource } from "../../IGMInterfaces";
-import GMS2Resource from "../GMS2Resource";
-import IGMS2Project from "../IGMS2Project";
+import GMS2Resource from "../../../src/gms2/GMS2Resource";
+import IGMS2Project from "../../../src/gms2/IGMS2Project";
+import { IGMResource } from "../../../src/IGMInterfaces";
 
 export default class MockGMS2Project implements IGMS2Project {
 	public path: string;

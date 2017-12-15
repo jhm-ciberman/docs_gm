@@ -5,11 +5,13 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "pretest": "npm run lint",
     "test": "jest",
-    "prepublishOnly": "rm -rf ./dist/ && tsc -p .",
+    "build": "tsc -p .",
     "watch": "tsc -p . --watch",
-    "clean": "rm -rf ./dist/",
-    "lint": "tslint --project . -t verbose"
+    "clean": "rimraf ./dist/",
+    "lint": "tslint --project . -t verbose",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
@@ -38,18 +40,9 @@
     "docs_gm": "dist/bin/docs_gm.js"
   },
   "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testMatch": ["**/__tests__/**/*.ts?(x)","**/?(*.)(spec|test).ts?(x)"],
-    "rootDir": "src",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ]
+    "transform": { "^.+\\.tsx?$": "ts-jest"},
+    "testMatch": ["**/*.spec.ts"],
+    "moduleFileExtensions": ["ts", "js"]
   },
   "devDependencies": {
     "@types/commander": "^2.9.1",
@@ -64,6 +57,7 @@
     "@types/showdown": "^1.4.32",
     "@types/xml2js": "^0.4.0",
     "jest": "^21.2.1",
+    "rimraf": "^2.6.2",
     "ts-jest": "^21.2.3",
     "tslint": "^5.8.0",
     "typescript": "^2.4.2"

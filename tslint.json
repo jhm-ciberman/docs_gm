@@ -16,7 +16,19 @@
             "tabs",
             4
         ],
-        "completed-docs": [true, "classes", "functions","methods", "properties"]
+        "completed-docs": [
+            true, 
+            "classes", 
+            "functions",
+            "methods", 
+            "properties"
+        ]
+    },
+    "linterOptions": {
+        "exclude": [
+            "**/*.spec.ts",
+            "**/*.mock.ts"
+        ]
     },
     "rulesDirectory": []
 }
