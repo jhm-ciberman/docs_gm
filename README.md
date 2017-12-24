@@ -108,7 +108,7 @@ You must follow the instructions that appears on the console and then you can ed
 
 ## Custom templates
 
-You can create custom HTML templates and use them with docs_gm. Refer to [this page](./docs/custom_templates.md) for how to create a custom template.
+You can create custom HTML templates and use them with docs_gm. Refer to [this page](./custom_templates.md) for how to create a custom template.
 
 ## Contribute
 
