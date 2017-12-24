@@ -10,6 +10,7 @@
     "build": "tsc -p .",
     "watch": "tsc -p . --watch",
     "clean": "rimraf ./dist/",
+    "coverage": "jest --coverage",
     "lint": "tslint --project . -t verbose",
     "prepublishOnly": "npm run clean && npm run build"
   },
@@ -37,12 +38,15 @@
   },
   "homepage": "https://github.com/jhm-ciberman/docs_gm#readme",
   "bin": {
-    "docs_gm": "dist/bin/docs_gm.js"
+    "docs_gm": "dist/docs_gm.js"
   },
   "jest": {
     "transform": { "^.+\\.tsx?$": "ts-jest"},
     "testMatch": ["**/*.spec.ts"],
-    "moduleFileExtensions": ["ts", "js"]
+    "moduleFileExtensions": ["ts", "js"],
+    "mapCoverage": true,
+    "coverageReporters": ["html"],
+    "collectCoverageFrom": ["src/**/*.ts", "!src/docs_gm.ts", "!src/index.ts", "!src/**/*.d.ts"]
   },
   "devDependencies": {
     "@types/commander": "^2.9.1",

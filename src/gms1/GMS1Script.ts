@@ -1,9 +1,6 @@
-import * as fse from "fs-extra";
 import * as path from "path";
 import { IGMScript } from "../IGMInterfaces";
-import ReporterManager from "../reporter/ReporterManager";
 import GMS1Folder from "./GMS1Folder";
-import GMS1Project from "./GMS1Project";
 import GMS1Resource from "./GMS1Resource";
 
 /**
@@ -25,26 +22,22 @@ export default class GMS1Script extends GMS1Resource implements IGMScript {
 
 	/**
 	 * Creates a new GMS1 script
-	 * @param file The filename of the script
+	 * @param file The relative filename of the script
 	 * @param project The GMS1 Project of this script
 	 * @param parent The parent folder
 	 */
-	constructor(file: string, project: GMS1Project, parent: GMS1Folder) {
-		super(project, parent, path.basename(file).split(".")[0]);
+	constructor(file: string, parent: GMS1Folder) {
+		super(parent, path.basename(file).split(".")[0]);
 		this._path = file;
-		this.project.addResource(this, "script");
 	}
 
 	/**
 	 * Loads and parses the script with subscripts
+	 * from a string.
+	 * @param str The content of the *.gml file
 	 * @returns A promise
 	 */
-	public async load(): Promise<this> {
-		if (this._subScripts.size > 0) {
-			return this;
-		}
-		const pathStr = path.resolve(this.project.path, this._path);
-		let str = await fse.readFile(pathStr, "utf8");
+	public async loadFromString(str: string): Promise<this> {
 		// Normalize new lines (to use the next regex)
 		str = str.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 		this._subScripts.set(this.name, str);
@@ -63,6 +56,13 @@ export default class GMS1Script extends GMS1Resource implements IGMScript {
 	}
 
 	/**
+	 * The relative file path of the *.gml file.
+	 */
+	get filepath(): string {
+		return this._path;
+	}
+
+	/**
 	 * Returns an iterable with a pair of [name, text] for each
 	 * subscript in this script object
 	 */
@@ -76,20 +76,6 @@ export default class GMS1Script extends GMS1Resource implements IGMScript {
 			content = content.replace(/\/\/\/ ?(.*)\n/g, "/**\n * @function $1 \n */\n");
 			yield [name, content];
 		}
-	}
-
-	/**
-	 * Print itself to the console for debug purposes
-	 * @param spaces The number of spaces to use
-	 */
-	public print(spaces: number = 0) {
-		const sp = "  ".repeat(spaces);
-		if (this._subScripts.size > 1) {
-			ReporterManager.reporter.debug(`${sp}- ${this.name} [${this._subScripts.size} subscripts]`);
-		} else {
-			ReporterManager.reporter.debug(`${sp}- ${this.name}`);
-		}
-
 	}
 
 }

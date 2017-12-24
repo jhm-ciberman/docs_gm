@@ -3,10 +3,10 @@
 import * as program from "commander";
 import open = require("open");
 import * as path from "path";
-import { DocsGM, OutputConfig, ReporterManager } from "../index";
+import { DocsGM, OutputConfig, ReporterManager } from "./index";
 
 // tslint:disable-next-line: no-var-requires
-const packageJSON = require("../../package.json");
+const packageJSON = require("../package.json");
 
 const overrideConfig = {} as OutputConfig;
 

@@ -1,5 +1,15 @@
+# Source Folders
 src/
 tsconfig.json
-*.spec.js
-*.mock.ts
 .vscode
+
+# Spec files
+*.spec.js
+*.spec.map.js
+*.spec.d.ts
+
+# Mock files
+*.mock.js
+*.mock.map.js
+*.mock.d.ts
+

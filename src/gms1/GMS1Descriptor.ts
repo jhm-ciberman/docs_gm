@@ -1,4 +1,8 @@
-// GameMaker:Studio 1 *.xml project data
+/**
+ * @fileOverview
+ * These interfaces represents all the
+ * GameMaker:Studio 1 *.xml project data.
+ */
 
 export interface IRoot {
 	Configs: any;

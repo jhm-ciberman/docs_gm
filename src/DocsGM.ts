@@ -11,7 +11,7 @@ import DocProject from "./docs_models/DocProject";
 import GMS1Project from "./gms1/GMS1Project";
 import GMS2Project from "./gms2/GMS2Project";
 
-import { IGMProject, IGMScript } from "./IGMInterfaces";
+import { IGMProject, IGMScript, ResourceType } from "./IGMInterfaces";
 
 /**
  * Main Class of the docs_gm plugin
@@ -95,7 +95,7 @@ export default class DocsGM {
 			config = new OutputConfig();
 		}
 
-		const scripts = project.find(config.pattern, "script") as IGMScript[];
+		const scripts = project.find(config.pattern, ResourceType.Script) as IGMScript[];
 		scripts.sort((a, b) => {
 			return a.name.localeCompare(b.name);
 		});
@@ -108,7 +108,9 @@ export default class DocsGM {
 		const docProject = new DocProject();
 		docProject.name = project.name;
 		for (const script of scripts) {
-			await script.load();
+			const pathStr = path.resolve(project.path, script.fullpath);
+			const str = await fse.readFile(pathStr, "utf8");
+			await script.loadFromString(str);
 			const scrArr = parser.parseScript(script);
 			docProject.scripts = docProject.scripts.concat(scrArr);
 		}

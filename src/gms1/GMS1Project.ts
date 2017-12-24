@@ -3,8 +3,7 @@ import * as minimatch from "minimatch";
 import * as path from "path";
 import * as xml2js from "xml2js";
 
-import { staticImplements } from "../_decorators/decorators";
-import { IGMProject, IGMProjectStatic } from "../IGMInterfaces";
+import { IGMProject, ResourceType } from "../IGMInterfaces";
 import * as GMS1Descriptor from "./GMS1Descriptor";
 import GMS1Folder from "./GMS1Folder";
 import GMS1Resource from "./GMS1Resource";
@@ -13,7 +12,6 @@ import GMS1Resource from "./GMS1Resource";
  * Represents a GMS1 Project. The object should be created
  * ussing the factory static method loadProject.
  */
-@staticImplements<IGMProjectStatic>()
 export default class GMS1Project implements IGMProject {
 
 	/**
@@ -69,7 +67,7 @@ export default class GMS1Project implements IGMProject {
 	 * A map with all the resources filtered by type
 	 * Key is the resource type, and the value is an array with all the resource of that type.
 	 */
-	private _resourcesByType: Map<string, GMS1Resource[]> = new Map();
+	private _resourcesByType: Map<ResourceType, GMS1Resource[]> = new Map();
 
 	/**
 	 * @private
@@ -95,21 +93,11 @@ export default class GMS1Project implements IGMProject {
 	}
 
 	/**
-	 * Prints the folder structure of the project in the console for debug
-	 * @param spaces Number of spaces to use
-	 */
-	public print(spaces: number = 0): void {
-		for (const folder of this._topLevelFolders.values()) {
-			folder.print(spaces);
-		}
-	}
-
-	/**
 	 * Adds a GMS2Resource to the project
 	 * @param resource The GMS2Resource to add
 	 * @param type The resource type
 	 */
-	public addResource(resource: GMS1Resource, type: string): void {
+	public addResource(resource: GMS1Resource, type: ResourceType): void {
 		if (this._resourcesByType.has(type)) {
 			(this._resourcesByType.get(type) as GMS1Resource[]).push(resource);
 		} else {
@@ -124,9 +112,9 @@ export default class GMS1Project implements IGMProject {
 	 * @param type The optional resource type
 	 * @returns An array with the GMS2Resources found
 	 */
-	public find(pattern: string, type: string = ""): GMS1Resource[] {
+	public find(pattern: string, type?: ResourceType): GMS1Resource[] {
 		const results: GMS1Resource[] = [];
-		const it = (type === "")
+		const it = (type === undefined)
 			? this._resources.values()
 			: this._resourcesByType.get(type);
 		if (it) {

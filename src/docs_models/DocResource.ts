@@ -6,7 +6,7 @@ import DocFolder from "./DocFolder";
 export default abstract class DocResource {
 
 	/**
-	 * The name of the folder. Example "enemies".
+	 * The name of the resource. Example "src_enemies" or "scripts" or "obj_control".
 	 */
 	public name: string = "";
 

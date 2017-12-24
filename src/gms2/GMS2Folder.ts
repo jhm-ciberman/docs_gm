@@ -1,5 +1,4 @@
 import { IGMFolder } from "../IGMInterfaces";
-import ReporterManager from "../reporter/ReporterManager";
 import GMS2Resource from "./GMS2Resource";
 import * as GMS2Descriptor from "./IGMS2Descriptor";
 import IGMS2Project from "./IGMS2Project";
@@ -30,8 +29,8 @@ export default class GMS2Folder extends GMS2Resource implements IGMFolder {
 	 */
 	private _childrenIDs: string[];
 
-	constructor(data: GMS2Descriptor.IFolder, project: IGMS2Project) {
-		super(data, project);
+	constructor(data: GMS2Descriptor.IFolder) {
+		super(data);
 		this.folderName = data.folderName;
 		this._childrenIDs = data.children;
 		this.topLevelName = data.localisedFolderName.split("ResourceTree_").join("");
@@ -40,31 +39,19 @@ export default class GMS2Folder extends GMS2Resource implements IGMFolder {
 	/**
 	 * Load the specified resource and all the childrens
 	 */
-	public async load() {
+	public async buildSubtree(project: IGMS2Project) {
 		for (const id of this._childrenIDs) {
-			const r = this.project.getResourceById(id);
+			const r = project.getResourceById(id);
 			if (r) {
 				this.children.push(r);
 				r.parent = this;
 				if (r instanceof GMS2Folder) {
-					r.load(); // recursive
+					r.buildSubtree(project); // recursive
 				}
 			}
 		}
+		this._childrenIDs = [];
 		return this;
-	}
-
-	/**
-	 * Print itself to the console for debug purposes
-	 * @param spaces The number of spaces to use
-	 */
-	public print(spaces: number = 0) {
-		const sp = "  ".repeat(spaces);
-		ReporterManager.reporter.debug(`${sp}+ ${this.folderName}`);
-		spaces++;
-		for (const child of this.children) {
-			child.print(spaces);
-		}
 	}
 
 	/**

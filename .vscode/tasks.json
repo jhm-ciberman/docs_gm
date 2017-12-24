@@ -4,6 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "tsc:watch",
             "type": "typescript",
             "tsconfig": "tsconfig.json",
             "option": "watch",
@@ -12,6 +13,7 @@
             ]
         },
         {
+            "label": "tsc:lint",
             "type": "npm",
             "script": "lint",
             "problemMatcher": {
@@ -20,11 +22,13 @@
             }
         },
         {
+            "label": "clean",
             "type": "npm",
             "script": "clean",
             "problemMatcher": []
         },
         {
+            "label": "tsc:build",
             "type": "typescript",
             "tsconfig": "tsconfig.json",
             "problemMatcher": [
@@ -34,6 +38,26 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "jest:coverage",
+            "type": "npm",
+            "script": "coverage",
+            "problemMatcher": []
+        },
+        {
+            "label": "tsc:build",
+            "type": "npm",
+            "script": "build",
+            "problemMatcher": [
+                "$tsc"
+            ]
+        },
+        {
+            "label": "test",
+            "type": "npm",
+            "script": "test",
+            "problemMatcher": []
         }
     ]
 }

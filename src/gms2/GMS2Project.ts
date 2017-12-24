@@ -2,19 +2,18 @@ import * as fse from "fs-extra";
 import * as minimatch from "minimatch";
 import * as path from "path";
 
-import { staticImplements } from "../_decorators/decorators";
-import { IGMProjectStatic } from "../IGMInterfaces";
+import { ResourceType } from "../IGMInterfaces";
 import GMS2Folder from "./GMS2Folder";
-import GMS2Model from "./GMS2Model";
 import GMS2Resource from "./GMS2Resource";
 import GMS2Script from "./GMS2Script";
-import * as GMS2Descriptor from "./IGMS2Descriptor";
+import { IFolder, IProject, IResource, IScript } from "./IGMS2Descriptor";
+import { GMS2ResourceType } from "./IGMS2Descriptor";
 import IGMS2Project from "./IGMS2Project";
+
 /**
  * Represents a GameMaker Studio 2 Project
  */
-@staticImplements<IGMProjectStatic>()
-export default class GMS2Project extends GMS2Model implements IGMS2Project {
+export default class GMS2Project implements IGMS2Project {
 
 	/**
 	 * Loads the specified GMS2 project
@@ -40,12 +39,12 @@ export default class GMS2Project extends GMS2Model implements IGMS2Project {
 	 * A map with the resources sorted by type.
 	 * The key is the resource type, and the value is an array with the resources of that type.
 	 */
-	private _resourcesByType: Map<string, GMS2Resource[]> = new Map();
+	private _resourcesByType: Map<ResourceType, GMS2Resource[]> = new Map();
 
 	/**
 	 * The project data descriptor
 	 */
-	private _data: GMS2Descriptor.IProject;
+	private _data: IProject;
 
 	/**
 	 * A map with the resources sorted by id.
@@ -63,8 +62,7 @@ export default class GMS2Project extends GMS2Model implements IGMS2Project {
 	 * @param data The JSON data of the project to load
 	 * @param GMProjectPath The path of the GMS2 Project
 	 */
-	private constructor(data: GMS2Descriptor.IProject, gmProjectPath: string) {
-		super(data);
+	private constructor(data: IProject, gmProjectPath: string) {
 		this.path = gmProjectPath;
 		this._data = data;
 		this.name = path.basename(path.resolve(this.path));
@@ -76,9 +74,6 @@ export default class GMS2Project extends GMS2Model implements IGMS2Project {
 	 */
 	public async load(): Promise<this> {
 		await this._loadResources();
-		for (const folder of this._topLevelFolders.values()) {
-			folder.load();
-		}
 		return this;
 	}
 
@@ -88,9 +83,9 @@ export default class GMS2Project extends GMS2Model implements IGMS2Project {
 	 * @param type The optional resource type
 	 * @returns An array with the GMS2Resources found
 	 */
-	public find(pattern: string, type: string = ""): GMS2Resource[] {
+	public find(pattern: string, type?: ResourceType): GMS2Resource[] {
 		const results: GMS2Resource[] = [];
-		const it = (type === "")
+		const it = (type === undefined)
 			? this._resourcesById.values()
 			: this._resourcesByType.get(type);
 		if (it) {
@@ -101,16 +96,6 @@ export default class GMS2Project extends GMS2Model implements IGMS2Project {
 			}
 		}
 		return results;
-	}
-
-	/**
-	 * Prints the folder structure of the project in the console for debug
-	 * @param spaces Number of spaces to use
-	 */
-	public print(spaces: number = 0) {
-		for (const folder of this._topLevelFolders.values()) {
-			folder.print(spaces);
-		}
 	}
 
 	/**
@@ -134,7 +119,7 @@ export default class GMS2Project extends GMS2Model implements IGMS2Project {
 	 * @param resource The GMS2Resource to add
 	 * @param type The resource type
 	 */
-	public addResource(resource: GMS2Resource, type: string) {
+	public addResource(resource: GMS2Resource, type: ResourceType) {
 		if (this._resourcesByType.has(type)) {
 			(this._resourcesByType.get(type) as GMS2Resource[]).push(resource);
 		} else {
@@ -154,10 +139,20 @@ export default class GMS2Project extends GMS2Model implements IGMS2Project {
 		for (const resource of this._data.resources) {
 			const file = path.resolve(this.path, resource.Value.resourcePath);
 			const str = await fse.readFile(file, "utf8");
-			const data: GMS2Descriptor.IResource = JSON.parse(str);
+			const data: IResource = JSON.parse(str);
 			const res = this._createFromData(data);
 			res.id = resource.Key;
-			const type = resource.Value.resourceType.split("GM").join("").toLowerCase();
+			let type: ResourceType;
+			switch (resource.Value.resourceType) {
+				case GMS2ResourceType.GMFolder:
+					type = ResourceType.Folder;
+					break;
+				case GMS2ResourceType.GMScript:
+					type = ResourceType.Script;
+					break;
+				default:
+					type = ResourceType.Unknown;
+			}
 			this.addResource(res, type);
 			if (res instanceof GMS2Folder) {
 				if (res.topLevelName !== "") {
@@ -171,14 +166,14 @@ export default class GMS2Project extends GMS2Model implements IGMS2Project {
 	 * Creates a GMS2Resource from a YOYO model data
 	 * @param modelData The YOYO model data to create the GMS2Resource from
 	 */
-	private _createFromData(modelData: GMS2Descriptor.IResource): GMS2Resource {
+	private _createFromData(modelData: IResource): GMS2Resource {
 		switch (modelData.modelName) {
-			case "GMFolder":
-				return new GMS2Folder(modelData as GMS2Descriptor.IFolder, this);
-			case "GMScript":
-				return new GMS2Script(modelData as GMS2Descriptor.IScript, this);
+			case GMS2ResourceType.GMFolder:
+				return new GMS2Folder(modelData as IFolder);
+			case GMS2ResourceType.GMScript:
+				return new GMS2Script(modelData as IScript);
 			default:
-				return new GMS2Resource(modelData, this);
+				return new GMS2Resource(modelData);
 		}
 	}
 

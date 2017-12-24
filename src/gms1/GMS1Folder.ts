@@ -1,5 +1,5 @@
 import { IGMFolder } from "../IGMInterfaces";
-import ReporterManager from "../reporter/ReporterManager";
+import { ResourceType } from "../IGMInterfaces";
 import * as GMS1Descriptor from "./GMS1Descriptor";
 import GMS1Project from "./GMS1Project";
 import GMS1Resource from "./GMS1Resource";
@@ -22,15 +22,18 @@ export default class GMS1Folder extends GMS1Resource implements IGMFolder {
 	 * @param parent The parent folder for this folder
 	 */
 	constructor(data: GMS1Descriptor.IFolder, project: GMS1Project, parent: GMS1Folder | null) {
-		super(project, parent, data.$.name);
-		this.project = project;
-		this.project.addResource(this, "folder");
+		super(parent, data.$.name);
 
 		for (const folder of data.scripts || []) {
-			this.children.push(new GMS1Folder(folder, project, this));
+			const f = new GMS1Folder(folder, project, this);
+			project.addResource(f, ResourceType.Folder);
+			this.children.push(f);
 		}
+
 		for (const script of data.script || []) {
-			this.children.push(new GMS1Script(script, project, this));
+			const s = new GMS1Script(script, this);
+			project.addResource(s, ResourceType.Script);
+			this.children.push(s);
 		}
 
 	}
@@ -44,19 +47,6 @@ export default class GMS1Folder extends GMS1Resource implements IGMFolder {
 			await resource.load();
 		}
 		return this;
-	}
-
-	/**
-	 * Print itself to the console for debug purposes
-	 * @param spaces The number of spaces to use
-	 */
-	public print(spaces: number = 0): void {
-		const sp = "  ".repeat(spaces);
-		ReporterManager.reporter.debug(`${sp}+ ${this.name}`);
-		spaces++;
-		for (const child of this.children) {
-			child.print(spaces);
-		}
 	}
 
 }
