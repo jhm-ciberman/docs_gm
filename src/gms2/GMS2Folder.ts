@@ -1,22 +1,16 @@
-import { IGMFolder } from "../IGMInterfaces";
+import { IGMFolder, IGMResource } from "../IGMInterfaces";
 import GMS2Resource from "./GMS2Resource";
 import * as GMS2Descriptor from "./IGMS2Descriptor";
-import IGMS2Project from "./IGMS2Project";
 
 /**
  * Represents any folder in the resource tree of GMS2
  */
-export default class GMS2Folder extends GMS2Resource implements IGMFolder {
-
-	/**
-	 * The folder name
-	 */
-	public folderName: string;
+export class GMS2Folder extends GMS2Resource implements IGMFolder {
 
 	/**
 	 * An array with all the folder children resources
 	 */
-	public children: GMS2Resource[] = [];
+	public children: IGMResource[] = [];
 
 	/**
 	 * The name of the top level container folder.
@@ -31,15 +25,16 @@ export default class GMS2Folder extends GMS2Resource implements IGMFolder {
 
 	constructor(data: GMS2Descriptor.IFolder) {
 		super(data);
-		this.folderName = data.folderName;
+		this.name = data.folderName;
 		this._childrenIDs = data.children;
 		this.topLevelName = data.localisedFolderName.split("ResourceTree_").join("");
 	}
 
 	/**
 	 * Load the specified resource and all the childrens
+	 * @param project The GMS2Project (must have an getResourceByID method)
 	 */
-	public async buildSubtree(project: IGMS2Project) {
+	public async buildSubtree(project: IGetResourceByID) {
 		for (const id of this._childrenIDs) {
 			const r = project.getResourceById(id);
 			if (r) {
@@ -58,7 +53,13 @@ export default class GMS2Folder extends GMS2Resource implements IGMFolder {
 	 * The fullpath of the resource
 	 */
 	get fullpath(): string {
-		return (this.parent ? this.parent.fullpath : "/") + this.folderName + "/";
+		return super.fullpath + "/";
 	}
 
 }
+
+export interface IGetResourceByID {
+	getResourceById(id: string): IGMResource | undefined;
+}
+
+export default GMS2Folder;

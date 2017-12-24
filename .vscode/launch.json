@@ -13,13 +13,6 @@
 				"-i"
 			],
 			"internalConsoleOptions": "openOnSessionStart"
-		},
-		{
-			"type": "node",
-			"request": "launch",
-			"preLaunchTask": "tsc:build",
-			"name": "Launch Program",
-			"program": "${workspaceFolder}/dist/docs_gm"
 		}
 	]
 }

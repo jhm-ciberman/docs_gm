@@ -2,18 +2,17 @@ import * as fse from "fs-extra";
 import * as minimatch from "minimatch";
 import * as path from "path";
 
-import { ResourceType } from "../IGMInterfaces";
-import GMS2Folder from "./GMS2Folder";
+import { IGMProject, ResourceType } from "../IGMInterfaces";
+import {GMS2Folder, IGetResourceByID} from "./GMS2Folder";
 import GMS2Resource from "./GMS2Resource";
 import GMS2Script from "./GMS2Script";
 import { IFolder, IProject, IResource, IScript } from "./IGMS2Descriptor";
 import { GMS2ResourceType } from "./IGMS2Descriptor";
-import IGMS2Project from "./IGMS2Project";
 
 /**
  * Represents a GameMaker Studio 2 Project
  */
-export default class GMS2Project implements IGMS2Project {
+export default class GMS2Project implements IGMProject, IGetResourceByID  {
 
 	/**
 	 * Loads the specified GMS2 project
@@ -74,6 +73,9 @@ export default class GMS2Project implements IGMS2Project {
 	 */
 	public async load(): Promise<this> {
 		await this._loadResources();
+		for (const folder of this._topLevelFolders.values()) {
+			folder.buildSubtree(this);
+		}
 		return this;
 	}
 

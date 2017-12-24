@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "tsc:watch",
+            "label": "watch",
             "type": "typescript",
             "tsconfig": "tsconfig.json",
             "option": "watch",
@@ -13,7 +13,7 @@
             ]
         },
         {
-            "label": "tsc:lint",
+            "label": "lint",
             "type": "npm",
             "script": "lint",
             "problemMatcher": {
@@ -28,7 +28,7 @@
             "problemMatcher": []
         },
         {
-            "label": "tsc:build",
+            "label": "build",
             "type": "typescript",
             "tsconfig": "tsconfig.json",
             "problemMatcher": [
@@ -40,7 +40,7 @@
             }
         },
         {
-            "label": "jest:coverage",
+            "label": "coverage",
             "type": "npm",
             "script": "coverage",
             "problemMatcher": []

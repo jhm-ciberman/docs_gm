@@ -24,11 +24,5 @@
             "properties"
         ]
     },
-    "linterOptions": {
-        "exclude": [
-            "**/*.spec.ts",
-            "**/*.mock.ts"
-        ]
-    },
     "rulesDirectory": []
 }
