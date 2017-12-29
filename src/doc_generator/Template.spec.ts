@@ -37,7 +37,7 @@ describe("Template", () => {
 			expect(template.web).toBe("http://foo.com/");
 			expect(template.description).toBe("My description");
 			expect(template.defaultDesign).toBeDefined();
-			expect((template.defaultDesign as Design).name).toBe("My design");
+			expect((template.defaultDesign as Design).name).toBe("My design____");
 			expect(template.folder).toBe(path.resolve("path/to/template"));
 		});
 	});
