@@ -1,5 +1,7 @@
 import GMS2Script from "../../src/gms2/GMS2Script";
 
+/* tslint:disable:max-classes-per-file completed-docs */
+
 let script: GMS2Script;
 
 beforeEach(() => {

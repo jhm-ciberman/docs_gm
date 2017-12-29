@@ -1,4 +1,3 @@
-import ConsoleReporter from "./ConsoleReporter";
 import IReporter from "./IReporter";
 
 /**
@@ -9,6 +8,6 @@ export default class ReporterManager {
 	/**
 	 * Reporter used
 	 */
-	public static reporter: IReporter = new ConsoleReporter();
+	public static reporter: IReporter = console;
 
 }

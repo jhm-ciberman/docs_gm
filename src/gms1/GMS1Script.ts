@@ -21,12 +21,18 @@ export default class GMS1Script extends GMS1Resource implements IGMScript {
 	private _subScripts: Map<string, string> = new Map();
 
 	/**
+	 * This regex captures the script name in the capture group 1, and
+	 * the content of the script in the capture group 2.
+	 */
+	private _captureSubscriptsRegex = /#define (.*)\n((?:.|\n)*?)(?=\n?#define |$)/g;
+
+	/**
 	 * Creates a new GMS1 script
 	 * @param file The relative filename of the script
 	 * @param project The GMS1 Project of this script
 	 * @param parent The parent folder
 	 */
-	constructor(file: string, parent: GMS1Folder) {
+	constructor(file: string, parent: GMS1Folder | null) {
 		super(parent, path.basename(file).split(".")[0]);
 		this._path = file;
 	}
@@ -40,16 +46,15 @@ export default class GMS1Script extends GMS1Resource implements IGMScript {
 	public async loadFromString(str: string): Promise<this> {
 		// Normalize new lines (to use the next regex)
 		str = str.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-		this._subScripts.set(this.name, str);
 
-		// This regex captures the script name in the capture group 1, and
-		// the content of the script in the capture group 2.
-		const regex = /#define (.*)\n((?:.|\n)*?)(?=#define |$)/g;
-
-		let m = regex.exec(str);
-		while (m) {
-			this._subScripts.set(m[1], m[2]);
-			m = regex.exec(str);
+		let m = this._captureSubscriptsRegex.exec(str);
+		if (m === null) {
+			this._subScripts.set(this.name, str);
+		} else {
+			while (m) {
+				this._subScripts.set(m[1], m[2]);
+				m = this._captureSubscriptsRegex.exec(str);
+			}
 		}
 
 		return this;
@@ -67,8 +72,8 @@ export default class GMS1Script extends GMS1Resource implements IGMScript {
 	 * subscript in this script object
 	 */
 	public * subScripts(): IterableIterator<[string, string]> {
-		if (!this._subScripts.has(this.name)) {
-			throw new Error("Must call load() before accesing the subScripts() function");
+		if (this._subScripts.size === 0) {
+			throw new Error("Must call loadFromString() before accesing the subScripts() function");
 		}
 		for (let [name, content] of this._subScripts.entries()) {
 			// This lines converts the triple slash comments ( ///comment)

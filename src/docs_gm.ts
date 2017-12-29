@@ -31,9 +31,6 @@ async function generate(projectPath?: string, opts?: OutputConfig) {
 		config = Object.assign(config, opts);
 	}
 
-	ReporterManager.reporter.info("Loading Resource Tree...");
-	await project.load();
-
 	ReporterManager.reporter.info("Generating documentation... ");
 	const outFolder = await DocsGM.generate(project, config);
 

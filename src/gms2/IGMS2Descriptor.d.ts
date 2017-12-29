@@ -4,27 +4,24 @@
  * Studio 2 *.json project files.
  */
 
-export enum GMS2ResourceType {
-	GMScript = "GMScript",
-	GMRoom = "GMRoom",
-	GMObject = "GMObject",
-	GMFolder = "GMFolder",
-	GMSprite = "GMSprite",
-	GMNotes = "GMNotes",
-	GMPath = "GMPath",
-	GMShader = "GMShader",
-}
+import GMS2ResourceType from "./GMS2ResourceType";
 
 export interface IProject {
+	/**
+	 * Map with <Key: resource id, Value: ResourceInfo >
+	 */
+	resources: IMapItem<IResourceInfo>[];
+}
+
+export interface IResourceInfo {
 	id: string;
-	resources: [{
-		Key: string;
-		Value: {
-			id: string;
-			resourcePath: string;
-			resourceType: GMS2ResourceType;
-		};
-	}];
+	resourcePath: string;
+	resourceType: GMS2ResourceType;
+}
+
+export interface IMapItem<T> {
+	Key: string;
+	Value: T;
 }
 
 export interface IResource {

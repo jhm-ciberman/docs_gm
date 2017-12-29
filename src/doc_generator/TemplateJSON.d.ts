@@ -1,4 +1,7 @@
-/////////// docs_gm template.json file
+/**
+ * @fileOverview
+ * docs_gm template.json file
+ */
 
 export interface IRoot {
 	author: string;

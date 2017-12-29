@@ -2,8 +2,10 @@ import * as fse from "fs-extra";
 import * as minimatch from "minimatch";
 import * as path from "path";
 import * as xml2js from "xml2js";
+import { IFolder } from "./GMS1Descriptor";
+import GMS1Script from "./GMS1Script";
 
-import { IGMProject, ResourceType } from "../IGMInterfaces";
+import { IGMProject } from "../IGMInterfaces";
 import * as GMS1Descriptor from "./GMS1Descriptor";
 import GMS1Folder from "./GMS1Folder";
 import GMS1Resource from "./GMS1Resource";
@@ -27,13 +29,14 @@ export default class GMS1Project implements IGMProject {
 	}
 
 	/**
-	 * Parses an XML string and returns the data parsed
+	 * Parses an XML string and returns the parsed data
 	 * @param string The XML string to parse
 	 * @return A promise with the data parsed
 	 */
 	private static _xmlParse(str: string): Promise<any> {
 		return new Promise((accept) => {
 			xml2js.parseString(str, (err, result) => {
+				/* istambul ignore if */
 				if (err) { throw err; }
 				accept(result);
 			});
@@ -43,12 +46,26 @@ export default class GMS1Project implements IGMProject {
 	/**
 	 * The path of the project
 	 */
-	public path: string;
+	private _path: string;
 
 	/**
 	 * Project's name
 	 */
-	public name: string;
+	private _name: string;
+
+	/**
+	 * The path of the GMS1 Project
+	 */
+	get path() {
+		return this._path;
+	}
+
+	/**
+	 * Project's name
+	 */
+	get name() {
+		return this._name;
+	}
 
 	/**
 	 * Project *.yyz descriptor data
@@ -60,14 +77,10 @@ export default class GMS1Project implements IGMProject {
 	 */
 	private _topLevelFolders: Map<string, GMS1Folder> = new Map();
 
-	/** An array with all the resources in the resource tree */
-	private _resources: GMS1Resource[] = [];
-
 	/**
-	 * A map with all the resources filtered by type
-	 * Key is the resource type, and the value is an array with all the resource of that type.
+	 * An array with all the resources in the resource tree
 	 */
-	private _resourcesByType: Map<ResourceType, GMS1Resource[]> = new Map();
+	private _resources: GMS1Resource[] = [];
 
 	/**
 	 * @private
@@ -77,33 +90,14 @@ export default class GMS1Project implements IGMProject {
 	 */
 	private constructor(data: GMS1Descriptor.IRoot, gmProjectPath: string) {
 		this._descriptor = data;
-		this.path = gmProjectPath;
-		this.name = path.basename(path.resolve(this.path));
-	}
+		this._path = gmProjectPath;
+		this._name = path.basename(path.resolve(this._path));
 
-	/**
-	 * Loads the project
-	 * @return A promise with the current instance for easy chaining
-	 */
-	public async load(): Promise<this> {
-		const scriptsFolder = new GMS1Folder(this._descriptor.scripts[0], this, null);
-		await scriptsFolder.load();
-		this._topLevelFolders.set("scripts", scriptsFolder);
-		return this;
-	}
-
-	/**
-	 * Adds a GMS2Resource to the project
-	 * @param resource The GMS2Resource to add
-	 * @param type The resource type
-	 */
-	public addResource(resource: GMS1Resource, type: ResourceType): void {
-		if (this._resourcesByType.has(type)) {
-			(this._resourcesByType.get(type) as GMS1Resource[]).push(resource);
-		} else {
-			this._resourcesByType.set(type, [resource]);
+		// Creates the root folder
+		if (this._descriptor.scripts) {
+			const scriptsFolder = this._createFolder(this._descriptor.scripts[0], null);
+			this._topLevelFolders.set("scripts", scriptsFolder); // Unused
 		}
-		this._resources.push(resource);
 	}
 
 	/**
@@ -112,19 +106,37 @@ export default class GMS1Project implements IGMProject {
 	 * @param type The optional resource type
 	 * @returns An array with the GMS2Resources found
 	 */
-	public find(pattern: string, type?: ResourceType): GMS1Resource[] {
+	public find(pattern: string): GMS1Resource[] {
 		const results: GMS1Resource[] = [];
-		const it = (type === undefined)
-			? this._resources.values()
-			: this._resourcesByType.get(type);
-		if (it) {
-			for (const resource of it) {
-				if (minimatch(resource.fullpath, pattern, { matchBase: true })) {
-					results.push(resource);
-				}
+		for (const resource of this._resources.values()) {
+			if (minimatch(resource.fullpath, pattern, { matchBase: true })) {
+				results.push(resource);
 			}
 		}
 		return results;
+	}
+
+	/**
+	 * Creates a folder and recursively builds all the
+	 * folder subtree. (only implemented for Scripts and Scripts folders)
+	 * @param root The root folder of the subtree
+	 * @param folderData The folder data
+	 */
+	private _createFolder(folderData: IFolder, parent: GMS1Folder | null): GMS1Folder {
+		const root = new GMS1Folder(folderData.$.name, parent);
+		for (const folder of folderData.scripts || []) {
+			const resource = this._createFolder(folder, root); // Recursivity, baby! 8)
+			this._resources.push(resource);
+			root.children.push(resource);
+		}
+
+		for (const script of folderData.script || []) {
+			const name = path.basename(script).split(".")[0];
+			const resource = new GMS1Script(name, root);
+			this._resources.push(resource);
+			root.children.push(resource);
+		}
+		return root;
 	}
 
 }

@@ -1,7 +1,8 @@
 import { IGMFolder, IGMResource } from "../IGMInterfaces";
-import { GMS2Folder, IGetResourceByID } from "./GMS2Folder";
+import { GMS2Folder } from "./GMS2Folder";
+import IGetResourceByKey from "./IGetResourceByKey";
 
-/* tslint:disable:max-classes-per-file */
+/* tslint:disable:max-classes-per-file completed-docs */
 
 class MockGMResource implements IGMResource {
 	public parent: IGMFolder | null;
@@ -14,18 +15,18 @@ const mockFolder = new GMS2Folder({
 	name: "my-mock-name",
 	folderName: "my-mock-folder-name",
 	localisedFolderName: "ResourceTree_foo",
-	children: ["x", "y"]
+	children: ["x", "y"],
 });
 
-class MockProject implements IGetResourceByID {
-	public getResourceById(id: string): IGMResource | undefined {
-		if (id === "folder") {
+class MockProject implements IGetResourceByKey {
+	public getResourceByKey(key: string): IGMResource | undefined {
+		if (key === "folder") {
 			return mockFolder;
-		} else if (id === "non-existent") {
+		} else if (key === "non-existent") {
 			return undefined;
 		} else {
 			const inst = new MockGMResource();
-			inst.name = id;
+			inst.name = key;
 			return inst;
 		}
 	}

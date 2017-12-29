@@ -14,15 +14,20 @@ import * as TemplateJSON from "./templateJSON";
 export default class Design {
 
 	/**
+	 * The design display name
+	 */
+	public readonly name: string;
+
+	/**
 	 * An array with the globs ussed when copying files from the input template folder to the
 	 * output documentation folder.
 	 */
-	public _copy: string[] = ["**/*", "!template.json", "!*.njk", "!package.json"];
+	private  _copy: string[] = ["**/*", "!template.json", "!*.njk", "!package.json"];
 
 	/**
 	 * An array with the pages of the template
 	 */
-	public _pages: Page[] = [];
+	private _pages: Page[] = [];
 
 	/**
 	 * The template to which this Design belongs
@@ -35,9 +40,11 @@ export default class Design {
 	 * @param data The data to populate over this design
 	 */
 	constructor(template: Template, data: TemplateJSON.IDesign) {
+		this.name = data.name;
 		this._copy = data.copy || this._copy;
 		for (const page of data.pages) {
-			this._pages.push(new Page(page));
+			const p = new Page(page.in, page.out, page.feedWith);
+			this._pages.push(p);
 		}
 		this._template = template;
 	}
@@ -52,7 +59,10 @@ export default class Design {
 		const env = nunjucks.configure(this._template.folder, { autoescape: false });
 
 		for (const page of this._pages) {
-			await page.render(env, docProject, outputFolder);
+			for (const [out, content] of page.generate(env, docProject)) {
+				const filename = path.resolve(outputFolder, out);
+				await fse.outputFile(filename, content);
+			}
 		}
 
 		const files = await globby(this._copy, { cwd: this._template.folder });

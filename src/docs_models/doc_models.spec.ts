@@ -7,6 +7,12 @@ import DocResource from "./DocResource";
 import DocReturns from "./DocReturns";
 import DocScript from "./DocScript";
 
+/* tslint:disable:max-classes-per-file completed-docs */
+
+class DocResourceMock extends DocResource {
+	public type: string = "mock";
+}
+
 describe("DocExample", () => {
 	it("should have default values", () => {
 		const example = new DocExample();
@@ -53,10 +59,6 @@ describe("DocProject", () => {
 });
 
 describe("DocResource", () => {
-	// It's an abstract class, so, it need to be a parent class in order to be instantiated
-	class DocResourceMock extends DocResource {
-		public type: string = "mock";
-	}
 	it("should have default values", () => {
 		const resource = new DocResourceMock();
 		expect(resource.type).toBe("mock");

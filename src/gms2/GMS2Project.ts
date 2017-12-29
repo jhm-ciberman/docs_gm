@@ -2,17 +2,19 @@ import * as fse from "fs-extra";
 import * as minimatch from "minimatch";
 import * as path from "path";
 
-import { IGMProject, ResourceType } from "../IGMInterfaces";
-import {GMS2Folder, IGetResourceByID} from "./GMS2Folder";
+import {GMS2Folder} from "./GMS2Folder";
 import GMS2Resource from "./GMS2Resource";
+import { GMS2ResourceType } from "./GMS2ResourceType";
 import GMS2Script from "./GMS2Script";
-import { IFolder, IProject, IResource, IScript } from "./IGMS2Descriptor";
-import { GMS2ResourceType } from "./IGMS2Descriptor";
+
+import { IGMProject } from "../IGMInterfaces";
+import IGetResourceByKey from "./IGetResourceByKey";
+import { IFolder, IProject, IResource, IResourceInfo, IScript } from "./IGMS2Descriptor";
 
 /**
  * Represents a GameMaker Studio 2 Project
  */
-export default class GMS2Project implements IGMProject, IGetResourceByID  {
+export default class GMS2Project implements IGMProject, IGetResourceByKey  {
 
 	/**
 	 * Loads the specified GMS2 project
@@ -21,35 +23,29 @@ export default class GMS2Project implements IGMProject, IGetResourceByID  {
 	 */
 	public static async loadProject(file: string): Promise<GMS2Project> {
 		const str = await fse.readFile(file, "utf8");
-		return new GMS2Project(JSON.parse(str), path.dirname(file));
+		const p = new GMS2Project(JSON.parse(str), path.dirname(file));
+		return p._load();
 	}
 
 	/**
-	 * The path of the GMS2 Project
+	 * The project path
 	 */
-	public path: string;
+	private _path: string;
 
 	/**
-	 * Project's name
+	 * The project name
 	 */
-	public name: string;
+	private _name: string;
 
 	/**
-	 * A map with the resources sorted by type.
-	 * The key is the resource type, and the value is an array with the resources of that type.
+	 * A map with the resources by key.
 	 */
-	private _resourcesByType: Map<ResourceType, GMS2Resource[]> = new Map();
+	private _resourcesByKey: Map<string, GMS2Resource> = new Map();
 
 	/**
-	 * The project data descriptor
+	 * A map with the resource info needed to load the resource from disk.
 	 */
-	private _data: IProject;
-
-	/**
-	 * A map with the resources sorted by id.
-	 * The key is the resource model id, and the value is the resource itself.
-	 */
-	private _resourcesById: Map<string, GMS2Resource> = new Map();
+	private _resourcesInfo: Map<string, IResourceInfo> = new Map();
 
 	/**
 	 * A map with the top level folders. The key is the name of that top level folder, and the value is the folder itself
@@ -62,21 +58,26 @@ export default class GMS2Project implements IGMProject, IGetResourceByID  {
 	 * @param GMProjectPath The path of the GMS2 Project
 	 */
 	private constructor(data: IProject, gmProjectPath: string) {
-		this.path = gmProjectPath;
-		this._data = data;
-		this.name = path.basename(path.resolve(this.path));
+		this._path = gmProjectPath;
+		this._name = path.basename(path.resolve(this.path));
+
+		for (const item of data.resources) {
+			this._resourcesInfo.set(item.Key, item.Value);
+		}
 	}
 
 	/**
-	 * Load all the files of the current project
-	 * @return A promise with the current object for easy chaining
+	 * The path of the GMS2 Project
 	 */
-	public async load(): Promise<this> {
-		await this._loadResources();
-		for (const folder of this._topLevelFolders.values()) {
-			folder.buildSubtree(this);
-		}
-		return this;
+	get path() {
+		return this._path;
+	}
+
+	/**
+	 * Project's name
+	 */
+	get name() {
+		return this._name;
 	}
 
 	/**
@@ -85,16 +86,11 @@ export default class GMS2Project implements IGMProject, IGetResourceByID  {
 	 * @param type The optional resource type
 	 * @returns An array with the GMS2Resources found
 	 */
-	public find(pattern: string, type?: ResourceType): GMS2Resource[] {
+	public find(pattern: string): GMS2Resource[] {
 		const results: GMS2Resource[] = [];
-		const it = (type === undefined)
-			? this._resourcesById.values()
-			: this._resourcesByType.get(type);
-		if (it) {
-			for (const resource of it) {
-				if (minimatch(resource.fullpath, pattern, { matchBase: true })) {
-					results.push(resource);
-				}
+		for (const resource of this._resourcesByKey.values()) {
+			if (minimatch(resource.fullpath, pattern, { matchBase: true })) {
+				results.push(resource);
 			}
 		}
 		return results;
@@ -110,58 +106,20 @@ export default class GMS2Project implements IGMProject, IGetResourceByID  {
 
 	/**
 	 * Find the GMS2 Resource with the given id
-	 * @param id The id to search for
+	 * @param key The key to search for
 	 */
-	public getResourceById(id: string): GMS2Resource | undefined {
-		return this._resourcesById.get(id);
+	public getResourceByKey(key: string): GMS2Resource | undefined {
+		return this._resourcesByKey.get(key);
 	}
 
 	/**
-	 * Adds a GMS2Resource to the project
-	 * @param resource The GMS2Resource to add
-	 * @param type The resource type
+	 * Load a resource JSON data from a file
+	 * @param filename The relative path to load the data from
 	 */
-	public addResource(resource: GMS2Resource, type: ResourceType) {
-		if (this._resourcesByType.has(type)) {
-			(this._resourcesByType.get(type) as GMS2Resource[]).push(resource);
-		} else {
-			this._resourcesByType.set(type, [resource]);
-		}
-		this._resourcesById.set(resource.id, resource);
-	}
-
-	/**
-	 * Loads all the resources listed in the internal YOYO Model Data of the project
-	 * @return A promise
-	 */
-	private async _loadResources(): Promise<void> {
-		if (!this._data) {
-			throw new Error("GMProject data is empty");
-		}
-		for (const resource of this._data.resources) {
-			const file = path.resolve(this.path, resource.Value.resourcePath);
-			const str = await fse.readFile(file, "utf8");
-			const data: IResource = JSON.parse(str);
-			const res = this._createFromData(data);
-			res.id = resource.Key;
-			let type: ResourceType;
-			switch (resource.Value.resourceType) {
-				case GMS2ResourceType.GMFolder:
-					type = ResourceType.Folder;
-					break;
-				case GMS2ResourceType.GMScript:
-					type = ResourceType.Script;
-					break;
-				default:
-					type = ResourceType.Unknown;
-			}
-			this.addResource(res, type);
-			if (res instanceof GMS2Folder) {
-				if (res.topLevelName !== "") {
-					this._topLevelFolders.set(res.topLevelName, res);
-				}
-			}
-		}
+	private async _loadResourceData(filename: string): Promise<IResource> {
+		const file = path.resolve(this.path, filename);
+		const str = await fse.readFile(file, "utf8");
+		return JSON.parse(str);
 	}
 
 	/**
@@ -177,6 +135,25 @@ export default class GMS2Project implements IGMProject, IGetResourceByID  {
 			default:
 				return new GMS2Resource(modelData);
 		}
+	}
+
+	/**
+	 * Load all the files of the current project
+	 * @return A promise with the current object for easy chaining
+	 */
+	private async _load(): Promise<this> {
+		for (const [key, resource] of this._resourcesInfo.entries()) {
+			const data = await this._loadResourceData(resource.resourcePath);
+			const res = this._createFromData(data);
+			this._resourcesByKey.set(key, res);
+			if (res instanceof GMS2Folder && res.topLevelName !== "") {
+				this._topLevelFolders.set(res.topLevelName, res);
+			}
+		}
+		for (const folder of this._topLevelFolders.values()) {
+			folder.buildSubtree(this);
+		}
+		return this;
 	}
 
 }

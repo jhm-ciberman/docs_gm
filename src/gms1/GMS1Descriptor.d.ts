@@ -5,21 +5,23 @@
  */
 
 export interface IRoot {
-	Configs: any;
-	NewExtensions: any;
-	TutorialState: any;
-	sounds: [IFolder];
-	sprites: [IFolder];
-	backgrounds: [IFolder];
-	paths: [IFolder];
-	scripts: [IFolder];
-	fonts: [IFolder];
-	objects: [IFolder];
-	rooms: [IFolder];
+	Configs?: any;
+	NewExtensions?: any;
+	TutorialState?: any;
+	sounds?: [IFolder];
+	sprites?: [IFolder];
+	backgrounds?: [IFolder];
+	paths?: [IFolder];
+	scripts?: [IFolder];
+	fonts?: [IFolder];
+	objects?: [IFolder];
+	rooms?: [IFolder];
 }
 
 export interface IFolder {
-	$: { name: string };
+	$: { 
+		name: string 
+	};
 	sounds?: IFolder[];
 	sound?: string[];
 	sprites?: IFolder[];

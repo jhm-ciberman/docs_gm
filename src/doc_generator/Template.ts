@@ -1,4 +1,3 @@
-
 import * as fse from "fs-extra";
 import * as path from "path";
 
@@ -13,18 +12,17 @@ import * as TemplateJSON from "./templateJSON";
 export default class Template {
 
 	/**
-	 * Loads the template
+	 * Factory method to load the template from a folder
 	 * @returns A promise
 	 */
 	public static async loadFrom(folder: string): Promise<Template> {
-		const template = path.resolve(folder, "template.json");
-		if (!fse.existsSync(template)) {
-			throw new Error(`Template ${template} does not exists`);
+		const jsonPath = path.resolve(folder, "template.json");
+		const str = await fse.readFile(jsonPath, "utf8");
+		const template = new Template(JSON.parse(str), folder);
+		if (!template.defaultDesign) {
+			throw new Error("Default design name is invalid");
 		}
-		const str = await fse.readFile(template, "utf8");
-		const data = JSON.parse(str);
-
-		return new Template(data, folder);
+		return template;
 	}
 
 	/**
@@ -61,17 +59,13 @@ export default class Template {
 	 * Creates a new Template object
 	 * @param folder the folder that contains the template
 	 */
-	constructor(data: TemplateJSON.IRoot, folder: string) {
+	private constructor(data: TemplateJSON.IRoot, folder: string) {
 		for (const name of Object.keys(data.designs)) {
 			const design = new Design(this, data.designs[name]);
 			this._designs.set(name, design);
 		}
 
 		this.defaultDesign = this._designs.get(data.defaultDesign);
-		if (!this.defaultDesign) {
-			throw new Error("Default design name is invalid");
-		}
-
 		this.folder = path.resolve(folder);
 		this.author = data.author;
 		this.description = data.description;

@@ -1,16 +1,12 @@
-
-export enum ResourceType {
-	Unknown,
-	Script,
-	Folder,
-}
+/**
+ * @fileOverview This file contains interfaces 
+ * common to GMS1 and GMS2 project and resources classes.
+ */
 
 export interface IGMProject {
-	path: string;
-	name: string;
-	find(pattern: string, type?: ResourceType): IGMResource[];
-	load(): Promise<this>;
-	addResource(resource: IGMResource, type: ResourceType): void;
+	readonly path: string;
+	readonly name: string;
+	find(pattern: string): IGMResource[];
 }
 
 export interface IGMResource {
@@ -20,15 +16,14 @@ export interface IGMResource {
 }
 
 export interface IGMFolder extends IGMResource {
-	children: IGMResource[];
+	readonly children: IGMResource[];
 }
 
 export interface IGMScript extends IGMResource {
 	/**
-	 * The relative file path of the *.gml file.
+	 * The file location of the GML file
 	 */
 	readonly filepath: string;
-
 	/**
 	 * Returns an iterator with the <[name, text]> of each SubScript in this script
 	 */

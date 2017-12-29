@@ -11,7 +11,7 @@ import DocProject from "./docs_models/DocProject";
 import GMS1Project from "./gms1/GMS1Project";
 import GMS2Project from "./gms2/GMS2Project";
 
-import { IGMProject, IGMScript, ResourceType } from "./IGMInterfaces";
+import { IGMProject, IGMScript } from "./IGMInterfaces";
 
 /**
  * Main Class of the docs_gm plugin
@@ -91,14 +91,11 @@ export default class DocsGM {
 	 * @return Promise with the path of the output folder
 	 */
 	public static async generate(project: IGMProject, config?: OutputConfig): Promise<string> {
-		if (!config) {
-			config = new OutputConfig();
-		}
+		config = config || new OutputConfig();
 
-		const scripts = project.find(config.pattern, ResourceType.Script) as IGMScript[];
-		scripts.sort((a, b) => {
-			return a.name.localeCompare(b.name);
-		});
+		const scripts = project.find(config.pattern)
+			.filter((res) => ("subscripts" in res))
+			.sort((a, b) => a.name.localeCompare(b.name)) as IGMScript[];
 
 		if (scripts.length === 0) {
 			throw new Error("No resources found");
@@ -108,7 +105,7 @@ export default class DocsGM {
 		const docProject = new DocProject();
 		docProject.name = project.name;
 		for (const script of scripts) {
-			const pathStr = path.resolve(project.path, script.fullpath);
+			const pathStr = path.resolve(project.path, script.filepath);
 			const str = await fse.readFile(pathStr, "utf8");
 			await script.loadFromString(str);
 			const scrArr = parser.parseScript(script);

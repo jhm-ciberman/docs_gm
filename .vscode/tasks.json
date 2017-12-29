@@ -46,14 +46,6 @@
             "problemMatcher": []
         },
         {
-            "label": "tsc:build",
-            "type": "npm",
-            "script": "build",
-            "problemMatcher": [
-                "$tsc"
-            ]
-        },
-        {
             "label": "test",
             "type": "npm",
             "script": "test",

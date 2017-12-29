@@ -1,5 +1,4 @@
 import parse = require("comment-parser");
-import * as showdown from "showdown";
 import DocExample from "../docs_models/DocExample";
 import DocParam from "../docs_models/DocParam";
 import DocReturns from "../docs_models/DocReturns";
@@ -7,6 +6,7 @@ import DocScript from "../docs_models/DocScript";
 import { IGMScript } from "../IGMInterfaces";
 import ReporterManager from "../reporter/ReporterManager";
 import OutputConfig from "./OutputConfig";
+import StringUtils from "./StringUtils";
 
 interface IGMLFeatures {
 	/**
@@ -27,11 +27,6 @@ interface IGMLFeatures {
  * Class for parsing the GML scripts and JSDocs comments inside those scripts
  */
 export default class ScriptParser {
-
-	/**
-	 * Markdown converter
-	 */
-	private _markdown: showdown.Converter;
 
 	/**
 	 * config object
@@ -67,16 +62,6 @@ export default class ScriptParser {
 	 * Creates a ScriptParser instance
 	 */
 	public constructor(config: OutputConfig) {
-		this._markdown = new showdown.Converter({
-			simplifiedAutoLink: true,
-			literalMidWordUnderscores: true,
-			literalMidWordAsterisks: true,
-			tables: true,
-			openLinksInNewWindow: true,
-			omitExtraWLInCodeBlocks: true,
-			noHeaderId: true,
-		} as showdown.ConverterOptions);
-
 		this._config = config;
 	}
 
@@ -154,7 +139,7 @@ export default class ScriptParser {
 		for (const comment of comments) {
 			if (comment.description) {
 				script.undocumented = false;
-				script.description = this._makeHtml(comment.description);
+				script.description = StringUtils.markdown2Html(comment.description);
 			}
 			for (const tag of comment.tags) {
 				this._parseTag(tag, script);
@@ -222,7 +207,7 @@ export default class ScriptParser {
 			case "description":
 			case "desc":
 			case "private": // Private works in the same way as a description
-				script.description = this._makeHtml(this._reconstructTag(tag));
+				script.description = StringUtils.markdown2Html(this._reconstructTag(tag));
 				script.undocumented = false;
 				if (tag.tag.toLowerCase() === "private") {
 					script.private = true;
@@ -263,8 +248,8 @@ export default class ScriptParser {
 	private _createExample(tag: CommentParser.Tag): DocExample {
 		const example = new DocExample();
 		let str = this._reconstructTag(tag);
-		str = this._stripInitialLineFeeds(str);
-		example.code = this._escapeHtml(str);
+		str = StringUtils.stripInitialLineFeeds(str);
+		example.code = StringUtils.escapeHtml(str);
 		return example;
 	}
 
@@ -274,12 +259,12 @@ export default class ScriptParser {
 	 */
 	private _createParam(tag: CommentParser.Tag): DocParam {
 		const param = new DocParam();
-		param.name = this._escapeHtml(tag.name);
-		param.type = this._escapeHtml(tag.type);
+		param.name = StringUtils.escapeHtml(tag.name);
+		param.type = StringUtils.escapeHtml(tag.type);
 		param.optional = tag.optional;
-		let str = this._stripInitialSlash(tag.description);
-		str = this._makeHtml(str);
-		str = this._compactHtmlSingleParagraph(str);
+		let str = StringUtils.stripInitialHypen(tag.description);
+		str = StringUtils.markdown2Html(str);
+		str = StringUtils.compactHtmlSingleParagraph(str);
 		param.description = str;
 		return param;
 	}
@@ -301,66 +286,5 @@ export default class ScriptParser {
 			strArr.push(tag.description);
 		}
 		return strArr.join(" ");
-	}
-
-	/**
-	 * Converts the passed markup text to HTML
-	 * @param markupText The Markup Text to convert
-	 * @return The HTML string
-	 */
-	private _makeHtml(markupText: string): string {
-		return this._markdown.makeHtml(markupText);
-	}
-
-	/**
-	 * Escapes the passed HTML string
-	 * @param str The string
-	 * @return The output string
-	 */
-	private _escapeHtml(str: string): string {
-		// Source: https://github.com/mozilla/nunjucks/blob/f1edabf48fc9acae38972cb19497b1072e901965/src/lib.js
-		const escapeMap: any = {
-			"&": "&amp;",
-			'"': "&quot;",
-			"'": "&#39;",
-			"<": "&lt;",
-			">": "&gt;",
-		};
-		return str.replace(/[&"'<>]/g, (ch: string) => {
-			return escapeMap[ch] as string;
-		});
-	}
-
-	/**
-	 * Strips the initial slash
-	 * Example: "- Hello" turns into "Hello"
-	 * @param str The string
-	 * @return The output string
-	 */
-	private _stripInitialSlash(str: string): string {
-		return str.replace(/^- /, "");
-	}
-
-	/**
-	 * Strips the initial Line Feeds
-	 * Example: "\n\nHi\n" turns into "Hi\n"
-	 * @param str The string
-	 * @return The output string
-	 */
-	private _stripInitialLineFeeds(str: string): string {
-		return str.replace(/^\n*/, "");
-	}
-
-	/**
-	 * Removes the <p> elements in single paragraphs.
-	 * Example:
-	 * "<p>Hi</p>" is turned in "Hi"
-	 * But "<p>Foo</p><p>bar</p>" is preserved as is.
-	 * @param str The string
-	 * @return The output string
-	 */
-	private _compactHtmlSingleParagraph(str: string): string {
-		const m = /<p>([\s\S]*?)<\/p>/g.exec(str);
-		return (m && m.length === 2) ? m[1] : str;
 	}
 }

@@ -1,5 +1,6 @@
 import { IGMFolder, IGMResource } from "../IGMInterfaces";
 import GMS2Resource from "./GMS2Resource";
+import IGetResourceByKey from "./IGetResourceByKey";
 import * as GMS2Descriptor from "./IGMS2Descriptor";
 
 /**
@@ -10,13 +11,13 @@ export class GMS2Folder extends GMS2Resource implements IGMFolder {
 	/**
 	 * An array with all the folder children resources
 	 */
-	public children: IGMResource[] = [];
+	private _children: IGMResource[] = [];
 
 	/**
 	 * The name of the top level container folder.
 	 * For example "scipts", "objects", "rooms", etc.
 	 */
-	public topLevelName: string;
+	private _topLevelName: string;
 
 	/**
 	 * An array with all the IDs of the childrens
@@ -27,25 +28,41 @@ export class GMS2Folder extends GMS2Resource implements IGMFolder {
 		super(data);
 		this.name = data.folderName;
 		this._childrenIDs = data.children;
-		this.topLevelName = data.localisedFolderName.split("ResourceTree_").join("");
+		this._topLevelName = data.localisedFolderName.split("ResourceTree_").join("");
+	}
+
+	/**
+	 * An array with all the folder children resources
+	 */
+	get children() {
+		return this._children;
+	}
+
+	/**
+	 * The name of the top level container folder.
+	 * For example "scipts", "objects", "rooms", etc.
+	 */
+	get topLevelName() {
+		return this._topLevelName;
 	}
 
 	/**
 	 * Load the specified resource and all the childrens
 	 * @param project The GMS2Project (must have an getResourceByID method)
 	 */
-	public async buildSubtree(project: IGetResourceByID) {
-		for (const id of this._childrenIDs) {
-			const r = project.getResourceById(id);
+	public buildSubtree(project: IGetResourceByKey) {
+		const ids = this._childrenIDs;
+		this._childrenIDs = []; // to prevent infinite recursion
+		for (const id of ids) {
+			const r = project.getResourceByKey(id);
 			if (r) {
+				if (r instanceof GMS2Folder) {
+					r.buildSubtree(project);
+				}
 				this.children.push(r);
 				r.parent = this;
-				if (r instanceof GMS2Folder) {
-					r.buildSubtree(project); // recursive
-				}
 			}
 		}
-		this._childrenIDs = [];
 		return this;
 	}
 
@@ -56,10 +73,6 @@ export class GMS2Folder extends GMS2Resource implements IGMFolder {
 		return super.fullpath + "/";
 	}
 
-}
-
-export interface IGetResourceByID {
-	getResourceById(id: string): IGMResource | undefined;
 }
 
 export default GMS2Folder;

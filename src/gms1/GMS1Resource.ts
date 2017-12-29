@@ -1,4 +1,4 @@
-import {IGMResource} from "../IGMInterfaces";
+import {IGMFolder, IGMResource} from "../IGMInterfaces";
 import GMS1Folder from "./GMS1Folder";
 
 /**
@@ -9,7 +9,7 @@ export default class GMS1Resource implements IGMResource {
 	/**
 	 * The parent folder of the resource
 	 */
-	public parent: GMS1Folder | null;
+	public parent: IGMFolder | null;
 
 	/**
 	 * The resource name
@@ -25,15 +25,6 @@ export default class GMS1Resource implements IGMResource {
 	constructor(parent: GMS1Folder | null, name: string) {
 		this.parent = parent;
 		this.name = name;
-	}
-
-	/**
-	 * Loads the resource in memory
-	 * @returns A promise
-	 */
-	public async load(): Promise<this> {
-		// empty! :D (see subclasses)
-		return this;
 	}
 
 	/**
