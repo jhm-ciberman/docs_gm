@@ -25,15 +25,16 @@ The `template.json` file describes your template, and each design that your temp
     "author": "YOUR NAME",
     "description": "TEMPLATE SHORT DESCRIPTION",
     "web": "YOUR WEB OR GITHUB URL",
-    "designs": [
-        {
-            "name": "onepage",
+    "defaultDesign": "onepage",
+    "designs": {
+        "onepage": {
+            "displayName": "One Page Awesome",
             "copy": ["css/**/*", "js/**/*"],
             "pages": [
                 {"in": "index.njk", "out": "index.html", "feedWith": "scripts"}
             ]
         }
-    ]
+    }
 }
 ```
 
@@ -41,12 +42,17 @@ The `template.json` file describes your template, and each design that your temp
 
 - `"author"`: **{string}** (required)  Is your name, or the name of the person who made the template.
 - `"description"`: **{string}** (required) A short template description.
-- `"web"`: (required) {string} Your website URL or github/repo link
-- `"designs"`: **{Design[]}** (required)  An array containing all the designs that this template Supports. Be sure to place the default design at the first element of the array.
+- `"web"`: **{string}** (required) Your website URL or github/repo link
+- `"defaultDesign"`: **{string}** (required) The default design name for the Template
+- `"designs"`: **{DesignMap}** (required)  An object containing all the designs that this template Supports.
+
+### DesignMap
+
+Each key in the design map the name of one different design. Each value is an object with the design data.
 
 ### Design
 
-- `"name"`: **{string}** (required)  The name of the design. (All lower case, no spaces). Examples: `"onepage-blue"`, "`multipage-big-footer`", `"standard"`
+- `"displayName"`: **{string}** (required)  The display name of the design. It can be shown on the screen. Examples: `"My super awesome design"`. Try to avoid using the word "Design" in the name.
 - `"copy"`: **{string}** (optional)  An array of files to copy for this design. The array can be a glob. More info about globs [here](https://github.com/isaacs/node-glob). You can also use [negated globs](https://github.com/sindresorhus/globby). If omited, the default for the `"copy"` will be `["**/*", "!template.json", "!*.njk", "!package.json"]`. (All files and folders will be copied except for template.json, package.json and all files with *.njk extension).
 - `"pages"`: **{Page[]}** (required)  An array with the pages of the documentation that needs to be processed with the template engine.
 

@@ -1,5 +1,6 @@
 {
     "defaultSeverity": "warn",
+    "autofixOnSave": true,
     "extends": [
         "tslint:recommended"
     ],

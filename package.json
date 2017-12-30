@@ -7,6 +7,7 @@
   "scripts": {
     "pretest": "npm run lint",
     "test": "jest",
+    "test-only": "jest",
     "build": "tsc -p .",
     "watch": "tsc -p . --watch",
     "clean": "rimraf ./dist/",

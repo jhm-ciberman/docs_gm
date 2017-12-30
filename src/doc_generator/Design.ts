@@ -5,7 +5,6 @@ import * as path from "path";
 import DocProject from "../docs_models/DocProject";
 import ReporterManager from "../reporter/ReporterManager";
 import Page from "./Page";
-import Template from "./Template";
 import * as TemplateJSON from "./templateJSON";
 
 /**
@@ -14,9 +13,14 @@ import * as TemplateJSON from "./templateJSON";
 export default class Design {
 
 	/**
-	 * The design display name
+	 * The design name (string id)
 	 */
 	public readonly name: string;
+
+	/**
+	 * The design display name
+	 */
+	public readonly displayName: string;
 
 	/**
 	 * An array with the globs ussed when copying files from the input template folder to the
@@ -30,23 +34,25 @@ export default class Design {
 	private _pages: Page[] = [];
 
 	/**
-	 * The template to which this Design belongs
+	 * The template folder
 	 */
-	private _template: Template;
+	private _templateFolder: string;
 
 	/**
 	 * Creates a new Design Object
+	 * @param name The design instance name
 	 * @param template TThe template to which this design belongs
 	 * @param data The data to populate over this design
 	 */
-	constructor(template: Template, data: TemplateJSON.IDesign) {
-		this.name = data.name;
+	constructor(name: string, templateFolder: string, data: TemplateJSON.IDesign) {
+		this.name = name;
+		this.displayName = data.displayName;
 		this._copy = data.copy || this._copy;
 		for (const page of data.pages) {
 			const p = new Page(page.in, page.out, page.feedWith);
 			this._pages.push(p);
 		}
-		this._template = template;
+		this._templateFolder = templateFolder;
 	}
 
 	/**
@@ -56,7 +62,7 @@ export default class Design {
 	 * @param docProject The docProject to render the documentation
 	 */
 	public async render(outputFolder: string, docProject: DocProject) {
-		const env = nunjucks.configure(this._template.folder, { autoescape: false });
+		const env = nunjucks.configure(this._templateFolder, { autoescape: false });
 
 		for (const page of this._pages) {
 			for (const [out, content] of page.generate(env, docProject)) {
@@ -65,11 +71,12 @@ export default class Design {
 			}
 		}
 
-		const files = await globby(this._copy, { cwd: this._template.folder });
+		const files = await globby(this._copy, { cwd: this._templateFolder });
 
 		for (const file of files) {
 			const outputFile = path.resolve(outputFolder, file);
-			const inputFile = path.resolve(this._template.folder, file);
+			const inputFile = path.resolve(this._templateFolder, file);
+			// TODO: replace this info with an EventDispatcher event
 			ReporterManager.reporter.info(`COPYING: ${file}`);
 			await fse.copy(inputFile, outputFile);
 		}

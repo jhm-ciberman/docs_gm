@@ -50,6 +50,11 @@
             "type": "npm",
             "script": "test",
             "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "test-only",
+            "problemMatcher": []
         }
     ]
 }

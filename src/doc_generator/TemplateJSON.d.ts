@@ -16,7 +16,7 @@ export interface IDesignsMap {
 }
 
 export interface IDesign {
-	name: string;
+	displayName: string;
 	copy?: string[];
 	pages: IPage[];
 }

@@ -120,7 +120,11 @@ export default class DocsGM {
 		}
 
 		const template = await Template.loadFrom(folder);
-		await template.generateDocs(docProject, config);
+		if (config.design && !template.hasDesign(config.design)) {
+			throw new Error(`Design ${ config.design } not found`);
+		}
+		const design = template.getDesign(config.design);
+		await design.render(config.out, docProject);
 
 		return config.out;
 	}

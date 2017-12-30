@@ -11,5 +11,6 @@
     "node_modules": "explorerExcludedFiles",
     "dist": "explorerExcludedFiles",
     "coverage": "explorerExcludedFiles"
-  }
+  },
+  "tslint.autoFixOnSave": true
 }

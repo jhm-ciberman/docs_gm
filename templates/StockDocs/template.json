@@ -5,7 +5,7 @@
     "defaultDesign": "onepage",
     "designs": {
         "onepage": {
-            "name": "",
+            "displayName": "One page",
             "copy": ["css/**/*", "js/**/*"],
             "pages": [
                 {"in": "index.njk", "out": "index.html", "feedWith": "scripts"}
