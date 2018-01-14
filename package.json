@@ -5,10 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "pretest": "npm run lint",
-    "test": "npm run coverage",
-    "pretest-only": "npm run build",
-    "test-only": "npm run unit-tests",
+    "test": "npm run lint && npm run coverage",
+    "test-only": "npm run build && npm run unit-tests",
     "unit-tests": "alsatian ./dist/**/*.spec.js",
     "build": "tsc -p .",
     "watch": "tsc -p . --watch",
