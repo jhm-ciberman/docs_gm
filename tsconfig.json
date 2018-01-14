@@ -8,7 +8,7 @@
   "compileOnSave": true,
   "compilerOptions": {
     "noEmitOnError": true,
-
+    //"allowSyntheticDefaultImports": true,
     "target": "es2016",
     "module": "commonjs",
     "declaration": true,

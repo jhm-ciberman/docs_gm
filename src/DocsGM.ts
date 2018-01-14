@@ -94,7 +94,7 @@ export default class DocsGM {
 		config = config || new OutputConfig();
 
 		const scripts = project.find(config.pattern)
-			.filter((res) => ("subscripts" in res))
+			.filter((res) => ((res as IGMScript).subScripts !== undefined))
 			.sort((a, b) => a.name.localeCompare(b.name)) as IGMScript[];
 
 		if (scripts.length === 0) {
@@ -107,7 +107,7 @@ export default class DocsGM {
 		for (const script of scripts) {
 			const pathStr = path.resolve(project.path, script.filepath);
 			const str = await fse.readFile(pathStr, "utf8");
-			await script.loadFromString(str);
+			script.loadFromString(str);
 			const scrArr = parser.parseScript(script);
 			docProject.scripts = docProject.scripts.concat(scrArr);
 		}
@@ -124,7 +124,8 @@ export default class DocsGM {
 			throw new Error(`Design ${ config.design } not found`);
 		}
 		const design = template.getDesign(config.design);
-		await design.render(config.out, docProject);
+		await design.renderPages(config.out, docProject);
+		await design.copyFiles(config.out);
 
 		return config.out;
 	}

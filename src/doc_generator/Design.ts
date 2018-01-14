@@ -3,7 +3,6 @@ import * as globby from "globby";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
 import DocProject from "../docs_models/DocProject";
-import ReporterManager from "../reporter/ReporterManager";
 import Page from "./Page";
 import * as TemplateJSON from "./templateJSON";
 
@@ -56,12 +55,11 @@ export default class Design {
 	}
 
 	/**
-	 * Renders the documentation for the specified docProject and place the HTML files and the
-	 * other files inside the outputFolder.
+	 * Renders the documentation HTML files for the specified docProject.
 	 * @param outputFolder The output folder
 	 * @param docProject The docProject to render the documentation
 	 */
-	public async render(outputFolder: string, docProject: DocProject) {
+	public async renderPages(outputFolder: string, docProject: DocProject) {
 		const env = nunjucks.configure(this._templateFolder, { autoescape: false });
 
 		for (const page of this._pages) {
@@ -70,14 +68,20 @@ export default class Design {
 				await fse.outputFile(filename, content);
 			}
 		}
+	}
 
+	/**
+	 * Copy the Design files inside the outputFolder. By default, it will copy
+	 * all files except the package.json, template.json and *.njk files.
+	 * @param outputFolder The output folder
+	 */
+	public async copyFiles(outputFolder: string) {
+		console.log(this._copy);
 		const files = await globby(this._copy, { cwd: this._templateFolder });
-
+		console.log(files);
 		for (const file of files) {
 			const outputFile = path.resolve(outputFolder, file);
 			const inputFile = path.resolve(this._templateFolder, file);
-			// TODO: replace this info with an EventDispatcher event
-			ReporterManager.reporter.info(`COPYING: ${file}`);
 			await fse.copy(inputFile, outputFile);
 		}
 	}
