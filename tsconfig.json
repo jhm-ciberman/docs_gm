@@ -8,11 +8,10 @@
   "compileOnSave": true,
   "compilerOptions": {
     "noEmitOnError": true,
-    //"allowSyntheticDefaultImports": true,
     "target": "es2016",
     "module": "commonjs",
     "declaration": true,
-    //"sourceMap": true,
+    "sourceMap": true,
     //"inlineSourceMap": true,
     "outDir": "./dist/",
     "rootDir": "./src/",

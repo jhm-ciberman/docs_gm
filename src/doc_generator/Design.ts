@@ -76,9 +76,7 @@ export default class Design {
 	 * @param outputFolder The output folder
 	 */
 	public async copyFiles(outputFolder: string) {
-		console.log(this._copy);
 		const files = await globby(this._copy, { cwd: this._templateFolder });
-		console.log(files);
 		for (const file of files) {
 			const outputFile = path.resolve(outputFolder, file);
 			const inputFile = path.resolve(this._templateFolder, file);

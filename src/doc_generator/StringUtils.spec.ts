@@ -1,30 +1,50 @@
+import {
+	Expect,
+	Test,
+	TestFixture,
+} from "alsatian";
+
 import StringUtils from "./StringUtils";
 
-describe("StringUtils", () => {
-	test("#escapeHtml should escape HTML correctly", () => {
+/* tslint:disable:max-classes-per-file completed-docs */
+@TestFixture("StringUtils")
+export class StringUtilsFixture {
+	@Test("#escapeHtml should escape HTML correctly")
+	public escapeHtml() {
 		const str = StringUtils.escapeHtml("<b>Hello & Foo's \"World\"</b>");
-		expect(str).toBe("&lt;b&gt;Hello &amp; Foo&#39;s &quot;World&quot;&lt;/b&gt;");
-	});
+		Expect(str).toBe("&lt;b&gt;Hello &amp; Foo&#39;s &quot;World&quot;&lt;/b&gt;");
+	}
 
-	test("#stripInitialHypen should strip the initial hypen", () => {
+	@Test("#stripInitialHypen should strip the initial hypen")
+	public stripInitialHypen() {
 		const str = StringUtils.stripInitialHypen("- Hello");
-		expect(str).toBe("Hello");
-	});
+		Expect(str).toBe("Hello");
 
-	test("#stripInitialLineFeeds should strip initial line feeds", () => {
+	}
+
+	@Test("#stripInitialLineFeeds should strip initial line feeds")
+	public stripInitialLineFeeds() {
 		const str = StringUtils.stripInitialLineFeeds("\n\nHi\n");
-		expect(str).toBe("Hi\n");
-	});
+		Expect(str).toBe("Hi\n");
 
-	test("#compactHtmlSingleParagraph should remove <p> tags when there is a single paragraph", () => {
+	}
+
+	@Test("#compactHtmlSingleParagraph should remove <p> tags when there is a single paragraph")
+	public compactHtmlSingleParagraphSingle() {
 		const str1 = StringUtils.compactHtmlSingleParagraph("<p>Hi</p>");
-		expect(str1).toBe("Hi");
-		const str2 = StringUtils.compactHtmlSingleParagraph("<p>Foo</p><p>bar</p>");
-		expect(str2).toBe("<p>Foo</p><p>bar</p>");
-	});
+		Expect(str1).toBe("Hi");
 
-	test("#markdown2Html should convert markdown to html", () => {
+	}
+
+	@Test("#compactHtmlSingleParagraph should not remove <p> tags when there are multiple paragraph")
+	public compactHtmlSingleParagraphMulti() {
+		const str2 = StringUtils.compactHtmlSingleParagraph("<p>Foo</p><p>bar</p>");
+		Expect(str2).toBe("<p>Foo</p><p>bar</p>");
+	}
+
+	@Test("#markdown2Html should convert markdown to html")
+	public markdown2Html() {
 		const str = StringUtils.markdown2Html("# Hello");
-		expect(str).toBe("<h1>Hello</h1>");
-	});
-});
+		Expect(str).toBe("<h1>Hello</h1>");
+	}
+}

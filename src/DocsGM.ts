@@ -1,4 +1,5 @@
 import * as fse from "fs-extra";
+import { getInstalledPath } from "get-installed-path";
 import * as globby from "globby";
 import * as JSON5 from "json5";
 import * as os from "os";
@@ -17,6 +18,13 @@ import { IGMProject, IGMScript } from "./IGMInterfaces";
  * Main Class of the docs_gm plugin
  */
 export default class DocsGM {
+
+	/**
+	 * Used for dependency injection
+	 */
+	public static depend = {
+		getInstalledPath,
+	};
 
 	/**
 	 * Loads a specified GMS1 or GMS2 Project
@@ -113,12 +121,11 @@ export default class DocsGM {
 		}
 
 		let folder: string;
-		if (config.templatesFolder !== "") {
+		try {
+			folder = await this.depend.getInstalledPath(config.template);
+		} catch (error) {
 			folder = path.resolve(config.templatesFolder, config.template);
-		} else {
-			folder = path.resolve(__dirname, "../templates/", config.template);
 		}
-
 		const template = await Template.loadFrom(folder);
 		if (config.design && !template.hasDesign(config.design)) {
 			throw new Error(`Design ${ config.design } not found`);

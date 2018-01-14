@@ -1,60 +1,84 @@
+import {
+	Expect,
+	SetupFixture,
+	TeardownFixture,
+	Test,
+	TestFixture,
+} from "alsatian";
+
 import * as mock from "mock-fs";
 import * as nunjucks from "Nunjucks";
 import DocProject from "../docs_models/DocProject";
 import DocScript from "../docs_models/DocScript";
 import Page from "./Page";
 
-describe("Page", () => {
-	let env: nunjucks.Environment;
+/* tslint:disable:max-classes-per-file completed-docs */
 
-	const script1 = new DocScript();
-	script1.name = "my_script_name1";
+@TestFixture("Page")
+export class PageFixture {
 
-	const script2 = new DocScript();
-	script2.name = "my_script_name2";
+	public env: nunjucks.Environment;
 
-	const docProject = new DocProject();
-	docProject.name = "My project name";
-	docProject.scripts.push(script1);
-	docProject.scripts.push(script2);
+	public script1: DocScript;
 
-	beforeAll(() => {
+	public script2: DocScript;
+
+	public docProject: DocProject;
+
+	@SetupFixture
+	public setupFixture() {
+
+		this.script1 = new DocScript();
+		this.script1.name = "my_script_name1";
+
+		this.script2 = new DocScript();
+		this.script2.name = "my_script_name2";
+
+		this.docProject = new DocProject();
+		this.docProject.name = "My project name";
+		this.docProject.scripts.push(this.script1);
+		this.docProject.scripts.push(this.script2);
+
 		mock({
 			"path/page_script.njk": `<h1>{{ page.script.name }}</h1>`,
 			"path/page_scripts.njk": `<h1>{{ page.scripts[0].name }}</h1>`,
 		});
-		env = nunjucks.configure("path", { autoescape: false });
-	});
 
-	afterAll(() => {
+		this.env = nunjucks.configure("path", { autoescape: false });
+	}
+
+	@TeardownFixture
+	public teardownFixture() {
 		mock.restore();
-	});
+	}
 
-	test("should render the page with a multipage template", () => {
+	@Test("should render the page with a multipage template")
+	public generateMultipage() {
 		const page = new Page("page_script.njk", "{{ page.script.name }}.html", "script");
 
-		const it = page.generate(env, docProject);
+		const it = page.generate(this.env, this.docProject);
 
 		const [filename1, content1] = it.next().value;
-		expect(filename1).toBe("my_script_name1.html");
-		expect(content1).toBe("<h1>my_script_name1</h1>");
+		Expect(filename1).toBe("my_script_name1.html");
+		Expect(content1).toBe("<h1>my_script_name1</h1>");
 
 		const [filename2, content2] = it.next().value;
-		expect(filename2).toBe("my_script_name2.html");
-		expect(content2).toBe("<h1>my_script_name2</h1>");
+		Expect(filename2).toBe("my_script_name2.html");
+		Expect(content2).toBe("<h1>my_script_name2</h1>");
 
-		expect(it.next().done).toBe(true);
-	});
+		Expect(it.next().done).toBe(true);
+	}
 
-	test("should render the page with a onepage template", () => {
+	@Test("should render the page with a onepage template")
+	public generateOnepage() {
 		const page = new Page("page_scripts.njk", "out.html", "scripts");
 
-		const it = page.generate(env, docProject);
+		const it = page.generate(this.env, this.docProject);
 
 		const [filename, content] = it.next().value;
-		expect(filename).toBe("out.html");
-		expect(content).toBe("<h1>my_script_name1</h1>");
+		Expect(filename).toBe("out.html");
+		Expect(content).toBe("<h1>my_script_name1</h1>");
 
-		expect(it.next().done).toBe(true);
-	});
-});
+		Expect(it.next().done).toBe(true);
+	}
+}

@@ -1,8 +1,20 @@
+import {
+	AsyncTest,
+	Expect,
+	Setup,
+	SetupFixture,
+	TeardownFixture,
+	Test,
+	TestFixture,
+} from "alsatian";
+
 import * as mock from "mock-fs";
 import * as path from "path";
 import Design from "./Design";
 import Template from "./Template";
 import { IRoot } from "./templateJSON";
+
+/* tslint:disable:max-classes-per-file completed-docs */
 
 const myTemplateJSON: IRoot = {
 	author: "Darth Vader",
@@ -13,7 +25,7 @@ const myTemplateJSON: IRoot = {
 		myDesign: {
 			displayName: "My design",
 			pages: [
-				{in: "page.njk", out: "index.html", feedWith: "scripts"},
+				{ in: "page.njk", out: "index.html", feedWith: "scripts" },
 			],
 		},
 		myOtherDesign: {
@@ -25,59 +37,73 @@ const myTemplateJSON: IRoot = {
 	},
 };
 
-describe("Template (static)", () => {
-	beforeAll(() => {
+@TestFixture("Template (Static)")
+export class TemplateStaticFixture {
+	@SetupFixture
+	public setupFixture() {
 		mock({
 			"path/to/template/template.json": JSON.stringify(myTemplateJSON),
 			"path/to/template/page.njk": "<h1>Hello world</h1>",
 		});
-	});
+	}
 
-	afterAll(() => {
+	@TeardownFixture
+	public teardownFixture() {
 		mock.restore();
-	});
+	}
 
-	test("should load template from a file", () => {
-		expect.hasAssertions();
-		return Template.loadFrom("path/to/template").then((template) => {
-			expect(template.author).toBe("Darth Vader");
-			expect(template.web).toBe("http://foo.com/");
-			expect(template.description).toBe("My description");
-			expect(template.defaultDesign).toBeDefined();
-			expect((template.defaultDesign as Design).name).toBe("myDesign");
-			expect((template.defaultDesign as Design).displayName).toBe("My design");
-			expect(template.folder).toBe(path.resolve("path/to/template"));
-		});
-	});
-});
+	@AsyncTest("should load template from a file")
+	public async loadFrom() {
+		const template = await Template.loadFrom("path/to/template");
 
-describe("Template", () => {
-	const template = new Template(myTemplateJSON, "path/to/template");
-	test("getDesign() should return the Design instance of the design with that name", () => {
-		const design = template.getDesign("myOtherDesign");
-		expect(design.name).toBe("myOtherDesign");
-	});
+		Expect(template.author).toBe("Darth Vader");
+		Expect(template.web).toBe("http://foo.com/");
+		Expect(template.description).toBe("My description");
+		Expect(template.defaultDesign).toBeDefined();
+		Expect((template.defaultDesign as Design).name).toBe("myDesign");
+		Expect((template.defaultDesign as Design).displayName).toBe("My design");
+		Expect(template.folder).toBe(path.resolve("path/to/template"));
+	}
+}
 
-	test("getDesign() should return the default design instance when the design does not exists", () => {
-		const design = template.getDesign("non_existent_design");
-		expect(design).toBe(template.defaultDesign);
-		expect(design.name).toBe("myDesign");
-	});
+/* tslint:disable:max-classes-per-file */
 
-	test("hasDesign() should return if a design exists", () => {
-		expect(template.hasDesign("myDesign")).toBe(true);
-		expect(template.hasDesign("myOtherDesign")).toBe(true);
-		expect(template.hasDesign("non_existent_design")).toBe(false);
-	});
+export class TemplateFixture {
+	public template: Template;
 
-	test("designs() should iterate over the designs", () => {
+	@Setup
+	public setup() {
+		this.template = new Template(myTemplateJSON, "path/to/template");
+	}
+
+	@Test("getDesign() should return the Design instance of the design with that name")
+	public getDesign_Exists() {
+		const design = this.template.getDesign("myOtherDesign");
+		Expect(design.name).toBe("myOtherDesign");
+	}
+
+	@Test("getDesign() should return the default design instance when the design does not exists")
+	public tgetDesign_NotExistsst() {
+		const design = this.template.getDesign("non_existent_design");
+		Expect(design).toBe(this.template.defaultDesign);
+		Expect(design.name).toBe("myDesign");
+	}
+
+	@Test("hasDesign() should return if a design exists")
+	public hasDesign() {
+		Expect(this.template.hasDesign("myDesign")).toBe(true);
+		Expect(this.template.hasDesign("myOtherDesign")).toBe(true);
+		Expect(this.template.hasDesign("non_existent_design")).toBe(false);
+	}
+
+	@Test("designs() should iterate over the designs")
+	public designs() {
 		const arr: string[] = [];
-		for (const design of template.designs()) {
+		for (const design of this.template.designs()) {
 			arr.push(design.name);
 		}
-		expect(arr.length).toBe(2);
-		expect(arr).toContain("myDesign");
-		expect(arr).toContain("myOtherDesign");
-
-	});
-});
+		Expect(arr.length).toBe(2);
+		Expect(arr).toContain("myDesign");
+		Expect(arr).toContain("myOtherDesign");
+	}
+}

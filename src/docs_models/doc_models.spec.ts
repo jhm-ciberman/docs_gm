@@ -1,3 +1,9 @@
+import {
+	Expect,
+	Test,
+	TestFixture,
+} from "alsatian";
+
 import DocExample from "./DocExample";
 import DocFolder from "./DocFolder";
 import DocPage from "./DocPage";
@@ -9,83 +15,98 @@ import DocScript from "./DocScript";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-class DocResourceMock extends DocResource {
-	public type: string = "mock";
+@TestFixture("DocExample")
+export class DocExampleFixture {
+	@Test("should have default values")
+	public test() {
+		const example = new DocExample();
+		Expect(example.caption).toBeNull();
+		Expect(example.code).toBeNull();
+	}
 }
 
-describe("DocExample", () => {
-	it("should have default values", () => {
-		const example = new DocExample();
-		expect(example.caption).toBeNull();
-		expect(example.code).toBeNull();
-	});
-});
-
-describe("DocFolder", () => {
-	it("should have default values", () => {
+@TestFixture("DocFolder")
+export class DocFolderFixture {
+	@Test("should have default values")
+	public test() {
 		const folder = new DocFolder();
-		expect(folder.children.length).toBe(0);
-		expect(folder.name).toBe("");
-		expect(folder.parent).toBeNull();
-		expect(folder.type).toBe("folder");
-	});
-});
+		Expect(folder.children.length).toBe(0);
+		Expect(folder.name).toBe("");
+		Expect(folder.parent).toBeNull();
+		Expect(folder.type).toBe("folder");
+	}
+}
 
-describe("DocPage", () => {
-	it("should have default values", () => {
+@TestFixture("DocPage")
+export class DocPageFixture {
+	@Test("should have default values")
+	public test() {
 		const page = new DocPage();
-		expect(page.project).toBeUndefined();
-		expect(page.script).toBeUndefined();
-		expect(page.scripts).toBeUndefined();
-	});
-});
+		Expect(page.project).toBe(undefined as any);
+		Expect(page.script).toBe(undefined as any);
+		Expect(page.scripts).toBe(undefined as any);
+	}
+}
 
-describe("DocParam", () => {
-	it("should have default values", () => {
+@TestFixture("DocParam")
+export class DocParamFixture {
+	@Test("should have default values")
+	public test() {
 		const param = new DocParam();
-		expect(param.description).toBeNull();
-		expect(param.name).toBeNull();
-		expect(param.optional).toBe(false);
-		expect(param.type).toBeNull();
-	});
-});
+		Expect(param.description).toBeNull();
+		Expect(param.name).toBeNull();
+		Expect(param.optional).toBe(false);
+		Expect(param.type).toBeNull();
+	}
+}
 
-describe("DocProject", () => {
-	it("should have default values", () => {
+@TestFixture("DocProject")
+export class DocProjectFixture {
+	@Test("should have default values")
+	public test() {
 		const project = new DocProject();
-		expect(project.name).toBe("");
-		expect(project.scripts.length).toBe(0);
-	});
-});
+		Expect(project.name).toBe("");
+		Expect(project.scripts.length).toBe(0);
+	}
+}
 
-describe("DocResource", () => {
-	it("should have default values", () => {
+@TestFixture("DocResource")
+export class DocResourceFixture {
+	@Test("should have default values")
+	public test() {
+		class DocResourceMock extends DocResource {
+			public type: string = "mock";
+		}
 		const resource = new DocResourceMock();
-		expect(resource.type).toBe("mock");
-		expect(resource.parent).toBeNull();
-		expect(resource.name).toBe("");
-	});
-});
+		Expect(resource.type).toBe("mock");
+		Expect(resource.parent).toBeNull();
+		Expect(resource.name).toBe("");
+	}
+}
 
-describe("DocReturns", () => {
-	it("should have default values", () => {
+@TestFixture("DocReturns")
+export class DocReturnsFixture {
+	@Test("should have default values")
+	public test() {
 		const ret = new DocReturns();
-		expect(ret.description).toBeNull();
-		expect(ret.type).toBeNull();
-	});
-});
+		Expect(ret.description).toBeNull();
+		Expect(ret.type).toBeNull();
+	}
+}
 
-describe("DocScript", () => {
-	it("should have default values", () => {
+@TestFixture("DocScript")
+export class DocScriptFixture {
+	@Test("should have default values")
+	public test() {
 		const script = new DocScript();
-		expect(script.description).toBe(null);
-		expect(script.examples.length).toBe(0);
-		expect(script.params.length).toBe(0);
-		expect(script.parent).toBeNull();
-		expect(script.private).toBe(false);
-		expect(script.return).toBeNull();
-		expect(script.returns).toBeNull();
-		expect(script.type).toBe("script");
-		expect(script.undocumented).toBe(true);
-	});
-});
+		Expect(script.description).toBe(null);
+		Expect(script.examples.length).toBe(0);
+		Expect(script.params.length).toBe(0);
+		Expect(script.parent).toBeNull();
+		Expect(script.private).toBe(false);
+		Expect(script.return).toBeNull();
+		Expect(script.returns).toBeNull();
+		Expect(script.type).toBe("script");
+		Expect(script.undocumented).toBe(true);
+	}
+}

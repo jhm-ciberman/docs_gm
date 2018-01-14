@@ -1,5 +1,11 @@
-import GMS2Resource from "../gms2/GMS2Resource";
+import {
+	Expect,
+	Test,
+	TestFixture,
+} from "alsatian";
+
 import { IGMFolder, IGMResource } from "../IGMInterfaces";
+import GMS2Resource from "./GMS2Resource";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
@@ -10,26 +16,30 @@ class FolderMock implements IGMFolder {
 	public children: IGMResource[];
 }
 
-describe("GMS2Resource", () => {
+@TestFixture("GMS2Resource")
+export class GMS2ResourceFixture {
 
-	const resource = new GMS2Resource({
+	public resource = new GMS2Resource({
 		// IResource
 		id: "my-id",
 		name: "my-name",
 	});
 
-	test("should get the name", () => {
-		expect(resource.name).toBe("my-name");
-	});
+	@Test("should get the name")
+	public name() {
+		Expect(this.resource.name).toBe("my-name");
+	}
 
-	test("should get the fullpath when it has no parent", () => {
-		expect(resource.fullpath).toBe("my-name");
-	});
+	@Test("should get the fullpath when it has no parent")
+	public fullpath_NoParent() {
+		Expect(this.resource.fullpath).toBe("my-name");
+	}
 
-	test("should get the fullpath when it has parent", () => {
+	@Test("should get the fullpath when it has parent")
+	public fullpath_Parent() {
 		const folder = new FolderMock();
 		folder.fullpath = "my-fullpath/";
-		resource.parent = folder;
-		expect(resource.fullpath).toBe("my-fullpath/my-name");
-	});
-});
+		this.resource.parent = folder;
+		Expect(this.resource.fullpath).toBe("my-fullpath/my-name");
+	}
+}

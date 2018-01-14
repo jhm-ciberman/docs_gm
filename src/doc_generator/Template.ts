@@ -9,8 +9,10 @@ import * as TemplateJSON from "./templateJSON";
  */
 export default class Template {
 
+	public static getInstalledPath: (name: string) => string;
 	/**
 	 * Factory method to load the template from a folder
+	 * @param folder The folder name
 	 * @returns A promise
 	 */
 	public static async loadFrom(folder: string): Promise<Template> {

@@ -6,12 +6,15 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "pretest": "npm run lint",
-    "test": "jest",
-    "test-only": "jest",
+    "test": "npm run test-only",
+    "pretest-only": "npm run build",
+    "test-only": "npm run unit-tests",
+    "unit-tests": "alsatian ./dist/**/*.spec.js",
     "build": "tsc -p .",
     "watch": "tsc -p . --watch",
     "clean": "rimraf ./dist/",
-    "coverage": "jest --coverage",
+    "testing": "alsatian ./dist/**/*.spec.js",
+    "coverage": "npm run build && nyc --reporter=lcov --reporter=html --all npm run unit-tests && nyc report",
     "lint": "tslint --project . -t verbose",
     "prepublishOnly": "npm run clean && npm run build"
   },
@@ -41,54 +44,33 @@
   "bin": {
     "docs_gm": "dist/docs_gm.js"
   },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testMatch": [
-      "**/*.spec.ts"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "collectCoverage": false,
-    "mapCoverage": true,
-    "coverageReporters": [
-      "html"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.ts",
-      "!src/docs_gm.ts",
-      "!src/index.ts",
-      "!src/**/*.d.ts"
-    ]
-  },
   "devDependencies": {
     "@types/commander": "^2.9.1",
     "@types/fs-extra": "^4.0.0",
     "@types/globby": "^0.6.0",
-    "@types/jest": "^21.1.6",
     "@types/json5": "0.0.29",
     "@types/minimatch": "^2.0.29",
     "@types/mock-fs": "^3.6.30",
+    "@types/mock-require": "^2.0.0",
     "@types/node": "^8.0.17",
     "@types/nunjucks": "0.0.32",
     "@types/open": "0.0.29",
     "@types/showdown": "^1.4.32",
     "@types/xml2js": "^0.4.0",
-    "jest": "^21.2.1",
+    "alsatian": "^2.0.0",
     "mock-fs": "^4.4.2",
+    "mock-require": "^3.0.1",
+    "nyc": "^11.4.1",
     "rimraf": "^2.6.2",
-    "ts-jest": "^21.2.3",
     "tslint": "^5.8.0",
-    "typescript": "^2.4.2"
+    "typescript": "^2.6.2"
   },
   "dependencies": {
     "commander": "^2.11.0",
     "comment-parser": "^0.3.2",
     "del": "^3.0.0",
     "fs-extra": "^4.0.1",
+    "get-installed-path": "^4.0.8",
     "globby": "^6.1.0",
     "json5": "^0.5.1",
     "minimatch": "^3.0.4",
