@@ -7,7 +7,7 @@ import {
 } from "alsatian";
 
 import * as mock from "mock-fs";
-import * as nunjucks from "Nunjucks";
+import * as nunjucks from "nunjucks";
 import DocProject from "../docs_models/DocProject";
 import DocScript from "../docs_models/DocScript";
 import Page from "./Page";

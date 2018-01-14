@@ -2,7 +2,7 @@ import * as fse from "fs-extra";
 import * as path from "path";
 
 import Design from "./Design";
-import * as TemplateJSON from "./templateJSON";
+import * as TemplateJSON from "./TemplateJSON";
 
 /**
  * Represents a Documentation HTML Template

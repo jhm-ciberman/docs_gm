@@ -12,7 +12,7 @@ import * as mock from "mock-fs";
 import * as path from "path";
 import Design from "./Design";
 import Template from "./Template";
-import { IRoot } from "./templateJSON";
+import { IRoot } from "./TemplateJSON";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 

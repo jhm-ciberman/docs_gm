@@ -4,7 +4,7 @@ import * as nunjucks from "nunjucks";
 import * as path from "path";
 import DocProject from "../docs_models/DocProject";
 import Page from "./Page";
-import * as TemplateJSON from "./templateJSON";
+import * as TemplateJSON from "./TemplateJSON";
 
 /**
  * Represents a single design of one Template

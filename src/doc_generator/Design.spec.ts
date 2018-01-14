@@ -13,7 +13,7 @@ import * as fse from "fs-extra";
 import * as mock from "mock-fs";
 import DocProject from "../docs_models/DocProject";
 import Design from "./Design";
-import { IDesign } from "./templateJSON";
+import { IDesign } from "./TemplateJSON";
 
 @TestFixture("Design")
 export class DesignFixture {
