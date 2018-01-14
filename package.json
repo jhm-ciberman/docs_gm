@@ -44,18 +44,17 @@
     "docs_gm": "dist/docs_gm.js"
   },
   "devDependencies": {
-    "@types/commander": "^2.9.1",
-    "@types/fs-extra": "^4.0.0",
+    "@types/fs-extra": "^4.0.7",
     "@types/globby": "^0.6.0",
     "@types/json5": "0.0.29",
     "@types/minimatch": "^2.0.29",
     "@types/mock-fs": "^3.6.30",
     "@types/mock-require": "^2.0.0",
-    "@types/node": "^8.0.17",
+    "@types/node": "^8.5.8",
     "@types/nunjucks": "0.0.32",
     "@types/open": "0.0.29",
-    "@types/showdown": "^1.4.32",
-    "@types/xml2js": "^0.4.0",
+    "@types/showdown": "^1.7.2",
+    "@types/xml2js": "^0.4.2",
     "alsatian": "^2.0.0",
     "mock-fs": "^4.4.2",
     "mock-require": "^3.0.1",
@@ -65,18 +64,18 @@
     "typescript": "^2.6.2"
   },
   "dependencies": {
-    "commander": "^2.11.0",
+    "commander": "^2.13.0",
     "comment-parser": "^0.3.2",
     "del": "^3.0.0",
     "docs_gm-basic": "^1.0.0",
-    "fs-extra": "^4.0.1",
+    "fs-extra": "^4.0.3",
     "get-installed-path": "^4.0.8",
     "globby": "^6.1.0",
     "json5": "^0.5.1",
     "minimatch": "^3.0.4",
     "nunjucks": "^3.0.1",
     "open": "0.0.5",
-    "showdown": "^1.7.2",
-    "xml2js": "^0.4.17"
+    "showdown": "^1.8.6",
+    "xml2js": "^0.4.19"
   }
 }
