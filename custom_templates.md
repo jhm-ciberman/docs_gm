@@ -1,9 +1,10 @@
 # 📝Creating custom templates
 
-A custom template is a folder composed by a `template.json`, one or more HTML file with a `*.njk` extension and all the resources files (CSS, Javascript, fonts, images, etc).
+A custom template is a npm package composed by a `template.json`, one or more HTML file with a `*.njk` extension and all the resources files (CSS, Javascript, fonts, images, etc).
 
 Example of a template folder:
 
+- package.json
 - template.json
 - index-onepage.njk
 - index-multipage.njk
@@ -15,6 +16,27 @@ Example of a template folder:
   - main.js
 
 Each ***template*** have multiple ***designs***. Each design is a variation of your template. *For example*, posible designs for one imaginary template are: `onepage-blue`, `onepage-orange`, `multipage-blue` and `multipage-orange`.
+
+## Creating a package.json file
+
+First, create a folder named `docs_gm-YOURTEMPLATENAME`. For example: if your template name is `red-wave`, then your folder name (and package name) must be `docs_gm-red-wave`. And from the comand line:
+
+```bash
+npm init
+```
+
+Follow the instructions.
+
+- The `name` of the package must be your folder name. For example: `docs_gm-red-wave`.
+- The `main` file must be `template.json`.
+- In the `keywords` section, add at least one keyword that is `docs_gm`.
+- All the other values can be anything you want.
+
+> When you **FINISH** creating your template following this document, then you can use `npm publish` to publish the template on the npm registry.
+
+> If you want to test your template while you are developing it, use `npm link` to simulate that your package is installed on the system.
+
+Then, create your template.json file:
 
 ## template.json
 
