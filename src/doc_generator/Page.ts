@@ -1,10 +1,7 @@
-import * as fse from "fs-extra";
 import * as nunjucks from "nunjucks";
-import * as path from "path";
 
 import DocPage from "../docs_models/DocPage";
 import DocProject from "../docs_models/DocProject";
-import * as TemplateJSON from "./TemplateJSON";
 
 /**
  * Represents one Page for one Design of one Template
@@ -29,30 +26,26 @@ export default class Page {
 
 	/**
 	 * Creates a new TemplatePage
-	 * @param data The data to populate the Page with
 	 */
-	constructor(data: TemplateJSON.IPage) {
-		this._in = data.in;
-		this._out = data.out;
-		this._feedWith = data.feedWith;
+	constructor(input: string, output: string, feedWith: "script" | "scripts") {
+		this._in = input;
+		this._out = output;
+		this._feedWith = feedWith;
 	}
 
 	/**
-	 * Generates all the HTML files corresponding to this TemplatePage
+	 * Generates all the HTML strings corresponding to this TemplatePage
 	 * @param env The nunjucks Environment object
 	 * @param docProject the DocProject to generate the pages for
-	 * @param outFolder The output folder for the HTML files
-	 * @returns A promise
+	 * @returns An iterator with a [filename, content] value for each output file
 	 */
-	public async render(env: nunjucks.Environment, docProject: DocProject, outFolder: string) {
+	public * generate(env: nunjucks.Environment, docProject: DocProject): IterableIterator<[string, string]> {
 		const template = env.getTemplate(this._in, true);
-		const it = this._getFeedPages(docProject);
-		for (const feedPage of it) {
+		for (const feedPage of this._getFeedPages(docProject)) {
 			const data = { page: feedPage };
 			const str = template.render(data);
 			const out = nunjucks.renderString(this._out, data);
-			const file = path.resolve(outFolder, out);
-			await fse.outputFile(file, str);
+			yield [out, str];
 		}
 
 	}

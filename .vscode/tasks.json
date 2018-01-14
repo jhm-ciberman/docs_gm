@@ -4,11 +4,35 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "watch",
             "type": "typescript",
             "tsconfig": "tsconfig.json",
             "option": "watch",
             "problemMatcher": [
                 "$tsc-watch"
+            ]
+        },
+        {
+            "label": "lint",
+            "type": "npm",
+            "script": "lint",
+            "problemMatcher": {
+                "base": "$tslint5",
+                "fileLocation": "absolute"
+            }
+        },
+        {
+            "label": "clean",
+            "type": "npm",
+            "script": "clean",
+            "problemMatcher": []
+        },
+        {
+            "label": "build",
+            "type": "typescript",
+            "tsconfig": "tsconfig.json",
+            "problemMatcher": [
+                "$tsc"
             ],
             "group": {
                 "kind": "build",
@@ -16,12 +40,21 @@
             }
         },
         {
+            "label": "coverage",
             "type": "npm",
-            "script": "lint",
-            "problemMatcher": {
-                "base": "$tslint5",
-                "fileLocation": "absolute"
-            }
+            "script": "coverage",
+            "problemMatcher": []
+        },
+        {
+            "label": "test",
+            "type": "npm",
+            "script": "test",
+            "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "test-only",
+            "problemMatcher": []
         }
     ]
 }

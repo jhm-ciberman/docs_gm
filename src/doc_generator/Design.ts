@@ -3,10 +3,8 @@ import * as globby from "globby";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
 import DocProject from "../docs_models/DocProject";
-import DocsGM from "../DocsGM";
 import Page from "./Page";
-import Template from "./Template";
-import * as TemplateJSON from "./templateJSON";
+import * as TemplateJSON from "./TemplateJSON";
 
 /**
  * Represents a single design of one Template
@@ -14,53 +12,74 @@ import * as TemplateJSON from "./templateJSON";
 export default class Design {
 
 	/**
+	 * The design name (string id)
+	 */
+	public readonly name: string;
+
+	/**
+	 * The design display name
+	 */
+	public readonly displayName: string;
+
+	/**
 	 * An array with the globs ussed when copying files from the input template folder to the
 	 * output documentation folder.
 	 */
-	public _copy: string[] = ["**/*", "!template.json", "!*.njk", "!package.json"];
+	private  _copy: string[] = ["**/*", "!template.json", "!*.njk", "!package.json"];
 
 	/**
 	 * An array with the pages of the template
 	 */
-	public _pages: Page[] = [];
+	private _pages: Page[] = [];
 
 	/**
-	 * The template to which this Design belongs
+	 * The template folder
 	 */
-	private _template: Template;
+	private _templateFolder: string;
 
 	/**
 	 * Creates a new Design Object
+	 * @param name The design instance name
 	 * @param template TThe template to which this design belongs
 	 * @param data The data to populate over this design
 	 */
-	constructor(template: Template, data: TemplateJSON.IDesign) {
+	constructor(name: string, templateFolder: string, data: TemplateJSON.IDesign) {
+		this.name = name;
+		this.displayName = data.displayName;
 		this._copy = data.copy || this._copy;
 		for (const page of data.pages) {
-			this._pages.push(new Page(page));
+			const p = new Page(page.in, page.out, page.feedWith);
+			this._pages.push(p);
 		}
-		this._template = template;
+		this._templateFolder = templateFolder;
 	}
 
 	/**
-	 * Renders the documentation for the specified docProject and place the HTML files and the
-	 * other files inside the outputFolder.
+	 * Renders the documentation HTML files for the specified docProject.
 	 * @param outputFolder The output folder
 	 * @param docProject The docProject to render the documentation
 	 */
-	public async render(outputFolder: string, docProject: DocProject) {
-		const env = nunjucks.configure(this._template.folder, { autoescape: false });
+	public async renderPages(outputFolder: string, docProject: DocProject) {
+		const env = nunjucks.configure(this._templateFolder, { autoescape: false });
 
 		for (const page of this._pages) {
-			await page.render(env, docProject, outputFolder);
+			for (const [out, content] of page.generate(env, docProject)) {
+				const filename = path.resolve(outputFolder, out);
+				await fse.outputFile(filename, content);
+			}
 		}
+	}
 
-		const files = await globby(this._copy, { cwd: this._template.folder });
-
+	/**
+	 * Copy the Design files inside the outputFolder. By default, it will copy
+	 * all files except the package.json, template.json and *.njk files.
+	 * @param outputFolder The output folder
+	 */
+	public async copyFiles(outputFolder: string) {
+		const files = await globby(this._copy, { cwd: this._templateFolder });
 		for (const file of files) {
 			const outputFile = path.resolve(outputFolder, file);
-			const inputFile = path.resolve(this._template.folder, file);
-			DocsGM.console.info(`COPYING: ${file}`);
+			const inputFile = path.resolve(this._templateFolder, file);
 			await fse.copy(inputFile, outputFile);
 		}
 	}

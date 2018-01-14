@@ -1,5 +1,6 @@
 {
-    "defaultSeverity": "error",
+    "defaultSeverity": "warn",
+    "autofixOnSave": true,
     "extends": [
         "tslint:recommended"
     ],
@@ -14,9 +15,16 @@
         "indent": [
             true,
             "tabs",
-            4
+            5
         ],
-        "completed-docs": [true, "classes", "functions","methods", "properties"]
+        "completed-docs": [
+            true, 
+            "classes", 
+            "functions",
+            "methods", 
+            "properties"
+        ],
+        "object-literal-sort-keys": false
     },
     "rulesDirectory": []
 }

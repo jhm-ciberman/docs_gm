@@ -1,11 +1,8 @@
-
 import * as fse from "fs-extra";
 import * as path from "path";
 
-import DocProject from "../docs_models/DocProject";
 import Design from "./Design";
-import OutputConfig from "./OutputConfig";
-import * as TemplateJSON from "./templateJSON";
+import * as TemplateJSON from "./TemplateJSON";
 
 /**
  * Represents a Documentation HTML Template
@@ -13,44 +10,45 @@ import * as TemplateJSON from "./templateJSON";
 export default class Template {
 
 	/**
-	 * Loads the template
+	 * Factory method to load the template from a folder
+	 * @param folder The folder name
 	 * @returns A promise
 	 */
 	public static async loadFrom(folder: string): Promise<Template> {
-		const template = path.resolve(folder, "template.json");
-		if (!fse.existsSync(template)) {
-			throw new Error(`Template ${template} does not exists`);
+		let data: any;
+		const jsonPath = path.resolve(folder, "template.json");
+		try {
+			data = await fse.readJSON(jsonPath);
+		} catch (e) {
+			throw new Error(`Error loading Template from "${ jsonPath }"`);
 		}
-		const str = await fse.readFile(template, "utf8");
-		const data = JSON.parse(str);
-
 		return new Template(data, folder);
 	}
 
 	/**
 	 * The folder of the template
 	 */
-	public folder: string;
+	public readonly folder: string;
 
 	/**
 	 * The template author
 	 */
-	public author: string;
+	public readonly author: string;
 
 	/**
 	 * The default design name
 	 */
-	public defaultDesign: Design | undefined;
+	public readonly defaultDesign: Design;
 
 	/**
 	 * The default design name
 	 */
-	public description: string;
+	public readonly description: string;
 
 	/**
 	 * The web of the author of the template
 	 */
-	public web: string;
+	public readonly web: string;
 
 	/**
 	 * A map containing with the designs. Each key is the name of the design.
@@ -61,42 +59,46 @@ export default class Template {
 	 * Creates a new Template object
 	 * @param folder the folder that contains the template
 	 */
-	constructor(data: TemplateJSON.IRoot, folder: string) {
-		for (const name of Object.keys(data.designs)) {
-			const design = new Design(this, data.designs[name]);
-			this._designs.set(name, design);
-		}
-
-		this.defaultDesign = this._designs.get(data.defaultDesign);
-		if (!this.defaultDesign) {
-			throw new Error("Default design name is invalid");
-		}
-
+	public constructor(data: TemplateJSON.IRoot, folder: string) {
 		this.folder = path.resolve(folder);
 		this.author = data.author;
 		this.description = data.description;
 		this.web = data.web;
+
+		for (const name of Object.keys(data.designs)) {
+			const design = new Design(name, this.folder, data.designs[name]);
+			this._designs.set(name, design);
+		}
+
+		const d = this._designs.get(data.defaultDesign);
+		if (!d) {
+			throw new Error("Default design name is invalid");
+		}
+		this.defaultDesign = d;
+
 	}
 
 	/**
-	 * Generates the documentation for the specified project. The DocProject
-	 * must be already loaded.
-	 * @param docProject The DocProject to generate the documentation for
-	 * @param config The configuration to use
+	 * Finds a design by name. Returns the default design if not found
+	 * @param design The design name.
 	 */
-	public async generateDocs(docProject: DocProject, config: OutputConfig) {
-		if (this._designs.size === 0) {
-			throw new Error("Template contains no designs");
-		}
+	public getDesign(design: string): Design {
+		return this._designs.get(design) || this.defaultDesign;
+	}
 
-		const design = this._designs.get(config.design) || this.defaultDesign;
-		if (!design) {
-			throw new Error(`Design was not found`);
-		}
+	/**
+	 * Returns if the design exists in the template
+	 * @param design The design name
+	 */
+	public hasDesign(design: string): boolean {
+		return this._designs.has(design);
+	}
 
-		const out = path.resolve(config.out);
-		design.render(out, docProject);
-
+	/**
+	 * Iterator function to get all the designs of the template
+	 */
+	public designs(): IterableIterator<Design> {
+		return this._designs.values();
 	}
 
 }

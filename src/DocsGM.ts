@@ -1,4 +1,5 @@
 import * as fse from "fs-extra";
+import { getInstalledPath } from "get-installed-path";
 import * as globby from "globby";
 import * as JSON5 from "json5";
 import * as os from "os";
@@ -10,9 +11,8 @@ import Template from "./doc_generator/Template";
 import DocProject from "./docs_models/DocProject";
 import GMS1Project from "./gms1/GMS1Project";
 import GMS2Project from "./gms2/GMS2Project";
-import Reporter from "./Reporter";
 
-import { IGMProject, IGMScript } from "./GMInterfaces";
+import { IGMProject, IGMScript } from "./IGMInterfaces";
 
 /**
  * Main Class of the docs_gm plugin
@@ -20,10 +20,11 @@ import { IGMProject, IGMScript } from "./GMInterfaces";
 export default class DocsGM {
 
 	/**
-	 * The reporter instance used to log all the information lines shown on the console.
-	 * You can change it for your own reporte
+	 * Used for dependency injection
 	 */
-	public static console: Reporter = new Reporter();
+	public static depend = {
+		getInstalledPath,
+	};
 
 	/**
 	 * Loads a specified GMS1 or GMS2 Project
@@ -98,14 +99,51 @@ export default class DocsGM {
 	 * @return Promise with the path of the output folder
 	 */
 	public static async generate(project: IGMProject, config?: OutputConfig): Promise<string> {
-		if (!config) {
-			config = new OutputConfig();
+		config = config || new OutputConfig();
+
+		const docProject = await this._generateDocProject(project, config);
+
+		const moduleName = "docs_gm-" + config.template;
+		const folder = await this._getModulePath(moduleName, config.templatesFolder);
+		const template = await Template.loadFrom(folder);
+		if (config.design && !template.hasDesign(config.design)) {
+			throw new Error(`Design "${ config.design }" not found`);
 		}
 
-		const scripts = project.find(config.pattern, "script") as IGMScript[];
-		scripts.sort((a, b) => {
-			return a.name.localeCompare(b.name);
-		});
+		const design = template.getDesign(config.design);
+
+		await design.renderPages(config.out, docProject);
+		await design.copyFiles(config.out);
+
+		return config.out;
+	}
+
+	/**
+	 * Gets the path of a module from a global instalation, local instalation or custom folder (in that order of priority)
+	 * @param moduleName The name of the module to load
+	 * @param folder The folder to look for the module if the module is not located in global or local node_modules
+	 */
+	private static async _getModulePath(moduleName: string, folder: string): Promise<string> {
+		try {
+			return await this.depend.getInstalledPath(moduleName);
+		} catch (e) {
+			try {
+				return await this.depend.getInstalledPath(moduleName, { local: true, cwd: __dirname + "./../" });
+			} catch (e) {
+				return path.resolve(folder, moduleName);
+			}
+		}
+	}
+
+	/**
+	 * Generates a DocProject filled with all the documentable resources of the given project (following the OutputConfig)
+	 * @param project The GM Project
+	 * @param config The OutputConfig
+	 */
+	private static async _generateDocProject(project: IGMProject, config: OutputConfig): Promise<DocProject> {
+		const scripts = project.find(config.pattern)
+			.filter((res) => ((res as IGMScript).subScripts !== undefined))
+			.sort((a, b) => a.name.localeCompare(b.name)) as IGMScript[];
 
 		if (scripts.length === 0) {
 			throw new Error("No resources found");
@@ -115,22 +153,13 @@ export default class DocsGM {
 		const docProject = new DocProject();
 		docProject.name = project.name;
 		for (const script of scripts) {
-			await script.load();
+			const pathStr = path.resolve(project.path, script.filepath);
+			const str = await fse.readFile(pathStr, "utf8");
+			script.loadFromString(str);
 			const scrArr = parser.parseScript(script);
 			docProject.scripts = docProject.scripts.concat(scrArr);
 		}
 
-		let folder: string;
-		if (config.templatesFolder !== "") {
-			folder = path.resolve(config.templatesFolder, config.template);
-		} else {
-			folder = path.resolve(__dirname, "../templates/", config.template);
-		}
-
-		const template = await Template.loadFrom(folder);
-		await template.generateDocs(docProject, config);
-
-		return config.out;
+		return docProject;
 	}
-
 }

@@ -1,7 +1,17 @@
 {
   "typescript.tsdk": "node_modules\\typescript\\lib",
+  "gitflow4code.features": [
+    {
+      "name": "feature/add-jest",
+      "base": "develop"
+    }
+  ],
+  "editor.insertSpaces": false,
   "files.exclude": {
     "node_modules": "explorerExcludedFiles",
-    "dist": "explorerExcludedFiles"
-  }
+    "dist": "explorerExcludedFiles",
+    "coverage": "explorerExcludedFiles",
+    ".nyc_output": "explorerExcludedFiles"
+  },
+  "tslint.autoFixOnSave": true
 }

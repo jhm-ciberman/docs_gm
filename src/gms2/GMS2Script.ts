@@ -1,10 +1,6 @@
-import * as fse from "fs-extra";
-import * as path from "path";
-
-import { IGMScript } from "../GMInterfaces";
-import * as GMS2Descriptor from "./GMS2Descriptor";
-import GMProject from "./GMS2Project";
+import { IGMScript } from "../IGMInterfaces";
 import GMS2Resource from "./GMS2Resource";
+import * as GMS2Descriptor from "./IGMS2Descriptor";
 
 /**
  * Represents a GMS2 Script
@@ -24,32 +20,32 @@ export default class GMS2Script extends GMS2Resource implements IGMScript {
 	/**
 	 * The GML content
 	 */
-	private _text: string | undefined = undefined;
+	private _text: string | null = null;
 
 	/**
 	 * Creates a new Script
 	 * @param data The YOYO model data for the script
-	 * @param project The base project for the script
 	 */
-	constructor(data: GMS2Descriptor.IScript, project: GMProject) {
-		super(data, project);
-		this.isCompatibility = data.IsCompatibility;
+	constructor(data: GMS2Descriptor.IScript) {
+		super(data);
+		this.isCompatibility = data.IsCompatibility || false;
 	}
 
 	/**
-	 * Loads the script content
+	 * Load the script fom a string
+	 * @param str The *.gml file contents
 	 */
-	public async load() {
-		let filePath;
-		if (this.isCompatibility) {
-			filePath = path.resolve(this.project.path, "scripts", "@" + this.name, this.name + ".gml");
-		} else {
-			filePath = path.resolve(this.project.path, "scripts", this.name, this.name + ".gml");
-		}
+	public loadFromString(str: string) {
+		this._text = str;
+	}
 
-		this._text = await fse.readFile(filePath, "utf8");
-
-		return this;
+	/**
+	 * relative path of the GML file
+	 */
+	public get filepath(): string {
+		return "scripts/"
+			+ (this.isCompatibility ? "@" : "") + this.name + "/"
+			+ this.name + ".gml";
 	}
 
 	/**
@@ -57,7 +53,7 @@ export default class GMS2Script extends GMS2Resource implements IGMScript {
 	 * subscript in this script object
 	 */
 	public * subScripts(): IterableIterator<[string, string]> {
-		if (!this._text) {
+		if (this._text === null) {
 			throw new Error("Must call load() before accesing the subScripts() function");
 		}
 		// This lines converts the triple slash comments ( ///comment)

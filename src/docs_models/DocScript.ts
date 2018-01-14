@@ -30,6 +30,7 @@ export default class DocScript extends DocResource {
 	public returns: DocReturns | null = null;
 
 	/**
+	 * A DocReturns object, representing the returned value of the script.
 	 * @alias returns
 	 */
 	get return() {

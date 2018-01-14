@@ -1,10 +1,6 @@
-import * as fse from "fs-extra";
 import * as path from "path";
-
-import DocsGM from "../DocsGM";
-import { IGMScript } from "../GMInterfaces";
+import { IGMScript } from "../IGMInterfaces";
 import GMS1Folder from "./GMS1Folder";
-import GMS1Project from "./GMS1Project";
 import GMS1Resource from "./GMS1Resource";
 
 /**
@@ -25,42 +21,50 @@ export default class GMS1Script extends GMS1Resource implements IGMScript {
 	private _subScripts: Map<string, string> = new Map();
 
 	/**
+	 * This regex captures the script name in the capture group 1, and
+	 * the content of the script in the capture group 2.
+	 */
+	private _captureSubscriptsRegex = /#define (.*)\n((?:.|\n)*?)(?=\n?#define |$)/g;
+
+	/**
 	 * Creates a new GMS1 script
-	 * @param file The filename of the script
+	 * @param file The relative filename of the script
 	 * @param project The GMS1 Project of this script
 	 * @param parent The parent folder
 	 */
-	constructor(file: string, project: GMS1Project, parent: GMS1Folder) {
-		super(project, parent, path.basename(file).split(".")[0]);
+	constructor(file: string, parent: GMS1Folder | null) {
+		super(parent, path.basename(file).split(".")[0]);
 		this._path = file;
-		this.project.addResource(this, "script");
 	}
 
 	/**
 	 * Loads and parses the script with subscripts
+	 * from a string.
+	 * @param str The content of the *.gml file
 	 * @returns A promise
 	 */
-	public async load(): Promise<this> {
-		if (this._subScripts.size > 0) {
-			return this;
-		}
-		const pathStr = path.resolve(this.project.path, this._path);
-		let str = await fse.readFile(pathStr, "utf8");
+	public async loadFromString(str: string): Promise<this> {
 		// Normalize new lines (to use the next regex)
 		str = str.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-		this._subScripts.set(this.name, str);
 
-		// This regex captures the script name in the capture group 1, and
-		// the content of the script in the capture group 2.
-		const regex = /#define (.*)\n((?:.|\n)*?)(?=#define |$)/g;
-
-		let m = regex.exec(str);
-		while (m) {
-			this._subScripts.set(m[1], m[2]);
-			m = regex.exec(str);
+		let m = this._captureSubscriptsRegex.exec(str);
+		if (m === null) {
+			this._subScripts.set(this.name, str);
+		} else {
+			while (m) {
+				this._subScripts.set(m[1], m[2]);
+				m = this._captureSubscriptsRegex.exec(str);
+			}
 		}
 
 		return this;
+	}
+
+	/**
+	 * The relative file path of the *.gml file.
+	 */
+	get filepath(): string {
+		return this._path;
 	}
 
 	/**
@@ -68,8 +72,8 @@ export default class GMS1Script extends GMS1Resource implements IGMScript {
 	 * subscript in this script object
 	 */
 	public * subScripts(): IterableIterator<[string, string]> {
-		if (!this._subScripts.has(this.name)) {
-			throw new Error("Must call load() before accesing the subScripts() function");
+		if (this._subScripts.size === 0) {
+			throw new Error("Must call loadFromString() before accesing the subScripts() function");
 		}
 		for (let [name, content] of this._subScripts.entries()) {
 			// This lines converts the triple slash comments ( ///comment)
@@ -77,20 +81,6 @@ export default class GMS1Script extends GMS1Resource implements IGMScript {
 			content = content.replace(/\/\/\/ ?(.*)\n/g, "/**\n * @function $1 \n */\n");
 			yield [name, content];
 		}
-	}
-
-	/**
-	 * Print itself to the console for debug purposes
-	 * @param spaces The number of spaces to use
-	 */
-	public print(spaces: number = 0) {
-		const sp = "  ".repeat(spaces);
-		if (this._subScripts.size > 1) {
-			DocsGM.console.debug(`${sp}- ${this.name} [${this._subScripts.size} subscripts]`);
-		} else {
-			DocsGM.console.debug(`${sp}- ${this.name}`);
-		}
-
 	}
 
 }

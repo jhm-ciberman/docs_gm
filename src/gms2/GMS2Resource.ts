@@ -1,24 +1,15 @@
-import DocsGM from "../DocsGM";
-import { IGMResource } from "../GMInterfaces";
-import * as GMS2Descriptor from "./GMS2Descriptor";
-import GMFolder from "./GMS2Folder";
-import GMModel from "./GMS2Model";
-import GMProject from "./GMS2Project";
+import { IGMFolder, IGMResource } from "../IGMInterfaces";
+import * as IGMS2Descriptor from "./IGMS2Descriptor";
 
 /**
  * Represents a Generic GMS2 Resource
  */
-export default class GMS2Resource extends GMModel implements IGMResource {
+export default class GMS2Resource implements IGMResource {
 
 	/**
 	 * The parent folder of this resource
 	 */
-	public parent: GMFolder | null = null;
-
-	/**
-	 * The project of wich this resource belongs to
-	 */
-	public project: GMProject;
+	public parent: IGMFolder | null = null;
 
 	/**
 	 * The resource name
@@ -26,28 +17,18 @@ export default class GMS2Resource extends GMModel implements IGMResource {
 	public name: string;
 
 	/**
-	 * The resource id
+	 * The ID of the YoYo Model
 	 */
-	public id: string = "";
+	public id: string;
 
 	/**
 	 * Creates a new resource instance
 	 * @param data The data to populate
 	 * @param project The project which this resource belongs to
 	 */
-	constructor(data: GMS2Descriptor.IResource, project: GMProject) {
-		super(data);
-		this.project = project;
+	constructor(data: IGMS2Descriptor.IResource) {
+		this.id = data.id;
 		this.name = data.name;
-	}
-
-	/**
-	 * Prints itself for easy debug
-	 * @param spaces the number of spaces
-	 */
-	public print(spaces: number = 0) {
-		const sp = "  ".repeat(spaces);
-		DocsGM.console.debug(`${sp}- ${this.name}`);
 	}
 
 	/**
@@ -57,10 +38,4 @@ export default class GMS2Resource extends GMModel implements IGMResource {
 		return (this.parent ? this.parent.fullpath : "") + this.name;
 	}
 
-	/**
-	 * Loads the resource
-	 */
-	public async load() {
-		return this;
-	}
 }

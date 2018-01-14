@@ -13,6 +13,6 @@ export default class DocFolder extends DocResource {
 	/**
 	 * The children resources inside the folder
 	 */
-	public children: DocResource[];
+	public children: DocResource[] = [];
 
 }
