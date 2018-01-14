@@ -101,6 +101,46 @@ export default class DocsGM {
 	public static async generate(project: IGMProject, config?: OutputConfig): Promise<string> {
 		config = config || new OutputConfig();
 
+		const docProject = await this._generateDocProject(project, config);
+
+		const moduleName = "docs_gm-" + config.template;
+		const folder = await this._getModulePath(moduleName, config.templatesFolder);
+		const template = await Template.loadFrom(folder);
+		if (config.design && !template.hasDesign(config.design)) {
+			throw new Error(`Design "${ config.design }" not found`);
+		}
+
+		const design = template.getDesign(config.design);
+
+		await design.renderPages(config.out, docProject);
+		await design.copyFiles(config.out);
+
+		return config.out;
+	}
+
+	/**
+	 * Gets the path of a module from a global instalation, local instalation or custom folder (in that order of priority)
+	 * @param moduleName The name of the module to load
+	 * @param folder The folder to look for the module if the module is not located in global or local node_modules
+	 */
+	private static async _getModulePath(moduleName: string, folder: string): Promise<string> {
+		try {
+			return await this.depend.getInstalledPath(moduleName);
+		} catch (e) {
+			try {
+				return await this.depend.getInstalledPath(moduleName, { local: true, cwd: __dirname + "./../" });
+			} catch (e) {
+				return path.resolve(folder, moduleName);
+			}
+		}
+	}
+
+	/**
+	 * Generates a DocProject filled with all the documentable resources of the given project (following the OutputConfig)
+	 * @param project The GM Project
+	 * @param config The OutputConfig
+	 */
+	private static async _generateDocProject(project: IGMProject, config: OutputConfig): Promise<DocProject> {
 		const scripts = project.find(config.pattern)
 			.filter((res) => ((res as IGMScript).subScripts !== undefined))
 			.sort((a, b) => a.name.localeCompare(b.name)) as IGMScript[];
@@ -120,21 +160,6 @@ export default class DocsGM {
 			docProject.scripts = docProject.scripts.concat(scrArr);
 		}
 
-		let folder: string;
-		try {
-			folder = await this.depend.getInstalledPath(config.template);
-		} catch (error) {
-			folder = path.resolve(config.templatesFolder, config.template);
-		}
-		const template = await Template.loadFrom(folder);
-		if (config.design && !template.hasDesign(config.design)) {
-			throw new Error(`Design ${ config.design } not found`);
-		}
-		const design = template.getDesign(config.design);
-		await design.renderPages(config.out, docProject);
-		await design.copyFiles(config.out);
-
-		return config.out;
+		return docProject;
 	}
-
 }

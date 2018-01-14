@@ -9,15 +9,19 @@ import * as TemplateJSON from "./templateJSON";
  */
 export default class Template {
 
-	public static getInstalledPath: (name: string) => string;
 	/**
 	 * Factory method to load the template from a folder
 	 * @param folder The folder name
 	 * @returns A promise
 	 */
 	public static async loadFrom(folder: string): Promise<Template> {
+		let data: any;
 		const jsonPath = path.resolve(folder, "template.json");
-		const data = await fse.readJSON(jsonPath);
+		try {
+			data = await fse.readJSON(jsonPath);
+		} catch (e) {
+			throw new Error(`Error loading Template from "${ jsonPath }"`);
+		}
 		return new Template(data, folder);
 	}
 

@@ -28,13 +28,17 @@ export class GMS1ScriptFixture {
 		];
 		const script = await this.script.loadFromString(mockGML.join("\n"));
 		const it = script.subScripts();
-		const [name1, gml1] = it.next().value;
-		Expect(name1).toBe("my_script_1");
-		Expect(gml1).toBe('return "foo";');
 
-		const [name2, gml2] = it.next().value;
-		Expect(name2).toBe("my_script_2");
-		Expect(gml2).toBe('return "bar";');
+		const result1 = it.next();
+		Expect(result1.done).toBe(false);
+		Expect(result1.value).toEqual(["my_script_1", 'return "foo";']);
+
+		const result2 = it.next();
+		Expect(result2.done).toBe(false);
+		Expect(result2.value).toEqual(["my_script_2", 'return "bar";']);
+
+		const result3 = it.next();
+		Expect(result3.done).toBe(true);
 	}
 
 }

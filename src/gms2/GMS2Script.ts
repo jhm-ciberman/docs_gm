@@ -62,7 +62,7 @@ export default class GMS2Script extends GMS2Resource implements IGMScript {
 			.replace(/\/\/\/ ?(.*)\n/g, "/**\n * $1 \n */\n")
 			.replace(/ ?\*\/\n\/\*\* ?\n/g, "");
 
-		return [this.name, str];
+		yield [this.name, str];
 	}
 
 }

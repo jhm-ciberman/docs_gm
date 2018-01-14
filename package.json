@@ -69,6 +69,7 @@
     "commander": "^2.11.0",
     "comment-parser": "^0.3.2",
     "del": "^3.0.0",
+    "docs_gm-basic": "^1.0.0",
     "fs-extra": "^4.0.1",
     "get-installed-path": "^4.0.8",
     "globby": "^6.1.0",
