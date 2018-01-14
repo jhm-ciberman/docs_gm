@@ -13,7 +13,8 @@
     "build": "tsc -p .",
     "watch": "tsc -p . --watch",
     "clean": "rimraf ./dist/",
-    "coverage": "npm run build && nyc --reporter=lcov --reporter=html --all npm run unit-tests && nyc report",
+    "coverage": "npm run build && nyc npm run unit-tests",
+    "report-coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint --project . -t verbose",
     "prepublishOnly": "npm run clean && npm run build"
   },
@@ -56,6 +57,7 @@
     "@types/showdown": "^1.7.2",
     "@types/xml2js": "^0.4.2",
     "alsatian": "^2.0.0",
+    "coveralls": "^3.0.0",
     "mock-fs": "^4.4.2",
     "mock-require": "^3.0.1",
     "nyc": "^11.4.1",
