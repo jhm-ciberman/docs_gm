@@ -6,14 +6,13 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "pretest": "npm run lint",
-    "test": "npm run test-only",
+    "test": "npm run coverage",
     "pretest-only": "npm run build",
     "test-only": "npm run unit-tests",
     "unit-tests": "alsatian ./dist/**/*.spec.js",
     "build": "tsc -p .",
     "watch": "tsc -p . --watch",
     "clean": "rimraf ./dist/",
-    "testing": "alsatian ./dist/**/*.spec.js",
     "coverage": "npm run build && nyc --reporter=lcov --reporter=html --all npm run unit-tests && nyc report",
     "lint": "tslint --project . -t verbose",
     "prepublishOnly": "npm run clean && npm run build"
@@ -62,7 +61,7 @@
     "mock-require": "^3.0.1",
     "nyc": "^11.4.1",
     "rimraf": "^2.6.2",
-    "tslint": "^5.8.0",
+    "tslint": "^5.9.1",
     "typescript": "^2.6.2"
   },
   "dependencies": {
