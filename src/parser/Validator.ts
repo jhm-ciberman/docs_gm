@@ -1,6 +1,6 @@
 import DocScript from "../docs_models/DocScript";
 import ReporterManager from "../reporter/ReporterManager";
-import GMLParser from "./GMLParser";
+import IGMLParser from "./IGMLParser";
 import OutputConfig from "./OutputConfig";
 
 /**
@@ -52,7 +52,9 @@ export default class Validator {
 			return false;
 		}
 
-		if (this._docScript.function !== this._docScript.name && this._config.warnMismatchingFunctionName) {
+		if (this._docScript.function
+			&& this._docScript.function !== this._docScript.name
+			&& this._config.warnMismatchingFunctionName) {
 			ReporterManager.reporter.warn(
 				`Script "${ this._docScript.name }" has a mismatching @function name "${ this._docScript.function }"`,
 			);
@@ -65,13 +67,14 @@ export default class Validator {
 	 * Check if the GML Features of the given GML text (for example, number of arguments,
 	 * presence of returns statment, etc) matches the documentation inside the docScript
 	 * using the current OutputConfig rules.
-	 * @param gmlText The GMLText of the docScript
+	 * @param parser A GMLParser object used to parse the GMLFeatures
 	 * @return true if the features matches the documentation, or false otherwise.
 	 */
-	public checkGMLFeaturesMatchDocs(gmlText: string): boolean {
-		const features = GMLParser.extractGMLFeatures(gmlText);
+	public checkGMLFeaturesMatchDocs(parser: IGMLParser): boolean {
+		const fixedArgsN = parser.countFixedArguments();
+		const optArgsN = parser.countOptionalArguments();
+		const argsN = Math.max(fixedArgsN, optArgsN);
 		const docsN = this._docScript.params.length;
-		const argsN = features.argumentCount;
 
 		if (this._checkIgnore(
 			docsN === 0,

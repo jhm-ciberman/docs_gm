@@ -81,8 +81,8 @@ export default class DocScriptFactory {
 	 */
 	public setReturns(type: string, description: string) {
 		this._script.returns = this._script.returns || new DocReturns();
-		this._script.returns.description = type;
-		this._script.returns.type = description;
+		this._script.returns.description = description;
+		this._script.returns.type = type;
 		this._script.undocumented = false;
 	}
 

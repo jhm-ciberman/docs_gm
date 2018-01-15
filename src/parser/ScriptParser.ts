@@ -3,6 +3,7 @@ import DocScript from "../docs_models/DocScript";
 import { IGMScript } from "../IGMInterfaces";
 import ReporterManager from "../reporter/ReporterManager";
 import DocScriptFactory from "./DocScriptFactory";
+import GMLParser from "./GMLParser";
 import OutputConfig from "./OutputConfig";
 import Validator from "./Validator";
 
@@ -29,11 +30,14 @@ export default class ScriptParser {
 	 */
 	public parseScript(script: IGMScript): DocScript[] {
 		const arr = [];
-		for (const [name, text] of script.subScripts()) {
-			const docScript = this._createDocScript(name, text);
+		for (const [name, gmlText] of script.subScripts()) {
+			const docScript = this._createDocScript(name, gmlText);
 			const validator = new Validator(docScript, this._config);
-			if (validator.validateDocScript() && validator.checkGMLFeaturesMatchDocs(text)) {
-				arr.push(docScript);
+			if (validator.validateDocScript()) {
+				const parser = new GMLParser(gmlText);
+				if (validator.checkGMLFeaturesMatchDocs(parser)) {
+					arr.push(docScript);
+				}
 			}
 		}
 		return arr;
