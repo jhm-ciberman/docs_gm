@@ -5,12 +5,12 @@ import * as JSON5 from "json5";
 import * as os from "os";
 import * as path from "path";
 
-import OutputConfig from "./doc_generator/OutputConfig";
-import ScriptParser from "./doc_generator/ScriptParser";
 import Template from "./doc_generator/Template";
 import DocProject from "./docs_models/DocProject";
 import GMS1Project from "./gms1/GMS1Project";
 import GMS2Project from "./gms2/GMS2Project";
+import OutputConfig from "./parser/OutputConfig";
+import ScriptParser from "./parser/ScriptParser";
 
 import { IGMProject, IGMScript } from "./IGMInterfaces";
 

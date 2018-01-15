@@ -52,4 +52,9 @@ export default class DocScript extends DocResource {
 	 */
 	public undocumented: boolean = true;
 
+	/**
+	 * The function name. Normally, is the sme as the name.
+	 */
+	public function: string = "";
+
 }

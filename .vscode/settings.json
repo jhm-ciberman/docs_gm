@@ -7,11 +7,5 @@
     }
   ],
   "editor.insertSpaces": false,
-  "files.exclude": {
-    "node_modules": "explorerExcludedFiles",
-    "dist": "explorerExcludedFiles",
-    "coverage": "explorerExcludedFiles",
-    ".nyc_output": "explorerExcludedFiles"
-  },
   "tslint.autoFixOnSave": true
 }
