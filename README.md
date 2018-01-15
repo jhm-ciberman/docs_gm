@@ -1,6 +1,7 @@
 # docs_gm
 
 [![npm](https://img.shields.io/npm/dt/docs_gm.svg)](https://www.npmjs.com/package/docs_gm)
+[![npm](https://img.shields.io/npm/v/npm.svg)](https://www.npmjs.com/package/docs_gm)
 [![Build Status](https://travis-ci.org/jhm-ciberman/docs_gm.svg?branch=master)](https://travis-ci.org/jhm-ciberman/docs_gm)
 [![Coverage Status](https://coveralls.io/repos/github/jhm-ciberman/docs_gm/badge.svg?branch=master)](https://coveralls.io/github/jhm-ciberman/docs_gm?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/292b9c69320b1acfaf37/maintainability)](https://codeclimate.com/github/jhm-ciberman/docs_gm/maintainability)
