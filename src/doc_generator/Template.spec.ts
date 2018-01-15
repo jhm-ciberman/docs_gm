@@ -8,8 +8,7 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import * as path from "path";
-import { TempDir } from "../_testing_helpers/TempDir.spec";
+import { TempDir } from "../_testing_helpers/TempDir.help";
 import Design from "./Design";
 import Template from "./Template";
 import { IRoot } from "./TemplateJSON";
@@ -65,7 +64,7 @@ export class TemplateStaticFixture {
 		Expect(template.defaultDesign).toBeDefined();
 		Expect((template.defaultDesign as Design).name).toBe("myDesign");
 		Expect((template.defaultDesign as Design).displayName).toBe("My design");
-		Expect(template.folder).toBe(path.resolve("path/to/template"));
+		Expect(template.folder).toBe(this.tempDir.dir);
 	}
 }
 

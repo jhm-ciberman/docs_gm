@@ -27,6 +27,9 @@ export class TempDir {
 	 * @param folderPath The name of the temp directory
 	 */
 	public static create(folderPath: string, files?: IFileDictionary) {
+		process.stdout.write("\nFolder: ");
+		process.stdout.write(folderPath);
+		process.stdout.write("\n");
 		const dir = new TempDir(folderPath);
 		this._tempDirs.push(dir);
 		fse.emptyDirSync(dir.dir);

@@ -5,7 +5,8 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import { TempDir } from "../_testing_helpers/TempDir.spec";
+import { TeardownFixture } from "alsatian/core/decorators";
+import { TempDir } from "../_testing_helpers/TempDir.help";
 import { GMS2Folder } from "./GMS2Folder";
 import GMS2Project from "./GMS2Project";
 import GMS2Resource from "./GMS2Resource";
@@ -17,6 +18,8 @@ import { IFolder, IProject, IScript } from "./IGMS2Descriptor";
 @TestFixture("GMS2Project")
 export class GMS2ProjectFixture {
 	public project: GMS2Project;
+
+	public tempDir: TempDir;
 
 	@AsyncSetupFixture
 	public async setupFixture() {
@@ -58,14 +61,17 @@ export class GMS2ProjectFixture {
 			id: "my-folder-id",
 		};
 
-		const tempDir = TempDir.create("path/to/my-project", {
+		this.tempDir = TempDir.create("path/to/my-project", {
 			"my-project.yyp": JSON.stringify(mockProject),
 			"my-script/a.json": JSON.stringify(mockResourceScript),
 			"my-folder/b.json": JSON.stringify(mockResourceFolder),
 		});
 
-		this.project = await GMS2Project.loadProject(tempDir.join("my-project.yyp"));
+		this.project = await GMS2Project.loadProject(this.tempDir.join("my-project.yyp"));
+	}
 
+	@TeardownFixture
+	public teardownFixture() {
 		TempDir.removeAll();
 	}
 
@@ -76,7 +82,7 @@ export class GMS2ProjectFixture {
 
 	@Test("should get the project path")
 	public path() {
-		Expect(this.project.path).toBe("path/to/my-project");
+		Expect(this.project.path).toBe(this.tempDir.dir);
 	}
 
 	@Test("should load the script resource")

@@ -1,14 +1,13 @@
 import {
 	AsyncSetupFixture,
 	Expect,
-	FocusTest,
 	TeardownFixture,
 	Test,
 	TestFixture,
 } from "alsatian";
 
 import * as nunjucks from "nunjucks";
-import { TempDir } from "../_testing_helpers/TempDir.spec";
+import { TempDir } from "../_testing_helpers/TempDir.help";
 import DocProject from "../docs_models/DocProject";
 import DocScript from "../docs_models/DocScript";
 import Page from "./Page";
@@ -56,7 +55,6 @@ export class PageFixture {
 		TempDir.removeAll();
 	}
 
-	@FocusTest
 	@Test()
 	public test() {
 		Expect(true).toBe(true);
@@ -71,11 +69,11 @@ export class PageFixture {
 		const it = page.generate(this.env, this.docProject);
 
 		const [filename1, content1] = it.next().value;
-		Expect(filename1).toBe("my_script_name1.html");
+		Expect(filename1).toBe(this.tempDir.join("my_script_name1.html"));
 		Expect(content1).toBe("<h1>my_script_name1</h1>");
 
 		const [filename2, content2] = it.next().value;
-		Expect(filename2).toBe("my_script_name2.html");
+		Expect(filename2).toBe(this.tempDir.join("my_script_name2.html"));
 		Expect(content2).toBe("<h1>my_script_name2</h1>");
 
 		Expect(it.next().done).toBe(true);
@@ -90,7 +88,7 @@ export class PageFixture {
 		const it = page.generate(this.env, this.docProject);
 
 		const [filename, content] = it.next().value;
-		Expect(filename).toBe("out.html");
+		Expect(filename).toBe(this.tempDir.join("out.html"));
 		Expect(content).toBe("<h1>my_script_name1</h1>");
 
 		Expect(it.next().done).toBe(true);

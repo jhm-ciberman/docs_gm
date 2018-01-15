@@ -6,7 +6,7 @@ import {
 } from "alsatian";
 
 import * as xml2js from "xml2js";
-import { TempDir } from "../_testing_helpers/TempDir.spec";
+import { TempDir } from "../_testing_helpers/TempDir.help";
 import { IRoot } from "./GMS1Descriptor";
 import GMS1Project from "./GMS1Project";
 
@@ -54,7 +54,7 @@ export class GMS1ProjectFixture {
 
 	@Test("should get project path")
 	public path() {
-		Expect(this.project.path).toBe("path/to/my-project");
+		Expect(this.project.path).toBe(this.tempDir.dir);
 	}
 
 }
