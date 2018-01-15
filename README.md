@@ -18,6 +18,7 @@
 - OnePage and Multipage documentations.
 - Supports a lot of JSDoc tags!
 - Markdown supported!
+- Reports when some scripts are bad documented, or lack documentation.
 
 ## ☁️ Installation
 
