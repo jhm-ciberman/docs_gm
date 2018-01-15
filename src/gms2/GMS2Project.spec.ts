@@ -1,12 +1,11 @@
 import {
 	AsyncSetupFixture,
 	Expect,
-	TeardownFixture,
 	Test,
 	TestFixture,
 } from "alsatian";
 
-import * as mock from "mock-fs";
+import { TempDir } from "../_testing_helpers/TempDir.spec";
 import { GMS2Folder } from "./GMS2Folder";
 import GMS2Project from "./GMS2Project";
 import GMS2Resource from "./GMS2Resource";
@@ -59,18 +58,15 @@ export class GMS2ProjectFixture {
 			id: "my-folder-id",
 		};
 
-		mock({
-			"path/to/my-project/my-project.yyp": JSON.stringify(mockProject),
-			"path/to/my-project/my-script/a.json": JSON.stringify(mockResourceScript),
-			"path/to/my-project/my-folder/b.json": JSON.stringify(mockResourceFolder),
+		const tempDir = TempDir.create("path/to/my-project", {
+			"my-project.yyp": JSON.stringify(mockProject),
+			"my-script/a.json": JSON.stringify(mockResourceScript),
+			"my-folder/b.json": JSON.stringify(mockResourceFolder),
 		});
 
-		this.project = await GMS2Project.loadProject("path/to/my-project/my-project.yyp");
-	}
+		this.project = await GMS2Project.loadProject(tempDir.join("my-project.yyp"));
 
-	@TeardownFixture
-	public teardownFixture() {
-		mock.restore();
+		TempDir.removeAll();
 	}
 
 	@Test("should load the project name")

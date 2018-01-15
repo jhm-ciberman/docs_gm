@@ -1,13 +1,12 @@
 import {
 	AsyncSetupFixture,
 	Expect,
-	TeardownFixture,
 	Test,
 	TestFixture,
 } from "alsatian";
 
-import * as mock from "mock-fs";
 import * as xml2js from "xml2js";
+import { TempDir } from "../_testing_helpers/TempDir.spec";
 import { IRoot } from "./GMS1Descriptor";
 import GMS1Project from "./GMS1Project";
 
@@ -36,18 +35,16 @@ export class GMS1ProjectFixture {
 
 	public project: GMS1Project;
 
+	public tempDir: TempDir;
+
 	@AsyncSetupFixture
 	public async setupFixture() {
-		const b = new xml2js.Builder();
-		mock({
-			"path/to/my-project/my-project.xml": b.buildObject(mockProject),
+		const builder = new xml2js.Builder();
+		this.tempDir = TempDir.create("path/to/my-project", {
+			"my-project.xml": builder.buildObject(mockProject),
 		});
-		this.project = await GMS1Project.loadProject("path/to/my-project/my-project.xml");
-	}
-
-	@TeardownFixture
-	public teardownFixture() {
-		mock.restore();
+		this.project = await GMS1Project.loadProject(this.tempDir.join("my-project.xml"));
+		TempDir.removeAll();
 	}
 
 	@Test("should extract project name")

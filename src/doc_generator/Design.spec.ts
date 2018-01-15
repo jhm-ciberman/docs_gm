@@ -3,15 +3,12 @@ import {
 	AsyncTeardownFixture,
 	AsyncTest,
 	Expect,
-	Test,
 	TestFixture,
 } from "alsatian";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-import * as fse from "fs-extra";
-import * as os from "os";
-import * as path from "path";
+import { TempDir } from "../_testing_helpers/TempDir.spec";
 import DocProject from "../docs_models/DocProject";
 import Design from "./Design";
 import { IDesign } from "./TemplateJSON";
@@ -19,21 +16,11 @@ import { IDesign } from "./TemplateJSON";
 @TestFixture("Design")
 export class DesignFixture {
 
-	public tmpInput: string;
-	public tmpOutput: string;
-
-	@Test()
-	public test() {
-		Expect(true).toBe(true);
-	}
+	public in: TempDir;
+	public out: TempDir;
 
 	@AsyncSetupFixture
 	public async setupFixture() {
-		this.tmpInput = path.join(os.tmpdir(), "path/to/template");
-		await fse.emptyDir(this.tmpInput);
-		this.tmpOutput = path.join(os.tmpdir(), "out");
-		await fse.emptyDir(this.tmpOutput);
-
 		const files: { [key: string]: string } = {
 			"page1.njk": "<h1>Hello world {{ page.project.name }}</h1>",
 			"page2.njk": "<h1>Bye world {{ page.project.name }}</h1>",
@@ -42,15 +29,13 @@ export class DesignFixture {
 			"myotherfolder/bar.baz": "foo",
 		};
 
-		for (const key of Object.keys(files)) {
-			await fse.outputFile(path.join(this.tmpInput, key), files[key]);
-		}
+		this.in = TempDir.create("path/to/template", files);
+		this.out = TempDir.create("out");
 	}
 
 	@AsyncTeardownFixture
 	public async teardownFixture() {
-		await fse.remove(this.tmpInput);
-		await fse.remove(this.tmpOutput);
+		await TempDir.removeAll();
 	}
 
 	@AsyncTest("should render an output file for each onepage page")
@@ -62,16 +47,13 @@ export class DesignFixture {
 				{ in: "page2.njk", out: "b.html", feedWith: "scripts" },
 			],
 		};
-		const design = new Design("myDesign", this.tmpInput, myDesignData);
+		const design = new Design("myDesign", this.in.dir, myDesignData);
 		const docProject = new DocProject();
 		docProject.name = "foo";
-		await design.renderPages(this.tmpOutput, docProject);
+		await design.renderPages(this.out.dir, docProject);
 
-		const a = fse.readFileSync(path.join(this.tmpOutput, "a.html"), "utf8");
-		Expect(a).toBe("<h1>Hello world foo</h1>");
-
-		const b = fse.readFileSync(path.join(this.tmpOutput, "b.html"), "utf8");
-		Expect(b).toBe("<h1>Bye world foo</h1>");
+		Expect(this.out.read("a.html")).toBe("<h1>Hello world foo</h1>");
+		Expect(this.out.read("b.html")).toBe("<h1>Bye world foo</h1>");
 	}
 
 	@AsyncTest("should copy files by default")
@@ -80,30 +62,25 @@ export class DesignFixture {
 			displayName: "My design",
 			pages: [],
 		};
-		const design = new Design("myDesign", this.tmpInput, myDesignData);
-		await design.copyFiles(this.tmpOutput);
+		const design = new Design("myDesign", this.in.dir, myDesignData);
+		await design.copyFiles(this.out.dir);
 
-		const foo = fse.readFileSync(path.join(this.tmpOutput, "foo.bar"), "utf8");
-		Expect(foo).toBe("foo");
+		Expect(this.out.read("foo.bar")).toBe("foo");
 	}
 
 	@AsyncTest("should copy only the specified glob files")
 	public async copyGlobFiles() {
-		// const myDesignData: IDesign = {
-		// 	displayName: "My design",
-		// 	copy: ["**/myfolder/**/*", "**/myotherfoler/ *"],
-		// 	 pages: [],
-		// };
+		const myDesignData: IDesign = {
+			displayName: "My design",
+			copy: ["**/myfolder/**/*", "**/myotherfoler/*"],
+			pages: [],
+		};
 
-		// const design = new Design("myDesign", "path/to/template", myDesignData);
-		// await design.copyFiles("out");
+		const design = new Design("myDesign", this.in.dir, myDesignData);
+		await design.copyFiles(this.out.dir);
 
-		// Expect(fse.existsSync("myfolder/foo/bar.baz")).toBe(true);
-		// Expect(fse.readFileSync("myfolder/foo/bar.baz", "utf8")).toBe("foo");
-
-		// Expect(fse.existsSync("myotherfolder/bar.baz")).toBe(true);
-		// Expect(fse.readFileSync("myotherfolder/bar.baz", "utf8")).toBe("foo");
-
-		// Expect(fse.existsSync("do_not_copy.txt")).toBe(false);
+		Expect(this.out.read("myfolder/foo/bar.baz")).toBe("foo");
+		Expect(this.out.read("myotherfolder/bar.baz")).toBe("foo");
+		Expect(this.out.exists("do_not_copy.txt")).toBe(false);
 	}
 }

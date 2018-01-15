@@ -8,8 +8,8 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import * as mock from "mock-fs";
 import * as path from "path";
+import { TempDir } from "../_testing_helpers/TempDir.spec";
 import Design from "./Design";
 import Template from "./Template";
 import { IRoot } from "./TemplateJSON";
@@ -39,22 +39,25 @@ const myTemplateJSON: IRoot = {
 
 @TestFixture("Template (Static)")
 export class TemplateStaticFixture {
+
+	public tempDir: TempDir;
+
 	@SetupFixture
 	public setupFixture() {
-		mock({
-			"path/to/template/template.json": JSON.stringify(myTemplateJSON),
-			"path/to/template/page.njk": "<h1>Hello world</h1>",
+		this.tempDir = TempDir.create("path/to/template", {
+			"template.json": JSON.stringify(myTemplateJSON),
+			"page.njk": "<h1>Hello world</h1>",
 		});
 	}
 
 	@TeardownFixture
 	public teardownFixture() {
-		mock.restore();
+		TempDir.removeAll();
 	}
 
 	@AsyncTest("should load template from a file")
 	public async loadFrom() {
-		const template = await Template.loadFrom("path/to/template");
+		const template = await Template.loadFrom(this.tempDir.dir);
 
 		Expect(template.author).toBe("Darth Vader");
 		Expect(template.web).toBe("http://foo.com/");

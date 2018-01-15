@@ -1,19 +1,21 @@
 import {
+	AsyncSetupFixture,
 	Expect,
-	SetupFixture,
+	FocusTest,
 	TeardownFixture,
 	Test,
 	TestFixture,
 } from "alsatian";
 
-import * as mock from "mock-fs";
 import * as nunjucks from "nunjucks";
+import { TempDir } from "../_testing_helpers/TempDir.spec";
 import DocProject from "../docs_models/DocProject";
 import DocScript from "../docs_models/DocScript";
 import Page from "./Page";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
+// @FocusTests
 @TestFixture("Page")
 export class PageFixture {
 
@@ -25,8 +27,10 @@ export class PageFixture {
 
 	public docProject: DocProject;
 
-	@SetupFixture
-	public setupFixture() {
+	public tempDir: TempDir;
+
+	@AsyncSetupFixture
+	public async setupFixture() {
 
 		this.script1 = new DocScript();
 		this.script1.name = "my_script_name1";
@@ -39,22 +43,30 @@ export class PageFixture {
 		this.docProject.scripts.push(this.script1);
 		this.docProject.scripts.push(this.script2);
 
-		mock({
-			"path/page_script.njk": `<h1>{{ page.script.name }}</h1>`,
-			"path/page_scripts.njk": `<h1>{{ page.scripts[0].name }}</h1>`,
+		this.tempDir = TempDir.create("path", {
+			"page_script.njk": `<h1>{{ page.script.name }}</h1>`,
+			"page_scripts.njk": `<h1>{{ page.scripts[0].name }}</h1>`,
 		});
 
-		this.env = nunjucks.configure("path", { autoescape: false });
+		this.env = nunjucks.configure(this.tempDir.dir, { autoescape: false });
 	}
 
 	@TeardownFixture
 	public teardownFixture() {
-		mock.restore();
+		TempDir.removeAll();
+	}
+
+	@FocusTest
+	@Test()
+	public test() {
+		Expect(true).toBe(true);
 	}
 
 	@Test("should render the page with a multipage template")
 	public generateMultipage() {
-		const page = new Page("page_script.njk", "{{ page.script.name }}.html", "script");
+		const input = this.tempDir.join("page_script.njk");
+		const output = this.tempDir.join("{{ page.script.name }}.html");
+		const page = new Page(input, output, "script");
 
 		const it = page.generate(this.env, this.docProject);
 
@@ -71,7 +83,9 @@ export class PageFixture {
 
 	@Test("should render the page with a onepage template")
 	public generateOnepage() {
-		const page = new Page("page_scripts.njk", "out.html", "scripts");
+		const input = this.tempDir.join("page_scripts.njk");
+		const output = this.tempDir.join("out.html");
+		const page = new Page(input, output, "scripts");
 
 		const it = page.generate(this.env, this.docProject);
 
