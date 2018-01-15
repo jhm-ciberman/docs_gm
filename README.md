@@ -1,5 +1,7 @@
 # docs_gm
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/jhm-ciberman/docs_gm.svg)](https://greenkeeper.io/)
+
 [![npm](https://img.shields.io/npm/dt/docs_gm.svg)](https://www.npmjs.com/package/docs_gm)
 [![Build Status](https://travis-ci.org/jhm-ciberman/docs_gm.svg?branch=master)](https://travis-ci.org/jhm-ciberman/docs_gm)
 [![Coverage Status](https://coveralls.io/repos/github/jhm-ciberman/docs_gm/badge.svg?branch=master)](https://coveralls.io/github/jhm-ciberman/docs_gm?branch=master)
