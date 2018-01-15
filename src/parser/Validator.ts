@@ -3,18 +3,24 @@ import ReporterManager from "../reporter/ReporterManager";
 import GMLParser from "./GMLParser";
 import OutputConfig from "./OutputConfig";
 
+/**
+ * This class validates all the DocScript data against the OutputConfig rules.
+ */
 export default class Validator {
 
+	/**
+	 * The rules to valudate against
+	 */
 	private _config: OutputConfig;
 
+	/**
+	 * The DocScript to validate
+	 */
 	private _docScript: DocScript;
 
-	private _name: string;
-
-	public constructor(docScript: DocScript, name: string, config: OutputConfig ) {
+	public constructor(docScript: DocScript, config: OutputConfig ) {
 		this._config = config;
 		this._docScript = docScript;
-		this._name = name;
 	}
 
 	/**
@@ -32,7 +38,7 @@ export default class Validator {
 			this._docScript.undocumented,
 			this._config.warnUndocumentedScripts,
 			this._config.ignoreUndocumentedScripts,
-			`Script "${ this._name }" is undocumented.`,
+			`Script "${ this._docScript.name }" is undocumented.`,
 		)) {
 			return false;
 		}
@@ -41,13 +47,15 @@ export default class Validator {
 			!this._docScript.description,
 			this._config.warnNoDescriptionScripts,
 			this._config.ignoreNoDescriptionScripts,
-			`Script "${ this._name }" has no description.`,
+			`Script "${ this._docScript.name }" has no description.`,
 		)) {
 			return false;
 		}
 
-		if (this._docScript.function !== name && this._config.warnMismatchingFunctionName) {
-			ReporterManager.reporter.warn(`Script "${name}" has a mismatching @function name "${ this._docScript.function }"`);
+		if (this._docScript.function !== this._docScript.name && this._config.warnMismatchingFunctionName) {
+			ReporterManager.reporter.warn(
+				`Script "${ this._docScript.name }" has a mismatching @function name "${ this._docScript.function }"`,
+			);
 		}
 
 		return true;
@@ -69,7 +77,7 @@ export default class Validator {
 			docsN === 0,
 			this._config.warnUndocumentedArgumentsScripts,
 			this._config.ignoreUndocumentedArgumentsScripts,
-			`Script "${ this._name }" uses arguments but does not have any @param JSDoc comment.`,
+			`Script "${ this._docScript.name }" uses arguments but does not have any @param JSDoc comment.`,
 		)) {
 			return false;
 		}
@@ -78,7 +86,7 @@ export default class Validator {
 			argsN !== docsN,
 			this._config.warnMismatchingArgumentsScripts,
 			this._config.ignoreMismatchingArgumentsScripts,
-			`Script "${ this._name }" uses ${ argsN } but has documentation for ${ docsN } arguments.`,
+			`Script "${ this._docScript.name }" uses ${ argsN } but has documentation for ${ docsN } arguments.`,
 		)) {
 			return false;
 		}

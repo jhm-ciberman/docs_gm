@@ -31,7 +31,7 @@ export default class ScriptParser {
 		const arr = [];
 		for (const [name, text] of script.subScripts()) {
 			const docScript = this._createDocScript(name, text);
-			const validator = new Validator(docScript, name, this._config);
+			const validator = new Validator(docScript, this._config);
 			if (validator.validateDocScript() && validator.checkGMLFeaturesMatchDocs(text)) {
 				arr.push(docScript);
 			}
@@ -105,6 +105,7 @@ export default class ScriptParser {
 				}
 		}
 	}
+
 	/**
 	 * Recreates the content of a splitted tag into a single string.
 	 * For example, in a description tag, if you start your description

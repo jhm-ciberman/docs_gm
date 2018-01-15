@@ -4,6 +4,10 @@ import DocReturns from "../docs_models/DocReturns";
 import DocScript from "../docs_models/DocScript";
 import StringUtils from "./StringUtils";
 
+/**
+ * Factory class to create DocScript instances.
+ * Each DocScript instance represents the documentation of a single script or subscript.
+ */
 export default class DocScriptFactory {
 
 	/**
