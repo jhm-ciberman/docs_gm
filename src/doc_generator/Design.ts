@@ -80,6 +80,7 @@ export default class Design {
 		for (const file of files) {
 			const outputFile = path.resolve(outputFolder, file);
 			const inputFile = path.resolve(this._templateFolder, file);
+			process.stdout.write(inputFile + " " + outputFile);
 			await fse.copy(inputFile, outputFile);
 		}
 	}
