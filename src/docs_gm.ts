@@ -3,29 +3,30 @@
 import * as program from "commander";
 import open = require("open");
 import * as path from "path";
-import { DocsGM, OutputConfig, ReporterManager } from "./index";
+import ProjectLoader from "./core/ProjectLoader";
+import { DocsGM, ProjectConfig, ReporterManager } from "./index";
 
 // tslint:disable-next-line: no-var-requires
 const packageJSON = require("../package.json");
 
-const overrideConfig = {} as OutputConfig;
+const overrideConfig = {} as ProjectConfig;
 
 /**
  * Generates the documentation for a given project
  * @param projectPath The path to the project
  * @param opts The option object to override
  */
-async function generate(projectPath?: string, opts?: OutputConfig) {
+async function generate(projectPath?: string, opts?: ProjectConfig) {
 
 	ReporterManager.reporter.info("Loading Project...");
-	const project = await DocsGM.loadProject(projectPath);
+	const project = await ProjectLoader.loadProject(projectPath);
 
 	ReporterManager.reporter.info("Loading project configuration...");
 	let config = await DocsGM.loadConfig(projectPath);
 
 	if (!config) {
 		ReporterManager.reporter.info("Configuration not found. Ussing default configuration.");
-		config = new OutputConfig();
+		config = new ProjectConfig();
 	}
 	if (opts) {
 		config = Object.assign(config, opts);
@@ -92,22 +93,22 @@ program
 	.option(
 		"--design <name>",
 		"The design name. If empty, it will use the first design in the designs list.",
-		(value) => { overrideConfig.design = value; },
+		(value) => { overrideConfig.output.design = value; },
 	)
 	.option(
 		"--template <name>",
 		"The template name to use",
-		(value) => {overrideConfig.template = value; },
+		(value) => {overrideConfig.output.template = value; },
 	)
 	.option(
-		"--out <path>",
+		"--outputFolder <path>",
 		"The output folder of the documentation",
-		(value) => { overrideConfig.out = value; },
+		(value) => { overrideConfig.output.outputFolder = value; },
 	)
 	.option(
 		"-p, --pattern <glob>",
 		"The glob pattern to use to include files in the project documentation",
-		(value) => { overrideConfig.pattern = value; },
+		(value) => { overrideConfig.output.pattern = value; },
 	)
 	.action( (folder) => {
 		generate(folder, overrideConfig).catch((err) => {

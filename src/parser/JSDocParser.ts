@@ -1,46 +1,24 @@
 import parse = require("comment-parser");
 import DocScript from "../docs_models/DocScript";
-import { IGMScript } from "../IGMInterfaces";
 import ReporterManager from "../reporter/ReporterManager";
 import DocScriptFactory from "./DocScriptFactory";
-import GMLParser from "./GMLParser";
-import OutputConfig from "./OutputConfig";
-import Validator from "./Validator";
 
 /**
  * Class for parsing the GML scripts and JSDocs comments inside those scripts
  */
-export default class ScriptParser {
+export default class JSDocParser {
 
 	/**
-	 * config object
+	 * The rules to validate against
 	 */
-	private _config: OutputConfig;
+	private readonly _warnUnrecognizedTags: boolean;
 
 	/**
 	 * Creates a ScriptParser instance
+	 * @param warnUnrecognizedTags Should warn about unrecognized JSDoc tags?
 	 */
-	public constructor(config: OutputConfig) {
-		this._config = config;
-	}
-
-	/**
-	 * Parses a GMScript
-	 * @param script An array with DocScript objects
-	 */
-	public parseScript(script: IGMScript): DocScript[] {
-		const arr = [];
-		for (const [name, gmlText] of script.subScripts()) {
-			const docScript = this._createDocScript(name, gmlText);
-			const validator = new Validator(docScript, this._config);
-			if (validator.validateDocScript()) {
-				const parser = new GMLParser(gmlText);
-				if (validator.checkGMLFeaturesMatchDocs(parser)) {
-					arr.push(docScript);
-				}
-			}
-		}
-		return arr;
+	public constructor(warnUnrecognizedTags: boolean) {
+		this._warnUnrecognizedTags = warnUnrecognizedTags;
 	}
 
 	/**
@@ -50,7 +28,7 @@ export default class ScriptParser {
 	 * @param text The script content
 	 * @returns A new DocStript object
 	 */
-	private _createDocScript(name: string, text: string): DocScript {
+	public parse(name: string, text: string): DocScript {
 
 		const comments = parse(text);
 
@@ -64,9 +42,7 @@ export default class ScriptParser {
 				this._parseTag(factory, tag, name);
 			}
 		}
-		if (this._config.markUnderscoreScriptsAsPrivate && name.charAt(0) === "_") {
-			factory.markPrivate();
-		}
+
 		return factory.make();
 	}
 
@@ -104,7 +80,7 @@ export default class ScriptParser {
 				factory.setFunction(this._reconstructTag(tag));
 				break;
 			default:
-				if (this._config.warnUnrecognizedTags) {
+				if (this._warnUnrecognizedTags) {
 					ReporterManager.reporter.warn(`Unrecognized tag "${ tag.tag.toLowerCase() }" at script "${ name }"`);
 				}
 		}

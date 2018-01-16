@@ -15,7 +15,7 @@
         "indent": [
             true,
             "tabs",
-            5
+            4
         ],
         "completed-docs": [
             true, 
