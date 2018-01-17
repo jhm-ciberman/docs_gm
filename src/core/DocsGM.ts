@@ -3,12 +3,11 @@ import * as JSON5 from "json5";
 import * as os from "os";
 import * as path from "path";
 
-import OutputConfig from "./config/OutputConfig";
-import ProjectConfig from "./config/ProjectConfig";
-import TemplateLoader from "./doc_generator/TemplateLoader";
-
-import DocProjectGenerator from "./core/DocProjectGenerator";
-import { IGMProject } from "./IGMInterfaces";
+import OutputConfig from "../config/OutputConfig";
+import ProjectConfig from "../config/ProjectConfig";
+import TemplateLoader from "../doc_generator/TemplateLoader";
+import { IGMProject } from "../IGMInterfaces";
+import DocProjectGenerator from "./DocProjectGenerator";
 
 /**
  * Main Class of the docs_gm plugin

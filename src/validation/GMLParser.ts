@@ -14,17 +14,17 @@ export default class GMLParser implements IGMLParser {
 	/**
 	 * Regex to find arguments0..argument1..etc
 	 */
-	private _findFixedArgumentsRegex: RegExp = /[\s{(]argument([0-9]+)[\s;})]/g;
+	private _findFixedArgumentsRegex: RegExp = /\bargument([0-9]+)\b/gm;
 
 	/**
 	 * Regex to find optional arguments. arguments[0]..argument[1]..etc
 	 */
-	private _findOptionalArgumentsRegex: RegExp = /[\s{(]argument\[([0-9]+)\][\s;})]/g;
+	private _findOptionalArgumentsRegex: RegExp = /\bargument\[([0-9]+)\]\B/gm;
 
 	/**
 	 * Regex to find return statements
 	 */
-	private _findReturnRegex: RegExp = /[\s{(;]return[\s;})]/;
+	private _findReturnRegex: RegExp = /\breturn\b/gm;
 
 	/**
 	 * Creates a new GMLParser

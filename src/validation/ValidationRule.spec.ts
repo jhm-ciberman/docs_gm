@@ -1,5 +1,6 @@
 import {
 	Expect,
+	SpyOn,
 	Test,
 	TestFixture,
 } from "alsatian";
@@ -21,6 +22,7 @@ export class ScriptValidatorFixture {
 			(e) => e > 10,
 			(e) => `warning in number ${e}`,
 		);
+		SpyOn(ValidatorRule.reporter, "warn");
 		Expect(rule.validate(n)).toEqual(expected);
 		if (shouldWarn) {
 			Expect(ValidatorRule.reporter.warn).toHaveBeenCalledWith(`warning in number ${n}`);
