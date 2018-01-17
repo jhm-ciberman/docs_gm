@@ -1,9 +1,9 @@
 import ProjectConfig from "../config/ProjectConfig";
-import DocScript from "../docs_models/DocScript";
-import { IGMScript } from "../IGMInterfaces";
+import DocScript from "../doc/models/DocScript";
+import IGMScript from "../gm_project/interfaces/IGMScript";
 import JSDocParser from "../parser/JSDocParser";
-import ScriptValidator from "../validation/ScriptValidator";
-import ValidableScript from "../validation/ValidableScript";
+import ScriptValidator from "../doc/validation/ScriptValidator";
+import ValidableScript from "../doc/validation/ValidableScript";
 
 /**
  * This class receives as input a GMScript and generates an array of DocScript[]

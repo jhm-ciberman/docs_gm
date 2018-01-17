@@ -2,7 +2,7 @@ import * as fse from "fs-extra";
 import * as globby from "globby";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
-import DocProject from "../docs_models/DocProject";
+import DocProject from "../models/DocProject";
 import Page from "./Page";
 import * as TemplateJSON from "./TemplateJSON";
 

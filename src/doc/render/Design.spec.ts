@@ -8,8 +8,8 @@ import {
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-import { TempDir } from "../_testing_helpers/TempDir.help";
-import DocProject from "../docs_models/DocProject";
+import { TempDir } from "../../_testing_helpers/TempDir.help";
+import DocProject from "../models/DocProject";
 import Design from "./Design";
 import { IDesign } from "./TemplateJSON";
 

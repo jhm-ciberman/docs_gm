@@ -7,14 +7,14 @@ import GMS2Resource from "./GMS2Resource";
 import { GMS2ResourceType } from "./GMS2ResourceType";
 import GMS2Script from "./GMS2Script";
 
-import { IGMProject } from "../IGMInterfaces";
+import IGMProject from "../interfaces/IGMProject";
 import IGetResourceByKey from "./IGetResourceByKey";
 import { IFolder, IProject, IResource, IResourceInfo, IScript } from "./IGMS2Descriptor";
 
 /**
  * Represents a GameMaker Studio 2 Project
  */
-export default class GMS2Project implements IGMProject, IGetResourceByKey  {
+export default class GMS2Project implements IGMProject, IGetResourceByKey {
 
 	/**
 	 * Loads the specified GMS2 project

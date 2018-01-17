@@ -1,5 +1,6 @@
 import * as path from "path";
-import { IGMScript } from "../IGMInterfaces";
+
+import IGMScript from "../interfaces/IGMScript";
 import GMS1Folder from "./GMS1Folder";
 import GMS1Resource from "./GMS1Resource";
 

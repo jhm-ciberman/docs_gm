@@ -1,4 +1,5 @@
-import {IGMFolder, IGMResource} from "../IGMInterfaces";
+import IGMFolder from "../interfaces/IGMFolder";
+import IGMResource from "../interfaces/IGMResource";
 import GMS1Folder from "./GMS1Folder";
 
 /**

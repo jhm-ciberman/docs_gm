@@ -4,10 +4,11 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import { IGMFolder, IGMResource } from "../IGMInterfaces";
-import GMS1Resource from "./GMS1Resource";
+import IGMFolder from "../interfaces/IGMFolder";
+import IGMResource from "../interfaces/IGMResource";
+import GMS2Resource from "./GMS2Resource";
 
-/* tslint:disable:completed-docs max-classes-per-file */
+/* tslint:disable:max-classes-per-file completed-docs */
 
 class FolderMock implements IGMFolder {
 	public parent: IGMFolder | null;
@@ -16,9 +17,14 @@ class FolderMock implements IGMFolder {
 	public children: IGMResource[];
 }
 
-@TestFixture("GMS1Resource")
-export class GMS1ResourceFixture {
-	public resource = new GMS1Resource(null, "my-name");
+@TestFixture("GMS2Resource")
+export class GMS2ResourceFixture {
+
+	public resource = new GMS2Resource({
+		// IResource
+		id: "my-id",
+		name: "my-name",
+	});
 
 	@Test("should get the name")
 	public name() {
@@ -26,12 +32,12 @@ export class GMS1ResourceFixture {
 	}
 
 	@Test("should get the fullpath when it has no parent")
-	public fullpath() {
+	public fullpath_NoParent() {
 		Expect(this.resource.fullpath).toBe("my-name");
 	}
 
 	@Test("should get the fullpath when it has parent")
-	public fullpath_HasParent() {
+	public fullpath_Parent() {
 		const folder = new FolderMock();
 		folder.fullpath = "my-fullpath/";
 		this.resource.parent = folder;

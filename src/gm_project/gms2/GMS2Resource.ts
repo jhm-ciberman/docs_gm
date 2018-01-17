@@ -1,4 +1,5 @@
-import { IGMFolder, IGMResource } from "../IGMInterfaces";
+import IGMFolder from "../interfaces/IGMFolder";
+import IGMResource from "../interfaces/IGMResource";
 import * as IGMS2Descriptor from "./IGMS2Descriptor";
 
 /**

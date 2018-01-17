@@ -1,4 +1,4 @@
-import { IGMScript } from "../IGMInterfaces";
+import IGMScript from "../interfaces/IGMScript";
 import GMS2Resource from "./GMS2Resource";
 import * as GMS2Descriptor from "./IGMS2Descriptor";
 

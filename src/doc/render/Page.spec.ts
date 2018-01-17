@@ -7,9 +7,9 @@ import {
 } from "alsatian";
 
 import * as nunjucks from "nunjucks";
-import { TempDir } from "../_testing_helpers/TempDir.help";
-import DocProject from "../docs_models/DocProject";
-import DocScript from "../docs_models/DocScript";
+import { TempDir } from "../../_testing_helpers/TempDir.help";
+import DocProject from "../models/DocProject";
+import DocScript from "../models/DocScript";
 import Page from "./Page";
 
 /* tslint:disable:max-classes-per-file completed-docs */

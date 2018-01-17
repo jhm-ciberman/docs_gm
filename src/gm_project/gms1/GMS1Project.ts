@@ -2,13 +2,13 @@ import * as fse from "fs-extra";
 import * as minimatch from "minimatch";
 import * as path from "path";
 import * as xml2js from "xml2js";
-import { IFolder } from "./GMS1Descriptor";
-import GMS1Script from "./GMS1Script";
 
-import { IGMProject } from "../IGMInterfaces";
+import IGMProject from "../interfaces/IGMProject";
+import { IFolder } from "./GMS1Descriptor";
 import * as GMS1Descriptor from "./GMS1Descriptor";
 import GMS1Folder from "./GMS1Folder";
 import GMS1Resource from "./GMS1Resource";
+import GMS1Script from "./GMS1Script";
 
 /**
  * Represents a GMS1 Project. The object should be created

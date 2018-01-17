@@ -5,7 +5,7 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import DocReturns from "../docs_models/DocReturns";
+import DocReturns from "../doc/models/DocReturns";
 import DocScriptFactory from "./DocScriptFactory";
 
 /* tslint:disable:max-classes-per-file completed-docs */

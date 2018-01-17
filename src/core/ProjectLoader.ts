@@ -1,9 +1,9 @@
 import * as globby from "globby";
 import * as path from "path";
 
-import GMS1Project from "../gms1/GMS1Project";
-import GMS2Project from "../gms2/GMS2Project";
-import { IGMProject } from "../IGMInterfaces";
+import GMS1Project from "../gm_project/gms1/GMS1Project";
+import GMS2Project from "../gm_project/gms2/GMS2Project";
+import IGMProject from "../gm_project/interfaces/IGMProject";
 
 /**
  * This class loads a GMS1 or GMS2 project and returns a GMProject object

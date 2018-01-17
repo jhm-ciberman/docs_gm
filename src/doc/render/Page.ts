@@ -1,7 +1,7 @@
 import * as nunjucks from "nunjucks";
 
-import DocPage from "../docs_models/DocPage";
-import DocProject from "../docs_models/DocProject";
+import DocPage from "../models/DocPage";
+import DocProject from "../models/DocProject";
 
 /**
  * Represents one Page for one Design of one Template

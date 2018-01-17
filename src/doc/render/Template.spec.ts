@@ -8,7 +8,7 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import { TempDir } from "../_testing_helpers/TempDir.help";
+import { TempDir } from "../../_testing_helpers/TempDir.help";
 import Design from "./Design";
 import Template from "./Template";
 import { IRoot } from "./TemplateJSON";

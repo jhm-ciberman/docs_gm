@@ -1,4 +1,4 @@
-import DocScript from "../docs_models/DocScript";
+import DocScript from "../models/DocScript";
 import GMLParser from "./GMLParser";
 
 /**

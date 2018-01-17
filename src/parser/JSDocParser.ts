@@ -1,5 +1,5 @@
 import parse = require("comment-parser");
-import DocScript from "../docs_models/DocScript";
+import DocScript from "../doc/models/DocScript";
 import ReporterManager from "../reporter/ReporterManager";
 import DocScriptFactory from "./DocScriptFactory";
 

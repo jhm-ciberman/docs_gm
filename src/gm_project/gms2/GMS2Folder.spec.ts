@@ -4,7 +4,8 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import { IGMFolder, IGMResource } from "../IGMInterfaces";
+import IGMFolder from "../interfaces/IGMFolder";
+import IGMResource from "../interfaces/IGMResource";
 import { GMS2Folder } from "./GMS2Folder";
 import IGetResourceByKey from "./IGetResourceByKey";
 

@@ -6,7 +6,7 @@ import {
 } from "alsatian";
 
 import * as xml2js from "xml2js";
-import { TempDir } from "../_testing_helpers/TempDir.help";
+import { TempDir } from "../../_testing_helpers/TempDir.help";
 import { IRoot } from "./GMS1Descriptor";
 import GMS1Project from "./GMS1Project";
 

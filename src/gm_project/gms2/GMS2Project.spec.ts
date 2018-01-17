@@ -6,7 +6,7 @@ import {
 } from "alsatian";
 
 import { TeardownFixture } from "alsatian/core/decorators";
-import { TempDir } from "../_testing_helpers/TempDir.help";
+import { TempDir } from "../../_testing_helpers/TempDir.help";
 import { GMS2Folder } from "./GMS2Folder";
 import GMS2Project from "./GMS2Project";
 import GMS2Resource from "./GMS2Resource";

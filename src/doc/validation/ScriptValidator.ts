@@ -1,4 +1,4 @@
-import ScriptValidationRules from "../config/ScriptValidationRules";
+import ScriptValidationRules from "../../config/ScriptValidationRules";
 import ValidableScript from "./ValidableScript";
 import { ValidatorRule } from "./ValidatorRule";
 

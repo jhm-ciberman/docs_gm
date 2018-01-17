@@ -1,6 +1,6 @@
-import IValidationRule from "../config/IValidationRuleConfig";
-import IReporter from "../reporter/IReporter";
-import ReporterManager from "../reporter/ReporterManager";
+import IValidationRule from "../../config/IValidationRuleConfig";
+import IReporter from "../../reporter/IReporter";
+import ReporterManager from "../../reporter/ReporterManager";
 
 /**
  * Validates a generic element T against a rule defined by a validatorFunction.

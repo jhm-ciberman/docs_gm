@@ -1,7 +1,7 @@
-import DocExample from "../docs_models/DocExample";
-import DocParam from "../docs_models/DocParam";
-import DocReturns from "../docs_models/DocReturns";
-import DocScript from "../docs_models/DocScript";
+import DocExample from "../doc/models/DocExample";
+import DocParam from "../doc/models/DocParam";
+import DocReturns from "../doc/models/DocReturns";
+import DocScript from "../doc/models/DocScript";
 import StringUtils from "./StringUtils";
 
 /**

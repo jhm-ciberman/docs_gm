@@ -5,8 +5,8 @@ import * as path from "path";
 
 import OutputConfig from "../config/OutputConfig";
 import ProjectConfig from "../config/ProjectConfig";
-import TemplateLoader from "../doc_generator/TemplateLoader";
-import { IGMProject } from "../IGMInterfaces";
+import TemplateLoader from "../doc/render/TemplateLoader";
+import IGMProject from "../gm_project/interfaces/IGMProject";
 import DocProjectGenerator from "./DocProjectGenerator";
 
 /**
