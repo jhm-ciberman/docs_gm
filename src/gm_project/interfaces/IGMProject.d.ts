@@ -9,6 +9,4 @@ export default interface IGMProject {
 	readonly name: string;
 	find(pattern: string): IGMResource[];
 	addTopLevelFolder(folder: IGMFolder): void;
-	
-
 }
