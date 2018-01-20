@@ -1,13 +1,12 @@
 import * as path from "path";
 
+import GMResource from "../common/GMResource";
 import IGMScript from "../interfaces/IGMScript";
-import GMS1Folder from "./GMS1Folder";
-import GMS1Resource from "./GMS1Resource";
 
 /**
  * Represents a GMS1 Script. Can contain subscripts.
  */
-export default class GMS1Script extends GMS1Resource implements IGMScript {
+export default class GMS1Script extends GMResource implements IGMScript {
 
 	/**
 	 * The filename of the script
@@ -30,11 +29,9 @@ export default class GMS1Script extends GMS1Resource implements IGMScript {
 	/**
 	 * Creates a new GMS1 script
 	 * @param file The relative filename of the script
-	 * @param project The GMS1 Project of this script
-	 * @param parent The parent folder
 	 */
-	constructor(file: string, parent: GMS1Folder | null) {
-		super(parent, path.basename(file).split(".")[0]);
+	constructor(file: string) {
+		super(path.basename(file).split(".")[0]);
 		this._path = file;
 	}
 

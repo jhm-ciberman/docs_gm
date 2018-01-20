@@ -1,22 +1,44 @@
 import * as globby from "globby";
 import * as path from "path";
 
-import GMS1Project from "../gm_project/gms1/GMS1Project";
-import GMS2Project from "../gm_project/gms2/GMS2Project";
+import GMS1ProjectFactory from "../gm_project/gms1/GMS1ProjectFactory";
+import GMS2ProjectFactory from "../gm_project/gms2/GMS2ProjectFactory";
 import IGMProject from "../gm_project/interfaces/IGMProject";
+import IGMProjectFactory from "../gm_project/interfaces/IGMProjectFactory";
 
 /**
- * This class loads a GMS1 or GMS2 project and returns a GMProject object
+ * This Factory class loads a GMS1 or GMS2 project and returns a GMProject object
  */
 export default class ProjectLoader {
+
+	/**
+	 * Used for dependency injection
+	 */
+	public static depends = {
+		globby,
+	};
+
+	/**
+	 * The project path
+	 */
+	private readonly _gmProjectPath: string;
+
+	/**
+	 * Creates a new Project loader
+	 * @param gmProjectPath The path of the project to load
+	 */
+	public constructor(gmProjectPath: string = ".") {
+		this._gmProjectPath = gmProjectPath;
+	}
+
 	/**
 	 * Loads a specified GMS1 or GMS2 Project
 	 * @param GMProjectPath The project path to load
 	 * @return A promise with the loaded project
 	 */
-	public static async loadProject(gmProjectPath: string = "."): Promise<IGMProject> {
+	public async load(): Promise<IGMProject> {
 
-		const files = await globby(gmProjectPath + "/*.{yyp,gmx}");
+		const files = await globby(this._gmProjectPath + "/*.{yyp,gmx}");
 
 		if (files.length === 0) {
 			throw new Error("Unrecognized GM project. No *.yyp or *.gmx file found");
@@ -26,14 +48,17 @@ export default class ProjectLoader {
 
 		const ext = extArr[extArr.length - 1];
 
+		let factory: IGMProjectFactory;
 		switch (ext) {
 			case "yyp":
-				return GMS2Project.loadProject(files[0]);
+				factory = new GMS2ProjectFactory(files[0]);
+				break;
 			case "gmx":
-				return GMS1Project.loadProject(files[0]);
+				factory = new GMS1ProjectFactory(files[0]);
+				break;
 			default:
 				throw new Error(`Unrecognized project extension: "${ext}"`);
 		}
-
+		return factory.load();
 	}
 }

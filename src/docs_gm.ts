@@ -19,7 +19,8 @@ const overrideConfig = {} as ProjectConfig;
 async function generate(projectPath?: string, opts?: ProjectConfig) {
 
 	ReporterManager.reporter.info("Loading Project...");
-	const project = await ProjectLoader.loadProject(projectPath);
+	const loader = new ProjectLoader(projectPath);
+	const project = await loader.load();
 
 	ReporterManager.reporter.info("Loading project configuration...");
 	let config = await DocsGM.loadConfig(projectPath);

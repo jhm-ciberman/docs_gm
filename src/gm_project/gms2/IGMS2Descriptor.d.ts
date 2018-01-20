@@ -39,5 +39,5 @@ export interface IFolder extends IResource {
 export interface IScript extends IResource {
 	name: string;
 	IsDnD?: boolean;
-	IsCompatibility?: boolean;
+	IsCompatibility: boolean;
 }

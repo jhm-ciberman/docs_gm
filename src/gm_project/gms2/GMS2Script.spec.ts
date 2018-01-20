@@ -16,10 +16,7 @@ export class GMS2ScriptFixture {
 
 	@Setup
 	public setup() {
-		this.script = new GMS2Script({
-			id: "my-id",
-			name: "my-name",
-		});
+		this.script = new GMS2Script("my-name");
 	}
 
 	@Test("should load a script and get the script content and name through an iterator")

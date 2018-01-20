@@ -1,11 +1,10 @@
 import IGMFolder from "../interfaces/IGMFolder";
 import IGMResource from "../interfaces/IGMResource";
-import GMS1Folder from "./GMS1Folder";
 
 /**
- * Represents a generic GMS1 resource.
+ * Represents a generic GameMaker resource.
  */
-export default class GMS1Resource implements IGMResource {
+export default class GMResource implements IGMResource {
 
 	/**
 	 * The parent folder of the resource
@@ -23,8 +22,7 @@ export default class GMS1Resource implements IGMResource {
 	 * @param parent The Parent folder of the resource
 	 * @param name The name of the resource
 	 */
-	constructor(parent: GMS1Folder | null, name: string) {
-		this.parent = parent;
+	constructor(name: string) {
 		this.name = name;
 	}
 

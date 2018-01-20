@@ -10,7 +10,7 @@
     "unit-tests": "alsatian ./dist/**/*.spec.js",
     "build": "tsc -p .",
     "watch": "tsc -p . --watch",
-    "clean": "rimraf ./dist/",
+    "clean": "rimraf ./dist/ ./coverage/ ./.nyc_output/",
     "coverage": "npm run build && nyc npm run unit-tests",
     "report-coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint --project . -t verbose",

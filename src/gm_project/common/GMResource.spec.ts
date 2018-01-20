@@ -6,25 +6,24 @@ import {
 
 import IGMFolder from "../interfaces/IGMFolder";
 import IGMResource from "../interfaces/IGMResource";
-import GMS2Resource from "./GMS2Resource";
+import GMResource from "./GMResource";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
 class FolderMock implements IGMFolder {
+	public children: IterableIterator<IGMResource>;
 	public parent: IGMFolder | null;
 	public fullpath: string;
 	public name: string;
-	public children: IGMResource[];
+	public addChild(_child: IGMResource): void {
+		throw new Error("Method not implemented.");
+	}
 }
 
 @TestFixture("GMS2Resource")
 export class GMS2ResourceFixture {
 
-	public resource = new GMS2Resource({
-		// IResource
-		id: "my-id",
-		name: "my-name",
-	});
+	public resource = new GMResource("my-name");
 
 	@Test("should get the name")
 	public name() {

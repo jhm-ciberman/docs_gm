@@ -9,9 +9,9 @@ import GMS1Script from "./GMS1Script";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-@TestFixture("GMS1Script")
-export class GMS1ScriptFixture {
-	public script = new GMS1Script("path/to/my_script.gml", null);
+@TestFixture("GMScript")
+export class GMScriptFixture {
+	public script = new GMS1Script("path/to/my_script.gml");
 
 	@Test("should get the filepath")
 	public filepath() {

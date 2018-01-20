@@ -1,16 +1,10 @@
+import GMResource from "../common/GMResource";
 import IGMScript from "../interfaces/IGMScript";
-import GMS2Resource from "./GMS2Resource";
-import * as GMS2Descriptor from "./IGMS2Descriptor";
 
 /**
  * Represents a GMS2 Script
  */
-export default class GMS2Script extends GMS2Resource implements IGMScript {
-
-	/**
-	 * The script name
-	 */
-	public name: string;
+export default class GMS2Script extends GMResource implements IGMScript {
 
 	/**
 	 * Is a compatibility script?
@@ -26,9 +20,8 @@ export default class GMS2Script extends GMS2Resource implements IGMScript {
 	 * Creates a new Script
 	 * @param data The YOYO model data for the script
 	 */
-	constructor(data: GMS2Descriptor.IScript) {
-		super(data);
-		this.isCompatibility = data.IsCompatibility || false;
+	constructor(name: string) {
+		super(name);
 	}
 
 	/**
@@ -54,7 +47,7 @@ export default class GMS2Script extends GMS2Resource implements IGMScript {
 	 */
 	public * subScripts(): IterableIterator<[string, string]> {
 		if (this._text === null) {
-			throw new Error("Must call load() before accesing the subScripts() function");
+			throw new Error("Must call loadFromString() before accesing the subScripts() function");
 		}
 		// This lines converts the triple slash comments ( ///comment)
 		// to JSDoc comments
