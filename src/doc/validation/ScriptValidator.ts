@@ -1,4 +1,4 @@
-import ScriptValidationRules from "../../config/ScriptValidationRules";
+import IScriptValidationRules from "../../config/interfaces/IScriptValidationRules";
 import ValidableScript from "./ValidableScript";
 import { ValidatorRule } from "./ValidatorRule";
 
@@ -16,14 +16,14 @@ export default class ScriptValidator {
 	/**
 	 * The rules options
 	 */
-	private readonly _rules: ScriptValidationRules;
+	private readonly _rules: IScriptValidationRules;
 	/**
 	 * Creates a new Validator
 	 * @param docScript The docScript to validate
 	 * @param parser The Parset to extract the GML features of the DocScript
 	 * @param config The config to validate against
 	 */
-	public constructor(rules: ScriptValidationRules ) {
+	public constructor(rules: IScriptValidationRules ) {
 		this._rules = rules;
 
 		const rulePrivate = new ValidatorRule<ValidableScript>(

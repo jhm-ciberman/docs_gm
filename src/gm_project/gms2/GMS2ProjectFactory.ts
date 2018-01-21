@@ -7,6 +7,7 @@ import GMResource from "../common/GMResource";
 import IGMFolder from "../interfaces/IGMFolder";
 import IGMProject from "../interfaces/IGMProject";
 import IGMProjectFactory from "../interfaces/IGMProjectFactory";
+import IGMResource from "../interfaces/IGMResource";
 import GMS2ResourceType from "./GMS2ResourceType";
 import GMS2Script from "./GMS2Script";
 import { IFolder, IProject, IResource, IResourceInfo, IScript } from "./IGMS2Descriptor";
@@ -36,15 +37,15 @@ export default class GMS2ProjectFactory implements IGMProjectFactory {
 	/**
 	 * The GMS2Project to create
 	 */
-	private readonly _project: GMProject;
+	private readonly _project: IGMProject;
 
 	/**
 	 * Creates GMS2ProjectFactory
 	 * @param file The project file
 	 */
 	constructor(file: string) {
-		this._project = new GMProject(file);
 		this._file = file;
+		this._project = new GMProject(path.dirname(this._file));
 	}
 
 	/**
@@ -56,30 +57,38 @@ export default class GMS2ProjectFactory implements IGMProjectFactory {
 		const str = await fse.readFile(this._file, "utf8");
 		const data: IProject = JSON.parse(str);
 
-		const p = new GMProject(path.dirname(this._file));
-
 		for (const item of data.resources) {
 			await this._addResource(item.Key, item.Value);
 		}
-		this._buildTree();
-		return p;
+		for (const folder of this._project.children) {
+			this._buildSubTree(folder);
+		}
+		return this._project;
 	}
 
 	/**
-	 * Builds the project tree
+	 * Build subtre for the specified folder
+	 * @param folder The folder to find the childrens
 	 */
-	private _buildTree() {
-		for (const folder of this._project.topLevelFolders) {
-			const children = this._folderChildsKeys.get(folder);
-			if (children) {
-				for (const childKey of children) {
-					const child = this._resourcesByKey.get(childKey);
-					if (child) {
-						folder.addChild(child);
-					}
+	private _buildSubTree(folder: IGMFolder) {
+		const children = this._folderChildsKeys.get(folder) as string[];
+		for (const childKey of children) {
+			const child = this._resourcesByKey.get(childKey);
+			if (child) {
+				folder.addChild(child);
+				if (this._isFolder(child)) {
+					this._buildSubTree(child);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Determines if the resource is a folder (ducktyping)
+	 * @param res The resource
+	 */
+	private _isFolder(res: IGMResource): res is IGMFolder {
+		return ("addChild" in res);
 	}
 
 	/**
@@ -127,7 +136,7 @@ export default class GMS2ProjectFactory implements IGMProjectFactory {
 		const folder = new GMFolder(data.folderName);
 		this._folderChildsKeys.set(folder, data.children);
 		if (topLevelName !== "") {
-			this._project.addTopLevelFolder(folder);
+			this._project.addChild(folder);
 		}
 		return folder;
 	}

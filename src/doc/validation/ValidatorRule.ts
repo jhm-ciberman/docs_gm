@@ -1,4 +1,4 @@
-import IValidationRule from "../../config/IValidationRuleConfig";
+import IValidationRule from "../../config/interfaces/IValidationRuleConfig";
 import IReporter from "../../reporter/IReporter";
 import ReporterManager from "../../reporter/ReporterManager";
 

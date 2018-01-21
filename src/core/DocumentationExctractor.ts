@@ -1,4 +1,4 @@
-import ProjectConfig from "../config/ProjectConfig";
+import IProjectConfig from "../config/interfaces/IProjectConfig";
 import DocScript from "../doc/models/DocScript";
 import ScriptValidator from "../doc/validation/ScriptValidator";
 import ValidableScript from "../doc/validation/ValidableScript";
@@ -24,7 +24,7 @@ export default class DocumentationExtractor {
 	 *
 	 * @param config The ProjectConfig that have all the validation rules to use
 	 */
-	constructor(config: ProjectConfig) {
+	constructor(config: IProjectConfig) {
 		this._scriptValidator = new ScriptValidator(config.scripts);
 		this._jsDocParser = new JSDocParser(config.warnUnrecognizedTags);
 	}

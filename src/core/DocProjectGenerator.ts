@@ -1,7 +1,7 @@
 import * as fse from "fs-extra";
 import * as path from "path";
 
-import ProjectConfig from "../config/ProjectConfig";
+import IProjectConfig from "../config/interfaces/IProjectConfig";
 import DocProject from "../doc/models/DocProject";
 import DocScript from "../doc/models/DocScript";
 import IGMProject from "../gm_project/interfaces/IGMProject";
@@ -18,7 +18,7 @@ export default class DocProjectGenerator {
 	 * @param project The GM Project
 	 * @param config The OutputConfig
 	 */
-	public static async generate(project: IGMProject, projectConfig: ProjectConfig): Promise<DocProject> {
+	public static async generate(project: IGMProject, projectConfig: IProjectConfig): Promise<DocProject> {
 		const scripts = project.find(projectConfig.output.pattern)
 			.filter((res) => ((res as IGMScript).subScripts !== undefined))
 			.sort((a, b) => a.name.localeCompare(b.name)) as IGMScript[];

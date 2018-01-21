@@ -3,8 +3,8 @@ import * as JSON5 from "json5";
 import * as os from "os";
 import * as path from "path";
 
-import OutputConfig from "../config/OutputConfig";
-import ProjectConfig from "../config/ProjectConfig";
+import DefaultProjectConfig from "../config/DefaultProjectConfig";
+import IProjectConfig from "../config/interfaces/IProjectConfig";
 import TemplateLoader from "../doc/render/TemplateLoader";
 import IGMProject from "../gm_project/interfaces/IGMProject";
 import DocProjectGenerator from "./DocProjectGenerator";
@@ -36,7 +36,7 @@ export default class DocsGM {
 	 * @param jsonOrProjectPath The path to the JSON file or to the GameMaer project
 	 * @returns A promise with the created OutputConfig object or null if the file does not exists
 	 */
-	public static async loadConfig(jsonOrProjectPath: string = "."): Promise<ProjectConfig | undefined> {
+	public static async loadConfig(jsonOrProjectPath: string = "."): Promise<IProjectConfig | undefined> {
 		let jsonPath: string;
 		let str: string;
 		if (path.extname(jsonOrProjectPath) === "json") {
@@ -50,7 +50,7 @@ export default class DocsGM {
 			return undefined;
 		}
 		const data = JSON5.parse(str);
-		const config = new OutputConfig();
+		const config = DefaultProjectConfig.create();
 		return Object.assign(config, data);
 	}
 
@@ -58,8 +58,8 @@ export default class DocsGM {
 	 * Generates the documentation files for the project.
 	 * @return Promise with the path of the output folder
 	 */
-	public static async generate(project: IGMProject, config?: ProjectConfig): Promise<string> {
-		config = config || new ProjectConfig();
+	public static async generate(project: IGMProject, config?: IProjectConfig): Promise<string> {
+		config = config || DefaultProjectConfig.create();
 		const docProject = await DocProjectGenerator.generate(project, config);
 		const template = await TemplateLoader.loadTemplate(config.output.template, config.output.templatesFolder);
 

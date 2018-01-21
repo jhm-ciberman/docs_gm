@@ -1,6 +1,7 @@
 import {
 	AsyncTest,
 	Expect,
+	Setup,
 	Test,
 	TestFixture,
 } from "alsatian";
@@ -9,9 +10,15 @@ import GMS1Script from "./GMS1Script";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-@TestFixture("GMScript")
-export class GMScriptFixture {
-	public script = new GMS1Script("path/to/my_script.gml");
+@TestFixture("GMS1Script")
+export class GMS1ScriptFixture {
+
+	public script: GMS1Script;
+
+	@Setup
+	public setup() {
+		this.script = new GMS1Script("path/to/my_script.gml");
+	}
 
 	@Test("should get the filepath")
 	public filepath() {
@@ -19,7 +26,7 @@ export class GMScriptFixture {
 	}
 
 	@AsyncTest("should loadFromString() multiple scripts")
-	public async loadFromString() {
+	public async loadFromString_multipleScripts() {
 		const mockGML = [
 			"#define my_script_1",
 			"return \"foo\";",
@@ -27,18 +34,25 @@ export class GMScriptFixture {
 			"return \"bar\";",
 		];
 		const script = await this.script.loadFromString(mockGML.join("\n"));
-		const it = script.subScripts();
+		const arr = Array.from(script.subScripts());
+		Expect(arr.length).toEqual(2);
+		Expect(arr[0]).toEqual(["my_script_1", 'return "foo";']);
+		Expect(arr[1]).toEqual(["my_script_2", 'return "bar";']);
+	}
 
-		const result1 = it.next();
-		Expect(result1.done).toBe(false);
-		Expect(result1.value).toEqual(["my_script_1", 'return "foo";']);
+	@AsyncTest("should loadFromString() single script")
+	public async loadFromString_singleScript() {
+		const script = await this.script.loadFromString("return \"foo\";");
+		const arr = Array.from(script.subScripts());
+		Expect(arr.length).toEqual(1);
+		Expect(arr[0]).toEqual(["my_script", 'return "foo";']);
+	}
 
-		const result2 = it.next();
-		Expect(result2.done).toBe(false);
-		Expect(result2.value).toEqual(["my_script_2", 'return "bar";']);
-
-		const result3 = it.next();
-		Expect(result3.done).toBe(true);
+	@Test("should throw when calling subScripts() without calling loadFromString")
+	public subScripts_Throw() {
+		Expect(() => {
+			this.script.subScripts().next();
+		}).toThrow();
 	}
 
 }

@@ -22,14 +22,10 @@ export class GMS2ScriptFixture {
 	@Test("should load a script and get the script content and name through an iterator")
 	public subScripts() {
 		this.script.loadFromString("my-gml-content");
-		const it = this.script.subScripts();
-
-		const result1 = it.next();
-		Expect(result1.value).toEqual(["my-name", "my-gml-content"]);
-		Expect(result1.done).toBe(false);
-
-		const result2 = it.next();
-		Expect(result2.done).toBe(true);
+		const arr = Array.from(this.script.subScripts());
+		Expect(arr.length).toBe(1);
+		Expect(arr[0][0]).toBe("my-name");
+		Expect(arr[0][1]).toBe("my-gml-content");
 	}
 
 	@Test("should get the filepath of the gml file of a non-compatibility script")

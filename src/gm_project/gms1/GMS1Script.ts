@@ -42,6 +42,7 @@ export default class GMS1Script extends GMResource implements IGMScript {
 	 * @returns A promise
 	 */
 	public async loadFromString(str: string): Promise<this> {
+		this._subScripts.clear();
 		// Normalize new lines (to use the next regex)
 		str = str.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 

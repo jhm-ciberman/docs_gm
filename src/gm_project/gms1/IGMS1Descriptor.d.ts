@@ -5,6 +5,10 @@
  */
 
 export interface IGMS1DescriptorRoot {
+	assets: IGMS1DescriptorAssets;
+}
+
+export interface IGMS1DescriptorAssets {
 	Configs?: any;
 	NewExtensions?: any;
 	TutorialState?: any;

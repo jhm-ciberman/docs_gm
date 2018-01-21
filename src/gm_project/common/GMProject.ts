@@ -4,11 +4,12 @@ import * as path from "path";
 import IGMFolder from "../interfaces/IGMFolder";
 import IGMProject from "../interfaces/IGMProject";
 import IGMResource from "../interfaces/IGMResource";
+import GMFolder from "./GMFolder";
 
 /**
  * Represents a GameMaker Project.
  */
-export default class GMProject implements IGMProject {
+export default class GMProject extends GMFolder implements IGMProject {
 
 	/**
 	 * The path of the project
@@ -23,53 +24,41 @@ export default class GMProject implements IGMProject {
 	/**
 	 * An array with the project's top level folders. (Example: "objects", "scripts", "sprites", "rooms")
 	 */
-	private _topLevelFolders: IGMFolder[] = [];
+	protected _children: IGMFolder[] = [];
 
 	/**
-	 * An array with all the resources in the resource tree
-	 */
-	private _resources: IGMResource[] = [];
-
-	/**
-	 * @private
 	 * Creates a new GMS1 Project
-	 * @param data The data of the GMS1 Project
-	 * @param GMProjectPath The path of the GMS1 Project
+	 * @param gmProjectFolder The folder of the GM project
 	 */
-	public constructor(gmProjectPath: string) {
-		this.path = gmProjectPath;
-		this.name = path.basename(path.resolve(this.path));
+	public constructor(gmProjectFolder: string) {
+		super("");
+		this.path = gmProjectFolder;
+		this.name = path.basename(path.resolve(gmProjectFolder));
 	}
 
 	/**
-	 * Search all the resources that match certain pattern
+	 * Returns an array of the resources that match certain glob pattern
 	 * @param pattern The glob pattern to use to find files
-	 * @param type The optional resource type
-	 * @returns An array with the GMS2Resources found
 	 */
 	public find(pattern: string): IGMResource[] {
-		const results: IGMResource[] = [];
-		for (const resource of this._resources) {
-			if (minimatch(resource.fullpath, pattern, { matchBase: true })) {
-				results.push(resource);
-			}
-		}
-		return results;
+		// TODO: optimize this ineficient recursive way
+		return this.getSubtreeLeafs().filter ((res) => {
+			return minimatch(res.fullpath, pattern, { matchBase: true });
+		});
+	}
+
+	/**
+	 * Gets the top level folders of the project
+	 */
+	public get children(): IterableIterator<IGMFolder> {
+		return this._children[Symbol.iterator]();
 	}
 
 	/**
 	 * Adds a top level folder to the project
-	 * @param folder The folder
+	 * @param child The folder to add
 	 */
-	public addTopLevelFolder(folder: IGMFolder) {
-		this._topLevelFolders.push(folder);
+	public addChild(child: IGMFolder) {
+		this._children.push(child);
 	}
-
-	/**
-	 * Returns an iterator for the top level folders
-	 */
-	get topLevelFolders() {
-		return this._topLevelFolders[Symbol.iterator]();
-	}
-
 }

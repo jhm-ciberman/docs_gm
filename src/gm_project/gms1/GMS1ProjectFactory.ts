@@ -22,7 +22,7 @@ export default class GMS1ProjectFactory implements IGMProjectFactory {
 	/**
 	 * The project to create
 	 */
-	private readonly _project: GMProject;
+	private readonly _project: IGMProject;
 
 	/**
 	 * Creates a new GMS1Project Factory
@@ -41,13 +41,13 @@ export default class GMS1ProjectFactory implements IGMProjectFactory {
 	public async load(): Promise<IGMProject> {
 		const str = await fse.readFile(this._file, "utf8");
 		// "assets" is the root XML node of the document, but we call Root at the content of that node
-		const data: { assets: IGMS1DescriptorRoot } = await this._xmlParse(str);
+		const data: IGMS1DescriptorRoot = await this._xmlParse(str);
 
 		const assets = data.assets;
 		// Creates the root folder
 		if (assets.scripts) {
 			const scriptsFolder = this._createFolder(assets.scripts[0]);
-			this._project.addTopLevelFolder(scriptsFolder);
+			this._project.addChild(scriptsFolder);
 		}
 
 		return this._project;
@@ -82,8 +82,7 @@ export default class GMS1ProjectFactory implements IGMProjectFactory {
 	private _xmlParse(str: string): Promise<any> {
 		return new Promise((accept) => {
 			xml2js.parseString(str, (err, result) => {
-				/* istambul ignore if */
-				if (err) { throw err; }
+				if (err) { throw new Error(err); }
 				accept(result);
 			});
 		});

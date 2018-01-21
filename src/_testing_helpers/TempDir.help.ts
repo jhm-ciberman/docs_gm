@@ -51,7 +51,8 @@ export class TempDir {
 	 * @param folderPath The directory name
 	 */
 	private constructor(folderPath: string) {
-		this.dir = path.join(os.tmpdir(), folderPath);
+		const rand = (Math.random() * 1e8).toFixed(0);
+		this.dir = path.join(os.tmpdir(), rand, folderPath);
 	}
 
 	/**
@@ -70,7 +71,12 @@ export class TempDir {
 	 * Remove the current temp directory
 	 */
 	public removeSelf() {
-		fse.removeSync(this.dir);
+		try {
+			fse.removeSync(this.dir);
+		} catch (_e) {
+			// nothing
+		}
+
 	}
 
 	/**
