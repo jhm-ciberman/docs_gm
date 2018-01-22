@@ -1,81 +1,20 @@
 import {
-	AsyncTest,
 	Expect,
 	Setup,
-	SetupFixture,
-	TeardownFixture,
 	Test,
-	TestFixture,
 } from "alsatian";
 
-import { TempDir } from "../../_testing_helpers/TempDir.help";
-import Design from "./Design";
+import { myTemplateJSON } from "./__mock__/TemplateJSON.mock";
 import Template from "./Template";
-import { IRoot } from "./TemplateJSON";
 
 /* tslint:disable:max-classes-per-file completed-docs */
-
-const myTemplateJSON: IRoot = {
-	author: "Darth Vader",
-	web: "http://foo.com/",
-	description: "My description",
-	defaultDesign: "myDesign",
-	designs: {
-		myDesign: {
-			displayName: "My design",
-			pages: [
-				{ in: "page.njk", out: "index.html", feedWith: "scripts" },
-			],
-		},
-		myOtherDesign: {
-			displayName: "My Other design",
-			pages: [
-				{ in: "page.njk", out: "index.html", feedWith: "scripts" },
-			],
-		},
-	},
-};
-
-@TestFixture("Template (Static)")
-export class TemplateStaticFixture {
-
-	public tempDir: TempDir;
-
-	@SetupFixture
-	public setupFixture() {
-		this.tempDir = TempDir.create("path/to/template", {
-			"template.json": JSON.stringify(myTemplateJSON),
-			"page.njk": "<h1>Hello world</h1>",
-		});
-	}
-
-	@TeardownFixture
-	public teardownFixture() {
-		TempDir.removeAll();
-	}
-
-	@AsyncTest("should load template from a file")
-	public async loadFrom() {
-		const template = await Template.loadFrom(this.tempDir.dir);
-
-		Expect(template.author).toBe("Darth Vader");
-		Expect(template.web).toBe("http://foo.com/");
-		Expect(template.description).toBe("My description");
-		Expect(template.defaultDesign).toBeDefined();
-		Expect((template.defaultDesign as Design).name).toBe("myDesign");
-		Expect((template.defaultDesign as Design).displayName).toBe("My design");
-		Expect(template.folder).toBe(this.tempDir.dir);
-	}
-}
-
-/* tslint:disable:max-classes-per-file */
 
 export class TemplateFixture {
 	public template: Template;
 
 	@Setup
 	public setup() {
-		this.template = new Template(myTemplateJSON, "path/to/template");
+		this.template = Template.create(myTemplateJSON, "path/to/template");
 	}
 
 	@Test("getDesign() should return the Design instance of the design with that name")
@@ -107,5 +46,14 @@ export class TemplateFixture {
 		Expect(arr.length).toBe(2);
 		Expect(arr).toContain("myDesign");
 		Expect(arr).toContain("myOtherDesign");
+	}
+
+	@Test("create should thrown when an invalid defaultDesign is in the json")
+	public create_invalidDefaultDesign() {
+		const invalidJSON = Object.create(myTemplateJSON);
+		invalidJSON.defaultDesign = "invalid_default_design_name";
+		Expect(() => {
+			Template.create(invalidJSON, "path/to/template");
+		}).toThrow();
 	}
 }

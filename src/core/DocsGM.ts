@@ -61,7 +61,14 @@ export default class DocsGM {
 	public static async generate(project: IGMProject, config?: IProjectConfig): Promise<string> {
 		config = config || new ProjectConfig();
 		const docProject = await DocProjectGenerator.generate(project, config);
-		const template = await TemplateLoader.loadTemplate(config.output.template, config.output.templatesFolder);
+		const templateLoader = new TemplateLoader();
+		let folder;
+		if (config.output.templatesFolder === "") {
+			folder = path.resolve(config.output.templatesFolder, config.output.template);
+		} else {
+			folder = await templateLoader.getTemplateModulePath(config.output.template);
+		}
+		const template = await templateLoader.loadFrom(folder);
 
 		const designName = config.output.design;
 		if (designName && !template.hasDesign(designName)) {

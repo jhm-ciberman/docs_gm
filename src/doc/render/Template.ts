@@ -1,4 +1,3 @@
-import * as fse from "fs-extra";
 import * as path from "path";
 
 import Design from "./Design";
@@ -10,19 +9,16 @@ import * as TemplateJSON from "./TemplateJSON";
 export default class Template {
 
 	/**
-	 * Factory method to load the template from a folder
-	 * @param folder The folder name
-	 * @returns A promise
+	 * Static factory method to create a Template. Can throw if the defaultDesign name is invalid
+	 * @param data The template data
+	 * @param folder The folder to load from
 	 */
-	public static async loadFrom(folder: string): Promise<Template> {
-		let data: any;
-		const jsonPath = path.resolve(folder, "template.json");
-		try {
-			data = await fse.readJSON(jsonPath);
-		} catch (e) {
-			throw new Error(`Error loading Template from "${ jsonPath }"`);
+	public static create(data: TemplateJSON.IRoot, folder: string) {
+		const template = new Template(data, folder);
+		if (!template.defaultDesign) {
+			throw new Error("Default design name is invalid");
 		}
-		return new Template(data, folder);
+		return template;
 	}
 
 	/**
@@ -57,9 +53,10 @@ export default class Template {
 
 	/**
 	 * Creates a new Template object
+	 * @param data the template data
 	 * @param folder the folder that contains the template
 	 */
-	public constructor(data: TemplateJSON.IRoot, folder: string) {
+	private constructor(data: TemplateJSON.IRoot, folder: string) {
 		this.folder = path.resolve(folder);
 		this.author = data.author;
 		this.description = data.description;
@@ -71,11 +68,9 @@ export default class Template {
 		}
 
 		const d = this._designs.get(data.defaultDesign);
-		if (!d) {
-			throw new Error("Default design name is invalid");
+		if (d) {
+			this.defaultDesign = d;
 		}
-		this.defaultDesign = d;
-
 	}
 
 	/**

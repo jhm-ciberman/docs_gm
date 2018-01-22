@@ -14,7 +14,6 @@ import Page from "./Page";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-// @FocusTests
 @TestFixture("Page")
 export class PageFixture {
 

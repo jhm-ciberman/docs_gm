@@ -1,3 +1,4 @@
+import * as fse from "fs-extra";
 import { getInstalledPath } from "get-installed-path";
 import * as path from "path";
 import Template from "./Template";
@@ -10,39 +11,35 @@ export default class TemplateLoader {
 	/**
 	 * Used for dependency injection
 	 */
-	public static depend = {
-		getInstalledPath,
-	};
+	protected getInstalledPath: (name: string, opts?: GetInstalledPath.Options) => Promise<string> = getInstalledPath;
 
 	/**
-	 * Loads a template
-	 * @param name Template name
-	 * @param templatesFolder If pased, it will try to load the template from this folder
-	 * @param outputConfig
+	 * Factory method to load the template from a folder
+	 * @param folder The folder name
+	 * @returns A promise
 	 */
-	public static async loadTemplate(name: string, templatesFolder: string = ""): Promise<Template> {
-		const moduleName = "docs_gm-" + name;
-		let folder;
-		if (templatesFolder !== "") {
-			folder = await this._getModulePath(moduleName);
-		} else {
-			folder = path.resolve(templatesFolder, moduleName);
+	public async loadFrom(folder: string): Promise<Template> {
+		let data: any;
+		const jsonPath = path.resolve(folder, "template.json");
+		try {
+			data = await fse.readJSON(jsonPath);
+		} catch (e) {
+			throw new Error(`Error loading Template from "${jsonPath}"`);
 		}
-		const template = await Template.loadFrom(folder);
-		return template;
+		return Template.create(data, folder);
 	}
 
 	/**
-	 * Gets the path of a module from a global instalation or local instalation.
-	 * @param moduleName The name of the module to load
-	 * @param folder The folder to look for the module if the module is not located in global or local node_modules
+	 * Gets the path of a template npm module from a global instalation or local instalation.
+	 * @param templateName The name of the template to find
 	 */
-	private static async _getModulePath(moduleName: string): Promise<string> {
+	public async getTemplateModulePath(templateName: string): Promise<string> {
+		const moduleName = "docs_gm-" + templateName;
 		try {
-			return await this.depend.getInstalledPath(moduleName);
+			return await this.getInstalledPath(moduleName);
 		} catch (e) {
 			try {
-				return await this.depend.getInstalledPath(moduleName, { local: true, cwd: __dirname + "./../" });
+				return await this.getInstalledPath(moduleName, { local: true /*, cwd: __dirname + "./../"*/ });
 			} catch (e) {
 				throw new Error(`Cannot find the module ${moduleName}`);
 			}
