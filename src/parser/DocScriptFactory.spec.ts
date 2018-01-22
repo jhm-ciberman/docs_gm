@@ -43,31 +43,41 @@ export class DocScriptFactoryFixture {
 	@Test("Should add a param")
 	public param() {
 		this.factory.addParam("param1_name", "param1_type", false, "param1_description");
-		this.factory.addParam("param2_name", "param2_type", true, "param2_description");
+		this.factory.addParam("param2_name", "", true, "param2_description");
 		const script = this.factory.make();
 		const params = script.params;
 		Expect(params.length).toBe(2);
+
 		Expect(params[0].name).toBe("param1_name");
 		Expect(params[0].type).toBe("param1_type");
 		Expect(params[0].optional).toBe(false);
 		Expect(params[0].description).toBe("param1_description");
+
 		Expect(params[1].name).toBe("param2_name");
-		Expect(params[1].type).toBe("param2_type");
+		Expect(params[1].type).toBeNull();
 		Expect(params[1].optional).toBe(true);
 		Expect(params[1].description).toBe("param2_description");
 	}
 
 	@Test("Should add an example")
-	public examples() {
+	public examples_normal() {
 		this.factory.addExample("my_example1");
 		this.factory.addExample("my_example2");
 		const script = this.factory.make();
 		const examples = script.examples;
 		Expect(examples.length).toBe(2);
 		Expect(examples[0].code).toBe("my_example1");
-		Expect(examples[0].caption).toBe(null);
+		Expect(examples[0].caption).toBeNull();
 		Expect(examples[1].code).toBe("my_example2");
-		Expect(examples[1].caption).toBe(null);
+		Expect(examples[1].caption).toBeNull();
+	}
+
+	@Test("Should not add an empty example")
+	public examples_empty() {
+		this.factory.addExample("");
+		const script = this.factory.make();
+		const examples = script.examples;
+		Expect(examples.length).toBe(0);
 	}
 
 	@Test("Should set the function name")

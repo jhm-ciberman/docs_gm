@@ -1,5 +1,6 @@
 import parse = require("comment-parser");
 import DocScript from "../doc/models/DocScript";
+import IReporter from "../reporter/IReporter";
 import ReporterManager from "../reporter/ReporterManager";
 import DocScriptFactory from "./DocScriptFactory";
 
@@ -9,17 +10,14 @@ import DocScriptFactory from "./DocScriptFactory";
 export default class JSDocParser {
 
 	/**
-	 * The rules to validate against
+	 * Should warn about unrecognized JSDoc tags?
 	 */
-	private readonly _warnUnrecognizedTags: boolean;
+	public warnUnrecognizedTags: boolean = true;
 
 	/**
-	 * Creates a ScriptParser instance
-	 * @param warnUnrecognizedTags Should warn about unrecognized JSDoc tags?
+	 * The reporter to use
 	 */
-	public constructor(warnUnrecognizedTags: boolean) {
-		this._warnUnrecognizedTags = warnUnrecognizedTags;
-	}
+	public reporter: IReporter = ReporterManager.reporter;
 
 	/**
 	 * Parses a gml script string and extracts all the documentation for a passed script
@@ -69,7 +67,7 @@ export default class JSDocParser {
 				break;
 			case "returns":
 			case "return":
-				factory.setReturns(tag.type, tag.description);
+				factory.setReturns(tag.type, [tag.name, tag.description].join(" "));
 				break;
 			case "example":
 				factory.addExample(this._reconstructTag(tag));
@@ -80,8 +78,8 @@ export default class JSDocParser {
 				factory.setFunction(this._reconstructTag(tag));
 				break;
 			default:
-				if (this._warnUnrecognizedTags) {
-					ReporterManager.reporter.warn(`Unrecognized tag "${ tag.tag.toLowerCase() }" at script "${ name }"`);
+				if (this.warnUnrecognizedTags) {
+					this.reporter.warn(`Unrecognized tag "${ tag.tag.toLowerCase() }" at script "${ name }"`);
 				}
 		}
 	}

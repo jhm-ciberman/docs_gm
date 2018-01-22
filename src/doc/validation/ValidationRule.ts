@@ -5,13 +5,13 @@ import ReporterManager from "../../reporter/ReporterManager";
 /**
  * Validates a generic element T against a rule defined by a validatorFunction.
  */
-export class ValidatorRule<T> {
+export default class ValidatorRule<T> {
 
 	/**
 	 * Reporter used by the RuleValidator class to warn about validations.
 	 * This static variable is used for dependency injection.
 	 */
-	public static reporter: IReporter = ReporterManager.reporter;
+	public reporter: IReporter = ReporterManager.reporter;
 
 	/**
 	 * The configuration of the current validation rule
@@ -22,7 +22,7 @@ export class ValidatorRule<T> {
 	 * The function that will be called to generate
 	 * the output warning message. Takes the generic element T as a parameter.
 	 */
-	private readonly _messageGenerator: (element: T) => string;
+	private readonly _messageGenerator: ((element: T) => string) | undefined;
 
 	/**
 	 * The function to be called to validate the rule.
@@ -41,7 +41,7 @@ export class ValidatorRule<T> {
 	constructor(
 		ruleConfig: IValidationRule,
 		validatorFunction: (element: T) => boolean,
-		messageGenerator: (element: T) => string,
+		messageGenerator?: (element: T) => string,
 	) {
 		this._rule = ruleConfig;
 		this._validatorFunction = validatorFunction;
@@ -62,9 +62,9 @@ export class ValidatorRule<T> {
 	public validate(element: T) {
 		if (!this._validatorFunction(element)) {
 			// Rule is invalid
-			if (this._rule.warn) {
+			if (this._rule.warn && this._messageGenerator) {
 				// Should warn about invalid rule
-				ValidatorRule.reporter.warn(this._messageGenerator(element));
+				this.reporter.warn(this._messageGenerator(element));
 			}
 			return !(this._rule.ignore);
 		}

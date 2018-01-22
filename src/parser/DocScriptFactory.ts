@@ -36,12 +36,15 @@ export default class DocScriptFactory {
 	 * @param exampleString The example text
 	 */
 	public addExample(exampleString: string): void {
-		const example = new DocExample();
-		const str = StringUtils.stripInitialLineFeeds(exampleString);
-		example.code = StringUtils.escapeHtml(str);
+		if (exampleString !== "") {
+			const example = new DocExample();
+			const str = StringUtils.stripInitialLineFeeds(exampleString);
+			example.code = StringUtils.escapeHtml(str);
+			example.caption = null;
 
-		this._script.examples.push(example);
-		this._script.undocumented = false;
+			this._script.examples.push(example);
+			this._script.undocumented = false;
+		}
 	}
 
 	/**
@@ -54,7 +57,7 @@ export default class DocScriptFactory {
 	public addParam(name: string, type: string, optional: boolean, description: string): void {
 		const param = new DocParam();
 		param.name = StringUtils.escapeHtml(name);
-		param.type = StringUtils.escapeHtml(type);
+		param.type = type ? StringUtils.escapeHtml(type) : null;
 		param.optional = optional;
 		let str = StringUtils.stripInitialHypen(description);
 		str = StringUtils.markdown2Html(str);
@@ -70,8 +73,10 @@ export default class DocScriptFactory {
 	 * @param descriptionText The description text
 	 */
 	public setDescription(descriptionText: string) {
-		this._script.description = StringUtils.markdown2Html(descriptionText);
-		this._script.undocumented = false;
+		if (descriptionText !== "") {
+			this._script.description = StringUtils.markdown2Html(descriptionText);
+			this._script.undocumented = false;
+		}
 	}
 
 	/**

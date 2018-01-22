@@ -1,6 +1,6 @@
 import * as path from "path";
-import DefaultProjectConfig from "../config/DefaultProjectConfig";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
+import ProjectConfig from "../config/ProjectConfig";
 import DocsGM from "../core/DocsGM";
 import ProjectLoader from "../core/ProjectLoader";
 import ReporterManager from "../reporter/ReporterManager";
@@ -46,7 +46,7 @@ export default class CliGenerateFacade {
 
 		if (!config) {
 			ReporterManager.reporter.info("Configuration not found. Ussing default configuration.");
-			config = DefaultProjectConfig.create();
+			config = new ProjectConfig();
 		}
 		config = this._overrideConfig(config);
 

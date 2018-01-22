@@ -3,8 +3,8 @@ import * as JSON5 from "json5";
 import * as os from "os";
 import * as path from "path";
 
-import DefaultProjectConfig from "../config/DefaultProjectConfig";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
+import ProjectConfig from "../config/ProjectConfig";
 import TemplateLoader from "../doc/render/TemplateLoader";
 import IGMProject from "../gm_project/interfaces/IGMProject";
 import DocProjectGenerator from "./DocProjectGenerator";
@@ -50,7 +50,7 @@ export default class DocsGM {
 			return undefined;
 		}
 		const data = JSON5.parse(str);
-		const config = DefaultProjectConfig.create();
+		const config = new ProjectConfig();
 		return Object.assign(config, data);
 	}
 
@@ -59,7 +59,7 @@ export default class DocsGM {
 	 * @return Promise with the path of the output folder
 	 */
 	public static async generate(project: IGMProject, config?: IProjectConfig): Promise<string> {
-		config = config || DefaultProjectConfig.create();
+		config = config || new ProjectConfig();
 		const docProject = await DocProjectGenerator.generate(project, config);
 		const template = await TemplateLoader.loadTemplate(config.output.template, config.output.templatesFolder);
 

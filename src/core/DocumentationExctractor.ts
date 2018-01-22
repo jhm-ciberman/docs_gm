@@ -21,12 +21,13 @@ export default class DocumentationExtractor {
 	private readonly _jsDocParser: JSDocParser;
 
 	/**
-	 *
+	 * Creates a new DocumentationExtractor
 	 * @param config The ProjectConfig that have all the validation rules to use
 	 */
 	constructor(config: IProjectConfig) {
 		this._scriptValidator = new ScriptValidator(config.scripts);
-		this._jsDocParser = new JSDocParser(config.warnUnrecognizedTags);
+		this._jsDocParser = new JSDocParser();
+		this._jsDocParser.warnUnrecognizedTags = config.warnUnrecognizedTags;
 	}
 
 	/**
@@ -40,10 +41,34 @@ export default class DocumentationExtractor {
 		for (const [name, gmlText] of script.subScripts()) {
 			const docScript = this._jsDocParser.parse(name, gmlText);
 			const validable = new ValidableScript(docScript, gmlText);
-			if (this._scriptValidator.validate(validable)) {
+			if (this._validate(validable)) {
 				arr.push(docScript);
 			}
 		}
 		return arr;
+	}
+
+	/**
+	 * Validates a script against the validator
+	 * @param validator The validator to use
+	 * @param validable The validable script
+	 */
+	private _validate(validable: ValidableScript) {
+		const rules = [
+			this._scriptValidator.rulePrivate,
+			this._scriptValidator.ruleUndocumented,
+			this._scriptValidator.ruleUndescripted,
+			this._scriptValidator.ruleMismatchingFunctionName,
+			this._scriptValidator.ruleMismatchingArguments,
+			this._scriptValidator.ruleUndocumentedArguments,
+		];
+		this._scriptValidator.markAsPrivateIfNecesary(validable);
+
+		for (const rule of rules) {
+			if (!rule.validate(validable)) {
+				return false;
+			}
+		}
+		return false;
 	}
 }
