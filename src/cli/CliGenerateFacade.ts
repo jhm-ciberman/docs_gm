@@ -1,8 +1,9 @@
 import * as path from "path";
+import ConfigManager from "../config/ConfigManager";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
-import ProjectConfig from "../config/ProjectConfig";
+import ProjectConfig from "../config/models/ProjectConfig";
 import DocsGM from "../core/DocsGM";
-import ProjectLoader from "../core/ProjectLoader";
+import ProjectLoader from "../gm_project/ProjectLoader";
 import ReporterManager from "../reporter/ReporterManager";
 
 /**
@@ -35,14 +36,17 @@ export default class CliGenerateFacade {
 	 * @param projectPath The path to the project
 	 * @param opts The option object to override
 	 */
-	public async generate(projectPath?: string) {
+	public async generate(projectPath: string = ".") {
 
 		ReporterManager.reporter.info("Loading Project...");
+
 		const loader = new ProjectLoader(projectPath);
 		const project = await loader.load();
 
 		ReporterManager.reporter.info("Loading project configuration...");
-		let config = await DocsGM.loadConfig(projectPath);
+
+		const configManager = new ConfigManager();
+		let config = await configManager.loadConfig(projectPath);
 
 		if (!config) {
 			ReporterManager.reporter.info("Configuration not found. Ussing default configuration.");
@@ -51,7 +55,8 @@ export default class CliGenerateFacade {
 		config = this._overrideConfig(config);
 
 		ReporterManager.reporter.info("Generating documentation... ");
-		const outFolder = await DocsGM.generate(project, config);
+		const docsGM = new DocsGM();
+		const outFolder = await docsGM.generate(project, config);
 
 		ReporterManager.reporter.info("Ready!");
 

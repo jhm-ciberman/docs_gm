@@ -18,7 +18,7 @@ export default class DocProjectGenerator {
 	 * @param project The GM Project
 	 * @param config The OutputConfig
 	 */
-	public static async generate(project: IGMProject, projectConfig: IProjectConfig): Promise<DocProject> {
+	public async generate(project: IGMProject, projectConfig: IProjectConfig): Promise<DocProject> {
 		const scripts = project.find(projectConfig.output.pattern)
 			.filter((res) => ((res as IGMScript).subScripts !== undefined))
 			.sort((a, b) => a.name.localeCompare(b.name)) as IGMScript[];

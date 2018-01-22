@@ -12,13 +12,6 @@ import IGMProjectFactory from "../gm_project/interfaces/IGMProjectFactory";
 export default class ProjectLoader {
 
 	/**
-	 * Used for dependency injection
-	 */
-	public static depends = {
-		globby,
-	};
-
-	/**
 	 * The project path
 	 */
 	private readonly _gmProjectPath: string;
@@ -27,7 +20,7 @@ export default class ProjectLoader {
 	 * Creates a new Project loader
 	 * @param gmProjectPath The path of the project to load
 	 */
-	public constructor(gmProjectPath: string = ".") {
+	public constructor(gmProjectPath: string) {
 		this._gmProjectPath = gmProjectPath;
 	}
 
@@ -49,15 +42,10 @@ export default class ProjectLoader {
 		const ext = extArr[extArr.length - 1];
 
 		let factory: IGMProjectFactory;
-		switch (ext) {
-			case "yyp":
-				factory = new GMS2ProjectFactory(files[0]);
-				break;
-			case "gmx":
-				factory = new GMS1ProjectFactory(files[0]);
-				break;
-			default:
-				throw new Error(`Unrecognized project extension: "${ext}"`);
+		if (ext === "gmx") {
+			factory = new GMS1ProjectFactory(files[0]);
+		} else {
+			factory = new GMS2ProjectFactory(files[0]);
 		}
 		return factory.load();
 	}

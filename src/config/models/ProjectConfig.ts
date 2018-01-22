@@ -1,6 +1,6 @@
-import IOutputConfig from "./interfaces/IOutputConfig";
-import IProjectConfig from "./interfaces/IProjectConfig";
-import IScriptValidationRule from "./interfaces/IScriptValidationRules";
+import IOutputConfig from "../interfaces/IOutputConfig";
+import IProjectConfig from "../interfaces/IProjectConfig";
+import IScriptValidationRule from "../interfaces/IScriptValidationRules";
 import OutputConfig from "./OutputConfig";
 import ScriptValidationRules from "./ScriptValidationRules";
 

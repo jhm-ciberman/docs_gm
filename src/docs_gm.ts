@@ -2,7 +2,7 @@
 
 import * as program from "commander";
 import CliGenerateFacade from "./cli/CliGenerateFacade";
-import DocsGM from "./core/DocsGM";
+import ConfigManager from "./config/ConfigManager";
 import ReporterManager from "./reporter/ReporterManager";
 
 // tslint:disable-next-line: no-var-requires
@@ -18,7 +18,8 @@ program
 	// tslint:disable-next-line:max-line-length
 	.description("Exports the base configuration file for docs_gm and shows the instructions to add the configuration to your project")
 	.action(() => {
-		DocsGM.exportConfig().then((file) => {
+		const configManager = new ConfigManager();
+		configManager.exportConfig().then((file) => {
 			const strings = [
 				"Base configuration file was created at: ",
 				file,

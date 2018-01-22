@@ -1,4 +1,4 @@
-import IOutputConfig from "./interfaces/IOutputConfig";
+import IOutputConfig from "../interfaces/IOutputConfig";
 
 export default class OutputConfig implements IOutputConfig {
 	/**

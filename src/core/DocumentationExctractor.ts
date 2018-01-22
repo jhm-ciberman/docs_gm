@@ -69,6 +69,6 @@ export default class DocumentationExtractor {
 				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 }

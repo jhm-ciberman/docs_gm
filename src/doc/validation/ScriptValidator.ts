@@ -68,7 +68,7 @@ export default class ScriptValidator {
 	get ruleUndocumentedArguments() {
 		return new ValidationRule<ValidableScript>(
 			this._rules.undocumentedArguments,
-			(e) => !(e.doc.params.length === 0),
+			(e) => !(e.doc.params.length === 0 && e.argumentCount !== 0),
 			(e) => `Script "${e.doc.name}" uses arguments but does not have any @param JSDoc comment.`,
 		);
 	}

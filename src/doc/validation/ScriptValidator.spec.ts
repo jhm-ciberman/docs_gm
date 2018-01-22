@@ -7,7 +7,7 @@ import {
 } from "alsatian";
 
 import IValidationRuleConfig from "../../config/interfaces/IValidationRuleConfig";
-import ScriptValidationRules from "../../config/ScriptValidationRules";
+import ScriptValidationRules from "../../config/models/ScriptValidationRules";
 import DocParam from "../models/DocParam";
 import DocScript from "../models/DocScript";
 import IValidableScript from "./IValidableScript";
@@ -66,20 +66,20 @@ export class ScriptValidatorFixture {
 	@Test("ruleUndocumented should invalidate undocumented scripts")
 	public ruleUndocumented() {
 		this.validable.doc.undocumented = true;
-		this._ValidateAndCheck(this.rules.undocumented, this.validator.ruleUndocumented);
+		this._shouldInvalidateAndWarn(this.rules.undocumented, this.validator.ruleUndocumented);
 	}
 
 	@Test("ruleUndescripted should invalidate undescripted scripts")
 	public ruleUndescripted() {
 		this.validable.doc.description = null;
-		this._ValidateAndCheck(this.rules.undescripted, this.validator.ruleUndescripted);
+		this._shouldInvalidateAndWarn(this.rules.undescripted, this.validator.ruleUndescripted);
 	}
 
 	@Test("ruleMismatchingFunctionName should invalidate scripts with a missmatching function name")
 	public ruleMismatchingFunctionName() {
 		this.validable.doc.name = "my_name";
 		this.validable.doc.function = "my_function_name";
-		this._ValidateAndCheck(this.rules.mismatchingFunctionName, this.validator.ruleMismatchingFunctionName);
+		this._shouldInvalidateAndWarn(this.rules.mismatchingFunctionName, this.validator.ruleMismatchingFunctionName);
 	}
 
 	@Test("ruleMismatchingArguments should invalidate scripts with a missmatching number of arguments")
@@ -87,16 +87,29 @@ export class ScriptValidatorFixture {
 		this.validable.doc.params.push(new DocParam());
 		this.validable.doc.params.push(new DocParam());
 		this.validable.argumentCount = 1;
-		this._ValidateAndCheck(this.rules.mismatchingArguments, this.validator.ruleMismatchingArguments);
+		this._shouldInvalidateAndWarn(this.rules.mismatchingArguments, this.validator.ruleMismatchingArguments);
 	}
 
 	@Test("ruleMismatchingArguments should invalidate scripts with a undocumented arguments (all must be undocumented)")
-	public ruleUndocumentedArguments() {
+	public ruleUndocumentedArguments_invalidate() {
 		this.validable.argumentCount = 1;
-		this._ValidateAndCheck(this.rules.undocumentedArguments, this.validator.ruleUndocumentedArguments);
+		this._shouldInvalidateAndWarn(this.rules.undocumentedArguments, this.validator.ruleUndocumentedArguments);
 	}
 
-	private _ValidateAndCheck(ruleConfig: IValidationRuleConfig, validatorRule: ValidationRule<ValidableScript>) {
+	@Test("ruleMismatchingArguments should validate scripts if they have zero arguments")
+	public ruleUndocumentedArguments_validate() {
+		this.validable.doc.params = [];
+		this.validable.argumentCount = 0;
+		this.rules.undocumentedArguments.ignore = true;
+		this.rules.undocumentedArguments.warn = true;
+		const validatorRule = this.validator.ruleUndocumentedArguments;
+		SpyOn(validatorRule.reporter, "warn");
+		const result = validatorRule.validate(this.validable);
+		Expect(result).toBe(true);
+		Expect(validatorRule.reporter.warn).not.toHaveBeenCalled();
+	}
+
+	private _shouldInvalidateAndWarn(ruleConfig: IValidationRuleConfig, validatorRule: ValidationRule<ValidableScript>) {
 		ruleConfig.ignore = true;
 		ruleConfig.warn = true;
 		SpyOn(validatorRule.reporter, "warn");

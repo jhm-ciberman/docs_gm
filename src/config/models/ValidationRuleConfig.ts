@@ -1,4 +1,4 @@
-import IValidationRuleConfig from "./interfaces/IValidationRuleConfig";
+import IValidationRuleConfig from "../interfaces/IValidationRuleConfig";
 
 /**
  * Represents the configuration of a single Validation Rule
