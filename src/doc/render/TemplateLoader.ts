@@ -11,7 +11,7 @@ export default class TemplateLoader {
 	/**
 	 * Used for dependency injection
 	 */
-	protected getInstalledPath: (name: string, opts?: GetInstalledPath.Options) => Promise<string> = getInstalledPath;
+	public getInstalledPath: (name: string, opts?: GetInstalledPath.Options) => Promise<string> = getInstalledPath;
 
 	/**
 	 * Factory method to load the template from a folder
