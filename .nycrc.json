@@ -6,6 +6,8 @@
 		"**/index.js",
 		"**/docs_gm.js",
 		"**/*.spec.js",
+		"**/*.help.js",
+		"**/*.mock.js",
 		"**/node_modules/**",
 		"coverage"
 	],

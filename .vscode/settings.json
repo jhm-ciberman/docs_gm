@@ -7,11 +7,18 @@
     }
   ],
   "editor.insertSpaces": false,
+  "tslint.autoFixOnSave": true,
+  "explorerExcludedFiles.patterns": [
+    "file://.gitignore"
+  ],
   "files.exclude": {
-    "node_modules": "explorerExcludedFiles",
-    "dist": "explorerExcludedFiles",
-    "coverage": "explorerExcludedFiles",
-    ".nyc_output": "explorerExcludedFiles"
-  },
-  "tslint.autoFixOnSave": true
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "dist": true,
+    "coverage": true,
+    ".nyc_output": true,
+  }
 }

@@ -117,7 +117,7 @@ As you can see, you can iterate over an array to access all the scripts.
 
 The DocPage represents a single page of your Documentation.  It has the following properties:
 
-- `project`: **{ DocProject }** The DocProject object representing the GameMaker Project that you are creating the documentation for.
+- `project`: **{DocProject}** The DocProject object representing the GameMaker Project that you are creating the documentation for.
 - `script`: **{DocScript}** A DocScript object representing the SINGLE script your must document in the current template page. This is only used in multipage templates. The `script` property is only available when you set the value of `"feedWith": "script"` in your `template.json` file.
 - `scripts`: **{DocScript}** An array of DocScript objects representing ALL the scripts script your must document in the current template page. This is only used in singlepage templates. The `script` property is only available when you set the value of `"feedWith": "scripts"` in your `template.json` file.
 
@@ -127,8 +127,8 @@ The DocPage represents a single page of your Documentation.  It has the followin
 
 Represents the current GameMaker project that you are documenting. This object has the following properties:
 
-- `name` **{string}** The name of the GameMaker project in a readable format. You can use it for titles, or descriptions inside your documentation.
-- `scripts` **{ DocScript[] }** An array of ALL the scripts of the project included in the documentation. **WARNING:** Normally you DON'T want to use this array, since this represents ALL the scripts in your **Project**, not the script or scripts you want to include in your **Page**. You must use the values of DocPage insted.
+- `name`: **{string}** The name of the GameMaker project in a readable format. You can use it for titles, or descriptions inside your documentation.
+- `scripts`: **{DocScript[]}** An array of ALL the scripts of the project included in the documentation. **WARNING:** Normally you DON'T want to use this array, since this represents ALL the scripts in your **Project**, not the script or scripts you want to include in your **Page**. You must use the values of DocPage insted.
 
 ### DocScript
 
@@ -136,21 +136,22 @@ Represents a single script of the GameMaker project.
 
 - `name`: **{string}** The name of the script. Example: `"scr_character_jump"`.
 - `description`: **{string}** The description of the script.
-- `params` **{DocParam[]}** An array of DocParams objects. Representing each parameter or argument of the script.
-- `returns` **{DocReturns}** A DocReturns object, representing the returned value of the script.
-- `return` (Alias for `returns`)
-- `examples` **{DocExample[]}** An array of DocExample objects. Representing each usage example code provided for the script.
-- `private` **{boolean}** `true` or `false` depending if the script is a private script or not (can be marked with the @private JSDoc or with a script name starting with underscore).
-- `undocumented` **{boolean}** `true` if is undocumented script, `false` if not.
+- `params`: **{DocParam[]}** An array of DocParams objects. Representing each parameter or argument of the script.
+- `returns`: **{DocReturns}** A DocReturns object, representing the returned value of the script.
+- `return`: (Alias for `returns`)
+- `examples`: **{DocExample[]}** An array of DocExample objects. Representing each usage example code provided for the script.
+- `private`: **{boolean}** `true` or `false` depending if the script is a private script or not (can be marked with the @private JSDoc or with a script name starting with underscore).
+- `undocumented`: **{boolean}** `true` if is undocumented script, `false` if not.
+- `function`: **{string}** The function name. Is declared in the documentation with the `@function` tag. Normally, is the same as the `name`.
 
 ### DocParam
 
 Represents a single parameter or argument of a script.
 
-- `name`: **{ string }** The name of the argument.
-- `type`: **{ string }** The type of the argument.
-- `description` **{string}** The description of the argument
-- `optional`: **{ boolean }** `true` or `false` depending if the argument is marked as optional, or not.
+- `name`: **{string}** The name of the argument.
+- `type`: **{string}** The type of the argument.
+- `description`: **{string}** The description of the argument
+- `optional`: **{boolean}** `true` or `false` depending if the argument is marked as optional, or not.
 
 ### DocReturns
 

@@ -55,6 +55,14 @@
             "type": "npm",
             "script": "test-only",
             "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "watch",
+            "problemMatcher": [
+                "$tsc-watch"
+            ],
+            "isBackground": true
         }
     ]
 }

@@ -2,6 +2,7 @@
 src/
 tsconfig.json
 .vscode
+img/
 
 # Spec files
 *.spec.js
