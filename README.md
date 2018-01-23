@@ -120,30 +120,7 @@ You can create custom HTML templates and use them with docs_gm. Refer to [this p
 
 ## Contribute
 
-I would love to see people interested in contribute to docs_gm. If you have some idea, or bug, you can send a Issue in the github page.
-
-If you want to contribute with the code, first create a fork, then clone it in your local computer (`git clone <REPO URL>`) and then run `npm install` to install all dependencies.
-
-If you use Visual Studio Code as your editor, the project will have configured some tasks to compile and build the typescript faster. Also it will have a Debug profile configured to debug Jest Unit tests.
-
-```bash
-# Task names 
-# Run them from Visual Studio Code or with "npm run <task>"
-build      # Build the entire app
-watch      # Run the compiler in watch mode
-lint       # Lint the typescript code
-clean      # Deletes the ./dist/ folder
-test       # Run unit tests
-coverage   # Generate test coverage in ./coverage/index.html
-```
-
-If not, you can allways run `npm run watch` to start the typescript compiler for the current project directory in watch mode. (Will recompile after any change).
-
-Also, it's recomended that you run `npm run lint` to lint the project.
-
-When you are ready, send a pull request.
-
-Remember that all the latest code is in the `develop` git branch. Never develop new features on  `master`.
+I would love to see people interested in contributing to docs_gm. If you have some idea, or bug, you can send a Issue in the github page. Also, you can check the [contribute document](CONTRIBUTE.md)
 
 ## Contributors
 
