@@ -8,9 +8,9 @@ import IGMProject from "../gm_project/interfaces/IGMProject";
 import DocProjectGenerator from "./DocProjectGenerator";
 
 /**
- * Main Class of the docs_gm plugin
+ * Generates the documentation.
  */
-export default class DocsGM {
+export default class DocumentationGenerator {
 
 	/**
 	 * Generates the documentation files for the project.
@@ -39,7 +39,7 @@ export default class DocsGM {
 	private async _loadTemplate(output: IOutputConfig) {
 		const templateLoader = new TemplateLoader();
 		let folder;
-		if (output.templatesFolder === "") {
+		if (output.templatesFolder !== "") {
 			folder = path.resolve(output.templatesFolder, output.template);
 		} else {
 			folder = await templateLoader.getTemplateModulePath(output.template);

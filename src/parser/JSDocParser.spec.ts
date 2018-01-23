@@ -55,14 +55,34 @@ export class JSDocParserFixture {
 		Expect(doc.private).toBe(true);
 	}
 
-	@Test("parser should parse a function tag")
-	public parser_function() {
+	@Test("parser should parse a simple function tag")
+	public parser_function_simple() {
 		const doc = this.p.parse("my_script", [
 			"/**",
 			" * @function my_function",
 			" */",
 		].join("\n"));
 		Expect(doc.function).toBe("my_function");
+	}
+
+	@Test("parser should parse a function tag with arguments like a function signature")
+	public parser_function_complex() {
+		const doc = this.p.parse("my_script", [
+			"/**",
+			" * @function my_function(a, b, c)",
+			" */",
+		].join("\n"));
+		Expect(doc.function).toBe("my_function");
+	}
+
+	@Test("parser should parse a function tag with arguments like a function signature and empty function name")
+	public parser_function_complex_empty() {
+		const doc = this.p.parse("my_script", [
+			"/**",
+			" * @function (a, b, c)",
+			" */",
+		].join("\n"));
+		Expect(doc.function).toBe("");
 	}
 
 	@Test("parser should reconstruct a description tag")

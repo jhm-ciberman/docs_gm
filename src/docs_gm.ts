@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import * as program from "commander";
+import * as os from "os";
 import CliGenerateFacade from "./cli/CliGenerateFacade";
 import ConfigManager from "./config/ConfigManager";
 import ReporterManager from "./reporter/ReporterManager";
@@ -19,7 +20,8 @@ program
 	.description("Exports the base configuration file for docs_gm and shows the instructions to add the configuration to your project")
 	.action(() => {
 		const configManager = new ConfigManager();
-		configManager.exportConfig().then((file) => {
+		const userDir = os.homedir();
+		configManager.exportConfig(userDir).then((file) => {
 			const strings = [
 				"Base configuration file was created at: ",
 				file,

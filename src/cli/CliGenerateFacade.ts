@@ -1,15 +1,27 @@
+import open = require("open");
 import * as path from "path";
 import ConfigManager from "../config/ConfigManager";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
 import ProjectConfig from "../config/models/ProjectConfig";
-import DocsGM from "../core/DocsGM";
+import DocumentationGenerator from "../core/DocumentationGenerator";
 import ProjectLoader from "../gm_project/ProjectLoader";
+import IReporter from "../reporter/IReporter";
 import ReporterManager from "../reporter/ReporterManager";
 
 /**
  * A facade class to manage all the basic process of the ComandLine
  */
 export default class CliGenerateFacade {
+
+	/**
+	 * Open method (used for dependency injection)
+	 */
+	public open: (url: string) => void = open;
+
+	/**
+	 * The reporter used (used for dependency injection)
+	 */
+	public reporter: IReporter = ReporterManager.reporter;
 
 	/**
 	 * The overriten design
@@ -38,31 +50,31 @@ export default class CliGenerateFacade {
 	 */
 	public async generate(projectPath: string = ".") {
 
-		ReporterManager.reporter.info("Loading Project...");
+		this.reporter.info("Loading Project...");
 
 		const loader = new ProjectLoader(projectPath);
 		const project = await loader.load();
 
-		ReporterManager.reporter.info("Loading project configuration...");
+		this.reporter.info("Loading project configuration...");
 
 		const configManager = new ConfigManager();
 		let config = await configManager.loadConfig(projectPath);
 
 		if (!config) {
-			ReporterManager.reporter.info("Configuration not found. Ussing default configuration.");
+			this.reporter.info("Configuration not found. Using default configuration.");
 			config = new ProjectConfig();
 		}
 		config = this._overrideConfig(config);
 
-		ReporterManager.reporter.info("Generating documentation... ");
-		const docsGM = new DocsGM();
-		const outFolder = await docsGM.generate(project, config);
+		this.reporter.info("Generating documentation... ");
+		const docsGenerator = new DocumentationGenerator();
+		const outFolder = await docsGenerator.generate(project, config);
 
-		ReporterManager.reporter.info("Ready!");
+		this.reporter.info("Ready!");
 
 		const url = path.resolve(outFolder, "index.html");
-		ReporterManager.reporter.info(`Opening ${url}`);
-		open(url);
+		this.reporter.info(`Opening ${url}`);
+		this.open(url);
 	}
 
 	/**

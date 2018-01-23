@@ -75,13 +75,22 @@ export default class JSDocParser {
 			case "function":
 			case "func":
 			case "method":
-				factory.setFunction(this._reconstructTag(tag));
+				factory.setFunction(this._parseFunction(this._reconstructTag(tag)));
 				break;
 			default:
 				if (this.warnUnrecognizedTags) {
 					this.reporter.warn(`Unrecognized tag "${ tag.tag.toLowerCase() }" at script "${ name }"`);
 				}
 		}
+	}
+
+	/**
+	 * Given a function tag like "my_function(a,b,c)" produces "my_function"
+	 * @param str The original function tag string
+	 */
+	private _parseFunction(str: string): string {
+		const r = /^(.*)\(/.exec(str);
+		return (r && r.length > 0) ? r[1] : str;
 	}
 
 	/**

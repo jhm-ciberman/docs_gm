@@ -1,22 +1,21 @@
 import * as fse from "fs-extra";
 import * as JSON5 from "json5";
-import * as os from "os";
 import * as path from "path";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
 import ProjectConfig from "../config/models/ProjectConfig";
 
+/**
+ * This class exports and loads the configuration
+ */
 export default class ConfigManager {
 	/**
 	 * Copy the docs_gm.json file to the specified outputPath.
-	 * If no path is provided, the user directory is used.
 	 * @param outputPath The output filepath
 	 * @returns A promise with the path of the output file
 	 */
-	public async exportConfig(outputPath?: string): Promise<string> {
-		outputPath = outputPath || os.homedir();
+	public async exportConfig(outputPath: string): Promise<string> {
 		outputPath = path.resolve(outputPath, "docs_gm.json");
-		const inputPath = path.resolve(__dirname, "../res/docs_gm.json");
-		await fse.copy(inputPath, outputPath);
+		await fse.writeJSON(outputPath, new ProjectConfig());
 		return outputPath;
 	}
 
@@ -28,21 +27,21 @@ export default class ConfigManager {
 	 * @param jsonOrProjectPath The path to the JSON file or to the GameMaer project
 	 * @returns A promise with the created OutputConfig object or null if the file does not exists
 	 */
-	public async loadConfig(jsonOrProjectPath: string = "."): Promise<IProjectConfig | undefined> {
+	public async loadConfig(jsonOrProjectPath: string): Promise<IProjectConfig | undefined> {
 		let jsonPath: string;
 		let str: string;
-		if (path.extname(jsonOrProjectPath) === "json") {
+		if (path.extname(jsonOrProjectPath) === ".json") {
 			jsonPath = path.resolve(jsonOrProjectPath);
 		} else {
 			jsonPath = path.resolve(jsonOrProjectPath, "datafiles/docs_gm.json");
 		}
 		try {
 			str = await fse.readFile(jsonPath, "utf8");
+			const data: IProjectConfig = JSON5.parse(str);
+			const config: IProjectConfig = new ProjectConfig();
+			return Object.assign(config, data);
 		} catch (e) {
 			return undefined;
 		}
-		const data = JSON5.parse(str);
-		const config = new ProjectConfig();
-		return Object.assign(config, data);
 	}
 }

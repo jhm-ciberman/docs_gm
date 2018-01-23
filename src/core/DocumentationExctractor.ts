@@ -34,6 +34,7 @@ export default class DocumentationExtractor {
 	 * Parses and validates a GMScript and returns
 	 * and array of valid DocScripts. If no valid DocScripts
 	 * can be created, an empty array is returned.
+	 * The returned array is sorted alphabetically.
 	 * @param script An array with DocScript objects
 	 */
 	public extractDocScripts(script: IGMScript): DocScript[] {
@@ -45,7 +46,7 @@ export default class DocumentationExtractor {
 				arr.push(docScript);
 			}
 		}
-		return arr;
+		return arr.sort((a, b) => a.name.localeCompare(b.name));
 	}
 
 	/**

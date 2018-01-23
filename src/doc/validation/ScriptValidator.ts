@@ -58,7 +58,8 @@ export default class ScriptValidator {
 		return new ValidationRule<ValidableScript>(
 			this._rules.mismatchingArguments,
 			(e) => !(e.argumentCount !== e.doc.params.length),
-			(e) => `Script "${e.doc.name}" uses ${e.argumentCount} but has documentation for ${e.doc.params.length} arguments.`,
+			(e) => `Script "${e.doc.name}" uses ${e.argumentCount} arguments `
+				+ `but has documentation for ${e.doc.params.length} arguments.`,
 		);
 	}
 

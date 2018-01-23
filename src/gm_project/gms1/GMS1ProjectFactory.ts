@@ -67,8 +67,7 @@ export default class GMS1ProjectFactory implements IGMProjectFactory {
 		}
 
 		for (const script of folderData.script || []) {
-			const name = path.basename(script).split(".")[0];
-			const resource = new GMS1Script(name);
+			const resource = new GMS1Script(script);
 			root.addChild(resource);
 		}
 		return root;

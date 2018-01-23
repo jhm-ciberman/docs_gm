@@ -1,5 +1,8 @@
 import IOutputConfig from "../interfaces/IOutputConfig";
 
+/**
+ * This clas has all the configuration for the DocsGM Output
+ */
 export default class OutputConfig implements IOutputConfig {
 	/**
 	 * The design name. If empty, it will use the first design in the designs list.
