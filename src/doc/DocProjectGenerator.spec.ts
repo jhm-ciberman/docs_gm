@@ -1,17 +1,18 @@
 import {
 	AsyncTest,
 	Expect,
+	SetupFixture,
 	TeardownFixture,
 	TestFixture,
 } from "alsatian";
-
-import { SetupFixture } from "alsatian/core/decorators/setup-fixture-decorator";
 import { TempDir } from "../_testing_helpers/TempDir.help";
-import ProjectConfig from "../config/models/ProjectConfig";
+
 import IGMFolder from "../gm_project/interfaces/IGMFolder";
 import IGMProject from "../gm_project/interfaces/IGMProject";
 import IGMResource from "../gm_project/interfaces/IGMResource";
 import IGMScript from "../gm_project/interfaces/IGMScript";
+
+import ProjectConfig from "../config/models/ProjectConfig";
 import DocProjectGenerator from "./DocProjectGenerator";
 
 /* tslint:disable:max-classes-per-file completed-docs */

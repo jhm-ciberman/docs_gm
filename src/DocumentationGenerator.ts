@@ -1,11 +1,12 @@
 import * as path from "path";
 
-import IOutputConfig from "../config/interfaces/IOutputConfig";
-import IProjectConfig from "../config/interfaces/IProjectConfig";
-import ProjectConfig from "../config/models/ProjectConfig";
-import TemplateLoader from "../doc/render/TemplateLoader";
-import IGMProject from "../gm_project/interfaces/IGMProject";
-import DocProjectGenerator from "./DocProjectGenerator";
+import IOutputConfig from "./config/interfaces/IOutputConfig";
+import IProjectConfig from "./config/interfaces/IProjectConfig";
+import IGMProject from "./gm_project/interfaces/IGMProject";
+
+import ProjectConfig from "./config/models/ProjectConfig";
+import DocProjectGenerator from "./doc/DocProjectGenerator";
+import TemplateLoader from "./doc/render/TemplateLoader";
 
 /**
  * Generates the documentation.

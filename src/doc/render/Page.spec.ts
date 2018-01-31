@@ -11,6 +11,7 @@ import { TempDir } from "../../_testing_helpers/TempDir.help";
 import DocProject from "../models/DocProject";
 import DocScript from "../models/DocScript";
 import Page from "./Page";
+import PageFeedWith from "./PageFeedWith";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
@@ -63,7 +64,7 @@ export class PageFixture {
 	public generateMultipage() {
 		const input = this.tempDir.join("page_script.njk");
 		const output = this.tempDir.join("{{ page.script.name }}.html");
-		const page = new Page(input, output, "script");
+		const page = new Page(input, output, PageFeedWith.Script);
 
 		const it = page.generate(this.env, this.docProject);
 
@@ -82,7 +83,7 @@ export class PageFixture {
 	public generateOnepage() {
 		const input = this.tempDir.join("page_scripts.njk");
 		const output = this.tempDir.join("out.html");
-		const page = new Page(input, output, "scripts");
+		const page = new Page(input, output, PageFeedWith.Scripts);
 
 		const it = page.generate(this.env, this.docProject);
 

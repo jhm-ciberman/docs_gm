@@ -2,7 +2,7 @@
 
 import * as program from "commander";
 import * as os from "os";
-import CliGenerateFacade from "./cli/CliGenerateFacade";
+import CliGenerateFacade from "./CliGenerateFacade";
 import ConfigManager from "./config/ConfigManager";
 import ReporterManager from "./reporter/ReporterManager";
 

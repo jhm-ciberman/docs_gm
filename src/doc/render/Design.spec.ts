@@ -11,6 +11,7 @@ import {
 import { TempDir } from "../../_testing_helpers/TempDir.help";
 import DocProject from "../models/DocProject";
 import Design from "./Design";
+import { PageFeedWith } from "./PageFeedWith";
 import { IDesign } from "./TemplateJSON";
 
 @TestFixture("Design")
@@ -43,8 +44,8 @@ export class DesignFixture {
 		const myDesignData: IDesign = {
 			displayName: "My design",
 			pages: [
-				{ in: "page1.njk", out: "a.html", feedWith: "scripts" },
-				{ in: "page2.njk", out: "b.html", feedWith: "scripts" },
+				{ in: "page1.njk", out: "a.html", feedWith: PageFeedWith.Scripts },
+				{ in: "page2.njk", out: "b.html", feedWith: PageFeedWith.Scripts },
 			],
 		};
 		const design = new Design("myDesign", this.in.dir, myDesignData);

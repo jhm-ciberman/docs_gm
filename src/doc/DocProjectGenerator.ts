@@ -2,11 +2,12 @@ import * as fse from "fs-extra";
 import * as path from "path";
 
 import IProjectConfig from "../config/interfaces/IProjectConfig";
-import DocProject from "../doc/models/DocProject";
-import DocScript from "../doc/models/DocScript";
 import IGMProject from "../gm_project/interfaces/IGMProject";
 import IGMScript from "../gm_project/interfaces/IGMScript";
+
 import DocumentationExtractor from "./DocumentationExctractor";
+import DocProject from "./models/DocProject";
+import DocScript from "./models/DocScript";
 
 /**
  * This class generates a DocProject

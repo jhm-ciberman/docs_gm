@@ -1,3 +1,4 @@
+import { PageFeedWith } from "../PageFeedWith";
 import { IRoot } from "../TemplateJSON";
 
 export const myTemplateJSON: IRoot = {
@@ -9,13 +10,13 @@ export const myTemplateJSON: IRoot = {
 		myDesign: {
 			displayName: "My design",
 			pages: [
-				{ in: "page.njk", out: "index.html", feedWith: "scripts" },
+				{ in: "page.njk", out: "index.html", feedWith: PageFeedWith.Scripts },
 			],
 		},
 		myOtherDesign: {
 			displayName: "My Other design",
 			pages: [
-				{ in: "page.njk", out: "index.html", feedWith: "scripts" },
+				{ in: "page.njk", out: "index.html", feedWith: PageFeedWith.Scripts },
 			],
 		},
 	},

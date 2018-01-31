@@ -1,3 +1,5 @@
+import PageFeedWith from "./PageFeedWith";
+
 /**
  * @fileOverview
  * docs_gm template.json file
@@ -24,5 +26,5 @@ export interface IDesign {
 export interface IPage {
 	in: string;
 	out: string;
-	feedWith: "script" | "scripts";
+	feedWith: PageFeedWith;
 }

@@ -1,7 +1,9 @@
 import * as nunjucks from "nunjucks";
 
+// import DocFolder from "../models/DocFolder";
 import DocPage from "../models/DocPage";
 import DocProject from "../models/DocProject";
+import PageFeedWith from "./PageFeedWith";
 
 /**
  * Represents one Page for one Design of one Template
@@ -22,12 +24,12 @@ export default class Page {
 	/**
 	 * Posible values are "script"
 	 */
-	private _feedWith: "script" | "scripts";
+	private _feedWith: PageFeedWith;
 
 	/**
 	 * Creates a new TemplatePage
 	 */
-	constructor(input: string, output: string, feedWith: "script" | "scripts") {
+	constructor(input: string, output: string, feedWith: PageFeedWith) {
 		this._in = input;
 		this._out = output;
 		this._feedWith = feedWith;
@@ -56,21 +58,55 @@ export default class Page {
 	 */
 	private * _getFeedPages(docProject: DocProject): IterableIterator<DocPage> {
 		let page: DocPage;
-		switch (this._feedWith) {
-			case "script":
+		switch (this._feedWith.toLowerCase()) {
+			case PageFeedWith.Script:
 				for (const script of docProject.scripts) {
-					page = new DocPage();
-					page.project = docProject;
+					page = this._createPage(docProject);
 					page.script = script;
 					yield page;
 				}
 				break;
-			case "scripts":
-				page = new DocPage();
+			case PageFeedWith.Scripts:
+				page = this._createPage(docProject);
 				page.scripts = docProject.scripts;
-				page.project = docProject;
 				yield page;
 				break;
+			/*case PageFeedWith.Folder:
+				for (const script of docProject.scripts) {
+					page = this._createPage(docProject);
+					page.folder = script;
+					yield page;
+				}
+				page = this._createPage(docProject);
+				page.folder = docProject;
+
+				yield page;
+				break;*/
 		}
 	}
+
+	/**
+	 * Creates a new DocPage
+	 * @param docProject The doc project
+	 */
+	private _createPage(docProject: DocProject): DocPage {
+		const page = new DocPage();
+		page.project = docProject;
+		return page;
+	}
+
+	/**
+	 * Recursively gets all the subfolders for a given folder
+	 * @param folder The folder to get the subfolders
+	 */
+	/*private _getSubFolders(folder: DocFolder): DocFolder[] {
+		let arr: DocFolder[] = [];
+		for (const resource of folder.children) {
+			if (resource instanceof DocFolder) {
+				arr.push(resource);
+				arr = arr.concat(this._getSubFolders(resource));
+			}
+		}
+		return arr;
+	}*/
 }

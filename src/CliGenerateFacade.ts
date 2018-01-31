@@ -1,12 +1,14 @@
 import open = require("open");
 import * as path from "path";
-import ConfigManager from "../config/ConfigManager";
-import IProjectConfig from "../config/interfaces/IProjectConfig";
-import ProjectConfig from "../config/models/ProjectConfig";
-import DocumentationGenerator from "../core/DocumentationGenerator";
-import ProjectLoader from "../gm_project/ProjectLoader";
-import IReporter from "../reporter/IReporter";
-import ReporterManager from "../reporter/ReporterManager";
+
+import IProjectConfig from "./config/interfaces/IProjectConfig";
+import IReporter from "./reporter/IReporter";
+
+import ConfigManager from "./config/ConfigManager";
+import ProjectConfig from "./config/models/ProjectConfig";
+import DocumentationGenerator from "./DocumentationGenerator";
+import ProjectLoader from "./gm_project/ProjectLoader";
+import ReporterManager from "./reporter/ReporterManager";
 
 /**
  * A facade class to manage all the basic process of the ComandLine

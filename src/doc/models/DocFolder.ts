@@ -6,6 +6,11 @@ import DocResource from "./DocResource";
 export default class DocFolder extends DocResource {
 
 	/**
+	 * The folder description, if exists.
+	 */
+	public description: string | null = null;
+
+	/**
 	 * The resource type
 	 */
 	public readonly type: string = "folder";
@@ -14,5 +19,10 @@ export default class DocFolder extends DocResource {
 	 * The children resources inside the folder
 	 */
 	public children: DocResource[] = [];
+
+	/**
+	 * Folder name
+	 */
+	public name: string = "";
 
 }
