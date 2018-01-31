@@ -1,5 +1,4 @@
 import * as fse from "fs-extra";
-import * as JSON5 from "json5";
 import * as path from "path";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
 import ProjectConfig from "../config/models/ProjectConfig";
@@ -15,7 +14,9 @@ export default class ConfigManager {
 	 */
 	public async exportConfig(outputPath: string): Promise<string> {
 		outputPath = path.resolve(outputPath, "docs_gm.json");
-		await fse.writeJSON(outputPath, new ProjectConfig());
+		await fse.writeJSON(outputPath, new ProjectConfig(), {
+			spaces: "\t",
+		});
 		return outputPath;
 	}
 
@@ -29,15 +30,13 @@ export default class ConfigManager {
 	 */
 	public async loadConfig(jsonOrProjectPath: string): Promise<IProjectConfig | undefined> {
 		let jsonPath: string;
-		let str: string;
 		if (path.extname(jsonOrProjectPath) === ".json") {
 			jsonPath = path.resolve(jsonOrProjectPath);
 		} else {
 			jsonPath = path.resolve(jsonOrProjectPath, "datafiles/docs_gm.json");
 		}
 		try {
-			str = await fse.readFile(jsonPath, "utf8");
-			const data: IProjectConfig = JSON5.parse(str);
+			const data: IProjectConfig = await fse.readJSON(jsonPath);
 			const config: IProjectConfig = new ProjectConfig();
 			return Object.assign(config, data);
 		} catch (e) {
