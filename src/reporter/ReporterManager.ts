@@ -1,6 +1,5 @@
 import IReporter from "./IReporter";
 
-/* istambul ignore next */
 /**
  * Reporter manager class
  */
