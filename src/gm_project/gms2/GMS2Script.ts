@@ -49,11 +49,12 @@ export default class GMS2Script extends GMResource implements IGMScript {
 		if (this._text === null) {
 			throw new Error("Must call loadFromString() before accesing the subScripts() function");
 		}
-		// This lines converts the triple slash comments ( ///comment)
-		// to JSDoc comments
-		const str = this._text
-			.replace(/\/\/\/ ?(.*)\n/g, "/**\n * $1 \n */\n")
-			.replace(/ ?\*\/\n\/\*\* ?\n/g, "");
+
+		// This lines converts the triple slash comments ( ///comment) to JSDoc comments
+		let str = this._text.replace(/\/\/\/ *(.*)$/gm, "/**\n * $1\n */\n");
+
+		// This regex combines multiple triple JSDoc comments into one.
+		str = str.replace(/ ?\*\/\n\/\*\* ?\n/g, "");
 
 		yield [this.name, str];
 	}

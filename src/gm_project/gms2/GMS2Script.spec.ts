@@ -28,6 +28,24 @@ export class GMS2ScriptFixture {
 		Expect(arr[0][1]).toBe("my-gml-content");
 	}
 
+	@Test("should convert triple slash comments into JSdoc comments")
+	public subScripts_triple_slash() {
+		this.script.loadFromString("/// Hi");
+		const arr = Array.from(this.script.subScripts());
+		Expect(arr.length).toBe(1);
+		Expect(arr[0][0]).toBe("my-name");
+		Expect(arr[0][1]).toBe("/**\n * Hi\n */\n");
+	}
+
+	@Test("should convert triple slash comments into JSdoc comments and strip initial spaces")
+	public subScripts_triple_slash_spaces() {
+		this.script.loadFromString("///      Hi");
+		const arr = Array.from(this.script.subScripts());
+		Expect(arr.length).toBe(1);
+		Expect(arr[0][0]).toBe("my-name");
+		Expect(arr[0][1]).toBe("/**\n * Hi\n */\n");
+	}
+
 	@Test("should get the filepath of the gml file of a non-compatibility script")
 	public filepath_NonCompatibility() {
 		this.script.isCompatibility = false;
