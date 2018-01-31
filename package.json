@@ -45,7 +45,6 @@
   "devDependencies": {
     "@types/fs-extra": "^5.0.0",
     "@types/globby": "^6.1.0",
-    "@types/json5": "0.0.29",
     "@types/minimatch": "^3.0.3",
     "@types/mock-fs": "^3.6.30",
     "@types/mock-require": "^2.0.0",
@@ -72,7 +71,6 @@
     "fs-extra": "^5.0.0",
     "get-installed-path": "^4.0.8",
     "globby": "^7.1.1",
-    "json5": "^0.5.1",
     "minimatch": "^3.0.4",
     "nunjucks": "^3.0.1",
     "open": "0.0.5",
