@@ -18,7 +18,7 @@ export default class GMS2Script extends GMResource implements IGMScript {
 
 	/**
 	 * Creates a new Script
-	 * @param data The YOYO model data for the script
+	 * @param data The yoyo model data for the script
 	 */
 	constructor(name: string) {
 		super(name);
@@ -47,11 +47,11 @@ export default class GMS2Script extends GMResource implements IGMScript {
 	 */
 	public * subScripts(): IterableIterator<[string, string]> {
 		if (this._text === null) {
-			throw new Error("Must call loadFromString() before accesing the subScripts() function");
+			throw new Error("Must call loadFromString() before accessing the subScripts() function");
 		}
 
 		// This lines converts the triple slash comments ( ///comment) to JSDoc comments
-		let str = this._text.replace(/\/\/\/ *(.*)$/gm, "/**\n * $1\n */\n");
+		let str = this._text.replace(/^\/{3}(?!\/) *(.*)$/gm, "/**\n * $1\n */\n");
 
 		// This regex combines multiple triple JSDoc comments into one.
 		str = str.replace(/ ?\*\/\n\/\*\* ?\n/g, "");

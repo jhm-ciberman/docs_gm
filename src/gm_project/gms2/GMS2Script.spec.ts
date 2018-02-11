@@ -46,6 +46,15 @@ export class GMS2ScriptFixture {
 		Expect(arr[0][1]).toBe("/**\n * Hi\n */\n");
 	}
 
+	@Test("should NOT convert triple slash comments into JSdoc comments")
+	public subScripts_not_four_slash() {
+		this.script.loadFromString("//// Hi");
+		const arr = Array.from(this.script.subScripts());
+		Expect(arr.length).toBe(1);
+		Expect(arr[0][0]).toBe("my-name");
+		Expect(arr[0][1]).toBe("//// Hi");
+	}
+
 	@Test("should get the filepath of the gml file of a non-compatibility script")
 	public filepath_NonCompatibility() {
 		this.script.isCompatibility = false;

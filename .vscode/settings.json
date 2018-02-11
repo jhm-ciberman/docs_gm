@@ -20,5 +20,10 @@
     "dist": true,
     "coverage": true,
     ".nyc_output": true,
-  }
+  },
+  "cSpell.words": [
+    "j",
+    "sdoc",
+    "yoyo"
+  ]
 }
