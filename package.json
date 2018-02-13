@@ -71,7 +71,7 @@
     "docs_gm-basic": "^1.0.0",
     "fs-extra": "^5.0.0",
     "get-installed-path": "^4.0.8",
-    "globby": "^7.1.1",
+    "globby": "^8.0.0",
     "json5": "^0.5.1",
     "minimatch": "^3.0.4",
     "nunjucks": "^3.0.1",
