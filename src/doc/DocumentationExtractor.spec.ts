@@ -11,10 +11,10 @@ import DocumentationExtractor from "./DocumentationExctractor";
 /* tslint:disable:max-classes-per-file completed-docs */
 
 class GMScriptMock implements IGMScript {
-	public filepath: string;
-	public parent: IGMFolder | null;
-	public fullpath: string;
-	public name: string;
+	public filepath: string = "";
+	public parent: IGMFolder | null = null;
+	public fullpath: string = "";
+	public name: string = "";
 	public * subScripts(): IterableIterator<[string, string]> {
 		const script1 = [
 			"/**",

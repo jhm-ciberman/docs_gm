@@ -61,7 +61,7 @@
     "nyc": "^11.4.1",
     "rimraf": "^2.6.2",
     "tslint": "^5.9.1",
-    "typescript": "^2.6.2"
+    "typescript": "^2.7.2"
   },
   "dependencies": {
     "commander": "^2.13.0",

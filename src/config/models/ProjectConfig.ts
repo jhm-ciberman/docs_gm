@@ -17,7 +17,7 @@ export default class ProjectConfig implements IProjectConfig {
 	/**
 	 * Warn about unrecognized JSDoc tags
 	 */
-	public warnUnrecognizedTags: boolean;
+	public warnUnrecognizedTags: boolean = true;
 
 	/**
 	 * Rules for validating scripts

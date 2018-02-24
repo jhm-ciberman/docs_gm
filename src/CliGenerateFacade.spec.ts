@@ -1,6 +1,5 @@
 import {
 	Expect,
-	Setup,
 	Test,
 	TestFixture,
 } from "alsatian";
@@ -12,12 +11,7 @@ import CliGenerateFacade from "./CliGenerateFacade";
 @TestFixture("CliGenerateFacade")
 export class CliGenerateFacadeFixture {
 
-	public cli: CliGenerateFacade;
-
-	@Setup
-	public setup() {
-		this.cli = new CliGenerateFacade();
-	}
+	public cli: CliGenerateFacade = new CliGenerateFacade();
 
 	@Test("should get the name")
 	public name() {

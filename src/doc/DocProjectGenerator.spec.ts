@@ -18,10 +18,10 @@ import DocProjectGenerator from "./DocProjectGenerator";
 /* tslint:disable:max-classes-per-file completed-docs */
 
 class GMScriptMock implements IGMScript {
-	public filepath: string;
-	public parent: IGMFolder | null;
-	public fullpath: string;
-	public name: string;
+	public filepath: string = "";
+	public parent: IGMFolder | null = null;
+	public fullpath: string = "";
+	public name: string = "";
 	public * subScripts(): IterableIterator<[string, string]> {
 		const gml = [
 			"/**",
@@ -38,11 +38,11 @@ class GMScriptMock implements IGMScript {
 }
 
 class GMProjectMock implements IGMProject {
-	public path: string;
-	public name: string;
-	public parent: IGMFolder | null;
-	public fullpath: string;
-	public children: IterableIterator<IGMFolder>;
+	public path: string = "";
+	public name: string = "";
+	public parent: IGMFolder | null = null;
+	public fullpath: string = "";
+	public children: IterableIterator<IGMFolder> = [][Symbol.iterator]();
 	public find(_pattern: string): IGMResource[] {
 		const a = new GMScriptMock();
 		a.filepath = "a.gml";
@@ -59,11 +59,11 @@ class GMProjectMock implements IGMProject {
 }
 
 class GMProjectEmptyMock implements IGMProject {
-	public path: string;
-	public name: string;
-	public children: IterableIterator<IGMFolder>;
-	public fullpath: string;
-	public parent: IGMFolder | null;
+	public path: string = "";
+	public name: string = "";
+	public children: IterableIterator<IGMFolder> = [][Symbol.iterator]();
+	public fullpath: string = "";
+	public parent: IGMFolder | null = null;
 	public find(_pattern: string): IGMResource[] {
 		return [];
 	}
