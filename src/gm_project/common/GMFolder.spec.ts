@@ -5,7 +5,8 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import GMResourceMock from "./__mock__/GMResourceMock.mock";
+import GMResourceMock from "./__mock__/GMResource.mock";
+import GMScriptMock from "./__mock__/GMScript.mock";
 import GMFolder from "./GMFolder";
 
 /* tslint:disable:max-classes-per-file completed-docs */
@@ -68,5 +69,31 @@ export class GMFolderFixture {
 		Expect(arr).toContain(a);
 		Expect(arr).toContain(b);
 		Expect(arr).toContain(c);
+	}
+
+	@Test("findModuleScript() should return the first direct script child named FOLDER_ or MODULE_")
+	public findModuleScript_found() {
+		const a = new GMScriptMock();
+		a.name = "my_script";
+		this.folder.addChild(a);
+
+		const b = new GMScriptMock();
+		b.name = "FOLDER_foo";
+		this.folder.addChild(b);
+
+		const c = new GMScriptMock();
+		c.name = "my_other_script";
+		this.folder.addChild(c);
+
+		Expect(this.folder.findModuleScript()).toBe(b);
+	}
+
+	@Test("findModuleScript() should return null if no script child is named FOLDER_ or MODULE_")
+	public findModuleScript_notFound() {
+		const a = new GMScriptMock();
+		a.name = "my_script";
+		this.folder.addChild(a);
+
+		Expect(this.folder.findModuleScript()).toBeNull();
 	}
 }

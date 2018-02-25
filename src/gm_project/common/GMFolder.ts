@@ -1,4 +1,5 @@
 import IGMResource from "../interfaces/IGMResource";
+import IGMScript from "../interfaces/IGMScript";
 import GMResource from "./GMResource";
 
 /**
@@ -59,4 +60,28 @@ export default class GMFolder extends GMResource implements IGMResource {
 		return super.fullpath + "/";
 	}
 
+	/**
+	 * Returns the first GMScript whose name starts with "MODULE_" or with "FOLDER_".
+	 */
+	public findModuleScript(): IGMScript | null {
+		const el = this._children.find((resource) => {
+			return resource.name.startsWith("MODULE_") || resource.name.startsWith("FOLDER_");
+		});
+		if (el && this._isGMScript(el)) {
+			return el;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns true if the resource is a IGMScript
+	 * @private
+	 * @param {IGMResource} res
+	 * @returns {res is IGMScript}
+	 * @memberof GMFolder
+	 */
+	private _isGMScript(res: IGMResource): res is IGMScript {
+		return ("subScripts" in res);
+	}
 }

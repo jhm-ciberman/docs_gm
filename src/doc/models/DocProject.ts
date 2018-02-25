@@ -20,7 +20,7 @@ export default class DocProject {
 	 * to use this array, since this represents ALL the scripts
 	 * in your **Project**, not the script or scripts you want
 	 * to include in your **Page**. You must use the values
-	 * of DocPage insted.
+	 * of DocPage instead.
 	 */
 	public scripts: DocScript[] = [];
 
