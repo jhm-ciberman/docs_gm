@@ -13,6 +13,12 @@ export default class GMFolder extends GMResource implements IGMResource {
 	protected _children: IGMResource[] = [];
 
 	/**
+	 * The GMScript that holds the information and documentation about the module/folder.
+	 * That is, a GMScript inside the folder whose name starts with "MODULE_" or with "FOLDER_"
+	 */
+	protected _moduleScript: IGMScript | null = null;
+
+	/**
 	 * Creates a new GMFolder
 	 * @param name The folder name
 	 */
@@ -27,11 +33,16 @@ export default class GMFolder extends GMResource implements IGMResource {
 	 */
 	public addChild(child: GMResource): void {
 		child.parent = this;
-		this._children.push(child);
+		if (this._isGMScript(child) && (child.name.startsWith("MODULE_") || child.name.startsWith("FOLDER_"))) {
+			this._moduleScript = child;
+		} else {
+			this._children.push(child);
+		}
+
 	}
 
 	/**
-	 * Returns an iterator with all the folder childrend
+	 * Returns an iterator with all the folder children
 	 */
 	get children() {
 		return this._children[Symbol.iterator]();
@@ -63,15 +74,8 @@ export default class GMFolder extends GMResource implements IGMResource {
 	/**
 	 * Returns the first GMScript whose name starts with "MODULE_" or with "FOLDER_".
 	 */
-	public findModuleScript(): IGMScript | null {
-		const el = this._children.find((resource) => {
-			return resource.name.startsWith("MODULE_") || resource.name.startsWith("FOLDER_");
-		});
-		if (el && this._isGMScript(el)) {
-			return el;
-		} else {
-			return null;
-		}
+	get moduleScript(): IGMScript | null {
+		return this._moduleScript;
 	}
 
 	/**
