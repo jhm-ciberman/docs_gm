@@ -57,13 +57,13 @@ export default class Page {
 	 * @param docProject The docProject to get the pages
 	 */
 	private _getDocPages(pageFeeder: PageFeeder): IterableIterator<DocPage> {
-		switch (this._feedWith.toLowerCase()) {
+		switch (this._feedWith) {
 			case PageFeedWith.Script:
 				return pageFeeder.oneScriptPerPage();
 			case PageFeedWith.Scripts:
 				return pageFeeder.allTheScriptsInOnePage();
-			default:
-				throw new Error(`Unsupported feedWith parameter: ${this._feedWith}`);
+			case PageFeedWith.Folder:
+				throw new Error(`Not implemented`);
 		}
 	}
 }
