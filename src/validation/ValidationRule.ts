@@ -1,6 +1,6 @@
-import IValidationRule from "../../config/interfaces/IValidationRuleConfig";
-import IReporter from "../../reporter/IReporter";
-import ReporterManager from "../../reporter/ReporterManager";
+import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
+import IReporter from "../reporter/IReporter";
+import ReporterManager from "../reporter/ReporterManager";
 
 /**
  * Validates a generic element T against a rule defined by a validatorFunction.
@@ -16,7 +16,7 @@ export default class ValidatorRule<T> {
 	/**
 	 * The configuration of the current validation rule
 	 */
-	private readonly _rule: IValidationRule;
+	private readonly _rule: IValidationRuleConfig;
 
 	/**
 	 * The function that will be called to generate
@@ -39,7 +39,7 @@ export default class ValidatorRule<T> {
 	 * the output warning message. Takes the generic element T as a parameter.
 	 */
 	constructor(
-		ruleConfig: IValidationRule,
+		ruleConfig: IValidationRuleConfig,
 		validatorFunction: (element: T) => boolean,
 		messageGenerator?: (element: T) => string,
 	) {
@@ -49,7 +49,7 @@ export default class ValidatorRule<T> {
 	}
 
 	/**
-	 * Invoques the _validatorFunction with the element T. If the function returns false,
+	 * Invokes the _validatorFunction with the element T. If the function returns false,
 	 * and the rule configuration specify that should warn about invalid rules,
 	 * then the the messageGenerator function is called and the output message is send
 	 * to the reporter (normally, the reporter is the console, or the screen).

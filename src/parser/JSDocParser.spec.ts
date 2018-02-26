@@ -6,7 +6,7 @@ import {
 } from "alsatian";
 
 import { SpyOn } from "alsatian/core/spying";
-import DocReturns from "../doc/models/DocReturns";
+import DocReturns from "../doc_models/DocReturns";
 import JSDocParser from "./JSDocParser";
 
 /* tslint:disable:max-classes-per-file completed-docs */

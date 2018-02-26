@@ -1,3 +1,5 @@
+import * as minimatch from "minimatch";
+
 import IGMFolder from "../interfaces/IGMFolder";
 import IGMResource from "../interfaces/IGMResource";
 
@@ -14,7 +16,7 @@ export default class GMResource implements IGMResource {
 	/**
 	 * The resource name
 	 */
-	public name: string;
+	public readonly name: string;
 
 	/**
 	 * Creates a new Resource
@@ -31,5 +33,15 @@ export default class GMResource implements IGMResource {
 	 */
 	get fullpath(): string {
 		return (this.parent ? this.parent.fullpath : "") + this.name;
+	}
+
+	/**
+	 * Returns true if the resource match the specified pattern glob pattern
+	 * @param {string} pattern The glob pattern to match
+	 * @returns
+	 * @memberof GMResource
+	 */
+	public match(pattern: string) {
+		return minimatch(this.fullpath, pattern, { matchBase: true });
 	}
 }

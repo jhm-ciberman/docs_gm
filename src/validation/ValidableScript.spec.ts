@@ -4,7 +4,7 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import DocScript from "../models/DocScript";
+import DocScript from "../doc_models/DocScript";
 import ValidableScript from "./ValidableScript";
 
 /* tslint:disable:max-classes-per-file completed-docs */
@@ -14,7 +14,7 @@ export class ValidableScriptFixture {
 
 	@Test("validableScript")
 	public validableScript() {
-		const docScript = new DocScript();
+		const docScript = new DocScript("foo");
 		const validable = new ValidableScript(docScript, "return argument[0];");
 		Expect(validable.argumentCount).toBe(1);
 		Expect(validable.optionalArguments).toBe(true);

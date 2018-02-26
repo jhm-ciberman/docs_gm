@@ -6,10 +6,10 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import IValidationRuleConfig from "../../config/interfaces/IValidationRuleConfig";
-import ScriptValidationRules from "../../config/models/ScriptValidationRules";
-import DocParam from "../models/DocParam";
-import DocScript from "../models/DocScript";
+import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
+import ScriptValidationRules from "../config/models/ScriptValidationRules";
+import DocParam from "../doc_models/DocParam";
+import DocScript from "../doc_models/DocScript";
 import IValidableScript from "./IValidableScript";
 import ScriptValidator from "./ScriptValidator";
 import ValidableScript from "./ValidableScript";
@@ -18,7 +18,7 @@ import ValidationRule from "./ValidationRule";
 /* tslint:disable:max-classes-per-file completed-docs */
 
 class ValidableScriptMock implements IValidableScript {
-	public doc: DocScript = new DocScript();
+	public doc: DocScript = new DocScript("foo");
 	public argumentCount: number;
 	public optionalArguments: boolean;
 	public hasReturn: boolean;
@@ -39,19 +39,19 @@ export class ScriptValidatorFixture {
 		this.validable = new ValidableScriptMock();
 	}
 
-	@Test("markAsPrivateIfNecesary should mark as private a script staring with underscore")
-	public markAsPrivateIfNecesary_mark() {
+	@Test("markAsPrivateIfNecessary should mark as private a script staring with underscore")
+	public markAsPrivateIfNecessary_mark() {
 		this.validable.doc.private = false;
 		this.validable.doc.name = "_private_script";
-		this.validator.markAsPrivateIfNecesary(this.validable);
+		this.validator.markAsPrivateIfNecessary(this.validable);
 		Expect(this.validable.doc.private).toBe(true);
 	}
 
-	@Test("markAsPrivateIfNecesary should NOT mark as private a script staring with underscore")
-	public markAsPrivateIfNecesary_not_mark() {
+	@Test("markAsPrivateIfNecessary should NOT mark as private a script staring with underscore")
+	public markAsPrivateIfNecessary_not_mark() {
 		this.validable.doc.private = false;
 		this.validable.doc.name = "public_script";
-		this.validator.markAsPrivateIfNecesary(this.validable);
+		this.validator.markAsPrivateIfNecessary(this.validable);
 		Expect(this.validable.doc.private).toBe(false);
 	}
 

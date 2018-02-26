@@ -43,23 +43,8 @@ export class GMProjectFixture {
 		Expect(arr).toContain(folder2);
 	}
 
-	@Test("find should find resources by glob")
-	public find() {
-		const folder1 = new GMFolderMock();
-		folder1.fullpath = "folder1";
-		this.project.addChild(folder1);
-
-		const folder2 = new GMFolderMock();
-		folder2.fullpath = "folder2";
-		this.project.addChild(folder2);
-
-		const folder3 = new GMFolderMock();
-		folder3.fullpath = "not-this";
-		this.project.addChild(folder3);
-
-		const arr = this.project.find("**/folder*");
-		Expect(arr.length).toBe(2);
-		Expect(arr).toContain(folder1);
-		Expect(arr).toContain(folder2);
+	@Test("The project fullpath is allways a '/' slash.")
+	public fullpath() {
+		Expect(this.project.fullpath).toBe("/");
 	}
 }

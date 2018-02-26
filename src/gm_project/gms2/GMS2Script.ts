@@ -1,10 +1,9 @@
-import GMResource from "../common/GMResource";
-import IGMScript from "../interfaces/IGMScript";
+import GMScript from "../common/GMScript";
 
 /**
  * Represents a GMS2 Script
  */
-export default class GMS2Script extends GMResource implements IGMScript {
+export default class GMS2Script extends GMScript {
 
 	/**
 	 * Is a compatibility script?

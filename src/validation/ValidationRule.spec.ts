@@ -5,7 +5,7 @@ import {
 	TestFixture,
 } from "alsatian";
 import { TestCase } from "alsatian/core/decorators";
-import IValidationRuleConfig from "../../config/interfaces/IValidationRuleConfig";
+import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
 import ValidationRule from "./ValidationRule";
 
 /* tslint:disable:max-classes-per-file completed-docs */

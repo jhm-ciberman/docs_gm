@@ -73,7 +73,7 @@ export class GMS1ProjectFactoryFixture {
 		const factory = new GMS2ProjectFactory(this.projectEmpty.join("project.json"));
 		const proj: IGMProject = await factory.load();
 
-		Expect(proj.getSubtreeLeafs().length).toBe(0);
+		Expect(Array.from(proj.children).length).toBe(0);
 		Expect(proj.path).toBe(this.projectEmpty.dir);
 		Expect(proj.name).toBe("my-project-empty");
 	}

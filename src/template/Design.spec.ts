@@ -8,8 +8,8 @@ import {
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-import { TempDir } from "../../_testing_helpers/TempDir.help";
-import DocProject from "../models/DocProject";
+import { TempDir } from "../_testing_helpers/TempDir.help";
+import DocProject from "../doc_models/DocProject";
 import Design from "./Design";
 import { PageFeedWith } from "./PageFeedWith";
 import { IDesign } from "./TemplateJSON";
@@ -40,7 +40,7 @@ export class DesignFixture {
 	}
 
 	@AsyncTest("should render an output file for each onepage page")
-	public async shouldRenderOuputForEachOnepagePage() {
+	public async shouldRenderOutputForEachOnepagePage() {
 		const myDesignData: IDesign = {
 			displayName: "My design",
 			pages: [
@@ -49,8 +49,8 @@ export class DesignFixture {
 			],
 		};
 		const design = new Design("myDesign", this.in.dir, myDesignData);
-		const docProject = new DocProject();
-		docProject.name = "foo";
+		const docProject = new DocProject("foo");
+
 		await design.renderPages(this.out.dir, docProject);
 
 		Expect(this.out.read("a.html")).toBe("<h1>Hello world foo</h1>");

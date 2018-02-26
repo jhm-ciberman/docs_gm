@@ -1,11 +1,12 @@
+import IGMFolder from "../interfaces/IGMFolder";
 import IGMResource from "../interfaces/IGMResource";
-import IGMScript from "../interfaces/IGMScript";
 import GMResource from "./GMResource";
+import GMScript from "./GMScript";
 
 /**
  * Represents any folder in the resource tree of Game Maker
  */
-export default class GMFolder extends GMResource implements IGMResource {
+export default class GMFolder extends GMResource implements IGMFolder {
 
 	/**
 	 * An array with all the folder children resources
@@ -16,7 +17,7 @@ export default class GMFolder extends GMResource implements IGMResource {
 	 * The GMScript that holds the information and documentation about the module/folder.
 	 * That is, a GMScript inside the folder whose name starts with "MODULE_" or with "FOLDER_"
 	 */
-	protected _moduleScript: IGMScript | null = null;
+	protected _moduleScript: GMScript | null = null;
 
 	/**
 	 * Creates a new GMFolder
@@ -24,16 +25,15 @@ export default class GMFolder extends GMResource implements IGMResource {
 	 */
 	constructor(name: string) {
 		super(name);
-		this.name = name;
 	}
 
 	/**
 	 * Ads a children
 	 * @param childId The children ID
 	 */
-	public addChild(child: GMResource): void {
+	public addChild(child: IGMResource): void {
 		child.parent = this;
-		if (this._isGMScript(child) && (child.name.startsWith("MODULE_") || child.name.startsWith("FOLDER_"))) {
+		if (child instanceof GMScript && (child.name.startsWith("MODULE_") || child.name.startsWith("FOLDER_"))) {
 			this._moduleScript = child;
 		} else {
 			this._children.push(child);
@@ -49,22 +49,6 @@ export default class GMFolder extends GMResource implements IGMResource {
 	}
 
 	/**
-	 * Gets all the subtree leafs nodes recursively. That are
-	 * all the GMResources that are not folders
-	 */
-	public getSubtreeLeafs(): IGMResource[] {
-		let arr: IGMResource[] = [];
-		for (const res of this._children) {
-			if (res instanceof GMFolder) {
-				arr = arr.concat(res.getSubtreeLeafs());
-			} else {
-				arr.push(res);
-			}
-		}
-		return arr;
-	}
-
-	/**
 	 * The fullpath of the resource
 	 */
 	get fullpath(): string {
@@ -74,18 +58,7 @@ export default class GMFolder extends GMResource implements IGMResource {
 	/**
 	 * Returns the first GMScript whose name starts with "MODULE_" or with "FOLDER_".
 	 */
-	get moduleScript(): IGMScript | null {
+	get moduleScript(): GMScript | null {
 		return this._moduleScript;
-	}
-
-	/**
-	 * Returns true if the resource is a IGMScript
-	 * @private
-	 * @param {IGMResource} res
-	 * @returns {res is IGMScript}
-	 * @memberof GMFolder
-	 */
-	private _isGMScript(res: IGMResource): res is IGMScript {
-		return ("subScripts" in res);
 	}
 }

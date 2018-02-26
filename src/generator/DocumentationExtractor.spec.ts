@@ -5,16 +5,12 @@ import {
 } from "alsatian";
 
 import ProjectConfig from "../config/models/ProjectConfig";
-import IGMFolder from "../gm_project/interfaces/IGMFolder";
-import IGMScript from "../gm_project/interfaces/IGMScript";
-import DocumentationExtractor from "./DocumentationExctractor";
+import GMScript from "../gm_project/common/GMScript";
+import DocumentationExtractor from "./DocumentationExtractor";
 /* tslint:disable:max-classes-per-file completed-docs */
 
-class GMScriptMock implements IGMScript {
+class GMScriptMock extends GMScript {
 	public filepath: string = "";
-	public parent: IGMFolder | null = null;
-	public fullpath: string = "";
-	public name: string = "";
 	public * subScripts(): IterableIterator<[string, string]> {
 		const script1 = [
 			"/**",
@@ -42,7 +38,7 @@ export class DocumentationExtractorFixture {
 	public extractDocScripts() {
 		const config = new ProjectConfig();
 		const extractor = new DocumentationExtractor(config);
-		const script = new GMScriptMock();
+		const script = new GMScriptMock("foo");
 		const docs = extractor.extractDocScripts(script);
 		Expect(docs.length).toBe(2);
 	}

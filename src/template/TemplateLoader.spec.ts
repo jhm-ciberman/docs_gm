@@ -7,7 +7,7 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import { TempDir } from "../../_testing_helpers/TempDir.help";
+import { TempDir } from "../_testing_helpers/TempDir.help";
 import { myTemplateJSON } from "./__mock__/TemplateJSON.mock";
 import Design from "./Design";
 import TemplateLoader from "./TemplateLoader";

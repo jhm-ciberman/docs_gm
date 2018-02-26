@@ -1,9 +1,7 @@
-import * as minimatch from "minimatch";
 import * as path from "path";
 
 import IGMFolder from "../interfaces/IGMFolder";
 import IGMProject from "../interfaces/IGMProject";
-import IGMResource from "../interfaces/IGMResource";
 import GMFolder from "./GMFolder";
 
 /**
@@ -37,17 +35,6 @@ export default class GMProject extends GMFolder implements IGMProject {
 	}
 
 	/**
-	 * Returns an array of the resources that match certain glob pattern
-	 * @param pattern The glob pattern to use to find files
-	 */
-	public find(pattern: string): IGMResource[] {
-		// TODO: optimize this ineficient recursive way
-		return this.getSubtreeLeafs().filter ((res) => {
-			return minimatch(res.fullpath, pattern, { matchBase: true });
-		});
-	}
-
-	/**
 	 * Gets the top level folders of the project
 	 */
 	public get children(): IterableIterator<IGMFolder> {
@@ -59,6 +46,15 @@ export default class GMProject extends GMFolder implements IGMProject {
 	 * @param child The folder to add
 	 */
 	public addChild(child: IGMFolder) {
+		child.parent = this;
 		this._children.push(child);
 	}
+
+	/**
+	 * The project fullpath is allways a "/"
+	 */
+	get fullpath(): string {
+		return "/";
+	}
+
 }

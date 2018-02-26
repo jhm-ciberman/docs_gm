@@ -1,4 +1,4 @@
-import DocScript from "../models/DocScript";
+import DocScript from "../doc_models/DocScript";
 
 export default interface IValidableScript {
 	doc: DocScript;

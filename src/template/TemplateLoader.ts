@@ -2,7 +2,6 @@ import * as fse from "fs-extra";
 import { getInstalledPath } from "get-installed-path";
 import * as path from "path";
 import pkgDir = require("pkg-dir");
-import ReporterManager from "../../reporter/ReporterManager";
 import Template from "./Template";
 /**
  * This class is used to load a Template from disk.
@@ -31,7 +30,7 @@ export default class TemplateLoader {
 	}
 
 	/**
-	 * Gets the path of a template npm module from a global instalation or local instalation.
+	 * Gets the path of a template npm module from a global installation or local installation.
 	 * @param templateName The name of the template to find
 	 */
 	public async getTemplateModulePath(templateName: string): Promise<string> {
@@ -41,7 +40,6 @@ export default class TemplateLoader {
 		} catch (e) {
 			try {
 				const cwd = await pkgDir() as string;
-				ReporterManager.reporter.info("!!!!!!!!", cwd);
 				return await this.getInstalledPath(moduleName, { local: true, cwd });
 			} catch (e) {
 				throw new Error(`Cannot find the module ${moduleName}`);

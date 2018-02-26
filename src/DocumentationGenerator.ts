@@ -5,8 +5,8 @@ import IProjectConfig from "./config/interfaces/IProjectConfig";
 import IGMProject from "./gm_project/interfaces/IGMProject";
 
 import ProjectConfig from "./config/models/ProjectConfig";
-import DocProjectGenerator from "./doc/DocProjectGenerator";
-import TemplateLoader from "./doc/render/TemplateLoader";
+import DocProjectGenerator from "./generator/DocProjectGenerator";
+import TemplateLoader from "./template/TemplateLoader";
 
 /**
  * Generates the documentation.
@@ -19,8 +19,8 @@ export default class DocumentationGenerator {
 	 */
 	public async generate(project: IGMProject, config?: IProjectConfig): Promise<string> {
 		config = config || new ProjectConfig();
-		const generator = new DocProjectGenerator();
-		const docProject = await generator.generate(project, config);
+		const generator = new DocProjectGenerator(project, config);
+		const docProject = await generator.generate();
 		const template = await this._loadTemplate(config.output);
 		const designName = config.output.design;
 		if (designName && !template.hasDesign(designName)) {

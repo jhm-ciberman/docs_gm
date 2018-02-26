@@ -19,4 +19,13 @@ export default abstract class DocResource {
 	 * The parent folder
 	 */
 	public parent: DocFolder | null = null;
+
+	/**
+	 * Creates an instance of DocResource.
+	 * @param {string} name The resource name
+	 * @memberof DocResource
+	 */
+	constructor(name: string) {
+		this.name = name;
+	}
 }

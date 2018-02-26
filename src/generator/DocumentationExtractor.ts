@@ -1,10 +1,10 @@
 import IProjectConfig from "../config/interfaces/IProjectConfig";
-import IGMScript from "../gm_project/interfaces/IGMScript";
 
+import DocScript from "../doc_models/DocScript";
+import GMScript from "../gm_project/common/GMScript";
 import JSDocParser from "../parser/JSDocParser";
-import DocScript from "./models/DocScript";
-import ScriptValidator from "./validation/ScriptValidator";
-import ValidableScript from "./validation/ValidableScript";
+import ScriptValidator from "../validation/ScriptValidator";
+import ValidableScript from "../validation/ValidableScript";
 
 /**
  * This class receives as input a GMScript and generates an array of DocScript[]
@@ -38,7 +38,7 @@ export default class DocumentationExtractor {
 	 * The returned array is sorted alphabetically.
 	 * @param script An array with DocScript objects
 	 */
-	public extractDocScripts(script: IGMScript): DocScript[] {
+	public extractDocScripts(script: GMScript): DocScript[] {
 		const arr = [];
 		for (const [name, gmlText] of script.subScripts()) {
 			const docScript = this._jsDocParser.parse(name, gmlText);
@@ -64,7 +64,7 @@ export default class DocumentationExtractor {
 			this._scriptValidator.ruleMismatchingArguments,
 			this._scriptValidator.ruleUndocumentedArguments,
 		];
-		this._scriptValidator.markAsPrivateIfNecesary(validable);
+		this._scriptValidator.markAsPrivateIfNecessary(validable);
 
 		for (const rule of rules) {
 			if (!rule.validate(validable)) {

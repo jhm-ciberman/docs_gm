@@ -2,7 +2,8 @@ import * as fse from "fs-extra";
 import * as globby from "globby";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
-import DocProject from "../models/DocProject";
+import DocProject from "../doc_models/DocProject";
+import PageFeeder from "../generator/PageFeeder";
 import Page from "./Page";
 import * as TemplateJSON from "./TemplateJSON";
 
@@ -22,7 +23,7 @@ export default class Design {
 	public readonly displayName: string;
 
 	/**
-	 * An array with the globs ussed when copying files from the input template folder to the
+	 * An array with the globs used when copying files from the input template folder to the
 	 * output documentation folder.
 	 */
 	private  _copy: string[] = ["**/*", "!template.json", "!*.njk", "!package.json"];
@@ -57,13 +58,14 @@ export default class Design {
 	/**
 	 * Renders the documentation HTML files for the specified docProject.
 	 * @param outputFolder The output folder
-	 * @param docProject The docProject to render the documentation
+	 * @param docProject The docProject to generate the documentation for
 	 */
 	public async renderPages(outputFolder: string, docProject: DocProject) {
+		const pageFeeder = new PageFeeder(docProject);
 		const env = nunjucks.configure(this._templateFolder, { autoescape: false });
 
 		for (const page of this._pages) {
-			for (const [out, content] of page.generate(env, docProject)) {
+			for (const [out, content] of page.generate(env, pageFeeder)) {
 				const filename = path.resolve(outputFolder, out);
 				await fse.outputFile(filename, content);
 			}

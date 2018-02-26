@@ -8,6 +8,8 @@ import {
 
 import * as xml2js from "xml2js";
 import { TempDir } from "../../_testing_helpers/TempDir.help";
+import GMFolder from "../common/GMFolder";
+import GMProject from "../common/GMProject";
 import IGMProject from "../interfaces/IGMProject";
 import GMS1ProjectFactory from "./GMS1ProjectFactory";
 import { IGMS1DescriptorRoot } from "./IGMS1Descriptor";
@@ -59,8 +61,16 @@ export class GMS1ProjectFactoryFixture {
 		const factory = new GMS1ProjectFactory(this.folder.join("my-project-normal.xml"));
 		const proj: IGMProject = await factory.load();
 
-		const leafs = proj.getSubtreeLeafs();
-		Expect(leafs.length).toBe(3);
+		const ls = this._ls(proj as GMProject);
+		Expect(ls).toEqual([
+			"/",
+			"/scripts/",
+			"/scripts/subfolder/",
+			"/scripts/subfolder/my_script_3",
+			"/scripts/emptyfolder/",
+			"/scripts/my_script_1",
+			"/scripts/my_script_2",
+		]);
 	}
 
 	@AsyncTest("should load an empty project")
@@ -68,8 +78,10 @@ export class GMS1ProjectFactoryFixture {
 		const factory = new GMS1ProjectFactory(this.folder.join("my-project-empty.xml"));
 		const proj: IGMProject = await factory.load();
 
-		const leafs = proj.getSubtreeLeafs();
-		Expect(leafs.length).toBe(0);
+		const ls = this._ls(proj as GMProject);
+		Expect(ls).toEqual([
+			"/",
+		]);
 	}
 
 	@AsyncTest("should thrown on invalid XML project")
@@ -80,6 +92,18 @@ export class GMS1ProjectFactoryFixture {
 		}).catch((e) => {
 			Expect(e).toBeDefined();
 		});
+	}
+
+	private _ls(f: GMFolder): string[] {
+		let arr: string[] = [f.fullpath];
+		for (const res of f.children) {
+			if (res instanceof GMFolder) {
+				arr = arr.concat(this._ls(res));
+			} else {
+				arr.push(res.fullpath);
+			}
+		}
+		return arr;
 	}
 
 }

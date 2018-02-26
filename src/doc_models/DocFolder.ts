@@ -24,6 +24,15 @@ export default class DocFolder extends DocResource {
 	/**
 	 * Folder name
 	 */
-	public name: string = "";
+	public name: string;
+
+	/**
+	 * Creates an instance of DocFolder.
+	 * @param {string} name
+	 * @memberof DocFolder
+	 */
+	constructor(name: string) {
+		super(name);
+	}
 
 }

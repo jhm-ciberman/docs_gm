@@ -7,9 +7,10 @@ import {
 } from "alsatian";
 
 import * as nunjucks from "nunjucks";
-import { TempDir } from "../../_testing_helpers/TempDir.help";
-import DocProject from "../models/DocProject";
-import DocScript from "../models/DocScript";
+import { TempDir } from "../_testing_helpers/TempDir.help";
+import DocProject from "../doc_models/DocProject";
+import DocScript from "../doc_models/DocScript";
+import PageFeeder from "../generator/PageFeeder";
 import Page from "./Page";
 import PageFeedWith from "./PageFeedWith";
 
@@ -31,16 +32,12 @@ export class PageFixture {
 	@AsyncSetupFixture
 	public async setupFixture() {
 
-		this.script1 = new DocScript();
-		this.script1.name = "my_script_name1";
+		this.script1 = new DocScript("my_script_name1");
+		this.script2 = new DocScript("my_script_name2");
 
-		this.script2 = new DocScript();
-		this.script2.name = "my_script_name2";
-
-		this.docProject = new DocProject();
-		this.docProject.name = "My project name";
-		this.docProject.scripts.push(this.script1);
-		this.docProject.scripts.push(this.script2);
+		this.docProject = new DocProject("My project name");
+		this.docProject.scripts.children.push(this.script1);
+		this.docProject.scripts.children.push(this.script2);
 
 		this.tempDir = TempDir.create("path", {
 			"page_script.njk": `<h1>{{ page.script.name }}</h1>`,
@@ -66,7 +63,8 @@ export class PageFixture {
 		const output = this.tempDir.join("{{ page.script.name }}.html");
 		const page = new Page(input, output, PageFeedWith.Script);
 
-		const it = page.generate(this.env, this.docProject);
+		const pageFeeder = new PageFeeder(this.docProject);
+		const it = page.generate(this.env, pageFeeder);
 
 		const [filename1, content1] = it.next().value;
 		Expect(filename1).toBe(this.tempDir.join("my_script_name1.html"));
@@ -85,7 +83,8 @@ export class PageFixture {
 		const output = this.tempDir.join("out.html");
 		const page = new Page(input, output, PageFeedWith.Scripts);
 
-		const it = page.generate(this.env, this.docProject);
+		const pageFeeder = new PageFeeder(this.docProject);
+		const it = page.generate(this.env, pageFeeder);
 
 		const [filename, content] = it.next().value;
 		Expect(filename).toBe(this.tempDir.join("out.html"));

@@ -1,4 +1,4 @@
-import IScriptValidationRules from "../../config/interfaces/IScriptValidationRules";
+import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
 import ValidableScript from "./ValidableScript";
 import ValidationRule from "./ValidationRule";
 
@@ -88,10 +88,10 @@ export default class ScriptValidator {
 	}
 
 	/**
-	 * Mark a validable script element as private if necesary
+	 * Mark a validable script element as private if necessary
 	 * @param element The ValidableScript to mark
 	 */
-	public markAsPrivateIfNecesary(element: ValidableScript): void {
+	public markAsPrivateIfNecessary(element: ValidableScript): void {
 		if (this._rules.markUnderscoreScriptsAsPrivate && element.doc.name.charAt(0) === "_") {
 			element.doc.private = true;
 		}

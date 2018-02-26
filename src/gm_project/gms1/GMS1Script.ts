@@ -1,12 +1,11 @@
 import * as path from "path";
 
-import GMResource from "../common/GMResource";
-import IGMScript from "../interfaces/IGMScript";
+import GMScript from "../common/GMScript";
 
 /**
  * Represents a GMS1 Script. Can contain subscripts.
  */
-export default class GMS1Script extends GMResource implements IGMScript {
+export default class GMS1Script extends GMScript {
 
 	/**
 	 * The filename of the script
