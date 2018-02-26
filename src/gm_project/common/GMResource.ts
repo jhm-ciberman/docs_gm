@@ -36,12 +36,10 @@ export default class GMResource implements IGMResource {
 	}
 
 	/**
-	 * Returns true if the resource match the specified pattern glob pattern
+	 * Returns true if the resource match the specified glob pattern
 	 * @param {string} pattern The glob pattern to match
-	 * @returns
-	 * @memberof GMResource
 	 */
-	public match(pattern: string) {
+	public match(pattern: string): boolean {
 		return minimatch(this.fullpath, pattern, { matchBase: true });
 	}
 }

@@ -40,6 +40,7 @@ class GMScriptMock extends GMScript {
 }
 
 class GMFolderMock implements IGMFolder {
+
 	public parent: IGMFolder | null = null;
 	public name: string;
 	public fullpath: string = "";
@@ -57,9 +58,14 @@ class GMFolderMock implements IGMFolder {
 	public getSubtreeLeafs(): IGMResource[] {
 		throw new Error("Method not implemented.");
 	}
+	public match(_pattern: string): boolean {
+		throw new Error("Method not implemented.");
+	}
 }
 
 class GMProjectMock extends GMFolderMock implements IGMProject {
+	public fullpath: string;
+	public parent: IGMFolder | null;
 	public path: string = "";
 	public mockChildren: IGMFolder[];
 	constructor(name: string, mockChildren: IGMFolder[]) {

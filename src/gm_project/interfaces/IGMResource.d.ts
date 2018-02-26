@@ -18,4 +18,10 @@ export default interface IGMResource {
 	 * The name of the resource
 	 */
 	name: string;
+
+	/**
+	 * Returns true if the resource match the specified glob pattern
+	 * @param {string} pattern The glob pattern to match
+	 */
+	match(pattern: string): boolean;
 }

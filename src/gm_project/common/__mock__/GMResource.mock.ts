@@ -7,4 +7,7 @@ export default class GMResourceMock implements IGMResource {
 	public parent: IGMFolder | null;
 	public fullpath: string;
 	public name: string;
+	public match(_pattern: string): boolean {
+		throw new Error("Method not implemented.");
+	}
 }

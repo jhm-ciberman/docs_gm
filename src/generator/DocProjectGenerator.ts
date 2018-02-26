@@ -35,6 +35,10 @@ export default class DocProjectGenerator {
 	private _rootFoldersMap: Map<string, IGMFolder> = new Map<string, IGMFolder>();
 
 	/**
+	 * The pattern to filter the DocProject
+	 */
+	private _pattern: string;
+	/**
 	 * Creates an instance of DocProjectGenerator.
 	 * @param {IGMProject} gmProject The GMProject to generate the DocProject
 	 * @param {ProjectConfig} projectConfig The project configuration
@@ -44,6 +48,8 @@ export default class DocProjectGenerator {
 		this._gmProject = gmProject;
 		// Find all the project resources that match the input pattern
 		this._extractor = new DocumentationExtractor(projectConfig);
+
+		this._pattern = projectConfig.output.pattern;
 
 		for (const folder of this._gmProject.children) {
 			this._rootFoldersMap.set(folder.name, folder);
@@ -91,6 +97,9 @@ export default class DocProjectGenerator {
 	 * @param res The GMResource to load
 	 */
 	private async _loadResource(res: IGMResource): Promise<DocResource[]> {
+		if (!res.match(this._pattern)) {
+			return [];
+		}
 		if (res instanceof GMFolder) {
 			return [await this._loadFolder(res)];
 		} else if (res instanceof GMScript) {
