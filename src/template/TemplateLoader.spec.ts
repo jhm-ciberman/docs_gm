@@ -53,10 +53,11 @@ export class TemplateStaticFixture {
 	@AsyncTest("should throw when loading an invalid template")
 	public async loadFrom_invalid() {
 		const loader = new TemplateLoader();
-		loader.loadFrom(this.invalid.dir).then(() => {
+		return loader.loadFrom(this.invalid.dir).then(() => {
 			throw new Error("loadFrom() did not throw on invalid json");
-		}).catch((e) => {
+		}).catch((e: Error) => {
 			Expect(e).toBeDefined();
+			Expect(e.message).toContain("Error loading Template");
 		});
 	}
 
@@ -94,11 +95,11 @@ export class TemplateStaticFixture {
 			throw new Error("Fake error: module not exists");
 		};
 		const spy = SpyOn(loader, "getInstalledPath");
-		loader.getTemplateModulePath("template-name").then(() => {
+		return loader.getTemplateModulePath("template-name").then(() => {
 			throw new Error("loadFrom() did not throw on invalid json");
 		}).catch((e: Error) => {
 			Expect(e).toBeDefined();
-			Expect(e.message).not.toBe("Fake error: module not exists");
+			Expect(e.message).toContain("Cannot find the module");
 			// tslint:disable-next-line:no-unused-expression
 			Expect(spy).toHaveBeenCalled().exactly(2).times;
 		});

@@ -38,6 +38,7 @@ export default class DocProjectGenerator {
 	 * The pattern to filter the DocProject
 	 */
 	private _pattern: string;
+
 	/**
 	 * Creates an instance of DocProjectGenerator.
 	 * @param {IGMProject} gmProject The GMProject to generate the DocProject
