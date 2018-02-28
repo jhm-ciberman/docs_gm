@@ -1,11 +1,13 @@
 import IGMFolder from "../../gm_project/interfaces/IGMFolder";
 import IGMResource from "../../gm_project/interfaces/IGMResource";
 
+/* tslint:disable:completed-docs */
+
 export default class GMFolderMock implements IGMFolder {
 
-	public parent: IGMFolder | null = null;
+	public fullpath: string;
 	public name: string;
-	public fullpath: string = "";
+	public parent: IGMFolder | null = null;
 	public mockChildren: IGMResource[];
 	constructor(name: string, mockChildren: IGMResource[]) {
 		this.name = name;
@@ -21,6 +23,6 @@ export default class GMFolderMock implements IGMFolder {
 		throw new Error("Method not implemented.");
 	}
 	public match(_pattern: string): boolean {
-		throw new Error("Method not implemented.");
+		return true;
 	}
 }

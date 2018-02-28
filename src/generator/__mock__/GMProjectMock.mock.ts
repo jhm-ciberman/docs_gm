@@ -2,8 +2,9 @@ import IGMFolder from "../../gm_project/interfaces/IGMFolder";
 import IGMProject from "../../gm_project/interfaces/IGMProject";
 import GMFolderMock from "./GMFolderMock.mock";
 
+/* tslint:disable:completed-docs */
+
 export default class GMProjectMock extends GMFolderMock implements IGMProject {
-	public fullpath: string;
 	public parent: IGMFolder | null;
 	public path: string = "";
 	public mockChildren: IGMFolder[];

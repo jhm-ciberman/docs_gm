@@ -8,7 +8,6 @@ import DocFolder from "../doc_models/DocFolder";
 import DocProject from "../doc_models/DocProject";
 import DocResource from "../doc_models/DocResource";
 import DocScript from "../doc_models/DocScript";
-import GMFolder from "../gm_project/common/GMFolder";
 import GMScript from "../gm_project/common/GMScript";
 import IGMFolder from "../gm_project/interfaces/IGMFolder";
 import IGMResource from "../gm_project/interfaces/IGMResource";
@@ -92,6 +91,20 @@ export default class DocProjectGenerator {
 	}
 
 	/**
+	 * Returns true if the resource is a IGMFolder
+	 */
+	private _isFolder(res: IGMResource): res is IGMFolder {
+		return (res as IGMFolder).children !== undefined;
+	}
+
+	/**
+	 * Returns true if the resource is a GMScript
+	 */
+	private _isScript(res: IGMResource): res is GMScript {
+		return (res as GMScript).loadFromString !== undefined;
+	}
+
+	/**
 	 * Loads a single resource, returns an array with the corresponding DocResources.
 	 * (A single GMResource can be used to generate multiple DocResources.
 	 * For example, a single GMScript with multiple subscripts)
@@ -101,9 +114,9 @@ export default class DocProjectGenerator {
 		if (!res.match(this._pattern)) {
 			return [];
 		}
-		if (res instanceof GMFolder) {
+		if (this._isFolder(res)) {
 			return [await this._loadFolder(res)];
-		} else if (res instanceof GMScript) {
+		} else if (this._isScript(res)) {
 			return this._loadScript(res);
 		} else {
 			throw new Error(`Unrecognized resource type for resource "${res.name}"`);
