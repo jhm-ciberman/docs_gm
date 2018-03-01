@@ -2,13 +2,13 @@ import open = require("open");
 import * as path from "path";
 
 import { inject, injectable, interfaces } from "inversify";
-import IProjectConfig from "../config/interfaces/IProjectConfig";
-import { TYPES } from "../types";
+import container from "../../inversify.config";
+import { TYPES } from "../../types";
 
 import IConfigManager from "../config/interfaces/IConfigManager";
+import IProjectConfig from "../config/interfaces/IProjectConfig";
 import DocumentationGenerator from "../generator/DocumentationGenerator";
 import ProjectLoader from "../gm_project/ProjectLoader";
-import container from "../inversify.config";
 import IReporter from "../reporter/interfaces/IReporter";
 import ReporterManager from "../reporter/ReporterManager";
 import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";

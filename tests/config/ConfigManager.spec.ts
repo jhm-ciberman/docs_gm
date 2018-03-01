@@ -6,8 +6,8 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import container from "../../src/inversify.config";
-import { TYPES } from "../../src/types";
+import container from "../../inversify.config";
+import { TYPES } from "../../types";
 
 import { TempDir } from "../_testing_helpers/TempDir.help";
 

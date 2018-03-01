@@ -1,5 +1,5 @@
 import { inject, injectable, interfaces } from "inversify";
-import { TYPES } from "../types";
+import { TYPES } from "../../types";
 
 import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
 import IScriptValidator from "./interfaces/IScriptValidator";

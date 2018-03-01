@@ -4,8 +4,8 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import container from "../../src/inversify.config";
-import { TYPES } from "../../src/types";
+import container from "../../inversify.config";
+import { TYPES } from "../../types";
 
 import IDocumentationExtractor from "../../src/generator/interfaces/IDocumentationExtractor";
 import GMScript from "../../src/gm_project/GMScript";

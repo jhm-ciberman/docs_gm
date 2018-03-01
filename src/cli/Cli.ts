@@ -1,5 +1,5 @@
-import container from "../inversify.config";
-import { TYPES } from "../types";
+import container from "../../inversify.config";
+import { TYPES } from "../../types";
 
 import * as program from "commander";
 import { inject } from "inversify";

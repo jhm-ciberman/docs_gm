@@ -1,5 +1,5 @@
 import { inject, interfaces } from "inversify";
-import { TYPES } from "../types";
+import { TYPES } from "../../types";
 
 import * as path from "path";
 

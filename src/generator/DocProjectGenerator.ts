@@ -1,26 +1,25 @@
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../types";
+
 import * as fse from "fs-extra";
 import * as path from "path";
 
-import IGMProject from "../gm_project/interfaces/IGMProject";
-
-import { inject } from "inversify";
 import ProjectConfig from "../config/ProjectConfig";
 import DocFolder from "../doc_models/DocFolder";
-import { TYPES } from "../types";
-
 import DocProject from "../doc_models/DocProject";
 import DocResource from "../doc_models/DocResource";
 import DocScript from "../doc_models/DocScript";
 import GMScript from "../gm_project/GMScript";
 import IGMFolder from "../gm_project/interfaces/IGMFolder";
+import IGMProject from "../gm_project/interfaces/IGMProject";
 import IGMResource from "../gm_project/interfaces/IGMResource";
-
 import IDocProjectGenerator from "./interfaces/IDocProjectGenerator";
 import IDocumentationExtractor from "./interfaces/IDocumentationExtractor";
 
 /**
  * This class generates a DocProject
  */
+@injectable()
 export default class DocProjectGenerator implements IDocProjectGenerator {
 
 	/**
@@ -117,9 +116,6 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 	 * @param res The GMResource to load
 	 */
 	private async _loadResource(res: IGMResource): Promise<DocResource[]> {
-		if (!res.match(this._pattern)) {
-			return [];
-		}
 		if (this._isFolder(res)) {
 			return [await this._loadFolder(res)];
 		} else if (this._isScript(res)) {
@@ -134,6 +130,9 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 	 * the documentation from it.
 	 */
 	private async _loadScript(gmScript: GMScript): Promise<DocScript[]> {
+		if (!gmScript.match(this._pattern)) {
+			return [];
+		}
 		const pathStr = path.resolve(this._gmProject.path, gmScript.filepath);
 		try {
 			const str = await fse.readFile(pathStr, "utf8");

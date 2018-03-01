@@ -7,8 +7,8 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import container from "../../src/inversify.config";
-import { TYPES } from "../../src/types";
+import container from "../../inversify.config";
+import { TYPES } from "../../types";
 
 import IScriptValidationRules from "../../src/config/interfaces/IScriptValidationRules";
 import IValidationRuleConfig from "../../src/config/interfaces/IValidationRuleConfig";

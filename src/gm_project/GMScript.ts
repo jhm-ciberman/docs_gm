@@ -1,9 +1,10 @@
 import GMResource from "./GMResource";
+import IGMScript from "./interfaces/IGMScript";
 
 /**
  * Represents a GameMaker Script
  */
-export default abstract class GMScript extends GMResource {
+export default abstract class GMScript extends GMResource implements IGMScript {
 
 	/**
 	 * The file location of the GML file

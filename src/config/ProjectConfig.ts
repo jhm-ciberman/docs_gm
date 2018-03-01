@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../types";
+import { TYPES } from "../../types";
 
 import IOutputConfig from "./interfaces/IOutputConfig";
 import IProjectConfig from "./interfaces/IProjectConfig";
