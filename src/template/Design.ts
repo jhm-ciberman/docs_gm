@@ -4,8 +4,8 @@ import * as nunjucks from "nunjucks";
 import * as path from "path";
 import DocProject from "../doc_models/DocProject";
 import PageFeeder from "../generator/PageFeeder";
+import * as TemplateJSON from "./interfaces/TemplateJSON";
 import Page from "./Page";
-import * as TemplateJSON from "./TemplateJSON";
 
 /**
  * Represents a single design of one Template

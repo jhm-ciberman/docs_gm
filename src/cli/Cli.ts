@@ -1,11 +1,12 @@
+import container from "../inversify.config";
+import { TYPES } from "../types";
+
 import * as program from "commander";
 import { inject } from "inversify";
 import * as os from "os";
-import IConfigManager from "../config/IConfigManager";
-import container from "../inversify.config";
+import IConfigManager from "../config/interfaces/IConfigManager";
 import ReporterManager from "../reporter/ReporterManager";
-import { TYPES } from "../types";
-import ICliGenerateFacade from "./ICliGenerateFacade.d";
+import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
 
 // tslint:disable-next-line: no-var-requires
 const packageJSON = require("../package.json");

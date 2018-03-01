@@ -1,4 +1,4 @@
-import DocProject from "../doc_models/DocProject";
+import DocProject from "../../doc_models/DocProject";
 
 export default interface IDocProjectGenerator {
 	generate(): Promise<DocProject>;

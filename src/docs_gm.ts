@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+/**
+ * This file is the entry point for the command line interface (CLI)
+ */
+
 import Cli from "./cli/Cli";
 import container from "./inversify.config";
 

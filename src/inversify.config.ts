@@ -2,23 +2,27 @@ import { Container, interfaces } from "inversify";
 import { TYPES } from "./types";
 
 import CliGenerateFacade from "./cli/CliGenerateFacade";
-import ICliGenerateFacade from "./cli/ICliGenerateFacade";
+import ICliGenerateFacade from "./cli/interfaces/ICliGenerateFacade";
+
 import ConfigManager from "./config/ConfigManager";
-import IConfigManager from "./config/IConfigManager";
+import IConfigManager from "./config/interfaces/IConfigManager";
 import IOutputConfig from "./config/interfaces/IOutputConfig";
 import IProjectConfig from "./config/interfaces/IProjectConfig";
 import IScriptValidationRules from "./config/interfaces/IScriptValidationRules";
-import OutputConfig from "./config/models/OutputConfig";
-import ProjectConfig from "./config/models/ProjectConfig";
-import ScriptValidationRules from "./config/models/ScriptValidationRules";
+import OutputConfig from "./config/OutputConfig";
+import ProjectConfig from "./config/ProjectConfig";
+import ScriptValidationRules from "./config/ScriptValidationRules";
+
 import DocProjectGenerator from "./generator/DocProjectGenerator";
 import DocumentationExtractor from "./generator/DocumentationExtractor";
-import IDocProjectGenerator from "./generator/IDocProjectGenerator";
-import IDocumentationExtractor from "./generator/IDocumentationExtractor";
-import IJSDocParser from "./parser/IJSDocParser";
+import IDocProjectGenerator from "./generator/interfaces/IDocProjectGenerator";
+import IDocumentationExtractor from "./generator/interfaces/IDocumentationExtractor";
+
+import IJSDocParser from "./parser/interfaces/IJSDocParser";
 import JSDocParser from "./parser/JSDocParser";
-import IScriptValidator from "./validation/IScriptValidator";
-import IValidationRule from "./validation/IValidationRule";
+
+import IScriptValidator from "./validation/interfaces/IScriptValidator";
+import IValidationRule from "./validation/interfaces/IValidationRule";
 import ScriptValidator from "./validation/ScriptValidator";
 import ValidableScript from "./validation/ValidableScript";
 import ValidationRule from "./validation/ValidationRule";

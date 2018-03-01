@@ -1,6 +1,7 @@
 import { injectable } from "inversify";
-import IScriptValidationRules from "../interfaces/IScriptValidationRules";
-import IValidationRuleConfig from "../interfaces/IValidationRuleConfig";
+
+import IScriptValidationRules from "./interfaces/IScriptValidationRules";
+import IValidationRuleConfig from "./interfaces/IValidationRuleConfig";
 import ValidationRuleConfig from "./ValidationRuleConfig";
 
 /**

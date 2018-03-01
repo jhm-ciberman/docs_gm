@@ -1,7 +1,7 @@
 import * as path from "path";
 
 import Design from "./Design";
-import * as TemplateJSON from "./TemplateJSON";
+import * as TemplateJSON from "./interfaces/TemplateJSON";
 
 /**
  * Represents a Documentation HTML Template

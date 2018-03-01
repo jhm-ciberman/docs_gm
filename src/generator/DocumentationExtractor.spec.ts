@@ -4,10 +4,11 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import GMScript from "../gm_project/common/GMScript";
 import container from "../inversify.config";
 import { TYPES } from "../types";
-import IDocumentationExtractor from "./IDocumentationExtractor";
+
+import GMScript from "../gm_project/GMScript";
+import IDocumentationExtractor from "./interfaces/IDocumentationExtractor";
 /* tslint:disable:max-classes-per-file completed-docs */
 
 class GMScriptMock extends GMScript {

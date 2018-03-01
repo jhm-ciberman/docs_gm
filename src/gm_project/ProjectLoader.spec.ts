@@ -6,8 +6,9 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import * as xml2js from "xml2js";
 import { TempDir } from "../_testing_helpers/TempDir.help";
+
+import * as xml2js from "xml2js";
 import { IGMS1DescriptorRoot } from "./gms1/IGMS1Descriptor";
 import * as ProjectEmpty from "./gms2/__mock__/ProjectEmpty.mock";
 import ProjectLoader from "./ProjectLoader";

@@ -1,4 +1,4 @@
-import IReporter from "../reporter/IReporter";
+import IReporter from "../../reporter/interfaces/IReporter";
 
 export default interface ICliGenerateFacade {
 

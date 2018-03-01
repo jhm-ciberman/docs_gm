@@ -8,8 +8,8 @@ import {
 
 import * as xml2js from "xml2js";
 import { TempDir } from "../../_testing_helpers/TempDir.help";
-import GMFolder from "../common/GMFolder";
-import GMProject from "../common/GMProject";
+import GMFolder from "../GMFolder";
+import GMProject from "../GMProject";
 import IGMProject from "../interfaces/IGMProject";
 import GMS1ProjectFactory from "./GMS1ProjectFactory";
 import { IGMS1DescriptorRoot } from "./IGMS1Descriptor";

@@ -1,4 +1,4 @@
-import IProjectConfig from "./interfaces/IProjectConfig";
+import IProjectConfig from "./IProjectConfig";
 
 export default class IConfigManager {
 	exportConfig(outputPath: string): Promise<string>;

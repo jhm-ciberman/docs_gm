@@ -1,5 +1,5 @@
+import ValidableScript from "../ValidableScript";
 import IValidationRule from "./IValidationRule";
-import ValidableScript from "./ValidableScript";
 
 export default interface IScriptValidator {
 	readonly rulePrivate: IValidationRule<ValidableScript>;

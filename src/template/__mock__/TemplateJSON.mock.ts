@@ -1,5 +1,5 @@
-import { PageFeedWith } from "../PageFeedWith";
-import { IRoot } from "../TemplateJSON";
+import { PageFeedWith } from "../enums/PageFeedWith";
+import { IRoot } from "../interfaces/TemplateJSON";
 
 export const myTemplateJSON: IRoot = {
 	author: "Darth Vader",

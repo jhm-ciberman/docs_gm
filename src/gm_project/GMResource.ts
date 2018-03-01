@@ -1,7 +1,7 @@
 import * as minimatch from "minimatch";
 
-import IGMFolder from "../interfaces/IGMFolder";
-import IGMResource from "../interfaces/IGMResource";
+import IGMFolder from "./interfaces/IGMFolder";
+import IGMResource from "./interfaces/IGMResource";
 
 /**
  * Represents a generic GameMaker resource.

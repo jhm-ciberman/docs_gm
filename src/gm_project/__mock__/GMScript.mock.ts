@@ -1,5 +1,5 @@
-import IGMFolder from "../../interfaces/IGMFolder";
 import GMScript from "../GMScript";
+import IGMFolder from "../interfaces/IGMFolder";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 

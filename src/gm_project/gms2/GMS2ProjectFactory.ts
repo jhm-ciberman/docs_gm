@@ -1,9 +1,9 @@
 import * as fse from "fs-extra";
 import * as path from "path";
 
-import GMFolder from "../common/GMFolder";
-import GMProject from "../common/GMProject";
-import GMResource from "../common/GMResource";
+import GMFolder from "../GMFolder";
+import GMProject from "../GMProject";
+import GMResource from "../GMResource";
 import IGMFolder from "../interfaces/IGMFolder";
 import IGMProject from "../interfaces/IGMProject";
 import IGMProjectFactory from "../interfaces/IGMProjectFactory";

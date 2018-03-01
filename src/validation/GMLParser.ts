@@ -1,9 +1,11 @@
-import IGMLParser from "./IGMLParser";
+import { injectable } from "inversify";
+import IGMLParser from "./interfaces/IGMLParser";
 
 /**
  * Class for parsing GML code and
- * extract features (number of arguments, optional arguments, returns statments, etc)
+ * extract features (number of arguments, optional arguments, returns statements, etc)
  */
+@injectable()
 export default class GMLParser implements IGMLParser {
 
 	/**

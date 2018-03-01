@@ -1,4 +1,4 @@
-import GMScript from "../../gm_project/common/GMScript";
+import GMScript from "../../gm_project/GMScript";
 import IGMFolder from "../../gm_project/interfaces/IGMFolder";
 
 /* tslint:disable:completed-docs */

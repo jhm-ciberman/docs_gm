@@ -3,7 +3,7 @@ import * as nunjucks from "nunjucks";
 // import DocFolder from "../models/DocFolder";
 import DocPage from "../doc_models/DocPage";
 import PageFeeder from "../generator/PageFeeder";
-import PageFeedWith from "./PageFeedWith";
+import PageFeedWith from "./enums/PageFeedWith";
 
 /**
  * Represents one Page for one Design of one Template

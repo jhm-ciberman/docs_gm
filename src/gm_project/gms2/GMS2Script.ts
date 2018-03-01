@@ -1,4 +1,4 @@
-import GMScript from "../common/GMScript";
+import GMScript from "../GMScript";
 
 /**
  * Represents a GMS2 Script

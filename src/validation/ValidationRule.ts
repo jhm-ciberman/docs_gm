@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
-import IReporter from "../reporter/IReporter";
+import IReporter from "../reporter/interfaces/IReporter";
 import ReporterManager from "../reporter/ReporterManager";
 /**
  * Validates a generic element T against a rule defined by a validatorFunction.

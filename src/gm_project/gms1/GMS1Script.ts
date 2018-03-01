@@ -1,6 +1,6 @@
 import * as path from "path";
 
-import GMScript from "../common/GMScript";
+import GMScript from "../GMScript";
 
 /**
  * Represents a GMS1 Script. Can contain subscripts.

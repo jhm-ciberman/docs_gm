@@ -1,4 +1,4 @@
-import IReporter from "./IReporter";
+import IReporter from "./interfaces/IReporter";
 
 /**
  * Reporter manager class

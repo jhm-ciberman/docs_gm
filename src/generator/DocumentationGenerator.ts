@@ -1,13 +1,14 @@
+import { inject, interfaces } from "inversify";
+import { TYPES } from "../types";
+
 import * as path from "path";
 
-import IOutputConfig from "./config/interfaces/IOutputConfig";
-import IProjectConfig from "./config/interfaces/IProjectConfig";
-import IGMProject from "./gm_project/interfaces/IGMProject";
+import IOutputConfig from "../config/interfaces/IOutputConfig";
+import IProjectConfig from "../config/interfaces/IProjectConfig";
+import IGMProject from "../gm_project/interfaces/IGMProject";
 
-import { inject, interfaces } from "inversify";
-import DocProjectGenerator from "./generator/DocProjectGenerator";
-import TemplateLoader from "./template/TemplateLoader";
-import { TYPES } from "./types";
+import DocProjectGenerator from "../generator/DocProjectGenerator";
+import TemplateLoader from "../template/TemplateLoader";
 
 /**
  * Generates the documentation.

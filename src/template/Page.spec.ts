@@ -11,8 +11,8 @@ import { TempDir } from "../_testing_helpers/TempDir.help";
 import DocProject from "../doc_models/DocProject";
 import DocScript from "../doc_models/DocScript";
 import PageFeeder from "../generator/PageFeeder";
+import PageFeedWith from "./enums/PageFeedWith";
 import Page from "./Page";
-import PageFeedWith from "./PageFeedWith";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 

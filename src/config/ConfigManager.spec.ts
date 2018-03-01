@@ -6,10 +6,12 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import { TempDir } from "../_testing_helpers/TempDir.help";
 import container from "../inversify.config";
 import { TYPES } from "../types";
-import IConfigManager from "./IConfigManager";
+
+import { TempDir } from "../_testing_helpers/TempDir.help";
+
+import IConfigManager from "./interfaces/IConfigManager";
 import IProjectConfig from "./interfaces/IProjectConfig";
 
 /* tslint:disable:max-classes-per-file completed-docs */

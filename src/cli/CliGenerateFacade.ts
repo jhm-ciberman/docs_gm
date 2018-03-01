@@ -1,17 +1,17 @@
 import open = require("open");
 import * as path from "path";
 
-import IProjectConfig from "../config/interfaces/IProjectConfig";
-import IReporter from "../reporter/IReporter";
-
 import { inject, injectable, interfaces } from "inversify";
-import IConfigManager from "../config/IConfigManager";
-import DocumentationGenerator from "../DocumentationGenerator";
+import IProjectConfig from "../config/interfaces/IProjectConfig";
+import { TYPES } from "../types";
+
+import IConfigManager from "../config/interfaces/IConfigManager";
+import DocumentationGenerator from "../generator/DocumentationGenerator";
 import ProjectLoader from "../gm_project/ProjectLoader";
 import container from "../inversify.config";
+import IReporter from "../reporter/interfaces/IReporter";
 import ReporterManager from "../reporter/ReporterManager";
-import { TYPES } from "../types";
-import ICliGenerateFacade from "./ICliGenerateFacade.d";
+import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
 
 /**
  * A facade class to manage all the basic process of the ComandLine

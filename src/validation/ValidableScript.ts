@@ -1,12 +1,15 @@
+import { injectable } from "inversify";
+
 import DocScript from "../doc_models/DocScript";
 import GMLParser from "./GMLParser";
-import IValidableScript from "./IValidableScript";
+import IValidableScript from "./interfaces/IValidableScript";
 
 /**
  * This class represents a script to be validated.
  * It contains a reference to the associated DocScript object and
  * properties with features of the GMLcode (like number of arguments, etc).
  */
+@injectable()
 export default class ValidableScript implements IValidableScript {
 
 	/**

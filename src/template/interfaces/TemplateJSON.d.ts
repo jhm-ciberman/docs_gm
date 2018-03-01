@@ -1,4 +1,4 @@
-import PageFeedWith from "./PageFeedWith";
+import PageFeedWith from "../enums/PageFeedWith";
 
 /**
  * @fileOverview

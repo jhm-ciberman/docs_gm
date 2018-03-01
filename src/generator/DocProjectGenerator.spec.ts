@@ -7,17 +7,18 @@ import {
 	TeardownFixture,
 	TestFixture,
 } from "alsatian";
+import container from "../inversify.config";
+import { TYPES } from "../types";
+
 import { TempDir } from "../_testing_helpers/TempDir.help";
 
 import IProjectConfig from "../config/interfaces/IProjectConfig";
-import ProjectConfig from "../config/models/ProjectConfig";
+import ProjectConfig from "../config/ProjectConfig";
 import IGMProject from "../gm_project/interfaces/IGMProject";
-import container from "../inversify.config";
-import { TYPES } from "../types";
 import GMFolderMock from "./__mock__/GMFolderMock.mock";
 import GMProjectMock from "./__mock__/GMProjectMock.mock";
 import GMScriptMock from "./__mock__/GMScriptMock.mock";
-import IDocProjectGenerator from "./IDocProjectGenerator";
+import IDocProjectGenerator from "./interfaces/IDocProjectGenerator";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 

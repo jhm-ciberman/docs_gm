@@ -1,8 +1,9 @@
 import { inject, injectable, interfaces } from "inversify";
-import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
 import { TYPES } from "../types";
-import IScriptValidator from "./IScriptValidator";
-import IValidationRule from "./IValidationRule";
+
+import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
+import IScriptValidator from "./interfaces/IScriptValidator";
+import IValidationRule from "./interfaces/IValidationRule";
 import ValidableScript from "./ValidableScript";
 
 /**

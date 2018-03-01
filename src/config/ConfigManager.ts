@@ -1,9 +1,10 @@
-import * as fse from "fs-extra";
 import { inject, injectable, interfaces } from "inversify";
+import { TYPES } from "../types";
+
+import * as fse from "fs-extra";
 import * as path from "path";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
-import { TYPES } from "../types";
-import IConfigManager from "./IConfigManager";
+import IConfigManager from "./interfaces/IConfigManager";
 
 /**
  * This class exports and loads the configuration

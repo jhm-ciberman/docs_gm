@@ -4,17 +4,19 @@ import * as path from "path";
 import IGMProject from "../gm_project/interfaces/IGMProject";
 
 import { inject } from "inversify";
-import ProjectConfig from "../config/models/ProjectConfig";
+import ProjectConfig from "../config/ProjectConfig";
 import DocFolder from "../doc_models/DocFolder";
+import { TYPES } from "../types";
+
 import DocProject from "../doc_models/DocProject";
 import DocResource from "../doc_models/DocResource";
 import DocScript from "../doc_models/DocScript";
-import GMScript from "../gm_project/common/GMScript";
+import GMScript from "../gm_project/GMScript";
 import IGMFolder from "../gm_project/interfaces/IGMFolder";
 import IGMResource from "../gm_project/interfaces/IGMResource";
-import { TYPES } from "../types";
-import IDocProjectGenerator from "./IDocProjectGenerator";
-import IDocumentationExtractor from "./IDocumentationExtractor";
+
+import IDocProjectGenerator from "./interfaces/IDocProjectGenerator";
+import IDocumentationExtractor from "./interfaces/IDocumentationExtractor";
 
 /**
  * This class generates a DocProject

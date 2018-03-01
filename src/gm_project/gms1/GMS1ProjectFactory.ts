@@ -2,8 +2,8 @@ import * as fse from "fs-extra";
 import * as path from "path";
 import * as xml2js from "xml2js";
 
-import GMFolder from "../common/GMFolder";
-import GMProject from "../common/GMProject";
+import GMFolder from "../GMFolder";
+import GMProject from "../GMProject";
 import IGMProject from "../interfaces/IGMProject";
 import IGMProjectFactory from "../interfaces/IGMProjectFactory";
 import GMS1Script from "./GMS1Script";

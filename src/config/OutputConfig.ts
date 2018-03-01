@@ -1,5 +1,6 @@
 import { injectable } from "inversify";
-import IOutputConfig from "../interfaces/IOutputConfig";
+
+import IOutputConfig from "./interfaces/IOutputConfig";
 
 /**
  * This class has all the configuration for the DocsGM Output

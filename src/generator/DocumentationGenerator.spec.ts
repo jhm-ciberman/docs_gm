@@ -4,8 +4,6 @@ import {
 	TestFixture,
 } from "alsatian";
 
-// import ProjectConfig from "../config/models/ProjectConfig";
-// import GMProject from "../gm_project/common/GMProject";
 import DocumentationGenerator from "./DocumentationGenerator";
 /* tslint:disable:max-classes-per-file completed-docs */
 

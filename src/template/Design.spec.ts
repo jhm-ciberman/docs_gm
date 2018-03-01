@@ -11,8 +11,8 @@ import {
 import { TempDir } from "../_testing_helpers/TempDir.help";
 import DocProject from "../doc_models/DocProject";
 import Design from "./Design";
-import { PageFeedWith } from "./PageFeedWith";
-import { IDesign } from "./TemplateJSON";
+import { PageFeedWith } from "./enums/PageFeedWith";
+import { IDesign } from "./interfaces/TemplateJSON";
 
 @TestFixture("Design")
 export class DesignFixture {

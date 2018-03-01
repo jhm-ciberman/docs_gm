@@ -1,5 +1,5 @@
-import IGMFolder from "../../interfaces/IGMFolder";
-import IGMResource from "../../interfaces/IGMResource";
+import IGMFolder from "../interfaces/IGMFolder";
+import IGMResource from "../interfaces/IGMResource";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 

@@ -1,10 +1,10 @@
 import parse = require("comment-parser");
 import { injectable } from "inversify";
 import DocScript from "../doc_models/DocScript";
-import IReporter from "../reporter/IReporter";
+import IReporter from "../reporter/interfaces/IReporter";
 import ReporterManager from "../reporter/ReporterManager";
 import DocScriptFactory from "./DocScriptFactory";
-import IJSDocParser from "./IJSDocParser";
+import IJSDocParser from "./interfaces/IJSDocParser";
 
 /**
  * Class for parsing the GML scripts and JSDocs comments inside those scripts

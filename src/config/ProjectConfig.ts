@@ -1,8 +1,9 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../types";
-import IOutputConfig from "../interfaces/IOutputConfig";
-import IProjectConfig from "../interfaces/IProjectConfig";
-import IScriptValidationRule from "../interfaces/IScriptValidationRules";
+import { TYPES } from "../types";
+
+import IOutputConfig from "./interfaces/IOutputConfig";
+import IProjectConfig from "./interfaces/IProjectConfig";
+import IScriptValidationRule from "./interfaces/IScriptValidationRules";
 import ScriptValidationRules from "./ScriptValidationRules";
 
 /**

@@ -7,16 +7,17 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
-import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
-import ScriptValidationRules from "../config/models/ScriptValidationRules";
-import DocParam from "../doc_models/DocParam";
-import DocScript from "../doc_models/DocScript";
 import container from "../inversify.config";
 import { TYPES } from "../types";
-import IScriptValidator from "./IScriptValidator";
-import IValidableScript from "./IValidableScript";
-import IValidationRule from "./IValidationRule";
+
+import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
+import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
+import ScriptValidationRules from "../config/ScriptValidationRules";
+import DocParam from "../doc_models/DocParam";
+import DocScript from "../doc_models/DocScript";
+import IScriptValidator from "./interfaces/IScriptValidator";
+import IValidableScript from "./interfaces/IValidableScript";
+import IValidationRule from "./interfaces/IValidationRule";
 import ValidableScript from "./ValidableScript";
 
 /* tslint:disable:max-classes-per-file completed-docs */
