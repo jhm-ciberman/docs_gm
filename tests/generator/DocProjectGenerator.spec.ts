@@ -57,30 +57,20 @@ export class DocProjectGeneratorFixture {
 		const scriptsFolder = new MockGMFolder("scripts", [subFolder]);
 		const p = new MockGMProject("my-project", [scriptsFolder], this.projectDir.dir);
 
-		const spyMatchA = SpyOn(a, "match");
-		const spyMatchB = SpyOn(b, "match");
-		const spyMatchC = SpyOn(c, "match");
+		const spyMatchA = this._spyAndReturn(a, "match", true);
+		const spyMatchB = this._spyAndReturn(b, "match", true);
+		const spyMatchC = this._spyAndReturn(c, "match", false); // match() returns false!
 
-		spyMatchA.andReturn(true);
-		spyMatchB.andReturn(true);
-		spyMatchC.andReturn(false); // match() returns false!
-
-		const spyLoadFromStringA = SpyOn(a, "loadFromString");
-		const spyLoadFromStringB = SpyOn(b, "loadFromString");
-		const spyLoadFromStringC = SpyOn(c, "loadFromString");
-
-		spyLoadFromStringA.andStub();
-		spyLoadFromStringB.andStub();
-		spyLoadFromStringC.andStub();
+		const spyLoadFromStringA = this._spyAndStub(a, "loadFromString");
+		const spyLoadFromStringB = this._spyAndStub(b, "loadFromString");
+		const spyLoadFromStringC = this._spyAndStub(c, "loadFromString");
 
 		const PATTERN = "**/match/**";
 		const config = container.get<IProjectConfig>(TYPES.IProjectConfig);
 		config.output.pattern = PATTERN;
 
 		const docExtractor = new MockDocumentationExtractor();
-		const fakeExtractDocScripts = (gmScript: IGMScript) => {
-			return [new DocScript(gmScript.name)];
-		};
+		const fakeExtractDocScripts = (gmScript: IGMScript) => [new DocScript(gmScript.name)];
 		SpyOn(docExtractor, "extractDocScripts").andCall(fakeExtractDocScripts as () => any);
 
 		container.rebind<IProjectConfig>(TYPES.IProjectConfig).toConstantValue(config);
@@ -91,6 +81,7 @@ export class DocProjectGeneratorFixture {
 
 		const doc = await generator.generate();
 		Expect(doc.name).toBe("my-project");
+
 		Expect(spyMatchA).toHaveBeenCalledWith(PATTERN);
 		Expect(spyMatchB).toHaveBeenCalledWith(PATTERN);
 		Expect(spyMatchC).toHaveBeenCalledWith(PATTERN);
@@ -105,19 +96,16 @@ export class DocProjectGeneratorFixture {
 		Expect((doc.scripts.children[0] as DocFolder).children[0].name).toBe("a");
 		Expect((doc.scripts.children[0] as DocFolder).children[1].name).toBe("b");
 	}
+
+	private _spyAndReturn(target: any, method: string, value: any) {
+		const spy = SpyOn(target, method);
+		spy.andReturn(value);
+		return spy;
+	}
+
+	private _spyAndStub(target: any, method: string) {
+		const spy = SpyOn(target, method);
+		spy.andStub();
+		return spy;
+	}
 }
-
-// const aaa = function *() {
-// 	const gml = [
-// 		"/**",
-// 		" * My documentation ",
-// 		" */",
-// 	];
-// 	yield ["my-script", gml.join("\n")];
-// };
-
-// const loadFromString = (str: string) => {
-// 	if (str !== "a" && str !== "b") {
-// 		throw new Error("Invalid arguments to mock loadFromString");
-// 	}
-// };
