@@ -2,8 +2,8 @@
   "name": "docs_gm",
   "version": "1.1.2",
   "description": "The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "test": "npm run lint && npm run coverage",
     "test-only": "npm run build && npm run unit-tests",

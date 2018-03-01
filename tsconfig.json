@@ -1,6 +1,7 @@
 {
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "tests/**/*.ts"
   ],
   "exclude": [
     "node_modules"
@@ -14,7 +15,6 @@
     "sourceMap": true,
     //"inlineSourceMap": true,
     "outDir": "./dist/",
-    "rootDir": "./src/",
     "strict": true,
     "strictPropertyInitialization": false, /* TODO: allow strict property initialization. Must wait to tslint to support the new definite assignment */
     "noUnusedLocals": true,
