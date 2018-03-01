@@ -4,9 +4,10 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import ProjectConfig from "../config/models/ProjectConfig";
 import GMScript from "../gm_project/common/GMScript";
-import DocumentationExtractor from "./DocumentationExtractor";
+import container from "../inversify.config";
+import { TYPES } from "../types";
+import IDocumentationExtractor from "./IDocumentationExtractor";
 /* tslint:disable:max-classes-per-file completed-docs */
 
 class GMScriptMock extends GMScript {
@@ -36,8 +37,7 @@ export class DocumentationExtractorFixture {
 
 	@Test("extractDocScripts")
 	public extractDocScripts() {
-		const config = new ProjectConfig();
-		const extractor = new DocumentationExtractor(config);
+		const extractor = container.get<IDocumentationExtractor>(TYPES.IDocumentationExtractor);
 		const script = new GMScriptMock("foo");
 		const docs = extractor.extractDocScripts(script);
 		Expect(docs.length).toBe(2);

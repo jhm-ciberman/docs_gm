@@ -2,18 +2,22 @@ import {
 	Expect,
 	Setup,
 	SpyOn,
+	Teardown,
 	Test,
 	TestFixture,
 } from "alsatian";
 
+import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
 import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
 import ScriptValidationRules from "../config/models/ScriptValidationRules";
 import DocParam from "../doc_models/DocParam";
 import DocScript from "../doc_models/DocScript";
+import container from "../inversify.config";
+import { TYPES } from "../types";
+import IScriptValidator from "./IScriptValidator";
 import IValidableScript from "./IValidableScript";
-import ScriptValidator from "./ScriptValidator";
+import IValidationRule from "./IValidationRule";
 import ValidableScript from "./ValidableScript";
-import ValidationRule from "./ValidationRule";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
@@ -27,16 +31,26 @@ class ValidableScriptMock implements IValidableScript {
 @TestFixture("ScriptValidator")
 export class ScriptValidatorFixture {
 
-	public validator: ScriptValidator;
+	public validator: IScriptValidator;
 
-	public rules: ScriptValidationRules;
+	public rules: IScriptValidationRules;
 
 	public validable: IValidableScript;
+
 	@Setup
 	public setup() {
+		container.snapshot();
 		this.rules = new ScriptValidationRules();
-		this.validator = new ScriptValidator(this.rules);
+		container.unbind(TYPES.IScriptValidationRules);
+		container.bind<IScriptValidationRules>(TYPES.IScriptValidationRules).toConstantValue(this.rules);
+
+		this.validator = container.get<IScriptValidator>(TYPES.IScriptValidator);
 		this.validable = new ValidableScriptMock();
+	}
+
+	@Teardown
+	public teardown() {
+		container.restore();
 	}
 
 	@Test("markAsPrivateIfNecessary should mark as private a script staring with underscore")
@@ -109,7 +123,7 @@ export class ScriptValidatorFixture {
 		Expect(validatorRule.reporter.warn).not.toHaveBeenCalled();
 	}
 
-	private _shouldInvalidateAndWarn(ruleConfig: IValidationRuleConfig, validatorRule: ValidationRule<ValidableScript>) {
+	private _shouldInvalidateAndWarn(ruleConfig: IValidationRuleConfig, validatorRule: IValidationRule<ValidableScript>) {
 		ruleConfig.ignore = true;
 		ruleConfig.warn = true;
 		SpyOn(validatorRule.reporter, "warn");

@@ -1,13 +1,16 @@
 import parse = require("comment-parser");
+import { injectable } from "inversify";
 import DocScript from "../doc_models/DocScript";
 import IReporter from "../reporter/IReporter";
 import ReporterManager from "../reporter/ReporterManager";
 import DocScriptFactory from "./DocScriptFactory";
+import IJSDocParser from "./IJSDocParser";
 
 /**
  * Class for parsing the GML scripts and JSDocs comments inside those scripts
  */
-export default class JSDocParser {
+@injectable()
+export default class JSDocParser implements IJSDocParser {
 
 	/**
 	 * Should warn about unrecognized JSDoc tags?
@@ -96,7 +99,7 @@ export default class JSDocParser {
 	/**
 	 * Recreates the content of a splitted tag into a single string.
 	 * For example, in a description tag, if you start your description
-	 * with {} or with [], then the ComentParser will treat those brackets
+	 * with {} or with [], then the CommentParser will treat those brackets
 	 * like an optional argument. This script, recreates the original description
 	 * tag.
 	 * @param tag The tag to reconstruct

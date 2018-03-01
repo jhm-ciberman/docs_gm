@@ -1,11 +1,12 @@
+import { injectable } from "inversify";
 import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
 import IReporter from "../reporter/IReporter";
 import ReporterManager from "../reporter/ReporterManager";
-
 /**
  * Validates a generic element T against a rule defined by a validatorFunction.
  */
-export default class ValidatorRule<T> {
+@injectable()
+export default class ValidationRule<T> {
 
 	/**
 	 * Reporter used by the RuleValidator class to warn about validations.
@@ -59,7 +60,7 @@ export default class ValidatorRule<T> {
 	 * Basically, if this method returns true, the rule is valid.
 	 * @param element The element to check the rule against
 	 */
-	public validate(element: T) {
+	public validate(element: T): boolean {
 		if (!this._validatorFunction(element)) {
 			// Rule is invalid
 			if (this._rule.warn && this._messageGenerator) {

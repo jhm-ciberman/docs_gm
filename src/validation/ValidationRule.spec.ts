@@ -9,8 +9,8 @@ import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
 import ValidationRule from "./ValidationRule";
 
 /* tslint:disable:max-classes-per-file completed-docs */
-@TestFixture("ScriptValidator")
-export class ScriptValidatorFixture {
+@TestFixture("ValidationRule")
+export class ValidationRuleFixture {
 
 	@TestCase({ignore: true, warn: true}, 1000, true, false)
 	@TestCase({ignore: true, warn: true}, -1000, false, true)

@@ -1,19 +1,22 @@
 import open = require("open");
 import * as path from "path";
 
-import IProjectConfig from "./config/interfaces/IProjectConfig";
-import IReporter from "./reporter/IReporter";
+import IProjectConfig from "../config/interfaces/IProjectConfig";
+import IReporter from "../reporter/IReporter";
 
-import ConfigManager from "./config/ConfigManager";
-import ProjectConfig from "./config/models/ProjectConfig";
-import DocumentationGenerator from "./DocumentationGenerator";
-import ProjectLoader from "./gm_project/ProjectLoader";
-import ReporterManager from "./reporter/ReporterManager";
+import { injectable } from "inversify";
+import ConfigManager from "../config/ConfigManager";
+import ProjectConfig from "../config/models/ProjectConfig";
+import DocumentationGenerator from "../DocumentationGenerator";
+import ProjectLoader from "../gm_project/ProjectLoader";
+import ReporterManager from "../reporter/ReporterManager";
+import ICliGenerateFacade from "./ICliGenerateFacade.d";
 
 /**
  * A facade class to manage all the basic process of the ComandLine
  */
-export default class CliGenerateFacade {
+@injectable()
+export default class CliGenerateFacade implements ICliGenerateFacade {
 
 	/**
 	 * Open method (used for dependency injection)
@@ -26,22 +29,22 @@ export default class CliGenerateFacade {
 	public reporter: IReporter = ReporterManager.reporter;
 
 	/**
-	 * The overriten design
+	 * The overridden design
 	 */
 	public design: string | undefined;
 
 	/**
-	 * The overriten template
+	 * The overridden template
 	 */
 	public template: string | undefined;
 
 	/**
-	 * The overriten outputFolder
+	 * The overridden outputFolder
 	 */
 	public outputFolder: string | undefined;
 
 	/**
-	 * The overriten pattern
+	 * The overridden pattern
 	 */
 	public pattern: string | undefined;
 
@@ -50,7 +53,7 @@ export default class CliGenerateFacade {
 	 * @param projectPath The path to the project
 	 * @param opts The option object to override
 	 */
-	public async generate(projectPath: string = ".") {
+	public async generate(projectPath: string = "."): Promise<void> {
 
 		this.reporter.info("Loading Project...");
 
@@ -98,5 +101,4 @@ export default class CliGenerateFacade {
 		}
 		return config;
 	}
-
 }

@@ -1,64 +1,80 @@
+import { inject, injectable, interfaces } from "inversify";
 import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
+import { TYPES } from "../types";
+import IScriptValidator from "./IScriptValidator";
+import IValidationRule from "./IValidationRule";
 import ValidableScript from "./ValidableScript";
-import ValidationRule from "./ValidationRule";
 
 /**
  * This class creates multiple validator rules that can validate
  * a validable script.
  */
-export default class ScriptValidator {
+@injectable()
+export default class ScriptValidator implements IScriptValidator {
+
+	/**
+	 * The ValidationRule constructor.
+	 */
+	@inject(TYPES.IValidationRule)
+	private _ValidationRule: interfaces.Newable<IValidationRule<ValidableScript>>;
+
+	/**
+	 * The rules options
+	 */
+	@inject(TYPES.IScriptValidationRules)
+	private readonly _rules: IScriptValidationRules;
 
 	/**
 	 * Rule private
 	 */
-	get rulePrivate() {
-		return new ValidationRule<ValidableScript>(
+	get rulePrivate(): IValidationRule<ValidableScript> {
+		return new this._ValidationRule(
 			{ ignore: this._rules.ignorePrivate, warn: false },
-			(e) => !e.doc.private,
+			(e: ValidableScript) => !e.doc.private,
 		);
 	}
 
 	/**
 	 * Rule undocumented
 	 */
-	get ruleUndocumented() {
-		return new ValidationRule<ValidableScript>(
+	get ruleUndocumented(): IValidationRule<ValidableScript> {
+		return new this._ValidationRule(
 			this._rules.undocumented,
-			(e) => !e.doc.undocumented,
-			(e) => `Script "${e.doc.name}" is undocumented.`,
+			(e: ValidableScript) => !e.doc.undocumented,
+			(e: ValidableScript) => `Script "${e.doc.name}" is undocumented.`,
 		);
 	}
 
 	/**
 	 * Rule undescripted
 	 */
-	get ruleUndescripted() {
-		return new ValidationRule<ValidableScript>(
+	get ruleUndescripted(): IValidationRule<ValidableScript> {
+		return new this._ValidationRule(
 			this._rules.undescripted,
-			(e) => !!e.doc.description,
-			(e) => `Script "${e.doc.name}" has no description.`,
+			(e: ValidableScript) => !!e.doc.description,
+			(e: ValidableScript) => `Script "${e.doc.name}" has no description.`,
 		);
 	}
 
 	/**
 	 * Rule Mismatching Function Name
 	 */
-	get ruleMismatchingFunctionName() {
-		return new ValidationRule<ValidableScript>(
+	get ruleMismatchingFunctionName(): IValidationRule<ValidableScript> {
+		return new this._ValidationRule(
 			this._rules.mismatchingFunctionName,
-			(e) => !(e.doc.function !== "" && e.doc.function !== e.doc.name),
-			(e) => `Script "${e.doc.name}" has a mismatching @function name "${e.doc.function}"`,
+			(e: ValidableScript) => !(e.doc.function !== "" && e.doc.function !== e.doc.name),
+			(e: ValidableScript) => `Script "${e.doc.name}" has a mismatching @function name "${e.doc.function}"`,
 		);
 	}
 
 	/**
 	 * rule Mismatching Arguments
 	 */
-	get ruleMismatchingArguments() {
-		return new ValidationRule<ValidableScript>(
+	get ruleMismatchingArguments(): IValidationRule<ValidableScript> {
+		return new this._ValidationRule(
 			this._rules.mismatchingArguments,
-			(e) => !(e.argumentCount !== e.doc.params.length),
-			(e) => `Script "${e.doc.name}" uses ${e.argumentCount} arguments `
+			(e: ValidableScript) => !(e.argumentCount !== e.doc.params.length),
+			(e: ValidableScript) => `Script "${e.doc.name}" uses ${e.argumentCount} arguments `
 				+ `but has documentation for ${e.doc.params.length} arguments.`,
 		);
 	}
@@ -66,25 +82,12 @@ export default class ScriptValidator {
 	/**
 	 * rule Undocumented Arguments
 	 */
-	get ruleUndocumentedArguments() {
-		return new ValidationRule<ValidableScript>(
+	get ruleUndocumentedArguments(): IValidationRule<ValidableScript> {
+		return new this._ValidationRule(
 			this._rules.undocumentedArguments,
-			(e) => !(e.doc.params.length === 0 && e.argumentCount !== 0),
-			(e) => `Script "${e.doc.name}" uses arguments but does not have any @param JSDoc comment.`,
+			(e: ValidableScript) => !(e.doc.params.length === 0 && e.argumentCount !== 0),
+			(e: ValidableScript) => `Script "${e.doc.name}" uses arguments but does not have any @param JSDoc comment.`,
 		);
-	}
-
-	/**
-	 * The rules options
-	 */
-	private readonly _rules: IScriptValidationRules;
-
-	/**
-	 * Creates a new Validator
-	 * @param rules The validation rules options to configure the validation rules
-	 */
-	public constructor(rules: IScriptValidationRules ) {
-		this._rules = rules;
 	}
 
 	/**
@@ -92,7 +95,7 @@ export default class ScriptValidator {
 	 * @param element The ValidableScript to mark
 	 */
 	public markAsPrivateIfNecessary(element: ValidableScript): void {
-		if (this._rules.markUnderscoreScriptsAsPrivate && element.doc.name.charAt(0) === "_") {
+		if (this._rules.markUnderscoreScriptsAsPrivate && element.doc.name.startsWith("_")) {
 			element.doc.private = true;
 		}
 	}

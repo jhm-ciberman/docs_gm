@@ -3,6 +3,7 @@ import * as path from "path";
 
 import IGMProject from "../gm_project/interfaces/IGMProject";
 
+import { inject } from "inversify";
 import ProjectConfig from "../config/models/ProjectConfig";
 import DocFolder from "../doc_models/DocFolder";
 import DocProject from "../doc_models/DocProject";
@@ -11,7 +12,8 @@ import DocScript from "../doc_models/DocScript";
 import GMScript from "../gm_project/common/GMScript";
 import IGMFolder from "../gm_project/interfaces/IGMFolder";
 import IGMResource from "../gm_project/interfaces/IGMResource";
-import DocumentationExtractor from "./DocumentationExtractor";
+import { TYPES } from "../types";
+import IDocumentationExtractor from "./IDocumentationExtractor";
 
 /**
  * This class generates a DocProject
@@ -26,7 +28,8 @@ export default class DocProjectGenerator {
 	/**
 	 * The documentationExtractor used to extract the documentation of the GMScripts
 	 */
-	private _extractor: DocumentationExtractor;
+	@inject(TYPES.IDocumentationExtractor)
+	private _extractor: IDocumentationExtractor;
 
 	/**
 	 * A map with the name of each root folder and the associated GMFolder.
@@ -47,8 +50,6 @@ export default class DocProjectGenerator {
 	constructor(gmProject: IGMProject, projectConfig: ProjectConfig) {
 		this._gmProject = gmProject;
 		// Find all the project resources that match the input pattern
-		this._extractor = new DocumentationExtractor(projectConfig);
-
 		this._pattern = projectConfig.output.pattern;
 
 		for (const folder of this._gmProject.children) {
