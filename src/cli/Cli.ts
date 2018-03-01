@@ -1,7 +1,8 @@
 import * as program from "commander";
 import { inject } from "inversify";
 import * as os from "os";
-import ConfigManager from "../config/ConfigManager";
+import IConfigManager from "../config/IConfigManager";
+import container from "../inversify.config";
 import ReporterManager from "../reporter/ReporterManager";
 import { TYPES } from "../types";
 import ICliGenerateFacade from "./ICliGenerateFacade.d";
@@ -77,7 +78,7 @@ export default class Cli {
 	 * Exports the docs_gm config json and output the instructions to the screen.
 	 */
 	private _init() {
-		const configManager = new ConfigManager();
+		const configManager = container.get<IConfigManager>(TYPES.IConfigManager);
 		const userDir = os.homedir();
 		configManager.exportConfig(userDir)
 			.then((file) => this._outputConfigInstructions(file))

@@ -13,12 +13,13 @@ import GMScript from "../gm_project/common/GMScript";
 import IGMFolder from "../gm_project/interfaces/IGMFolder";
 import IGMResource from "../gm_project/interfaces/IGMResource";
 import { TYPES } from "../types";
+import IDocProjectGenerator from "./IDocProjectGenerator";
 import IDocumentationExtractor from "./IDocumentationExtractor";
 
 /**
  * This class generates a DocProject
  */
-export default class DocProjectGenerator {
+export default class DocProjectGenerator implements IDocProjectGenerator {
 
 	/**
 	 * The GMProject to generate the DocProject for.
@@ -47,7 +48,9 @@ export default class DocProjectGenerator {
 	 * @param {ProjectConfig} projectConfig The project configuration
 	 * @memberof DocProjectGenerator
 	 */
-	constructor(gmProject: IGMProject, projectConfig: ProjectConfig) {
+	constructor(
+		@inject(TYPES.IGMProject) gmProject: IGMProject,
+		@inject(TYPES.IProjectConfig) projectConfig: ProjectConfig) {
 		this._gmProject = gmProject;
 		// Find all the project resources that match the input pattern
 		this._pattern = projectConfig.output.pattern;

@@ -4,12 +4,13 @@ import * as path from "path";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
 import IReporter from "../reporter/IReporter";
 
-import { injectable } from "inversify";
-import ConfigManager from "../config/ConfigManager";
-import ProjectConfig from "../config/models/ProjectConfig";
+import { inject, injectable, interfaces } from "inversify";
+import IConfigManager from "../config/IConfigManager";
 import DocumentationGenerator from "../DocumentationGenerator";
 import ProjectLoader from "../gm_project/ProjectLoader";
+import container from "../inversify.config";
 import ReporterManager from "../reporter/ReporterManager";
+import { TYPES } from "../types";
 import ICliGenerateFacade from "./ICliGenerateFacade.d";
 
 /**
@@ -49,6 +50,12 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 	public pattern: string | undefined;
 
 	/**
+	 * The constructor for IProjectConfig
+	 */
+	@inject(TYPES.NewableOfIProjectConfig)
+	private _ProjectConfig: interfaces.Newable<IProjectConfig>;
+
+	/**
 	 * Generates the documentation for a given project
 	 * @param projectPath The path to the project
 	 * @param opts The option object to override
@@ -62,12 +69,12 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 
 		this.reporter.info("Loading project configuration...");
 
-		const configManager = new ConfigManager();
+		const configManager = container.get<IConfigManager>(TYPES.IConfigManager);
 		let config = await configManager.loadConfig(projectPath);
 
 		if (!config) {
 			this.reporter.info("Configuration not found. Using default configuration.");
-			config = new ProjectConfig();
+			config = new this._ProjectConfig();
 		}
 		config = this._overrideConfig(config);
 

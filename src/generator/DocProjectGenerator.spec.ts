@@ -9,11 +9,15 @@ import {
 } from "alsatian";
 import { TempDir } from "../_testing_helpers/TempDir.help";
 
+import IProjectConfig from "../config/interfaces/IProjectConfig";
 import ProjectConfig from "../config/models/ProjectConfig";
+import IGMProject from "../gm_project/interfaces/IGMProject";
+import container from "../inversify.config";
+import { TYPES } from "../types";
 import GMFolderMock from "./__mock__/GMFolderMock.mock";
 import GMProjectMock from "./__mock__/GMProjectMock.mock";
 import GMScriptMock from "./__mock__/GMScriptMock.mock";
-import DocProjectGenerator from "./DocProjectGenerator";
+import IDocProjectGenerator from "./IDocProjectGenerator";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
@@ -30,11 +34,13 @@ export class DocProjectGeneratorFixture {
 			"a.gml": "a",
 			"b.gml": "b",
 		});
+		container.snapshot();
 	}
 
 	@TeardownFixture
 	public teardown() {
 		TempDir.removeAll();
+		container.restore();
 	}
 
 	@AsyncTest("generate")
@@ -45,7 +51,8 @@ export class DocProjectGeneratorFixture {
 		const p = new GMProjectMock("my-project", [scriptsFolder]);
 		p.path = this.projectDir.dir;
 
-		const generator = new DocProjectGenerator(p, new ProjectConfig());
+		container.rebind<IGMProject>(TYPES.IGMProject).toConstantValue(p);
+		const generator = container.get<IDocProjectGenerator>(TYPES.IDocProjectGenerator);
 		const doc = await generator.generate();
 		Expect(doc.name).toBe("my-project");
 		Expect(doc.scripts.children.length).toBe(2);
@@ -69,7 +76,8 @@ export class DocProjectGeneratorFixture {
 		const config = new ProjectConfig();
 		config.output.pattern = "**/match/**";
 
-		const generator = new DocProjectGenerator(p, config);
+		container.rebind<IProjectConfig>(TYPES.IProjectConfig).toConstantValue(config);
+		const generator = container.get<IDocProjectGenerator>(TYPES.IDocProjectGenerator);
 		const doc = await generator.generate();
 		Expect(doc.scripts.children.length).toBe(1);
 		Expect(doc.scripts.children[0].name).toBe("b");

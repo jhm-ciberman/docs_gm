@@ -1,8 +1,8 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../types";
 import IOutputConfig from "../interfaces/IOutputConfig";
 import IProjectConfig from "../interfaces/IProjectConfig";
 import IScriptValidationRule from "../interfaces/IScriptValidationRules";
-import OutputConfig from "./OutputConfig";
 import ScriptValidationRules from "./ScriptValidationRules";
 
 /**
@@ -14,7 +14,8 @@ export default class ProjectConfig implements IProjectConfig {
 	/**
 	 * The output configuration
 	 */
-	public output: IOutputConfig = new OutputConfig();
+	@inject(TYPES.IOutputConfig)
+	public output: IOutputConfig;
 
 	/**
 	 * Warn about unrecognized JSDoc tags

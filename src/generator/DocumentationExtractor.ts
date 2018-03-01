@@ -29,7 +29,7 @@ export default class DocumentationExtractor implements IDocumentationExtractor {
 	/**
 	 * The project config
 	 */
-	@inject(TYPES.IPProjectConfig)
+	@inject(TYPES.IProjectConfig)
 	private readonly _projectConfig: IProjectConfig;
 
 	/**
