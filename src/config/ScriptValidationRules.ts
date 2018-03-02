@@ -1,5 +1,3 @@
-import { injectable } from "inversify";
-
 import IScriptValidationRules from "./interfaces/IScriptValidationRules";
 import IValidationRuleConfig from "./interfaces/IValidationRuleConfig";
 import ValidationRuleConfig from "./ValidationRuleConfig";
@@ -7,7 +5,6 @@ import ValidationRuleConfig from "./ValidationRuleConfig";
 /**
  * This class contains all the validation rules used to validate scripts
  */
-@injectable()
 export default class ScriptValidationRules implements IScriptValidationRules {
 
 	/**
@@ -33,7 +30,7 @@ export default class ScriptValidationRules implements IScriptValidationRules {
 	/**
 	 * Scripts with no description
 	 */
-	public undescripted: IValidationRuleConfig = new ValidationRuleConfig(true, true);
+	public noDescription: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 
 	/**
 	 * Scripts with undocumented arguments.

@@ -5,7 +5,7 @@ export default interface IScriptValidationRules {
 	ignorePrivate: boolean;
 	undocumented: IValidationRuleConfig;
 	mismatchingFunctionName: IValidationRuleConfig;
-	undescripted: IValidationRuleConfig;
+	noDescription: IValidationRuleConfig;
 	undocumentedArguments: IValidationRuleConfig;
 	mismatchingArguments: IValidationRuleConfig;
 }

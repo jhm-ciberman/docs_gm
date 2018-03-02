@@ -7,6 +7,7 @@ import {
 import container from "../../inversify.config";
 import { TYPES } from "../../types";
 
+import ScriptValidationRules from "../../src/config/ScriptValidationRules";
 import IDocumentationExtractor from "../../src/generator/interfaces/IDocumentationExtractor";
 import GMScript from "../../src/gm_project/GMScript";
 
@@ -41,7 +42,7 @@ export class DocumentationExtractorFixture {
 	public extractDocScripts() {
 		const extractor = container.get<IDocumentationExtractor>(TYPES.IDocumentationExtractor);
 		const script = new GMScriptMock("foo");
-		const docs = extractor.extractDocScripts(script);
+		const docs = extractor.extractDocScripts(script, new ScriptValidationRules(), true);
 		Expect(docs.length).toBe(2);
 	}
 }

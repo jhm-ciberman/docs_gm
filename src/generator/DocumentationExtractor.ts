@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../types";
 
-import IProjectConfig from "../config/interfaces/IProjectConfig";
+import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
 import DocScript from "../doc_models/DocScript";
 import GMScript from "../gm_project/GMScript";
 import JSDocParser from "../parser/JSDocParser";
@@ -14,9 +14,8 @@ import IDocumentationExtractor from "./interfaces/IDocumentationExtractor";
  */
 @injectable()
 export default class DocumentationExtractor implements IDocumentationExtractor {
-
 	/**
-	 * The ScriptValidator instance
+	 * The ScriptValidator
 	 */
 	@inject(TYPES.IScriptValidator)
 	private readonly _scriptValidator: IScriptValidator;
@@ -28,52 +27,24 @@ export default class DocumentationExtractor implements IDocumentationExtractor {
 	private readonly _jsDocParser: JSDocParser;
 
 	/**
-	 * The project config
-	 */
-	@inject(TYPES.IProjectConfig)
-	private readonly _projectConfig: IProjectConfig;
-
-	/**
 	 * Parses and validates a GMScript and returns
 	 * and array of valid DocScripts. If no valid DocScripts
 	 * can be created, an empty array is returned.
 	 * The returned array is sorted alphabetically.
 	 * @param script An array with DocScript objects
 	 */
-	public extractDocScripts(script: GMScript): DocScript[] {
+	public extractDocScripts(script: GMScript, rules: IScriptValidationRules, warnUnrecognizedTags: boolean): DocScript[] {
 		const arr = [];
-		this._jsDocParser.warnUnrecognizedTags = this._projectConfig.warnUnrecognizedTags;
+
+		this._jsDocParser.warnUnrecognizedTags = warnUnrecognizedTags;
 		for (const [name, gmlText] of script.subScripts()) {
 			const docScript = this._jsDocParser.parse(name, gmlText);
 			const validable = new ValidableScript(docScript, gmlText);
-			if (this._validate(validable)) {
+			if (this._scriptValidator.validate(validable, rules)) {
 				arr.push(docScript);
 			}
 		}
 		return arr.sort((a, b) => a.name.localeCompare(b.name));
 	}
 
-	/**
-	 * Validates a script against the validator
-	 * @param validator The validator to use
-	 * @param validable The validable script
-	 */
-	private _validate(validable: ValidableScript) {
-		const rules = [
-			this._scriptValidator.rulePrivate,
-			this._scriptValidator.ruleUndocumented,
-			this._scriptValidator.ruleUndescripted,
-			this._scriptValidator.ruleMismatchingFunctionName,
-			this._scriptValidator.ruleMismatchingArguments,
-			this._scriptValidator.ruleUndocumentedArguments,
-		];
-		this._scriptValidator.markAsPrivateIfNecessary(validable);
-
-		for (const rule of rules) {
-			if (!rule.validate(validable)) {
-				return false;
-			}
-		}
-		return true;
-	}
 }

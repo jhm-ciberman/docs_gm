@@ -1,10 +1,10 @@
-import { inject, injectable, interfaces } from "inversify";
-import { TYPES } from "../../types";
+import { injectable } from "inversify";
 
 import * as fse from "fs-extra";
 import * as path from "path";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
 import IConfigManager from "./interfaces/IConfigManager";
+import ProjectConfig from "./ProjectConfig";
 
 /**
  * This class exports and loads the configuration
@@ -13,19 +13,13 @@ import IConfigManager from "./interfaces/IConfigManager";
 export default class ConfigManager implements IConfigManager {
 
 	/**
-	 * The Project Config
-	 */
-	@inject(TYPES.NewableOfIProjectConfig)
-	private _ProjectConfig: interfaces.Newable<IProjectConfig>;
-
-	/**
 	 * Copy the docs_gm.json file to the specified outputPath.
 	 * @param outputPath The output filepath
 	 * @returns A promise with the path of the output file
 	 */
 	public async exportConfig(outputPath: string): Promise<string> {
 		outputPath = path.resolve(outputPath, "docs_gm.json");
-		await fse.writeJSON(outputPath, new this._ProjectConfig(), {
+		await fse.writeJSON(outputPath, new ProjectConfig(), {
 			spaces: "\t",
 		});
 		return outputPath;
@@ -48,7 +42,7 @@ export default class ConfigManager implements IConfigManager {
 		}
 		try {
 			const data: IProjectConfig = await fse.readJSON(jsonPath);
-			const config: IProjectConfig = new this._ProjectConfig();
+			const config: IProjectConfig = new ProjectConfig();
 			return Object.assign(config, data);
 		} catch (e) {
 			return undefined;

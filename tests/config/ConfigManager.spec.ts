@@ -13,6 +13,7 @@ import { TempDir } from "../_testing_helpers/TempDir.help";
 
 import IConfigManager from "../../src/config/interfaces/IConfigManager";
 import IProjectConfig from "../../src/config/interfaces/IProjectConfig";
+import ProjectConfig from "../../src/config/ProjectConfig";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
@@ -26,7 +27,7 @@ export class GMS1ProjectFactoryFixture {
 
 	@SetupFixture
 	public setup() {
-		const conf = container.get<IProjectConfig>(TYPES.IProjectConfig);
+		const conf = new ProjectConfig();
 		conf.output.template = "my_template_foo";
 		this.input = TempDir.create("input", {
 			"datafiles/docs_gm.json": JSON.stringify(conf),

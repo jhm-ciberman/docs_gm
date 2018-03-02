@@ -1,10 +1,11 @@
-import { inject, injectable, interfaces } from "inversify";
-import { TYPES } from "../../types";
+import { inject, injectable } from "inversify";
 
+import { TYPES } from "../../types";
 import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
+import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
+import IRule from "./interfaces/IRule";
 import IScriptValidator from "./interfaces/IScriptValidator";
-import IValidationRule from "./interfaces/IValidationRule";
-import ValidableScript from "./ValidableScript";
+import IValidableScript from "./interfaces/IValidableScript";
 
 /**
  * This class creates multiple validator rules that can validate
@@ -14,91 +15,63 @@ import ValidableScript from "./ValidableScript";
 export default class ScriptValidator implements IScriptValidator {
 
 	/**
-	 * The ValidationRule constructor.
+	 * A list with the rules to apply to validate the ValidableScript, in order.
 	 */
-	@inject(TYPES.IValidationRule)
-	private _ValidationRule: interfaces.Newable<IValidationRule<ValidableScript>>;
+	private readonly _rules: Array<IRule<IValidableScript>>;
 
 	/**
-	 * The rules options
+	 * Creates an instance of ScriptValidator.
+	 * @param {IRule<IValidableScript>} rulePrivate
+	 * @param {IRule<IValidableScript>} ruleUndocumented
+	 * @param {IRule<IValidableScript>} ruleNoDescription
+	 * @param {IRule<IValidableScript>} ruleMismatchingFunctionName
+	 * @param {IRule<IValidableScript>} ruleMismatchingArguments
+	 * @param {IRule<IValidableScript>} ruleUndocumentedArguments
+	 * @memberof ScriptValidator
 	 */
-	@inject(TYPES.IScriptValidationRules)
-	private readonly _rules: IScriptValidationRules;
-
-	/**
-	 * Rule private
-	 */
-	get rulePrivate(): IValidationRule<ValidableScript> {
-		return new this._ValidationRule(
-			{ ignore: this._rules.ignorePrivate, warn: false },
-			(e: ValidableScript) => !e.doc.private,
-		);
+	constructor(
+		@inject(TYPES.RulePrivate)
+		rulePrivate: IRule<IValidableScript>,
+		@inject(TYPES.RuleUndocumented)
+		ruleUndocumented: IRule<IValidableScript>,
+		@inject(TYPES.RuleNoDescription)
+		ruleNoDescription: IRule<IValidableScript>,
+		@inject(TYPES.RuleMismatchingFunctionName)
+		ruleMismatchingFunctionName: IRule<IValidableScript>,
+		@inject(TYPES.RuleMismatchingArguments)
+		ruleMismatchingArguments: IRule<IValidableScript>,
+		@inject(TYPES.RuleUndocumentedArguments)
+		ruleUndocumentedArguments: IRule<IValidableScript>,
+	) {
+		this._rules = [
+			rulePrivate,
+			ruleUndocumented,
+			ruleNoDescription,
+			ruleMismatchingFunctionName,
+			ruleMismatchingArguments,
+			ruleUndocumentedArguments,
+		];
 	}
-
 	/**
-	 * Rule undocumented
+	 * Validates a script against a set of rules
+	 * @param validator The validator to use
+	 * @param validable The validable script
 	 */
-	get ruleUndocumented(): IValidationRule<ValidableScript> {
-		return new this._ValidationRule(
-			this._rules.undocumented,
-			(e: ValidableScript) => !e.doc.undocumented,
-			(e: ValidableScript) => `Script "${e.doc.name}" is undocumented.`,
-		);
-	}
+	public validate(validable: IValidableScript, rules: IScriptValidationRules): boolean {
 
-	/**
-	 * Rule undescripted
-	 */
-	get ruleUndescripted(): IValidationRule<ValidableScript> {
-		return new this._ValidationRule(
-			this._rules.undescripted,
-			(e: ValidableScript) => !!e.doc.description,
-			(e: ValidableScript) => `Script "${e.doc.name}" has no description.`,
-		);
-	}
-
-	/**
-	 * Rule Mismatching Function Name
-	 */
-	get ruleMismatchingFunctionName(): IValidationRule<ValidableScript> {
-		return new this._ValidationRule(
-			this._rules.mismatchingFunctionName,
-			(e: ValidableScript) => !(e.doc.function !== "" && e.doc.function !== e.doc.name),
-			(e: ValidableScript) => `Script "${e.doc.name}" has a mismatching @function name "${e.doc.function}"`,
-		);
-	}
-
-	/**
-	 * rule Mismatching Arguments
-	 */
-	get ruleMismatchingArguments(): IValidationRule<ValidableScript> {
-		return new this._ValidationRule(
-			this._rules.mismatchingArguments,
-			(e: ValidableScript) => !(e.argumentCount !== e.doc.params.length),
-			(e: ValidableScript) => `Script "${e.doc.name}" uses ${e.argumentCount} arguments `
-				+ `but has documentation for ${e.doc.params.length} arguments.`,
-		);
-	}
-
-	/**
-	 * rule Undocumented Arguments
-	 */
-	get ruleUndocumentedArguments(): IValidationRule<ValidableScript> {
-		return new this._ValidationRule(
-			this._rules.undocumentedArguments,
-			(e: ValidableScript) => !(e.doc.params.length === 0 && e.argumentCount !== 0),
-			(e: ValidableScript) => `Script "${e.doc.name}" uses arguments but does not have any @param JSDoc comment.`,
-		);
-	}
-
-	/**
-	 * Mark a validable script element as private if necessary
-	 * @param element The ValidableScript to mark
-	 */
-	public markAsPrivateIfNecessary(element: ValidableScript): void {
-		if (this._rules.markUnderscoreScriptsAsPrivate && element.doc.name.startsWith("_")) {
-			element.doc.private = true;
+		if (rules.markUnderscoreScriptsAsPrivate && validable.doc.name.startsWith("_")) {
+			validable.doc.private = true;
 		}
-	}
 
+		const config: IValidationRuleConfig[] = [
+			{ warn: false, ignore: rules.ignorePrivate },
+			rules.undocumented,
+			rules.noDescription,
+			rules.mismatchingFunctionName,
+			rules.mismatchingArguments,
+			rules.undocumentedArguments,
+		];
+
+		return this._rules.every((rule, i) => rule.validate(validable, config[i]));
+	}
 }

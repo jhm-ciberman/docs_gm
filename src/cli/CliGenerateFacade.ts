@@ -1,12 +1,13 @@
 import open = require("open");
 import * as path from "path";
 
-import { inject, injectable, interfaces } from "inversify";
+import { injectable } from "inversify";
 import container from "../../inversify.config";
 import { TYPES } from "../../types";
 
 import IConfigManager from "../config/interfaces/IConfigManager";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
+import ProjectConfig from "../config/ProjectConfig";
 import DocumentationGenerator from "../generator/DocumentationGenerator";
 import ProjectLoader from "../gm_project/ProjectLoader";
 import IReporter from "../reporter/interfaces/IReporter";
@@ -50,12 +51,6 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 	public pattern: string | undefined;
 
 	/**
-	 * The constructor for IProjectConfig
-	 */
-	@inject(TYPES.NewableOfIProjectConfig)
-	private _ProjectConfig: interfaces.Newable<IProjectConfig>;
-
-	/**
 	 * Generates the documentation for a given project
 	 * @param projectPath The path to the project
 	 * @param opts The option object to override
@@ -74,7 +69,7 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 
 		if (!config) {
 			this.reporter.info("Configuration not found. Using default configuration.");
-			config = new this._ProjectConfig();
+			config = new ProjectConfig();
 		}
 		config = this._overrideConfig(config);
 

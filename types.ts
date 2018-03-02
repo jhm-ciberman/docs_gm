@@ -1,18 +1,29 @@
 // file types.ts
 
 const TYPES = {
-	IValidationRule: Symbol.for("IValidationRule"),
+	// Cli
 	ICliGenerateFacade: Symbol.for("ICliGenerateFacade"),
-	IScriptValidator: Symbol.for("IScriptValidator"),
-	IScriptValidationRules: Symbol.for("ScriptValidationRules"),
-	IProjectConfig: Symbol.for("IProjectConfig"),
-	IDocumentationExtractor: Symbol.for("IDocumentationExtractor"),
-	IJSDocParser: Symbol.for("IJSDocParser"),
-	IDocProjectGenerator: Symbol.for("IDocProjectGenerator"),
-	IGMProject: Symbol.for("IGMProject"),
-	IOutputConfig: Symbol.for("IOutputConfig"),
-	NewableOfIProjectConfig: Symbol.for("Newable<IProjectConfig>"),
+
+	// Config
 	IConfigManager: Symbol.for("IConfigManager"),
+
+	// generator
+	IDocumentationExtractor: Symbol.for("IDocumentationExtractor"),
+	IDocProjectGenerator: Symbol.for("IDocProjectGenerator"),
+
+	// parser
+	IJSDocParser: Symbol.for("IJSDocParser"),
+
+	// Rules
+	RuleMismatchingArguments: Symbol.for("RuleMismatchingArguments"),
+	RuleMismatchingFunctionName: Symbol.for("RuleMismatchingFunctionName"),
+	RuleNoDescription: Symbol.for("RuleNoDescription"),
+	RulePrivate: Symbol.for("RulePrivate"),
+	RuleUndocumented: Symbol.for("RuleUndocumented"),
+	RuleUndocumentedArguments: Symbol.for("RuleUndocumentedArguments"),
+
+	// Validation
+	IScriptValidator: Symbol.for("IScriptValidator"),
 };
 
 export {TYPES};

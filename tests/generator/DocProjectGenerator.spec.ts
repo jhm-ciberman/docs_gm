@@ -12,14 +12,13 @@ import { TYPES } from "../../types";
 
 import { TempDir } from "../_testing_helpers/TempDir.help";
 
-import IProjectConfig from "../../src/config/interfaces/IProjectConfig";
-import IDocProjectGenerator from "../../src/generator/interfaces/IDocProjectGenerator";
-import IDocumentationExtractor from "../../src/generator/interfaces/IDocumentationExtractor";
-import IGMProject from "../../src/gm_project/interfaces/IGMProject";
-
+import ProjectConfig from "../../src/config/ProjectConfig";
 import DocFolder from "../../src/doc_models/DocFolder";
 import DocScript from "../../src/doc_models/DocScript";
+import IDocProjectGenerator from "../../src/generator/interfaces/IDocProjectGenerator";
+import IDocumentationExtractor from "../../src/generator/interfaces/IDocumentationExtractor";
 import IGMScript from "../../src/gm_project/interfaces/IGMScript";
+
 import MockDocumentationExtractor from "../__mock__/MockDocumentationExtractor.mock";
 import MockGMFolder from "../__mock__/MockGMFolder.mock";
 import MockGMProject from "../__mock__/MockGMProject.mock";
@@ -66,20 +65,18 @@ export class DocProjectGeneratorFixture {
 		const spyLoadFromStringC = this._spyAndStub(c, "loadFromString");
 
 		const PATTERN = "**/match/**";
-		const config = container.get<IProjectConfig>(TYPES.IProjectConfig);
+		const config = new ProjectConfig();
 		config.output.pattern = PATTERN;
 
 		const docExtractor = new MockDocumentationExtractor();
 		const fakeExtractDocScripts = (gmScript: IGMScript) => [new DocScript(gmScript.name)];
 		SpyOn(docExtractor, "extractDocScripts").andCall(fakeExtractDocScripts as () => any);
 
-		container.rebind<IProjectConfig>(TYPES.IProjectConfig).toConstantValue(config);
-		container.rebind<IGMProject>(TYPES.IGMProject).toConstantValue(p);
 		container.rebind<IDocumentationExtractor>(TYPES.IDocumentationExtractor).toConstantValue(docExtractor);
 
 		const generator = container.get<IDocProjectGenerator>(TYPES.IDocProjectGenerator);
 
-		const doc = await generator.generate();
+		const doc = await generator.generate(p, config);
 		Expect(doc.name).toBe("my-project");
 
 		Expect(spyMatchA).toHaveBeenCalledWith(PATTERN);

@@ -7,6 +7,7 @@ import IGMScript from "../../src/gm_project/interfaces/IGMScript";
 
 @injectable()
 export default class MockDocumentationExtractor implements IDocumentationExtractor {
+	public warnUnrecognizedTags: boolean;
 	public extractDocScripts(_script: IGMScript): DocScript[] {
 		throw new Error("Method not implemented.");
 	}

@@ -4,7 +4,7 @@ import { TYPES } from "../../types";
 import * as fse from "fs-extra";
 import * as path from "path";
 
-import ProjectConfig from "../config/ProjectConfig";
+import IProjectConfig from "../config/interfaces/IProjectConfig";
 import DocFolder from "../doc_models/DocFolder";
 import DocProject from "../doc_models/DocProject";
 import DocResource from "../doc_models/DocResource";
@@ -23,51 +23,22 @@ import IDocumentationExtractor from "./interfaces/IDocumentationExtractor";
 export default class DocProjectGenerator implements IDocProjectGenerator {
 
 	/**
-	 * The GMProject to generate the DocProject for.
-	 */
-	private _gmProject: IGMProject;
-
-	/**
 	 * The documentationExtractor used to extract the documentation of the GMScripts
 	 */
 	@inject(TYPES.IDocumentationExtractor)
 	private _extractor: IDocumentationExtractor;
 
 	/**
-	 * A map with the name of each root folder and the associated GMFolder.
-	 */
-	private _rootFoldersMap: Map<string, IGMFolder> = new Map<string, IGMFolder>();
-
-	/**
-	 * The pattern to filter the DocProject
-	 */
-	private _pattern: string;
-
-	/**
-	 * Creates an instance of DocProjectGenerator.
-	 * @param {IGMProject} gmProject The GMProject to generate the DocProject
-	 * @param {ProjectConfig} projectConfig The project configuration
-	 * @memberof DocProjectGenerator
-	 */
-	constructor(
-		@inject(TYPES.IGMProject) gmProject: IGMProject,
-		@inject(TYPES.IProjectConfig) projectConfig: ProjectConfig) {
-		this._gmProject = gmProject;
-		// Find all the project resources that match the input pattern
-		this._pattern = projectConfig.output.pattern;
-
-		for (const folder of this._gmProject.children) {
-			this._rootFoldersMap.set(folder.name, folder);
-		}
-	}
-
-	/**
 	 * Generates the DocProject for a given GMProject
 	 */
-	public async generate() {
-		const docProject = new DocProject(this._gmProject.name);
-		const scriptFolder = this._getRootFolder("scripts");
-		docProject.scripts = await this._loadFolder(scriptFolder);
+	public async generate(gmProject: IGMProject, config: IProjectConfig): Promise<DocProject> {
+		const rootFoldersMap = new Map<string, IGMFolder>();
+		for (const folder of gmProject.children) {
+			rootFoldersMap.set(folder.name, folder);
+		}
+		const docProject = new DocProject(gmProject.name);
+		const scriptFolder = this._getRootFolder(rootFoldersMap, "scripts");
+		docProject.scripts = await this._loadFolder(scriptFolder, config, gmProject);
 		return docProject;
 	}
 
@@ -75,8 +46,8 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 	 * Returns the project root folder with the specified name or throw an error.
 	 * @param name The name of the root folder
 	 */
-	private _getRootFolder(name: string) {
-		const f = this._rootFoldersMap.get(name);
+	private _getRootFolder(rootFoldersMap: Map<string, IGMFolder>, name: string) {
+		const f = rootFoldersMap.get(name);
 		if (!f) {
 			throw new Error(`No ${ name } folder found`);
 		}
@@ -87,10 +58,10 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 	 * Load a GMFolder and all its content
 	 * @param folder The GMFolder to load
 	 */
-	private async _loadFolder(folder: IGMFolder): Promise<DocFolder> {
+	private async _loadFolder(folder: IGMFolder, config: IProjectConfig, gmProject: IGMProject): Promise<DocFolder> {
 		const docFolder = new DocFolder(folder.name);
 		for (const res of folder.children) {
-			docFolder.children = docFolder.children.concat(await this._loadResource(res));
+			docFolder.children = docFolder.children.concat(await this._loadResource(res, config, gmProject));
 		}
 		return docFolder;
 	}
@@ -115,11 +86,11 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 	 * For example, a single GMScript with multiple subscripts)
 	 * @param res The GMResource to load
 	 */
-	private async _loadResource(res: IGMResource): Promise<DocResource[]> {
+	private async _loadResource(res: IGMResource, config: IProjectConfig, gmProject: IGMProject): Promise<DocResource[]> {
 		if (this._isFolder(res)) {
-			return [await this._loadFolder(res)];
+			return [await this._loadFolder(res, config, gmProject)];
 		} else if (this._isScript(res)) {
-			return this._loadScript(res);
+			return this._loadScript(res, config, gmProject);
 		} else {
 			throw new Error(`Unrecognized resource type for resource "${res.name}"`);
 		}
@@ -129,18 +100,18 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 	 * Loads a single GMScript with all the subscripts from disk and extracts
 	 * the documentation from it.
 	 */
-	private async _loadScript(gmScript: GMScript): Promise<DocScript[]> {
-		if (!gmScript.match(this._pattern)) {
+	private async _loadScript(gmScript: GMScript, config: IProjectConfig, gmProject: IGMProject): Promise<DocScript[]> {
+		if (!gmScript.match(config.output.pattern)) {
 			return [];
 		}
-		const pathStr = path.resolve(this._gmProject.path, gmScript.filepath);
+		const pathStr = path.resolve(gmProject.path, gmScript.filepath);
 		try {
 			const str = await fse.readFile(pathStr, "utf8");
 			gmScript.loadFromString(str);
 		} catch (e) {
 			throw new Error(`Error loading file ${pathStr}`);
 		}
-		return this._extractor.extractDocScripts(gmScript);
+		return this._extractor.extractDocScripts(gmScript, config.scripts, config.warnUnrecognizedTags);
 	}
 
 }

@@ -1,4 +1,4 @@
-import { inject, interfaces } from "inversify";
+import { inject } from "inversify";
 import { TYPES } from "../../types";
 
 import * as path from "path";
@@ -7,8 +7,9 @@ import IOutputConfig from "../config/interfaces/IOutputConfig";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
 import IGMProject from "../gm_project/interfaces/IGMProject";
 
-import DocProjectGenerator from "../generator/DocProjectGenerator";
+import ProjectConfig from "../config/ProjectConfig";
 import TemplateLoader from "../template/TemplateLoader";
+import IDocProjectGenerator from "./interfaces/IDocProjectGenerator";
 
 /**
  * Generates the documentation.
@@ -18,17 +19,16 @@ export default class DocumentationGenerator {
 	/**
 	 * The project config
 	 */
-	@inject(TYPES.NewableOfIProjectConfig)
-	private _ProjectConfig: interfaces.Newable<IProjectConfig>;
+	@inject(TYPES.IDocProjectGenerator)
+	private _generator: IDocProjectGenerator;
 
 	/**
 	 * Generates the documentation files for the project.
 	 * @return Promise with the path of the output folder
 	 */
 	public async generate(project: IGMProject, config?: IProjectConfig): Promise<string> {
-		config = config || new this._ProjectConfig();
-		const generator = new DocProjectGenerator(project, config);
-		const docProject = await generator.generate();
+		config = config || new ProjectConfig();
+		const docProject = await this._generator.generate(project, config);
 		const template = await this._loadTemplate(config.output);
 		const designName = config.output.design;
 		if (designName && !template.hasDesign(designName)) {

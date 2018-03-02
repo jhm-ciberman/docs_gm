@@ -1,12 +1,8 @@
-import { injectable } from "inversify";
-import IGMLParser from "./interfaces/IGMLParser";
-
 /**
  * Class for parsing GML code and
  * extract features (number of arguments, optional arguments, returns statements, etc)
  */
-@injectable()
-export default class GMLParser implements IGMLParser {
+export default class GMLParser {
 
 	/**
 	 * The GML code as a string
@@ -32,7 +28,7 @@ export default class GMLParser implements IGMLParser {
 	 * Creates a new GMLParser
 	 * @param text The gml text to parse
 	 */
-	constructor(text: string) {
+	public constructor(text: string) {
 		// Removes single and multiline comments.
 		// See: https://stackoverflow.com/a/15123777/2022985
 		text = text.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, "$1");
