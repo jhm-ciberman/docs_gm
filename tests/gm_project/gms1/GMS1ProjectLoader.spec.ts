@@ -9,15 +9,15 @@ import {
 import * as xml2js from "xml2js";
 import GMFolder from "../../../src/gm_project/GMFolder";
 import GMProject from "../../../src/gm_project/GMProject";
-import GMS1ProjectFactory from "../../../src/gm_project/gms1/GMS1ProjectFactory";
+import GMS1ProjectLoader from "../../../src/gm_project/gms1/GMS1ProjectLoader";
 import { IGMS1DescriptorRoot } from "../../../src/gm_project/gms1/IGMS1Descriptor";
 import IGMProject from "../../../src/gm_project/interfaces/IGMProject";
 import { TempDir } from "../../_testing_helpers/TempDir.help";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-@TestFixture("GMScript")
-export class GMS1ProjectFactoryFixture {
+@TestFixture("GMS1ProjectLoader")
+export class GMS1ProjectLoaderFixture {
 
 	public folder: TempDir;
 
@@ -58,8 +58,8 @@ export class GMS1ProjectFactoryFixture {
 
 	@AsyncTest("should load a normal project")
 	public async load_normal() {
-		const factory = new GMS1ProjectFactory(this.folder.join("my-project-normal.xml"));
-		const proj: IGMProject = await factory.load();
+		const factory = new GMS1ProjectLoader();
+		const proj: IGMProject = await factory.load(this.folder.join("my-project-normal.xml"));
 
 		const ls = this._ls(proj as GMProject);
 		Expect(ls).toEqual([
@@ -75,8 +75,8 @@ export class GMS1ProjectFactoryFixture {
 
 	@AsyncTest("should load an empty project")
 	public async load_empty() {
-		const factory = new GMS1ProjectFactory(this.folder.join("my-project-empty.xml"));
-		const proj: IGMProject = await factory.load();
+		const loader = new GMS1ProjectLoader();
+		const proj: IGMProject = await loader.load(this.folder.join("my-project-empty.xml"));
 
 		const ls = this._ls(proj as GMProject);
 		Expect(ls).toEqual([
@@ -86,8 +86,8 @@ export class GMS1ProjectFactoryFixture {
 
 	@AsyncTest("should thrown on invalid XML project")
 	public async load_invalid() {
-		const factory = new GMS1ProjectFactory(this.folder.join("my-project-invalid.xml"));
-		return factory.load().then(() => {
+		const loader = new GMS1ProjectLoader();
+		return loader.load(this.folder.join("my-project-invalid.xml")).then(() => {
 			throw new Error("load() did not throw on invalid xml");
 		}).catch((e) => {
 			Expect(e).toBeDefined();

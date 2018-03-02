@@ -7,10 +7,10 @@ import {
 } from "alsatian";
 import { TempDir } from "../../_testing_helpers/TempDir.help";
 
-import GMS2ProjectFactory from "../../../src/gm_project/gms2/GMS2ProjectFactory";
 import IGMFolder from "../../../src/gm_project/interfaces/IGMFolder";
 import IGMProject from "../../../src/gm_project/interfaces/IGMProject";
 
+import GMS2ProjectLoader from "../../../src/gm_project/gms2/GMS2ProjectLoader";
 import projectBad from "./__mock__/ProjectBad.mock";
 import projectEmpty from "./__mock__/ProjectEmpty.mock";
 import projectFolderFolderRoom from "./__mock__/ProjectFolderFolderRoom.mock";
@@ -19,8 +19,8 @@ import projectSingleFolder from "./__mock__/ProjectSingleFolder.mock";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-@TestFixture("GMScript")
-export class GMS1ProjectFactoryFixture {
+@TestFixture("GMS2ProjectLoader")
+export class GMS2ProjectLoaderFixture {
 
 	public projectFolderScript: TempDir;
 
@@ -71,8 +71,8 @@ export class GMS1ProjectFactoryFixture {
 
 	@AsyncTest("should load an empty project")
 	public async load_empty() {
-		const factory = new GMS2ProjectFactory(this.projectEmpty.join("project.json"));
-		const proj: IGMProject = await factory.load();
+		const factory = new GMS2ProjectLoader();
+		const proj: IGMProject = await factory.load(this.projectEmpty.join("project.json"));
 
 		Expect(Array.from(proj.children).length).toBe(0);
 		Expect(proj.path).toBe(this.projectEmpty.dir);
@@ -81,8 +81,8 @@ export class GMS1ProjectFactoryFixture {
 
 	@AsyncTest("should load a single folder project")
 	public async load_singleFolder() {
-		const factory = new GMS2ProjectFactory(this.projectSingleFolder.join("project.json"));
-		const proj: IGMProject = await factory.load();
+		const factory = new GMS2ProjectLoader();
+		const proj: IGMProject = await factory.load(this.projectSingleFolder.join("project.json"));
 
 		const arr = Array.from(proj.children);
 		Expect(arr.length).toBe(1);
@@ -91,8 +91,8 @@ export class GMS1ProjectFactoryFixture {
 
 	@AsyncTest("should load a folder/script project")
 	public async load_folderScript() {
-		const factory = new GMS2ProjectFactory(this.projectFolderScript.join("project.json"));
-		const proj: IGMProject = await factory.load();
+		const factory = new GMS2ProjectLoader();
+		const proj: IGMProject = await factory.load(this.projectFolderScript.join("project.json"));
 
 		const arr = Array.from(proj.children);
 		Expect(arr.length).toBe(1);
@@ -105,8 +105,8 @@ export class GMS1ProjectFactoryFixture {
 
 	@AsyncTest("should load a folder/folder/room project")
 	public async load_folder_folder_script() {
-		const factory = new GMS2ProjectFactory(this.projectFolderFolderScript.join("project.json"));
-		const proj: IGMProject = await factory.load();
+		const factory = new GMS2ProjectLoader();
+		const proj: IGMProject = await factory.load(this.projectFolderFolderScript.join("project.json"));
 
 		const arr = Array.from(proj.children);
 		Expect(arr.length).toBe(1);
@@ -124,8 +124,8 @@ export class GMS1ProjectFactoryFixture {
 
 	@AsyncTest("should load a project with bad keys references")
 	public async load_bad() {
-		const factory = new GMS2ProjectFactory(this.projectBad.join("project.json"));
-		const proj: IGMProject = await factory.load();
+		const factory = new GMS2ProjectLoader();
+		const proj: IGMProject = await factory.load(this.projectBad.join("project.json"));
 
 		const arr = Array.from(proj.children);
 		Expect(arr.length).toBe(1);

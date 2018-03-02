@@ -1,11 +1,8 @@
-import { injectable } from "inversify";
-
 import IOutputConfig from "./interfaces/IOutputConfig";
 
 /**
  * This class has all the configuration for the DocsGM Output
  */
-@injectable()
 export default class OutputConfig implements IOutputConfig {
 	/**
 	 * The design name. If empty, it will use the first design in the designs list.

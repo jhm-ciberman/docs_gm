@@ -46,22 +46,22 @@ export class DocsGMFixture {
 
 	@AsyncTest("load should load a GMS1 Project")
 	public async load_GMS1() {
-		const loader = new ProjectLoader(this.projectGMS1.dir);
-		const p = await loader.load();
+		const loader = new ProjectLoader();
+		const p = await loader.load(this.projectGMS1.dir);
 		Expect(p).toBeDefined();
 	}
 
 	@AsyncTest("load should load a GMS2 Project")
 	public async load_GMS2() {
-		const loader = new ProjectLoader(this.projectGMS2.dir);
-		const p = await loader.load();
+		const loader = new ProjectLoader();
+		const p = await loader.load(this.projectGMS2.dir);
 		Expect(p).toBeDefined();
 	}
 
 	@AsyncTest("load should thrown when loading an invalid project")
 	public async load_Invalid() {
-		const loader = new ProjectLoader(this.noProject.dir);
-		await loader.load().then(() => {
+		const loader = new ProjectLoader();
+		await loader.load(this.noProject.dir).then(() => {
 			throw new Error("load() did not throw on invalid project");
 		}).catch((e) => {
 			Expect(e).toBeDefined();

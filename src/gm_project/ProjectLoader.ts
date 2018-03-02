@@ -1,37 +1,24 @@
 import * as globby from "globby";
 import * as path from "path";
 
-import GMS1ProjectFactory from "../gm_project/gms1/GMS1ProjectFactory";
-import GMS2ProjectFactory from "../gm_project/gms2/GMS2ProjectFactory";
 import IGMProject from "../gm_project/interfaces/IGMProject";
-import IGMProjectFactory from "../gm_project/interfaces/IGMProjectFactory";
+import GMS1ProjectLoader from "./gms1/GMS1ProjectLoader";
+import GMS2ProjectLoader from "./gms2/GMS2ProjectLoader";
+import IGMProjectLoader from "./interfaces/IGMProjectLoader";
 
 /**
  * This Factory class loads a GMS1 or GMS2 project and returns a GMProject object
  */
-export default class ProjectLoader {
-
-	/**
-	 * The project path
-	 */
-	private readonly _gmProjectPath: string;
-
-	/**
-	 * Creates a new Project loader
-	 * @param gmProjectPath The path of the project to load
-	 */
-	public constructor(gmProjectPath: string) {
-		this._gmProjectPath = gmProjectPath;
-	}
+export default class ProjectLoader implements IGMProjectLoader {
 
 	/**
 	 * Loads a specified GMS1 or GMS2 Project
-	 * @param GMProjectPath The project path to load
+	 * @param gmProjectPath The project path to load
 	 * @return A promise with the loaded project
 	 */
-	public async load(): Promise<IGMProject> {
+	public async load(gmProjectPath: string): Promise<IGMProject> {
 
-		const files = await globby(this._gmProjectPath + "/*.{yyp,gmx}");
+		const files = await globby(gmProjectPath + "/*.{yyp,gmx}");
 
 		if (files.length === 0) {
 			throw new Error("Unrecognized GM project. No *.yyp or *.gmx file found");
@@ -41,12 +28,12 @@ export default class ProjectLoader {
 
 		const ext = extArr[extArr.length - 1];
 
-		let factory: IGMProjectFactory;
+		let loader: IGMProjectLoader;
 		if (ext === "gmx") {
-			factory = new GMS1ProjectFactory(files[0]);
+			loader = new GMS1ProjectLoader();
 		} else {
-			factory = new GMS2ProjectFactory(files[0]);
+			loader = new GMS2ProjectLoader();
 		}
-		return factory.load();
+		return loader.load(files[0]);
 	}
 }

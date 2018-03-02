@@ -1,8 +1,8 @@
 import IGMProject from "./IGMProject";
 
-export default interface IGMProjectFactory {
+export default interface IGMProjectLoader {
 	/**
 	 * Loads a project file and returns a GMProject
 	 */
-	load(): Promise<IGMProject>
+	load(file: string): Promise<IGMProject>
 }

@@ -8,7 +8,7 @@ export default class GMS2Script extends GMScript {
 	/**
 	 * Is a compatibility script?
 	 */
-	public isCompatibility: boolean;
+	public readonly isCompatibility: boolean;
 
 	/**
 	 * The GML content
@@ -19,8 +19,9 @@ export default class GMS2Script extends GMScript {
 	 * Creates a new Script
 	 * @param data The yoyo model data for the script
 	 */
-	constructor(name: string) {
+	constructor(name: string, isCompatibility: boolean) {
 		super(name);
+		this.isCompatibility = isCompatibility;
 	}
 
 	/**

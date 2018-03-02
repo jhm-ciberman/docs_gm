@@ -5,41 +5,24 @@ import * as xml2js from "xml2js";
 import GMFolder from "../GMFolder";
 import GMProject from "../GMProject";
 import IGMProject from "../interfaces/IGMProject";
-import IGMProjectFactory from "../interfaces/IGMProjectFactory";
+import IGMProjectLoader from "../interfaces/IGMProjectLoader";
 import GMS1Script from "./GMS1Script";
 import { IGMS1DescriptorFolder, IGMS1DescriptorRoot } from "./IGMS1Descriptor";
 
 /**
  * Loads a GMS1 project file and creates a GMS1Project
  */
-export default class GMS1ProjectFactory implements IGMProjectFactory {
-
-	/**
-	 * The project file
-	 */
-	private readonly _file: string;
-
-	/**
-	 * The project to create
-	 */
-	private readonly _project: IGMProject;
-
-	/**
-	 * Creates a new GMS1Project Factory
-	 * @param file The project file
-	 */
-	constructor(file: string) {
-		this._file = file;
-		this._project = new GMProject(path.dirname(this._file));
-	}
+export default class GMS1ProjectLoader implements IGMProjectLoader {
 
 	/**
 	 * Loads the specified GMS1 project
 	 * @param file The file path of the project to load
 	 * @returns A Promise with the GMS1Project
 	 */
-	public async load(): Promise<IGMProject> {
-		const str = await fse.readFile(this._file, "utf8");
+	public async load(file: string): Promise<IGMProject> {
+		const project = new GMProject(path.dirname(file));
+
+		const str = await fse.readFile(file, "utf8");
 		// "assets" is the root XML node of the document, but we call Root at the content of that node
 		const data: IGMS1DescriptorRoot = await this._xmlParse(str);
 
@@ -47,10 +30,10 @@ export default class GMS1ProjectFactory implements IGMProjectFactory {
 		// Creates the root folder
 		if (assets.scripts) {
 			const scriptsFolder = this._createFolder(assets.scripts[0]);
-			this._project.addChild(scriptsFolder);
+			project.addChild(scriptsFolder);
 		}
 
-		return this._project;
+		return project;
 	}
 
 	/**

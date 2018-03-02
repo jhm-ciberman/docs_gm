@@ -59,8 +59,8 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 
 		this._reporter.info("Loading Project...");
 
-		const loader = new ProjectLoader(projectPath);
-		const project = await loader.load();
+		const loader = new ProjectLoader();
+		const project = await loader.load(projectPath);
 
 		this._reporter.info("Loading project configuration...");
 
