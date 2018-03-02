@@ -2,7 +2,7 @@ import container from "../../inversify.config";
 import { TYPES } from "../../types";
 
 import * as program from "commander";
-import { inject } from "inversify";
+import { inject, injectable } from "inversify";
 import * as os from "os";
 import IConfigManager from "../config/interfaces/IConfigManager";
 import IReporter from "../reporter/interfaces/IReporter";
@@ -14,6 +14,7 @@ const packageJSON = require("../package.json");
 /**
  * This class is responsible for showing the CLI interface. It has a single method parse(argv).
  */
+@injectable()
 export default class Cli {
 
 	/**

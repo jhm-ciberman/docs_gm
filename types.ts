@@ -10,6 +10,7 @@ const TYPES = {
 	// generator
 	IDocumentationExtractor: Symbol.for("IDocumentationExtractor"),
 	IDocProjectGenerator: Symbol.for("IDocProjectGenerator"),
+	IDocumentationGenerator: Symbol.for("IDocumentationGenerator"),
 
 	// parser
 	IJSDocParser: Symbol.for("IJSDocParser"),
@@ -20,6 +21,9 @@ const TYPES = {
 	// Validation
 	IScriptValidator: Symbol.for("IScriptValidator"),
 	IRuleValidator: Symbol.for("IRuleValidator"),
+
+	// Loader
+	IGMProjectLoader: Symbol.for("IGMProjectLoader"),
 };
 
 export {TYPES};

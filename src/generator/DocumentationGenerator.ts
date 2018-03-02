@@ -1,4 +1,4 @@
-import { inject } from "inversify";
+import { inject, injectable } from "inversify";
 import { TYPES } from "../../types";
 
 import * as path from "path";
@@ -14,6 +14,7 @@ import IDocProjectGenerator from "./interfaces/IDocProjectGenerator";
 /**
  * Generates the documentation.
  */
+@injectable()
 export default class DocumentationGenerator {
 
 	/**

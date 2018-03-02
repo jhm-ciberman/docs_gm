@@ -15,6 +15,8 @@ import IDocumentationExtractor from "./src/generator/interfaces/IDocumentationEx
 import IJSDocParser from "./src/parser/interfaces/IJSDocParser";
 import JSDocParser from "./src/parser/JSDocParser";
 
+import DocumentationGenerator from "./src/generator/DocumentationGenerator";
+import IDocumentationGenerator from "./src/generator/interfaces/IDocumentationGenerator";
 import ConsoleReporter from "./src/reporter/ConsoleReporter";
 import IReporter from "./src/reporter/interfaces/IReporter";
 import IRuleValidator from "./src/validation/interfaces/IRuleValidator";
@@ -31,6 +33,7 @@ container.bind<IRuleValidator>(TYPES.IRuleValidator).to(RuleValidator);
 
 // Generator
 container.bind<IDocumentationExtractor>(TYPES.IDocumentationExtractor).to(DocumentationExtractor);
+container.bind<IDocumentationGenerator>(TYPES.IDocumentationGenerator).to(DocumentationGenerator);
 
 // Parser
 container.bind<IJSDocParser>(TYPES.IJSDocParser).to(JSDocParser);

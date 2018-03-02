@@ -2,14 +2,13 @@ import open = require("open");
 import * as path from "path";
 
 import { inject, injectable } from "inversify";
-import container from "../../inversify.config";
 import { TYPES } from "../../types";
 
 import IConfigManager from "../config/interfaces/IConfigManager";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
 import ProjectConfig from "../config/ProjectConfig";
-import DocumentationGenerator from "../generator/DocumentationGenerator";
-import ProjectLoader from "../gm_project/ProjectLoader";
+import IDocumentationGenerator from "../generator/interfaces/IDocumentationGenerator";
+import IGMProjectLoader from "../gm_project/interfaces/IGMProjectLoader";
 import IReporter from "../reporter/interfaces/IReporter";
 import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
 
@@ -51,6 +50,24 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 	private _reporter: IReporter;
 
 	/**
+	 * The GMProjectLoader
+	 */
+	@inject(TYPES.IGMProjectLoader)
+	private _loader: IGMProjectLoader;
+
+	/**
+	 * The config manager
+	 */
+	@inject(TYPES.IConfigManager)
+	private _configManager: IConfigManager;
+
+	/**
+	 * The documentation generator
+	 */
+	@inject(TYPES.IDocumentationGenerator)
+	private _documentationGenerator: IDocumentationGenerator;
+
+	/**
 	 * Generates the documentation for a given project
 	 * @param projectPath The path to the project
 	 * @param opts The option object to override
@@ -59,13 +76,11 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 
 		this._reporter.info("Loading Project...");
 
-		const loader = new ProjectLoader();
-		const project = await loader.load(projectPath);
+		const project = await this._loader.load(projectPath);
 
 		this._reporter.info("Loading project configuration...");
 
-		const configManager = container.get<IConfigManager>(TYPES.IConfigManager);
-		let config = await configManager.loadConfig(projectPath);
+		let config = await this._configManager.loadConfig(projectPath);
 
 		if (!config) {
 			this._reporter.info("Configuration not found. Using default configuration.");
@@ -74,8 +89,7 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 		config = this._overrideConfig(config);
 
 		this._reporter.info("Generating documentation... ");
-		const docsGenerator = new DocumentationGenerator();
-		const outFolder = await docsGenerator.generate(project, config);
+		const outFolder = await this._documentationGenerator.generate(project, config);
 
 		this._reporter.info("Ready!");
 
