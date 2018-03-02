@@ -14,16 +14,12 @@ const TYPES = {
 	// parser
 	IJSDocParser: Symbol.for("IJSDocParser"),
 
-	// Rules
-	RuleMismatchingArguments: Symbol.for("RuleMismatchingArguments"),
-	RuleMismatchingFunctionName: Symbol.for("RuleMismatchingFunctionName"),
-	RuleNoDescription: Symbol.for("RuleNoDescription"),
-	RulePrivate: Symbol.for("RulePrivate"),
-	RuleUndocumented: Symbol.for("RuleUndocumented"),
-	RuleUndocumentedArguments: Symbol.for("RuleUndocumentedArguments"),
+	// Reporter
+	IReporter: Symbol.for("IReporter"),
 
 	// Validation
 	IScriptValidator: Symbol.for("IScriptValidator"),
+	IRuleValidator: Symbol.for("IRuleValidator"),
 };
 
 export {TYPES};

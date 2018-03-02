@@ -1,7 +1,7 @@
 import open = require("open");
 import * as path from "path";
 
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import container from "../../inversify.config";
 import { TYPES } from "../../types";
 
@@ -11,7 +11,6 @@ import ProjectConfig from "../config/ProjectConfig";
 import DocumentationGenerator from "../generator/DocumentationGenerator";
 import ProjectLoader from "../gm_project/ProjectLoader";
 import IReporter from "../reporter/interfaces/IReporter";
-import ReporterManager from "../reporter/ReporterManager";
 import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
 
 /**
@@ -24,11 +23,6 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 	 * Open method (used for dependency injection)
 	 */
 	public open: (url: string) => void = open;
-
-	/**
-	 * The reporter used (used for dependency injection)
-	 */
-	public reporter: IReporter = ReporterManager.reporter;
 
 	/**
 	 * The overridden design
@@ -51,36 +45,42 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 	public pattern: string | undefined;
 
 	/**
+	 * The reporter used (used for dependency injection)
+	 */
+	@inject(TYPES.IReporter)
+	private _reporter: IReporter;
+
+	/**
 	 * Generates the documentation for a given project
 	 * @param projectPath The path to the project
 	 * @param opts The option object to override
 	 */
 	public async generate(projectPath: string = "."): Promise<void> {
 
-		this.reporter.info("Loading Project...");
+		this._reporter.info("Loading Project...");
 
 		const loader = new ProjectLoader(projectPath);
 		const project = await loader.load();
 
-		this.reporter.info("Loading project configuration...");
+		this._reporter.info("Loading project configuration...");
 
 		const configManager = container.get<IConfigManager>(TYPES.IConfigManager);
 		let config = await configManager.loadConfig(projectPath);
 
 		if (!config) {
-			this.reporter.info("Configuration not found. Using default configuration.");
+			this._reporter.info("Configuration not found. Using default configuration.");
 			config = new ProjectConfig();
 		}
 		config = this._overrideConfig(config);
 
-		this.reporter.info("Generating documentation... ");
+		this._reporter.info("Generating documentation... ");
 		const docsGenerator = new DocumentationGenerator();
 		const outFolder = await docsGenerator.generate(project, config);
 
-		this.reporter.info("Ready!");
+		this._reporter.info("Ready!");
 
 		const url = path.resolve(outFolder, "index.html");
-		this.reporter.info(`Opening ${url}`);
+		this._reporter.info(`Opening ${url}`);
 		this.open(url);
 	}
 

@@ -2,12 +2,17 @@ import {
 	Expect,
 	Setup,
 	SpyOn,
+	Teardown,
 	Test,
 	TestFixture,
 } from "alsatian";
 
+import container from "../../inversify.config";
 import DocReturns from "../../src/doc_models/DocReturns";
 import JSDocParser from "../../src/parser/JSDocParser";
+import IReporter from "../../src/reporter/interfaces/IReporter";
+import { TYPES } from "../../types";
+import MockReporter from "../__mock__/MockReporter.mock";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 @TestFixture("JSDocParser")
@@ -16,7 +21,13 @@ export class JSDocParserFixture {
 
 	@Setup
 	public setup() {
-		this.p = new JSDocParser();
+		this.p = container.get(TYPES.IJSDocParser);
+		container.snapshot();
+	}
+
+	@Teardown
+	public teardown() {
+		container.restore();
 	}
 
 	@Test("parser should parse an simple description")
@@ -106,29 +117,35 @@ export class JSDocParserFixture {
 		Expect(doc.undocumented).toBe(true);
 	}
 
-	@Test("parser should warn with an inexistent tag when warnUnrecognizedTags=true")
-	public parser_warn_on_inexistent() {
-		SpyOn(this.p.reporter, "warn");
+	@Test("parser should warn with an nonexistent tag when warnUnrecognizedTags=true")
+	public parser_warn_on_nonexistent() {
+		const mockReporter = new MockReporter();
+		container.rebind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
+		SpyOn(mockReporter, "warn").andStub();
+		this.p = container.get(TYPES.IJSDocParser);
 		this.p.warnUnrecognizedTags = true;
 		const doc = this.p.parse("my_script", [
 			"/**",
-			" * @inexistent a b c",
+			" * @nonexistent a b c",
 			" */",
 		].join("\n"));
 		Expect(doc.undocumented).toBe(true);
-		Expect(this.p.reporter.warn).toHaveBeenCalled();
+		Expect(mockReporter.warn).toHaveBeenCalled();
 	}
-	@Test("parser should NOT warn with an inexistent tag when warnUnrecognizedTags=false")
-	public parser_not_warn_on_inexistent() {
-		SpyOn(this.p.reporter, "warn");
+	@Test("parser should NOT warn with an nonexistent tag when warnUnrecognizedTags=false")
+	public parser_not_warn_on_nonexistent() {
+		const mockReporter = new MockReporter();
+		container.rebind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
+		SpyOn(mockReporter, "warn").andStub();
+		this.p = container.get(TYPES.IJSDocParser);
 		this.p.warnUnrecognizedTags = false;
 		const doc = this.p.parse("my_script", [
 			"/**",
-			" * @inexistent a b c",
+			" * @nonexistent a b c",
 			" */",
 		].join("\n"));
 		Expect(doc.undocumented).toBe(true);
-		Expect(this.p.reporter.warn).not.toHaveBeenCalled();
+		Expect(mockReporter.warn).not.toHaveBeenCalled();
 	}
 
 	@Test("parser should parse a returns tag")

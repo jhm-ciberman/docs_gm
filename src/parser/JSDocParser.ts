@@ -1,8 +1,8 @@
 import parse = require("comment-parser");
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../types";
 import DocScript from "../doc_models/DocScript";
 import IReporter from "../reporter/interfaces/IReporter";
-import ReporterManager from "../reporter/ReporterManager";
 import DocScriptFactory from "./DocScriptFactory";
 import IJSDocParser from "./interfaces/IJSDocParser";
 
@@ -20,7 +20,8 @@ export default class JSDocParser implements IJSDocParser {
 	/**
 	 * The reporter to use
 	 */
-	public reporter: IReporter = ReporterManager.reporter;
+	@inject(TYPES.IReporter)
+	private _reporter: IReporter;
 
 	/**
 	 * Parses a gml script string and extracts all the documentation for a passed script
@@ -82,7 +83,7 @@ export default class JSDocParser implements IJSDocParser {
 				break;
 			default:
 				if (this.warnUnrecognizedTags) {
-					this.reporter.warn(`Unrecognized tag "${ tag.tag.toLowerCase() }" at script "${ name }"`);
+					this._reporter.warn(`Unrecognized tag "${ tag.tag.toLowerCase() }" at script "${ name }"`);
 				}
 		}
 	}

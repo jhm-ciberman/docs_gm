@@ -5,7 +5,7 @@ import * as program from "commander";
 import { inject } from "inversify";
 import * as os from "os";
 import IConfigManager from "../config/interfaces/IConfigManager";
-import ReporterManager from "../reporter/ReporterManager";
+import IReporter from "../reporter/interfaces/IReporter";
 import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
 
 // tslint:disable-next-line: no-var-requires
@@ -17,12 +17,34 @@ const packageJSON = require("../package.json");
 export default class Cli {
 
 	/**
-	 * Creates a new Cli instance
-	 * @param f The injected CLIGenerateFacade
+	 * The reporter
 	 */
-	constructor(
-		@inject(TYPES.ICliGenerateFacade) f: ICliGenerateFacade,
-	) {
+	@inject(TYPES.IReporter)
+	private _reporter: IReporter;
+
+	/**
+	 * The CliGenerateFacade instance
+	 */
+	@inject(TYPES.ICliGenerateFacade)
+	private _cliGenerateFacade: ICliGenerateFacade;
+
+	/**
+	 * Parses the arguments and shows the CLI on screen.
+	 * @param argv The argv array (normally process.argv)
+	 */
+	public parse(argv: string[]): void {
+		this._initializeProgram();
+		program.parse(argv);
+
+		if (!argv.slice(2).length) {
+			program.help();
+		}
+	}
+
+	/**
+	 * Inits the commander program instance
+	 */
+	private _initializeProgram() {
 
 		program
 			.version(packageJSON.version);
@@ -39,40 +61,28 @@ export default class Cli {
 			.option(
 				"--design <name>",
 				"The design name. If empty, it will use the first design in the designs list.",
-				(value) => { f.design = value; },
+				(value) => { this._cliGenerateFacade.design = value; },
 			)
 			.option(
 				"--template <name>",
 				"The template name to use",
-				(value) => { f.template = value; },
+				(value) => { this._cliGenerateFacade.template = value; },
 			)
 			.option(
 				"--outputFolder <path>",
 				"The output folder of the documentation",
-				(value) => { f.outputFolder = value; },
+				(value) => { this._cliGenerateFacade.outputFolder = value; },
 			)
 			.option(
 				"-p, --pattern <glob>",
 				"The glob pattern to use to include files in the project documentation",
-				(value) => { f.pattern = value; },
+				(value) => { this._cliGenerateFacade.pattern = value; },
 			)
 			.action((folder) => {
-				f.generate(folder).catch((err) => {
-					ReporterManager.reporter.error(err);
+				this._cliGenerateFacade.generate(folder).catch((err) => {
+					this._reporter.error(err);
 				});
 			});
-	}
-
-	/**
-	 * Parses the arguments and shows the CLI on screen.
-	 * @param argv The argv array (normally process.argv)
-	 */
-	public parse(argv: string[]): void {
-		program.parse(argv);
-
-		if (!argv.slice(2).length) {
-			program.help();
-		}
 	}
 
 	/**
@@ -83,7 +93,7 @@ export default class Cli {
 		const userDir = os.homedir();
 		configManager.exportConfig(userDir)
 			.then((file) => this._outputConfigInstructions(file))
-			.catch((err) => ReporterManager.reporter.error(err));
+			.catch((err) => this._reporter.error(err));
 	}
 
 	/**
@@ -112,7 +122,7 @@ export default class Cli {
 		];
 
 		for (const str of strings) {
-			ReporterManager.reporter.info(str);
+			this._reporter.info(str);
 		}
 	}
 
