@@ -3,7 +3,7 @@ import { TYPES } from "../../types";
 
 import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
 import DocScript from "../doc_models/DocScript";
-import GMScript from "../gm_project/GMScript";
+import IGMScript from "../gm_project/interfaces/IGMScript";
 import JSDocParser from "../parser/JSDocParser";
 import IScriptValidator from "../validation/interfaces/IScriptValidator";
 import ValidableScript from "../validation/ValidableScript";
@@ -33,7 +33,11 @@ export default class DocumentationExtractor implements IDocumentationExtractor {
 	 * The returned array is sorted alphabetically.
 	 * @param script An array with DocScript objects
 	 */
-	public extractDocScripts(script: GMScript, rules: IScriptValidationRules, warnUnrecognizedTags: boolean): DocScript[] {
+	public extractDocScripts(
+		script: IGMScript,
+		rules: IScriptValidationRules,
+		warnUnrecognizedTags: boolean,
+	): DocScript[] {
 		const arr = [];
 
 		this._jsDocParser.warnUnrecognizedTags = warnUnrecognizedTags;

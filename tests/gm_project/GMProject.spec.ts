@@ -5,7 +5,7 @@ import {
 	TestFixture,
 } from "alsatian";
 import GMProject from "../../src/gm_project/GMProject";
-import GMFolderMock from "./__mock__/GMFolder.mock";
+import MockGMFolder from "../__mock__/MockGMFolder.mock";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
@@ -31,9 +31,9 @@ export class GMProjectFixture {
 
 	@Test("children should return all the project top level folders")
 	public children() {
-		const folder1 = new GMFolderMock();
+		const folder1 = new MockGMFolder("foo", []);
 		this.project.addChild(folder1);
-		const folder2 = new GMFolderMock();
+		const folder2 = new MockGMFolder("bar", []);
 		this.project.addChild(folder2);
 
 		const arr = Array.from(this.project.children);

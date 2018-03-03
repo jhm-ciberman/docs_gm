@@ -4,9 +4,9 @@ import * as path from "path";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../types";
 
+import ProjectConfig from "../config/entities/ProjectConfig";
 import IConfigManager from "../config/interfaces/IConfigManager";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
-import ProjectConfig from "../config/ProjectConfig";
 import IDocumentationGenerator from "../generator/interfaces/IDocumentationGenerator";
 import IGMProjectLoader from "../gm_project/interfaces/IGMProjectLoader";
 import IReporter from "../reporter/interfaces/IReporter";

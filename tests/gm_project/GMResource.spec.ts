@@ -5,7 +5,7 @@ import {
 	TestFixture,
 } from "alsatian";
 import GMResource from "../../src/gm_project/GMResource";
-import GMFolderMock from "./__mock__/GMFolder.mock";
+import MockGMFolder from "../__mock__/MockGMFolder.mock";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
@@ -31,7 +31,7 @@ export class GMResourceFixture {
 
 	@Test("should get the fullpath when it has parent")
 	public fullpath_Parent() {
-		const folder = new GMFolderMock();
+		const folder = new MockGMFolder("foo", []);
 		folder.fullpath = "my-fullpath/";
 		this.resource.parent = folder;
 		Expect(this.resource.fullpath).toBe("my-fullpath/my-name");
@@ -39,7 +39,7 @@ export class GMResourceFixture {
 
 	@Test("match should match the fullpath against a glob")
 	public match() {
-		const folder = new GMFolderMock();
+		const folder = new MockGMFolder("foo", []);
 		folder.fullpath = "/my-fullpath/a/b/c/";
 		this.resource.parent = folder;
 		Expect(this.resource.match("**/c/my-name")).toBe(true);

@@ -7,14 +7,25 @@ import {
 import container from "../../inversify.config";
 import { TYPES } from "../../types";
 
-import ScriptValidationRules from "../../src/config/ScriptValidationRules";
+import ScriptValidationRules from "../../src/config/entities/ScriptValidationRules";
 import IDocumentationExtractor from "../../src/generator/interfaces/IDocumentationExtractor";
-import GMScript from "../../src/gm_project/GMScript";
+import IGMFolder from "../../src/gm_project/interfaces/IGMFolder";
+import IGMScript from "../../src/gm_project/interfaces/IGMScript";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-class GMScriptMock extends GMScript {
+class GMScriptMock implements IGMScript {
+	public parent: IGMFolder | null;
+	public fullpath: string;
+	public name: string;
 	public filepath: string = "";
+	constructor(name: string) {
+		this.name = name;
+	}
+	public match(_pattern: string): boolean {
+		throw new Error("Method not implemented.");
+	}
+
 	public * subScripts(): IterableIterator<[string, string]> {
 		const script1 = [
 			"/**",

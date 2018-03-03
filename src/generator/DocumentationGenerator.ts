@@ -7,7 +7,7 @@ import IOutputConfig from "../config/interfaces/IOutputConfig";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
 import IGMProject from "../gm_project/interfaces/IGMProject";
 
-import ProjectConfig from "../config/ProjectConfig";
+import ProjectConfig from "../config/entities/ProjectConfig";
 import TemplateLoader from "../template/TemplateLoader";
 import IDocProjectGenerator from "./interfaces/IDocProjectGenerator";
 

@@ -9,10 +9,10 @@ import DocFolder from "../doc_models/DocFolder";
 import DocProject from "../doc_models/DocProject";
 import DocResource from "../doc_models/DocResource";
 import DocScript from "../doc_models/DocScript";
-import GMScript from "../gm_project/GMScript";
 import IGMFolder from "../gm_project/interfaces/IGMFolder";
 import IGMProject from "../gm_project/interfaces/IGMProject";
 import IGMResource from "../gm_project/interfaces/IGMResource";
+import IGMScript from "../gm_project/interfaces/IGMScript";
 import IDocProjectGenerator from "./interfaces/IDocProjectGenerator";
 import IDocumentationExtractor from "./interfaces/IDocumentationExtractor";
 
@@ -76,8 +76,8 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 	/**
 	 * Returns true if the resource is a GMScript
 	 */
-	private _isScript(res: IGMResource): res is GMScript {
-		return (res as GMScript).loadFromString !== undefined;
+	private _isScript(res: IGMResource): res is IGMScript {
+		return (res as IGMScript).loadFromString !== undefined;
 	}
 
 	/**
@@ -100,7 +100,7 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 	 * Loads a single GMScript with all the subscripts from disk and extracts
 	 * the documentation from it.
 	 */
-	private async _loadScript(gmScript: GMScript, config: IProjectConfig, gmProject: IGMProject): Promise<DocScript[]> {
+	private async _loadScript(gmScript: IGMScript, config: IProjectConfig, gmProject: IGMProject): Promise<DocScript[]> {
 		if (!gmScript.match(config.output.pattern)) {
 			return [];
 		}

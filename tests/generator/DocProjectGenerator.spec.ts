@@ -12,13 +12,13 @@ import { TYPES } from "../../types";
 
 import { TempDir } from "../_testing_helpers/TempDir.help";
 
-import ProjectConfig from "../../src/config/ProjectConfig";
 import DocFolder from "../../src/doc_models/DocFolder";
 import DocScript from "../../src/doc_models/DocScript";
 import IDocProjectGenerator from "../../src/generator/interfaces/IDocProjectGenerator";
 import IDocumentationExtractor from "../../src/generator/interfaces/IDocumentationExtractor";
 import IGMScript from "../../src/gm_project/interfaces/IGMScript";
 
+import ProjectConfig from "../../src/config/entities/ProjectConfig";
 import MockDocumentationExtractor from "../__mock__/MockDocumentationExtractor.mock";
 import MockGMFolder from "../__mock__/MockGMFolder.mock";
 import MockGMProject from "../__mock__/MockGMProject.mock";

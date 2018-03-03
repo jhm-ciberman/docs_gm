@@ -1,4 +1,3 @@
-import container from "../../inversify.config";
 import { TYPES } from "../../types";
 
 import * as program from "commander";
@@ -29,6 +28,11 @@ export default class Cli {
 	@inject(TYPES.ICliGenerateFacade)
 	private _cliGenerateFacade: ICliGenerateFacade;
 
+	/**
+	 * The config manager
+	 */
+	@inject(TYPES.IConfigManager)
+	private _configManager: IConfigManager;
 	/**
 	 * Parses the arguments and shows the CLI on screen.
 	 * @param argv The argv array (normally process.argv)
@@ -90,9 +94,7 @@ export default class Cli {
 	 * Exports the docs_gm config json and output the instructions to the screen.
 	 */
 	private _init() {
-		const configManager = container.get<IConfigManager>(TYPES.IConfigManager);
-		const userDir = os.homedir();
-		configManager.exportConfig(userDir)
+		this._configManager.exportConfig(os.homedir())
 			.then((file) => this._outputConfigInstructions(file))
 			.catch((err) => this._reporter.error(err));
 	}

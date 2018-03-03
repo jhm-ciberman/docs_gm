@@ -3,8 +3,8 @@ import { injectable } from "inversify";
 import * as fse from "fs-extra";
 import * as path from "path";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
+import ProjectConfig from "./entities/ProjectConfig";
 import IConfigManager from "./interfaces/IConfigManager";
-import ProjectConfig from "./ProjectConfig";
 
 /**
  * This class exports and loads the configuration

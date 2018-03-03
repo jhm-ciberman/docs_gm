@@ -11,9 +11,9 @@ import { TYPES } from "../../types";
 
 import { TempDir } from "../_testing_helpers/TempDir.help";
 
+import ProjectConfig from "../../src/config/entities/ProjectConfig";
 import IConfigManager from "../../src/config/interfaces/IConfigManager";
 import IProjectConfig from "../../src/config/interfaces/IProjectConfig";
-import ProjectConfig from "../../src/config/ProjectConfig";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 

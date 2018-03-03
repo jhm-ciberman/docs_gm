@@ -1,7 +1,7 @@
 import GMResource from "./GMResource";
-import GMScript from "./GMScript";
 import IGMFolder from "./interfaces/IGMFolder";
 import IGMResource from "./interfaces/IGMResource";
+import IGMScript from "./interfaces/IGMScript";
 
 /**
  * Represents any folder in the resource tree of Game Maker
@@ -17,7 +17,7 @@ export default class GMFolder extends GMResource implements IGMFolder {
 	 * The GMScript that holds the information and documentation about the module/folder.
 	 * That is, a GMScript inside the folder whose name starts with "MODULE_" or with "FOLDER_"
 	 */
-	protected _moduleScript: GMScript | null = null;
+	protected _moduleScript: IGMScript | null = null;
 
 	/**
 	 * Creates a new GMFolder
@@ -33,12 +33,19 @@ export default class GMFolder extends GMResource implements IGMFolder {
 	 */
 	public addChild(child: IGMResource): void {
 		child.parent = this;
-		if (child instanceof GMScript && (child.name.startsWith("MODULE_") || child.name.startsWith("FOLDER_"))) {
+		if (this._isScript(child) && (child.name.startsWith("MODULE_") || child.name.startsWith("FOLDER_"))) {
 			this._moduleScript = child;
 		} else {
 			this._children.push(child);
 		}
 
+	}
+
+	/**
+	 * Returns true if the resource is a GMScript
+	 */
+	private _isScript(res: IGMResource): res is IGMScript {
+		return (res as IGMScript).loadFromString !== undefined;
 	}
 
 	/**
@@ -58,7 +65,7 @@ export default class GMFolder extends GMResource implements IGMFolder {
 	/**
 	 * Returns the first GMScript whose name starts with "MODULE_" or with "FOLDER_".
 	 */
-	get moduleScript(): GMScript | null {
+	get moduleScript(): IGMScript | null {
 		return this._moduleScript;
 	}
 }
