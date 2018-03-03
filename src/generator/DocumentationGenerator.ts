@@ -8,20 +8,41 @@ import IProjectConfig from "../config/interfaces/IProjectConfig";
 import IGMProject from "../gm_project/interfaces/IGMProject";
 
 import ProjectConfig from "../config/entities/ProjectConfig";
-import TemplateLoader from "../template/TemplateLoader";
+import IDesignRenderer from "../template/interfaces/IDesignRenderer";
+import IModuleFinder from "../template/interfaces/IModuleFinder";
+import ITemplateLoader from "../template/interfaces/ITemplateLoader";
 import IDocProjectGenerator from "./interfaces/IDocProjectGenerator";
+import IDocumentationGenerator from "./interfaces/IDocumentationGenerator";
 
 /**
  * Generates the documentation.
  */
 @injectable()
-export default class DocumentationGenerator {
+export default class DocumentationGenerator implements IDocumentationGenerator {
 
 	/**
-	 * The project config
+	 * The doc project generator
 	 */
 	@inject(TYPES.IDocProjectGenerator)
 	private _generator: IDocProjectGenerator;
+
+	/**
+	 * The module finder
+	 */
+	@inject(TYPES.IModuleFinder)
+	private _moduleFinder: IModuleFinder;
+
+	/**
+	 * The design renderer
+	 */
+	@inject(TYPES.IDesignRenderer)
+	private _designRenderer: IDesignRenderer;
+
+	/**
+	 * The template loader
+	 */
+	@inject(TYPES.ITemplateLoader)
+	private _templateLoader: ITemplateLoader;
 
 	/**
 	 * Generates the documentation files for the project.
@@ -36,10 +57,8 @@ export default class DocumentationGenerator {
 			throw new Error(`Design "${designName}" not found`);
 		}
 		const outputFolder = config.output.outputFolder;
-		const design = template.getDesign(config.output.design);
-		await design.renderPages(outputFolder, docProject);
-		await design.copyFiles(outputFolder);
-
+		const design = template.getDesign(config.output.design) || template.defaultDesign;
+		await this._designRenderer.render(design, docProject, outputFolder);
 		return outputFolder;
 	}
 
@@ -47,13 +66,12 @@ export default class DocumentationGenerator {
 	 * Loads the template
 	 */
 	private async _loadTemplate(output: IOutputConfig) {
-		const templateLoader = new TemplateLoader();
 		let folder;
 		if (output.templatesFolder !== "") {
 			folder = path.resolve(output.templatesFolder, output.template);
 		} else {
-			folder = await templateLoader.getTemplateModulePath(output.template);
+			folder = await this._moduleFinder.find("docs_gm-" + output.template);
 		}
-		return await templateLoader.loadFrom(folder);
+		return await this._templateLoader.loadFrom(folder);
 	}
 }

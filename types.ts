@@ -24,6 +24,16 @@ const TYPES = {
 
 	// Loader
 	IGMProjectLoader: Symbol.for("IGMProjectLoader"),
+
+	// Template
+	IModuleFinder: Symbol.for("IModuleFinder"),
+	IRenderablePageGenerator: Symbol.for("IRenderablePageGenerator"),
+	IPageFeeder: Symbol.for("IPageFeeder"),
+	IDesignRenderer: Symbol.for("IDesignRenderer"),
+	ITemplateLoader: Symbol.for("ITemplateLoader"),
+
+	// npm modules
+	IGetInstalledPath: Symbol.for("IGetInstalledPath"),
 };
 
 export {TYPES};

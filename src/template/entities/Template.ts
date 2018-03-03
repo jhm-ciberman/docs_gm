@@ -1,7 +1,5 @@
-import * as path from "path";
-
+import * as TemplateJSON from "../interfaces/TemplateJSON";
 import Design from "./Design";
-import * as TemplateJSON from "./interfaces/TemplateJSON";
 
 /**
  * Represents a Documentation HTML Template
@@ -9,42 +7,29 @@ import * as TemplateJSON from "./interfaces/TemplateJSON";
 export default class Template {
 
 	/**
-	 * Static factory method to create a Template. Can throw if the defaultDesign name is invalid
-	 * @param data The template data
-	 * @param folder The folder to load from
-	 */
-	public static create(data: TemplateJSON.IRoot, folder: string) {
-		const template = new Template(data, folder);
-		if (!template.defaultDesign) {
-			throw new Error("Default design name is invalid");
-		}
-		return template;
-	}
-
-	/**
 	 * The folder of the template
 	 */
-	public readonly folder: string;
+	public folder: string;
 
 	/**
 	 * The template author
 	 */
-	public readonly author: string;
+	public author: string | undefined;
 
 	/**
 	 * The default design name
 	 */
-	public readonly defaultDesign: Design;
+	public defaultDesign: Design;
 
 	/**
 	 * The default design name
 	 */
-	public readonly description: string;
+	public description: string | undefined;
 
 	/**
 	 * The web of the author of the template
 	 */
-	public readonly web: string;
+	public web: string | undefined;
 
 	/**
 	 * A map containing with the designs. Each key is the name of the design.
@@ -52,23 +37,26 @@ export default class Template {
 	private _designs: Map<string, Design> = new Map();
 
 	/**
-	 * Creates a new Template object
-	 * @param data the template data
-	 * @param folder the folder that contains the template
+	 * Creates an instance of Template.
+	 * @param {string} folder The template folder
+	 * @memberof Template
 	 */
-	private constructor(data: TemplateJSON.IRoot, folder: string) {
-		this.folder = path.resolve(folder);
+	public constructor(folder: string, data: TemplateJSON.IRoot) {
+		this.folder = folder;
+		this.folder = folder;
 		this.author = data.author;
 		this.description = data.description;
 		this.web = data.web;
 
 		for (const name of Object.keys(data.designs)) {
-			const design = new Design(name, this.folder, data.designs[name]);
+			const design = new Design(this, data.designs[name]);
 			this._designs.set(name, design);
 		}
 
-		const d = this._designs.get(data.defaultDesign);
-		if (d) {
+		const d = this.getDesign(data.defaultDesign);
+		if (!d) {
+			throw new Error("Default design name is invalid");
+		} else {
 			this.defaultDesign = d;
 		}
 	}
@@ -77,8 +65,8 @@ export default class Template {
 	 * Finds a design by name. Returns the default design if not found
 	 * @param design The design name.
 	 */
-	public getDesign(design: string): Design {
-		return this._designs.get(design) || this.defaultDesign;
+	public getDesign(design: string): Design | undefined {
+		return this._designs.get(design);
 	}
 
 	/**

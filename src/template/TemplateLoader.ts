@@ -1,17 +1,14 @@
 import * as fse from "fs-extra";
-import { getInstalledPath } from "get-installed-path";
+import { injectable } from "inversify";
 import * as path from "path";
-import pkgDir = require("pkg-dir");
-import Template from "./Template";
+import Template from "./entities/Template";
+import ITemplateLoader from "./interfaces/ITemplateLoader";
 /**
  * This class is used to load a Template from disk.
  * It can be installed as an npm module or in a local folder.
  */
-export default class TemplateLoader {
-	/**
-	 * Used for dependency injection
-	 */
-	public getInstalledPath: (name: string, opts?: GetInstalledPath.Options) => Promise<string> = getInstalledPath;
+@injectable()
+export default class TemplateLoader implements ITemplateLoader {
 
 	/**
 	 * Factory method to load the template from a folder
@@ -26,24 +23,6 @@ export default class TemplateLoader {
 		} catch (e) {
 			throw new Error(`Error loading Template from "${jsonPath}"`);
 		}
-		return Template.create(data, folder);
-	}
-
-	/**
-	 * Gets the path of a template npm module from a global installation or local installation.
-	 * @param templateName The name of the template to find
-	 */
-	public async getTemplateModulePath(templateName: string): Promise<string> {
-		const moduleName = "docs_gm-" + templateName;
-		try {
-			return await this.getInstalledPath(moduleName);
-		} catch (e) {
-			try {
-				const cwd = await pkgDir() as string;
-				return await this.getInstalledPath(moduleName, { local: true, cwd });
-			} catch (e) {
-				throw new Error(`Cannot find the module ${moduleName}`);
-			}
-		}
+		return new Template(folder, data);
 	}
 }

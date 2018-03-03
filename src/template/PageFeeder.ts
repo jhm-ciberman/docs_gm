@@ -1,34 +1,23 @@
+import { injectable } from "inversify";
 import DocFolder from "../doc_models/DocFolder";
 import DocPage from "../doc_models/DocPage";
 import DocProject from "../doc_models/DocProject";
 import DocScript from "../doc_models/DocScript";
+import IPageFeeder from "./interfaces/IPageFeeder";
 
 /**
  * This class will generate an iterator with all the DocPages of the DocProject
  */
-export default class PageFeeder {
-
-	/**
-	 * The docProject to generate the pages for
-	 */
-	private _docProject: DocProject;
-
-	/**
-	 * Creates an instance of PageFeeder.
-	 * @param {DocProject} docProject The docProject to generate the pages for
-	 */
-	constructor(docProject: DocProject) {
-		this._docProject = docProject;
-	}
-
+@injectable()
+export default class PageFeeder implements IPageFeeder {
 	/**
 	 * Returns an iterator that generates one DocPage for each script
 	 */
-	public * oneScriptPerPage(): IterableIterator<DocPage> {
-		const scripts = this._getAllScripts(this._docProject.scripts);
+	public * oneScriptPerPage(docProject: DocProject): IterableIterator<DocPage> {
+		const scripts = this._getAllScripts(docProject.scripts);
 		for (const script of scripts) {
 			const page = new DocPage();
-			page.project = this._docProject;
+			page.project = docProject;
 			page.script = script;
 			yield page;
 		}
@@ -37,10 +26,10 @@ export default class PageFeeder {
 	/**
 	 * Returns an iterator that generates one single DocPage for all the scripts
 	 */
-	public * allTheScriptsInOnePage(): IterableIterator<DocPage> {
+	public * allTheScriptsInOnePage(docProject: DocProject): IterableIterator<DocPage> {
 		const page = new DocPage();
-		page.project = this._docProject;
-		page.scripts = this._getAllScripts(this._docProject.scripts);
+		page.project = docProject;
+		page.scripts = this._getAllScripts(docProject.scripts);
 		yield page;
 	}
 

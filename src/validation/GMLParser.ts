@@ -1,5 +1,5 @@
 /**
- * Class for parsing GML code and
+ * Helper class for parsing GML code and
  * extract features (number of arguments, optional arguments, returns statements, etc)
  */
 export default class GMLParser {
