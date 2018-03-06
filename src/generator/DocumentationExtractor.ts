@@ -3,7 +3,7 @@ import { TYPES } from "../../types";
 
 import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
 import DocScript from "../doc_models/DocScript";
-import IGMScript from "../gm_project/interfaces/IGMScript";
+import GMSubscript from "../gm_project/GMSubscript";
 import JSDocParser from "../parser/JSDocParser";
 import IScriptValidator from "../validation/interfaces/IScriptValidator";
 import ValidableScript from "../validation/ValidableScript";
@@ -34,16 +34,16 @@ export default class DocumentationExtractor implements IDocumentationExtractor {
 	 * @param script An array with DocScript objects
 	 */
 	public extractDocScripts(
-		script: IGMScript,
+		subscriptsIterator: IterableIterator<GMSubscript>,
 		rules: IScriptValidationRules,
 		warnUnrecognizedTags: boolean,
 	): DocScript[] {
 		const arr = [];
 
 		this._jsDocParser.warnUnrecognizedTags = warnUnrecognizedTags;
-		for (const [name, gmlText] of script.subScripts()) {
-			const docScript = this._jsDocParser.parse(name, gmlText);
-			const validable = new ValidableScript(docScript, gmlText);
+		for (const subScript of subscriptsIterator) {
+			const docScript = this._jsDocParser.parse(subScript.name, subScript.text);
+			const validable = new ValidableScript(docScript, subScript.text);
 			if (this._scriptValidator.validate(validable, rules)) {
 				arr.push(docScript);
 			}

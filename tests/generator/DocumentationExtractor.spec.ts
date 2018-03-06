@@ -1,48 +1,35 @@
 import {
 	Expect,
+	SpyOn,
 	Test,
 	TestFixture,
 } from "alsatian";
 
-import container from "../../inversify.config";
+import { Container, injectable } from "inversify";
 import { TYPES } from "../../types";
 
 import ScriptValidationRules from "../../src/config/entities/ScriptValidationRules";
-import IDocumentationExtractor from "../../src/generator/interfaces/IDocumentationExtractor";
-import IGMFolder from "../../src/gm_project/interfaces/IGMFolder";
-import IGMScript from "../../src/gm_project/interfaces/IGMScript";
+import IScriptValidationRules from "../../src/config/interfaces/IScriptValidationRules";
+import DocScript from "../../src/doc_models/DocScript";
+import DocumentationExtractor from "../../src/generator/DocumentationExtractor";
+import GMSubscript from "../../src/gm_project/GMSubscript";
+import IJSDocParser from "../../src/parser/interfaces/IJSDocParser";
+import IScriptValidator from "../../src/validation/interfaces/IScriptValidator";
+import IValidableScript from "../../src/validation/interfaces/IValidableScript";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-class GMScriptMock implements IGMScript {
-	public parent: IGMFolder | null;
-	public fullpath: string;
-	public name: string;
-	public filepath: string = "";
-	constructor(name: string) {
-		this.name = name;
+@injectable()
+class MockJSDocParser implements IJSDocParser {
+	public warnUnrecognizedTags: boolean = false;
+	public parse(name: string, _text: string): DocScript {
+		return new DocScript(name);
 	}
-	public match(_pattern: string): boolean {
-		throw new Error("Method not implemented.");
-	}
-
-	public * subScripts(): IterableIterator<[string, string]> {
-		const script1 = [
-			"/**",
-			" * Description1 ",
-			" */",
-		];
-		yield ["my_script1", script1.join("\n")];
-		const script2 = [
-			"/**",
-			" * Description2 ",
-			" */",
-		];
-		yield ["my_script2", script2.join("\n")];
-		yield ["my_script3", "a = b"]; // Undocumented script should be ignored
-	}
-	public loadFromString(_str: string): void {
-		throw new Error("Method not implemented.");
+}
+@injectable()
+class MockScriptValidator implements IScriptValidator {
+	public validate(validable: IValidableScript, _rules: IScriptValidationRules): boolean {
+		return validable.doc.name !== "IGNORE_ME";
 	}
 }
 
@@ -51,9 +38,32 @@ export class DocumentationExtractorFixture {
 
 	@Test("extractDocScripts")
 	public extractDocScripts() {
-		const extractor = container.get<IDocumentationExtractor>(TYPES.IDocumentationExtractor);
-		const script = new GMScriptMock("foo");
-		const docs = extractor.extractDocScripts(script, new ScriptValidationRules(), true);
+
+		const scriptValidator = new MockScriptValidator();
+		const mockValidate = SpyOn(scriptValidator, "validate");
+
+		const jsDocParser = new MockJSDocParser();
+		const mockParse = SpyOn(jsDocParser, "parse");
+
+		const container = new Container();
+		container.bind<IScriptValidator>(TYPES.IScriptValidator).toConstantValue(scriptValidator);
+		container.bind<IJSDocParser>(TYPES.IJSDocParser).toConstantValue(jsDocParser);
+		const extractor = container.resolve(DocumentationExtractor);
+
+		const it = this._mockIteratorFunction();
+		const docs = extractor.extractDocScripts(it, new ScriptValidationRules(), true);
+
+		Expect(jsDocParser.warnUnrecognizedTags).toBe(true);
 		Expect(docs.length).toBe(2);
+		Expect(docs[0].name).toBe("bar"); // scripts are sorted alphabetically
+		Expect(docs[1].name).toBe("foo");
+		Expect(mockValidate).toHaveBeenCalled();
+		Expect(mockParse).toHaveBeenCalled();
+	}
+
+	private * _mockIteratorFunction(): IterableIterator<GMSubscript> {
+		yield new GMSubscript("foo", "some gml");
+		yield new GMSubscript("bar", "some gml");
+		yield new GMSubscript("IGNORE_ME", "some gml");
 	}
 }

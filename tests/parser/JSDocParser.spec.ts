@@ -2,12 +2,11 @@ import {
 	Expect,
 	Setup,
 	SpyOn,
-	Teardown,
 	Test,
 	TestFixture,
 } from "alsatian";
 
-import container from "../../inversify.config";
+import { Container } from "inversify";
 import DocReturns from "../../src/doc_models/DocReturns";
 import JSDocParser from "../../src/parser/JSDocParser";
 import IReporter from "../../src/reporter/interfaces/IReporter";
@@ -21,13 +20,9 @@ export class JSDocParserFixture {
 
 	@Setup
 	public setup() {
-		this.p = container.get(TYPES.IJSDocParser);
-		container.snapshot();
-	}
-
-	@Teardown
-	public teardown() {
-		container.restore();
+		const container = new Container();
+		container.bind<IReporter>(TYPES.IReporter).toConstantValue(new MockReporter());
+		this.p = container.resolve(JSDocParser);
 	}
 
 	@Test("parser should parse an simple description")
@@ -120,9 +115,12 @@ export class JSDocParserFixture {
 	@Test("parser should warn with an nonexistent tag when warnUnrecognizedTags=true")
 	public parser_warn_on_nonexistent() {
 		const mockReporter = new MockReporter();
-		container.rebind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
 		SpyOn(mockReporter, "warn").andStub();
-		this.p = container.get(TYPES.IJSDocParser);
+
+		const container = new Container();
+		container.bind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
+		this.p = container.resolve(JSDocParser);
+
 		this.p.warnUnrecognizedTags = true;
 		const doc = this.p.parse("my_script", [
 			"/**",
@@ -135,9 +133,12 @@ export class JSDocParserFixture {
 	@Test("parser should NOT warn with an nonexistent tag when warnUnrecognizedTags=false")
 	public parser_not_warn_on_nonexistent() {
 		const mockReporter = new MockReporter();
-		container.rebind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
 		SpyOn(mockReporter, "warn").andStub();
-		this.p = container.get(TYPES.IJSDocParser);
+
+		const container = new Container();
+		container.bind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
+
+		this.p = container.resolve(JSDocParser);
 		this.p.warnUnrecognizedTags = false;
 		const doc = this.p.parse("my_script", [
 			"/**",

@@ -1,20 +1,16 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../types";
 
-import * as fse from "fs-extra";
-import * as path from "path";
-
 import IProjectConfig from "../config/interfaces/IProjectConfig";
 import DocFolder from "../doc_models/DocFolder";
 import DocProject from "../doc_models/DocProject";
 import DocResource from "../doc_models/DocResource";
-import DocScript from "../doc_models/DocScript";
 import IGMFolder from "../gm_project/interfaces/IGMFolder";
 import IGMProject from "../gm_project/interfaces/IGMProject";
 import IGMResource from "../gm_project/interfaces/IGMResource";
 import IGMScript from "../gm_project/interfaces/IGMScript";
 import IDocProjectGenerator from "./interfaces/IDocProjectGenerator";
-import IDocumentationExtractor from "./interfaces/IDocumentationExtractor";
+import IScriptLoader from "./interfaces/IScriptLoader";
 
 /**
  * This class generates a DocProject
@@ -23,10 +19,10 @@ import IDocumentationExtractor from "./interfaces/IDocumentationExtractor";
 export default class DocProjectGenerator implements IDocProjectGenerator {
 
 	/**
-	 * The documentationExtractor used to extract the documentation of the GMScripts
+	 * The script loader
 	 */
-	@inject(TYPES.IDocumentationExtractor)
-	private _extractor: IDocumentationExtractor;
+	@inject(TYPES.IScriptLoader)
+	private _scriptLoader: IScriptLoader;
 
 	/**
 	 * Generates the DocProject for a given GMProject
@@ -77,7 +73,7 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 	 * Returns true if the resource is a GMScript
 	 */
 	private _isScript(res: IGMResource): res is IGMScript {
-		return (res as IGMScript).loadFromString !== undefined;
+		return (res as IGMScript).subScripts !== undefined;
 	}
 
 	/**
@@ -90,28 +86,10 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 		if (this._isFolder(res)) {
 			return [await this._loadFolder(res, config, gmProject)];
 		} else if (this._isScript(res)) {
-			return this._loadScript(res, config, gmProject);
+			return this._scriptLoader.load(res, config, gmProject);
 		} else {
 			throw new Error(`Unrecognized resource type for resource "${res.name}"`);
 		}
-	}
-
-	/**
-	 * Loads a single GMScript with all the subscripts from disk and extracts
-	 * the documentation from it.
-	 */
-	private async _loadScript(gmScript: IGMScript, config: IProjectConfig, gmProject: IGMProject): Promise<DocScript[]> {
-		if (!gmScript.match(config.output.pattern)) {
-			return [];
-		}
-		const pathStr = path.resolve(gmProject.path, gmScript.filepath);
-		try {
-			const str = await fse.readFile(pathStr, "utf8");
-			gmScript.loadFromString(str);
-		} catch (e) {
-			throw new Error(`Error loading file ${pathStr}`);
-		}
-		return this._extractor.extractDocScripts(gmScript, config.scripts, config.warnUnrecognizedTags);
 	}
 
 }

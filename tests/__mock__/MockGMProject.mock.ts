@@ -8,11 +8,10 @@ import GMFolderMock from "./MockGMFolder.mock";
 @injectable()
 export default class MockGMProject extends GMFolderMock implements IGMProject {
 	public parent: IGMFolder | null = null;
-	public path: string;
+	public path: string = "";
 	public mockChildren: IGMFolder[];
-	constructor(name: string, mockChildren: IGMFolder[], path: string) {
+	constructor(name: string, mockChildren: IGMFolder[]) {
 		super(name, mockChildren);
-		this.path = path;
 	}
 	get children(): IterableIterator<IGMFolder> {
 		return this.mockChildren[Symbol.iterator]();

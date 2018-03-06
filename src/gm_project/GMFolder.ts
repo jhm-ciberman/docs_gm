@@ -45,7 +45,7 @@ export default class GMFolder extends GMResource implements IGMFolder {
 	 * Returns true if the resource is a GMScript
 	 */
 	private _isScript(res: IGMResource): res is IGMScript {
-		return (res as IGMScript).loadFromString !== undefined;
+		return (res as IGMScript).subScripts !== undefined;
 	}
 
 	/**

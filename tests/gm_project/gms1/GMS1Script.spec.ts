@@ -25,34 +25,27 @@ export class GMS1ScriptFixture {
 		Expect(this.script.filepath).toBe("path/to/my_script.gml");
 	}
 
-	@AsyncTest("should loadFromString() multiple scripts")
-	public async loadFromString_multipleScripts() {
+	@AsyncTest("subScripts() should generate multiple SubScripts")
+	public async subScripts_multipleScripts() {
 		const mockGML = [
 			"#define my_script_1",
 			"return \"foo\";",
 			"#define my_script_2",
 			"return \"bar\";",
 		];
-		const script = await this.script.loadFromString(mockGML.join("\n"));
-		const arr = Array.from(script.subScripts());
+		const arr = Array.from(this.script.subScripts(mockGML.join("\n")));
 		Expect(arr.length).toEqual(2);
-		Expect(arr[0]).toEqual(["my_script_1", 'return "foo";']);
-		Expect(arr[1]).toEqual(["my_script_2", 'return "bar";']);
+		Expect(arr[0].name).toEqual("my_script_1");
+		Expect(arr[0].text).toEqual('return "foo";');
+		Expect(arr[1].name).toEqual("my_script_2");
+		Expect(arr[1].text).toEqual('return "bar";');
 	}
 
-	@AsyncTest("should loadFromString() single script")
-	public async loadFromString_singleScript() {
-		const script = await this.script.loadFromString("return \"foo\";");
-		const arr = Array.from(script.subScripts());
+	@AsyncTest("subScripts() should generate single SubScripts")
+	public async subScripts_singleScript() {
+		const arr = Array.from(this.script.subScripts("return \"foo\";"));
 		Expect(arr.length).toEqual(1);
-		Expect(arr[0]).toEqual(["my_script", 'return "foo";']);
+		Expect(arr[0].name).toEqual("my_script");
+		Expect(arr[0].text).toEqual('return "foo";');
 	}
-
-	@Test("should throw when calling subScripts() without calling loadFromString")
-	public subScripts_Throw() {
-		Expect(() => {
-			this.script.subScripts().next();
-		}).toThrow();
-	}
-
 }

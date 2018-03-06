@@ -5,13 +5,13 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import container from "../../inversify.config";
+import { Container } from "inversify";
 import DocFolder from "../../src/doc_models/DocFolder";
 import DocProject from "../../src/doc_models/DocProject";
 import DocResource from "../../src/doc_models/DocResource";
 import DocScript from "../../src/doc_models/DocScript";
 import IPageFeeder from "../../src/template/interfaces/IPageFeeder";
-import { TYPES } from "../../types";
+import PageFeeder from "../../src/template/PageFeeder";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
@@ -37,7 +37,8 @@ export class DocProjectGeneratorFixture {
 		f.children.push(resource);
 		this.docProject.scripts.children.push(f);
 
-		this.pageFeeder = container.get<IPageFeeder>(TYPES.IPageFeeder);
+		const container = new Container();
+		this.pageFeeder = container.resolve(PageFeeder);
 	}
 
 	@AsyncTest("pageFeeder_allTheScriptsInOnePage")

@@ -43,13 +43,13 @@ export class GMFolderFixture {
 
 	@Test("moduleScript should return the first direct script child named FOLDER_ or MODULE_")
 	public moduleScript_found() {
-		const a = new MockGMScript("my_script", "", "");
+		const a = new MockGMScript("my_script");
 		this.folder.addChild(a);
 
-		const b = new MockGMScript("FOLDER_foo", "", "");
+		const b = new MockGMScript("FOLDER_foo");
 		this.folder.addChild(b);
 
-		const c = new MockGMScript("my_other_script", "", "");
+		const c = new MockGMScript("my_other_script");
 		this.folder.addChild(c);
 
 		Expect(this.folder.moduleScript).toBe(b);
@@ -57,7 +57,7 @@ export class GMFolderFixture {
 
 	@Test("moduleScript should return null if no script child is named FOLDER_ or MODULE_")
 	public moduleScript_notFound() {
-		const a = new MockGMScript("my_script", "", "");
+		const a = new MockGMScript("my_script");
 		this.folder.addChild(a);
 
 		Expect(this.folder.moduleScript).toBeNull();

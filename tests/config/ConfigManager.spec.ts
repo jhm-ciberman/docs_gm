@@ -6,11 +6,10 @@ import {
 	TestFixture,
 } from "alsatian";
 
-import container from "../../inversify.config";
-import { TYPES } from "../../types";
-
 import { TempDir } from "../_testing_helpers/TempDir.help";
 
+import { Container } from "inversify";
+import ConfigManager from "../../src/config/ConfigManager";
 import ProjectConfig from "../../src/config/entities/ProjectConfig";
 import IConfigManager from "../../src/config/interfaces/IConfigManager";
 import IProjectConfig from "../../src/config/interfaces/IProjectConfig";
@@ -34,7 +33,8 @@ export class GMS1ProjectFactoryFixture {
 			"invalid.json": "{invalidJSON}",
 		});
 		this.output = TempDir.create("output", {});
-		this.configManager = container.get<IConfigManager>(TYPES.IConfigManager);
+		const container = new Container();
+		this.configManager = container.resolve(ConfigManager);
 	}
 
 	@TeardownFixture

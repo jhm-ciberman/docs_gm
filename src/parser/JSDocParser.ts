@@ -28,7 +28,7 @@ export default class JSDocParser implements IJSDocParser {
 	 * and returns a new DocScript object.
 	 * @param name The script name
 	 * @param text The script content
-	 * @returns A new DocStript object
+	 * @returns A new DocScript object
 	 */
 	public parse(name: string, text: string): DocScript {
 

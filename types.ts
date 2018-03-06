@@ -11,6 +11,7 @@ const TYPES = {
 	IDocumentationExtractor: Symbol.for("IDocumentationExtractor"),
 	IDocProjectGenerator: Symbol.for("IDocProjectGenerator"),
 	IDocumentationGenerator: Symbol.for("IDocumentationGenerator"),
+	IScriptLoader: Symbol.for("IScriptLoader"),
 
 	// parser
 	IJSDocParser: Symbol.for("IJSDocParser"),
