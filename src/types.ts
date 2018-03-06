@@ -22,6 +22,7 @@ const TYPES = {
 	// Validation
 	IScriptValidator: Symbol.for("IScriptValidator"),
 	IRuleValidator: Symbol.for("IRuleValidator"),
+	IRulesProvider: Symbol.for("IRulesProvider"),
 
 	// Loader
 	IGMProjectLoader: Symbol.for("IGMProjectLoader"),
@@ -32,6 +33,8 @@ const TYPES = {
 	IPageFeeder: Symbol.for("IPageFeeder"),
 	IDesignRenderer: Symbol.for("IDesignRenderer"),
 	ITemplateLoader: Symbol.for("ITemplateLoader"),
+	IDesignLoader: Symbol.for("IDesignLoader"),
+	ITemplateFactory: Symbol.for("ITemplateFactory"),
 
 	// npm modules
 	IGetInstalledPath: Symbol.for("IGetInstalledPath"),

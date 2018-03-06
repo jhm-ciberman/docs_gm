@@ -15,11 +15,6 @@ export default class OutputConfig implements IOutputConfig {
 	public template: string = "basic";
 
 	/**
-	 * The glob pattern to use to include files in the project documentation
-	 */
-	public pattern: string = "**/*";
-
-	/**
 	 * The output folder of the documentation
 	 */
 	public outputFolder: string = "./docs/";

@@ -16,8 +16,7 @@ export default class PageFeeder implements IPageFeeder {
 	public * oneScriptPerPage(docProject: DocProject): IterableIterator<DocPage> {
 		const scripts = this._getAllScripts(docProject.scripts);
 		for (const script of scripts) {
-			const page = new DocPage();
-			page.project = docProject;
+			const page = new DocPage(docProject);
 			page.script = script;
 			yield page;
 		}
@@ -27,8 +26,7 @@ export default class PageFeeder implements IPageFeeder {
 	 * Returns an iterator that generates one single DocPage for all the scripts
 	 */
 	public * allTheScriptsInOnePage(docProject: DocProject): IterableIterator<DocPage> {
-		const page = new DocPage();
-		page.project = docProject;
+		const page = new DocPage(docProject);
 		page.scripts = this._getAllScripts(docProject.scripts);
 		yield page;
 	}

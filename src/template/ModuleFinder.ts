@@ -1,8 +1,8 @@
 
 import { inject, injectable } from "inversify";
 import pkgDir = require("pkg-dir");
-import { TYPES } from "../../types";
 import { IGetInstalledPath } from "../npmmodules";
+import { TYPES } from "../types";
 import IModuleFinder from "./interfaces/IModuleFinder";
 
 /**

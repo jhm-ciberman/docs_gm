@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../types";
+import { TYPES } from "../types";
 
 import * as fse from "fs-extra";
 import * as globby from "globby";
@@ -29,7 +29,7 @@ export default class DesignRenderer implements IDesignRenderer {
 	 * @param outputFolder The output folder
 	 * @param docProject The docProject to generate the documentation for
 	 */
-	public async render(design: Design, docProject: DocProject, outputFolder: string): Promise<void> {
+	public async render(design: Design, docProject: DocProject, outputFolder: string): Promise<string> {
 		const env = nunjucks.configure(design.template.folder, { autoescape: false });
 		for (const page of design.pages) {
 			const nunjucksTemplate = env.getTemplate(page.in, true);
@@ -40,6 +40,7 @@ export default class DesignRenderer implements IDesignRenderer {
 			}
 		}
 		await this._copyFiles(outputFolder, design);
+		return outputFolder;
 	}
 
 	/**

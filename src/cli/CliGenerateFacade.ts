@@ -2,7 +2,7 @@ import open = require("open");
 import * as path from "path";
 
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../types";
+import { TYPES } from "../types";
 
 import ProjectConfig from "../config/entities/ProjectConfig";
 import IConfigManager from "../config/interfaces/IConfigManager";
@@ -113,7 +113,7 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 			config.output.outputFolder = this.outputFolder;
 		}
 		if (this.pattern) {
-			config.output.pattern = this.pattern;
+			config.pattern = this.pattern;
 		}
 		return config;
 	}

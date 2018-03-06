@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
 import * as nunjucks from "nunjucks";
-import { TYPES } from "../../types";
 import DocPage from "../doc_models/DocPage";
 import DocProject from "../doc_models/DocProject";
+import { TYPES } from "../types";
 import Page from "./entities/Page";
 import RenderablePage from "./entities/RenderablePage";
 import PageFeedWith from "./enums/PageFeedWith";

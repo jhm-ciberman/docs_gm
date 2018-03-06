@@ -1,4 +1,4 @@
-import { TYPES } from "../../types";
+import { TYPES } from "../types";
 
 import * as program from "commander";
 import { inject, injectable } from "inversify";

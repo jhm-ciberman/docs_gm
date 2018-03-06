@@ -15,6 +15,11 @@ export default class ProjectConfig implements IProjectConfig {
 	public output: IOutputConfig = new OutputConfig();
 
 	/**
+	 * The glob pattern to use to include files in the project documentation
+	 */
+	public pattern: string = "**/*";
+
+	/**
 	 * Warn about unrecognized JSDoc tags
 	 */
 	public warnUnrecognizedTags: boolean = true;

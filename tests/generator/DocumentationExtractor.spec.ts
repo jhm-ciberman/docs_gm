@@ -6,7 +6,7 @@ import {
 } from "alsatian";
 
 import { Container, injectable } from "inversify";
-import { TYPES } from "../../types";
+import { TYPES } from "../../src/types";
 
 import ScriptValidationRules from "../../src/config/entities/ScriptValidationRules";
 import IScriptValidationRules from "../../src/config/interfaces/IScriptValidationRules";

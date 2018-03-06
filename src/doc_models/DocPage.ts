@@ -20,7 +20,7 @@ export default class DocPage {
 	 * The `script` property is only available when you set the value of
 	 * `"feedwith": "script"` in your `template.json` file.
 	 */
-	public script: DocScript;
+	public script: DocScript | undefined = undefined;
 
 	/**
 	 * A DocFolder object representing the CURRENT folder your must document
@@ -28,16 +28,20 @@ export default class DocPage {
 	 * The `folder` property is only available when you set the value of
 	 * `"feedwith": "folder"` in your `template.json` file.
 	 */
-	public folder: DocFolder;
+	public folder: DocFolder | undefined = undefined;
 
 	/**
 	 * An array of DocScript objects representing ALL the scripts in the project documentation.
 	 */
-	public scripts: DocScript[];
+	public scripts: DocScript[] = [];
 
 	/**
 	 * An array of DocModule objects representing ALL the **ROOT** modules in the project documentation
 	 */
-	public folders: DocScript[];
+	public folders: DocScript[] = [];
+
+	constructor(docProject: DocProject) {
+		this.project = docProject;
+	}
 
 }

@@ -10,7 +10,7 @@ import { Container } from "inversify";
 import DocReturns from "../../src/doc_models/DocReturns";
 import JSDocParser from "../../src/parser/JSDocParser";
 import IReporter from "../../src/reporter/interfaces/IReporter";
-import { TYPES } from "../../types";
+import { TYPES } from "../../src/types";
 import MockReporter from "../__mock__/MockReporter.mock";
 
 /* tslint:disable:max-classes-per-file completed-docs */

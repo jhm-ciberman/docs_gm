@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../types";
+import { TYPES } from "../types";
 
 import * as fse from "fs-extra";
 import * as path from "path";
@@ -29,7 +29,7 @@ export default class ScriptLoader implements IScriptLoader {
 	 * glob pattern inside the project config.
 	 */
 	public async load(gmScript: IGMScript, config: IProjectConfig, gmProject: IGMProject): Promise<DocScript[]> {
-		if (!gmScript.match(config.output.pattern)) {
+		if (!gmScript.match(config.pattern)) {
 			return [];
 		}
 		const pathStr = path.resolve(gmProject.path, gmScript.filepath);

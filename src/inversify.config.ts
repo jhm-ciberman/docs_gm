@@ -1,5 +1,5 @@
 import { Container } from "inversify";
-import { TYPES } from "../types";
+import { TYPES } from "./types";
 
 import CliGenerateFacade from "../src/cli/CliGenerateFacade";
 import ICliGenerateFacade from "../src/cli/interfaces/ICliGenerateFacade";

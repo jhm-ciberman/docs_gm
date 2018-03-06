@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../types";
+import { TYPES } from "../types";
 
 import IProjectConfig from "../config/interfaces/IProjectConfig";
 import DocFolder from "../doc_models/DocFolder";

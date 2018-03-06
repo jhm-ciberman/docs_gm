@@ -54,7 +54,7 @@ export class DocProjectGeneratorFixture {
 	public async pageFeeder_oneScriptPerPage() {
 		const arr = Array.from(this.pageFeeder.oneScriptPerPage(this.docProject));
 		Expect(arr.length).toBe(2);
-		Expect(arr[0].script.name).toBe("my_script1");
-		Expect(arr[1].script.name).toBe("my_script2");
+		Expect((arr[0].script as DocScript).name).toBe("my_script1");
+		Expect((arr[1].script as DocScript).name).toBe("my_script2");
 	}
 }
