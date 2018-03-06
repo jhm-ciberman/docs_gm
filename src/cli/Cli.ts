@@ -8,7 +8,7 @@ import IReporter from "../reporter/interfaces/IReporter";
 import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
 
 // tslint:disable-next-line: no-var-requires
-const packageJSON = require("../package.json");
+const packageJSON = require("../../../package.json");
 
 /**
  * This class is responsible for showing the CLI interface. It has a single method parse(argv).
@@ -83,13 +83,18 @@ export default class Cli {
 				"The glob pattern to use to include files in the project documentation",
 				(value) => { this._cliGenerateFacade.pattern = value; },
 			)
-			.action((folder) => {
-				this._cliGenerateFacade.generate(folder).catch((err) => {
-					this._reporter.error(err);
-				});
-			});
+			.action((folder) => this._generate(folder));
 	}
 
+	/**
+	 * Generates the documentation for the given project
+	 * @param folder The input folder
+	 */
+	private _generate(folder?: string) {
+		this._cliGenerateFacade.generate(folder).catch((err) => {
+			this._reporter.error(err);
+		});
+	}
 	/**
 	 * Exports the docs_gm config json and output the instructions to the screen.
 	 */

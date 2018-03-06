@@ -38,6 +38,7 @@ const TYPES = {
 
 	// npm modules
 	IGetInstalledPath: Symbol.for("IGetInstalledPath"),
+	IOpen: Symbol.for("IOpen"),
 };
 
 export {TYPES};

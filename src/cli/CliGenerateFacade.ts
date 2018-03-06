@@ -1,4 +1,3 @@
-import open = require("open");
 import * as path from "path";
 
 import { inject, injectable } from "inversify";
@@ -9,6 +8,7 @@ import IConfigManager from "../config/interfaces/IConfigManager";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
 import IDocumentationGenerator from "../generator/interfaces/IDocumentationGenerator";
 import IGMProjectLoader from "../gm_project/interfaces/IGMProjectLoader";
+import { IOpen } from "../npmmodules";
 import IReporter from "../reporter/interfaces/IReporter";
 import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
 
@@ -17,11 +17,6 @@ import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
  */
 @injectable()
 export default class CliGenerateFacade implements ICliGenerateFacade {
-
-	/**
-	 * Open method (used for dependency injection)
-	 */
-	public open: (url: string) => void = open;
 
 	/**
 	 * The overridden design
@@ -68,6 +63,11 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 	private _documentationGenerator: IDocumentationGenerator;
 
 	/**
+	 * Open npm module
+	 */
+	@inject(TYPES.IOpen)
+	private _open: IOpen;
+	/**
 	 * Generates the documentation for a given project
 	 * @param projectPath The path to the project
 	 * @param opts The option object to override
@@ -95,7 +95,7 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 
 		const url = path.resolve(outFolder, "index.html");
 		this._reporter.info(`Opening ${url}`);
-		this.open(url);
+		this._open(url);
 	}
 
 	/**

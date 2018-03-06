@@ -25,7 +25,7 @@ export default class DesignRenderer implements IDesignRenderer {
 	private _renderablePageGenerator: IRenderablePageGenerator;
 
 	/**
-	 * Renders the documentation HTML files for the specified docProject.
+	 * Renders the documentation HTML files for the specified docProject and returns the output folder path
 	 * @param outputFolder The output folder
 	 * @param docProject The docProject to generate the documentation for
 	 */
