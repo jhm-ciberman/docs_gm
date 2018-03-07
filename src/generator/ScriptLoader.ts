@@ -32,7 +32,7 @@ export default class ScriptLoader implements IScriptLoader {
 		if (!gmScript.match(config.pattern)) {
 			return [];
 		}
-		const pathStr = path.resolve(gmProject.path, gmScript.filepath);
+		const pathStr = path.normalize(path.resolve(gmProject.path, gmScript.filepath));
 		let str;
 		try {
 			str = await fse.readFile(pathStr, "utf8");
