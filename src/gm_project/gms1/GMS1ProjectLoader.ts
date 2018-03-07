@@ -51,7 +51,7 @@ export default class GMS1ProjectLoader implements IGMProjectLoader {
 		}
 
 		for (const script of folderData.script || []) {
-			const resource = new GMS1Script(script);
+			const resource = new GMS1Script(script.replace(/\\/g, "/"));
 			root.addChild(resource);
 		}
 		return root;

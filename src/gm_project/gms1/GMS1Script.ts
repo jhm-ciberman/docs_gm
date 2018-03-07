@@ -26,7 +26,7 @@ export default class GMS1Script extends GMResource implements IGMScript {
 	 */
 	constructor(file: string) {
 		super(path.basename(file).split(".")[0]);
-		this.filepath = path.normalize(file);
+		this.filepath = file;
 	}
 
 	/**
