@@ -1,10 +1,12 @@
 
 import DocFolder from "./DocFolder";
+import { ISerializedProject } from "./interfaces/interfaces";
+import ISerializable from "./interfaces/ISerializable";
 
 /**
  * Represents the current GameMaker project that you are documenting.
  */
-export default class DocProject {
+export default class DocProject implements ISerializable<ISerializedProject> {
 
 	/**
 	 * The name of the GameMaker project in a readable format.
@@ -25,5 +27,12 @@ export default class DocProject {
 	 */
 	constructor(name: string) {
 		this.name = name;
+	}
+
+	public serialize(): ISerializedProject {
+		return {
+			name: this.name,
+			scripts: this.scripts.serialize(),
+		};
 	}
 }

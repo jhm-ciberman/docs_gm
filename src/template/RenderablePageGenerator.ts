@@ -1,7 +1,8 @@
 import { inject, injectable } from "inversify";
 import * as nunjucks from "nunjucks";
-import DocPage from "../doc_models/DocPage";
 import DocProject from "../doc_models/DocProject";
+import { ISerializedPage } from "../doc_models/interfaces/interfaces";
+import ISerializable from "../doc_models/interfaces/ISerializable";
 import { TYPES } from "../types";
 import Page from "./entities/Page";
 import RenderablePage from "./entities/RenderablePage";
@@ -30,7 +31,7 @@ export default class RenderablePageGenerator implements IRenderablePageGenerator
 	public * getPages(page: Page, docProject: DocProject): IterableIterator<RenderablePage> {
 		for (const feedPage of this._getDocPages(page, docProject)) {
 			const renderablePage = new RenderablePage();
-			const data = { page: feedPage };
+			const data: { page: ISerializedPage } = { page: feedPage.serialize() };
 			renderablePage.encodedData = data;
 			renderablePage.inputFile = page.in;
 			renderablePage.outputFile = nunjucks.renderString(page.out, data);
@@ -43,7 +44,7 @@ export default class RenderablePageGenerator implements IRenderablePageGenerator
 	 * Generator function that returns an iterator with each DocPage for the specified project.
 	 * @param docProject The docProject to get the pages
 	 */
-	private _getDocPages(page: Page, docProject: DocProject): IterableIterator<DocPage> {
+	private _getDocPages(page: Page, docProject: DocProject): IterableIterator<ISerializable<ISerializedPage>> {
 		switch (page.feedWith) {
 			case PageFeedWith.Script:
 				return this._pageFeeder.oneScriptPerPage(docProject);

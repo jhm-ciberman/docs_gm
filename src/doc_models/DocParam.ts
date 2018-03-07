@@ -1,8 +1,10 @@
+import { ISerializedParam } from "./interfaces/interfaces";
+import ISerializable from "./interfaces/ISerializable";
 
 /**
  * Represents a single parameter or argument of a script.
  */
-export default class DocParam {
+export default class DocParam implements ISerializable<ISerializedParam> {
 
 	/**
 	 * The name of the argument.
@@ -24,5 +26,14 @@ export default class DocParam {
 	 * as optional, or not.
 	 */
 	public optional: boolean = false;
+
+	public serialize(): ISerializedParam {
+		return {
+			name: this.name,
+			type: this.type,
+			description: this.description,
+			optional: this.optional,
+		};
+	}
 
 }

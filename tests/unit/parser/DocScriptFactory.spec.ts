@@ -92,7 +92,6 @@ export class DocScriptFactoryFixture {
 		this.factory.setReturns("return_type", "return_description");
 		const script = this.factory.make();
 		Expect(script.returns).toBeDefined();
-		Expect(script.returns).toEqual(script.return); // return is alias of returns
 		Expect((script.returns as DocReturns).type).toBe("return_type");
 		Expect((script.returns as DocReturns).description).toBe("return_description");
 	}

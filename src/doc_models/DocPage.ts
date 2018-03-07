@@ -1,12 +1,13 @@
-
 import DocFolder from "./DocFolder";
 import DocProject from "./DocProject";
 import DocScript from "./DocScript";
+import { ISerializedPage} from "./interfaces/interfaces";
+import ISerializable from "./interfaces/ISerializable";
 
 /**
  * The DocPage represents a single page of your Documentation.
  */
-export default class DocPage {
+export default class DocPage implements ISerializable<ISerializedPage> {
 
 	/**
 	 * The DocProject object representing the GameMaker Project
@@ -37,6 +38,15 @@ export default class DocPage {
 
 	constructor(docProject: DocProject) {
 		this.project = docProject;
+	}
+
+	public serialize(): ISerializedPage {
+		return {
+			project: this.project.serialize(),
+			script: (this.script ? this.script.serialize() : undefined),
+			folder: (this.folder ? this.folder.serialize() : undefined),
+			scripts: this.scripts.map((s) => s.serialize()),
+		};
 	}
 
 }

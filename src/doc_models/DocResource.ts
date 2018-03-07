@@ -1,9 +1,11 @@
 import DocFolder from "./DocFolder";
+import { ISerializedResource } from "./interfaces/interfaces";
+import ISerializable from "./interfaces/ISerializable";
 
 /**
  * Represents any resource in the output documentation
  */
-export default abstract class DocResource {
+export default abstract class DocResource implements ISerializable<ISerializedResource> {
 
 	/**
 	 * The name of the resource. Example "src_enemies" or "scripts" or "obj_control".
@@ -27,5 +29,13 @@ export default abstract class DocResource {
 	 */
 	constructor(name: string) {
 		this.name = name;
+	}
+
+	public serialize(): ISerializedResource {
+		return {
+			name: this.name,
+			type: this.type,
+			parent: this.parent ? this.parent.serialize() : null,
+		};
 	}
 }

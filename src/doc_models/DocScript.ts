@@ -2,11 +2,13 @@ import DocExample from "./DocExample";
 import DocParam from "./DocParam";
 import DocResource from "./DocResource";
 import DocReturns from "./DocReturns";
+import { ISerializedScript } from "./interfaces/interfaces";
+import ISerializable from "./interfaces/ISerializable";
 
 /**
  * Represents a single script of the GameMaker project.
  */
-export default class DocScript extends DocResource {
+export default class DocScript extends DocResource implements ISerializable<ISerializedScript> {
 
 	/**
 	 * The resource type
@@ -30,14 +32,6 @@ export default class DocScript extends DocResource {
 	public returns: DocReturns | null = null;
 
 	/**
-	 * A DocReturns object, representing the returned value of the script.
-	 * @alias returns
-	 */
-	get return() {
-		return this.returns;
-	}
-
-	/**
 	 * The Script usage examples
 	 */
 	public examples: DocExample[] = [];
@@ -56,5 +50,19 @@ export default class DocScript extends DocResource {
 	 * The function name. Normally, is the same as the name.
 	 */
 	public function: string = "";
+
+	public serialize(): ISerializedScript {
+		return Object.assign(super.serialize(), {
+			type: this.type,
+			description: this.description,
+			params: this.params.map((p) => p.serialize()),
+			return: this.returns ? this.returns.serialize() : null,
+			returns: this.returns ? this.returns.serialize() : null,
+			examples: this.examples.map((e) => e.serialize()),
+			private: this.private,
+			undocumented: this.undocumented,
+			function: this.function,
+		});
+	}
 
 }
