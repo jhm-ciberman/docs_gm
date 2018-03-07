@@ -50,8 +50,7 @@ export default class RenderablePageGenerator implements IRenderablePageGenerator
 			case PageFeedWith.Scripts:
 				return this._pageFeeder.allTheScriptsInOnePage(docProject);
 			case PageFeedWith.Folder:
-				// todo: implement this
+				return this._pageFeeder.oneFolderPerPage(docProject);
 		}
-		throw new Error(`Not implemented`);
 	}
 }

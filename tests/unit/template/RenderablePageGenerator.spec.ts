@@ -17,14 +17,15 @@ import { TYPES } from "../../../src/types";
 /* tslint:disable:max-classes-per-file completed-docs */
 @injectable()
 class MockPageFeeder implements IPageFeeder {
-	public oneFolderPerPage(_docProject: DocProject): IterableIterator<DocPage> {
-		throw new Error("Method not implemented.");
-	}
+
 	public * oneScriptPerPage(_docProject: DocProject): IterableIterator<DocPage> {
 		yield new DocPage(new DocProject("SUPER_PROJECT_1"));
 	}
 	public * allTheScriptsInOnePage(_docProject: DocProject): IterableIterator<DocPage> {
 		yield new DocPage(new DocProject("SUPER_PROJECT_2"));
+	}
+	public * oneFolderPerPage(_docProject: DocProject): IterableIterator<DocPage> {
+		yield new DocPage(new DocProject("SUPER_PROJECT_3"));
 	}
 }
 
@@ -33,6 +34,7 @@ export class RenderablePageGeneratorFixture {
 
 	@TestCase(PageFeedWith.Script, "SUPER_PROJECT_1")
 	@TestCase(PageFeedWith.Scripts, "SUPER_PROJECT_2")
+	@TestCase(PageFeedWith.Folder, "SUPER_PROJECT_3")
 	@AsyncTest("RenderablePageGenerator_getPages")
 	public async RenderablePageGenerator_getPages(feedWith: PageFeedWith, text: string) {
 		const container = new Container();
