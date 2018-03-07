@@ -1,35 +1,30 @@
-import IProjectConfig from "../config/interfaces/IProjectConfig";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../types";
 
+import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
 import DocScript from "../doc_models/DocScript";
-import GMScript from "../gm_project/common/GMScript";
+import GMSubscript from "../gm_project/GMSubscript";
 import JSDocParser from "../parser/JSDocParser";
-import ScriptValidator from "../validation/ScriptValidator";
+import IScriptValidator from "../validation/interfaces/IScriptValidator";
 import ValidableScript from "../validation/ValidableScript";
+import IDocumentationExtractor from "./interfaces/IDocumentationExtractor";
 
 /**
  * This class receives as input a GMScript and generates an array of DocScript[]
  */
-export default class DocumentationExtractor {
-
+@injectable()
+export default class DocumentationExtractor implements IDocumentationExtractor {
 	/**
-	 * The ScriptValidator instance
+	 * The ScriptValidator
 	 */
-	private readonly _scriptValidator: ScriptValidator;
+	@inject(TYPES.IScriptValidator)
+	private readonly _scriptValidator: IScriptValidator;
 
 	/**
 	 * The JSDocParser instance
 	 */
+	@inject(TYPES.IJSDocParser)
 	private readonly _jsDocParser: JSDocParser;
-
-	/**
-	 * Creates a new DocumentationExtractor
-	 * @param config The ProjectConfig that have all the validation rules to use
-	 */
-	constructor(config: IProjectConfig) {
-		this._scriptValidator = new ScriptValidator(config.scripts);
-		this._jsDocParser = new JSDocParser();
-		this._jsDocParser.warnUnrecognizedTags = config.warnUnrecognizedTags;
-	}
 
 	/**
 	 * Parses and validates a GMScript and returns
@@ -38,39 +33,22 @@ export default class DocumentationExtractor {
 	 * The returned array is sorted alphabetically.
 	 * @param script An array with DocScript objects
 	 */
-	public extractDocScripts(script: GMScript): DocScript[] {
+	public extractDocScripts(
+		subscriptsIterator: IterableIterator<GMSubscript>,
+		rules: IScriptValidationRules,
+		warnUnrecognizedTags: boolean,
+	): DocScript[] {
 		const arr = [];
-		for (const [name, gmlText] of script.subScripts()) {
-			const docScript = this._jsDocParser.parse(name, gmlText);
-			const validable = new ValidableScript(docScript, gmlText);
-			if (this._validate(validable)) {
+
+		this._jsDocParser.warnUnrecognizedTags = warnUnrecognizedTags;
+		for (const subScript of subscriptsIterator) {
+			const docScript = this._jsDocParser.parse(subScript.name, subScript.text);
+			const validable = new ValidableScript(docScript, subScript.text);
+			if (this._scriptValidator.validate(validable, rules)) {
 				arr.push(docScript);
 			}
 		}
 		return arr.sort((a, b) => a.name.localeCompare(b.name));
 	}
 
-	/**
-	 * Validates a script against the validator
-	 * @param validator The validator to use
-	 * @param validable The validable script
-	 */
-	private _validate(validable: ValidableScript) {
-		const rules = [
-			this._scriptValidator.rulePrivate,
-			this._scriptValidator.ruleUndocumented,
-			this._scriptValidator.ruleUndescripted,
-			this._scriptValidator.ruleMismatchingFunctionName,
-			this._scriptValidator.ruleMismatchingArguments,
-			this._scriptValidator.ruleUndocumentedArguments,
-		];
-		this._scriptValidator.markAsPrivateIfNecessary(validable);
-
-		for (const rule of rules) {
-			if (!rule.validate(validable)) {
-				return false;
-			}
-		}
-		return true;
-	}
 }

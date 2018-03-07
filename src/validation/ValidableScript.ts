@@ -1,6 +1,6 @@
 import DocScript from "../doc_models/DocScript";
 import GMLParser from "./GMLParser";
-import IValidableScript from "./IValidableScript";
+import IValidableScript from "./interfaces/IValidableScript";
 
 /**
  * This class represents a script to be validated.
@@ -8,12 +8,6 @@ import IValidableScript from "./IValidableScript";
  * properties with features of the GMLcode (like number of arguments, etc).
  */
 export default class ValidableScript implements IValidableScript {
-
-	/**
-	 * The DocScript object associated to this ValidableScript
-	 */
-	public readonly doc: DocScript;
-
 	/**
 	 * The number of arguments
 	 */
@@ -30,15 +24,23 @@ export default class ValidableScript implements IValidableScript {
 	public readonly hasReturn: boolean;
 
 	/**
-	 * Creates a ValidableScript
+	 * The DocScript object associated to this ValidableScript
+	 */
+	public readonly doc: DocScript;
+
+	/**
+	 * Creates an instance of ValidableScript.
 	 * @param docScript The Associated DocScript object
 	 * @param gmlText The GML text of the script
+	 * @memberof ValidableScript
 	 */
 	constructor(docScript: DocScript, gmlText: string) {
 		this.doc = docScript;
+
 		const parser = new GMLParser(gmlText);
 		const fixedArgsN = parser.countFixedArguments();
 		const optArgsN = parser.countOptionalArguments();
+
 		this.argumentCount = Math.max(fixedArgsN, optArgsN);
 		this.optionalArguments = (optArgsN !== 0);
 		this.hasReturn = parser.hasReturn();

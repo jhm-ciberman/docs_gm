@@ -1,34 +1,24 @@
-import GMScript from "../common/GMScript";
+import GMResource from "../GMResource";
+import GMSubscript from "../GMSubscript";
+import IGMScript from "../interfaces/IGMScript";
 
 /**
  * Represents a GMS2 Script
  */
-export default class GMS2Script extends GMScript {
+export default class GMS2Script extends GMResource implements IGMScript {
 
 	/**
 	 * Is a compatibility script?
 	 */
-	public isCompatibility: boolean;
-
-	/**
-	 * The GML content
-	 */
-	private _text: string | null = null;
+	public readonly isCompatibility: boolean;
 
 	/**
 	 * Creates a new Script
 	 * @param data The yoyo model data for the script
 	 */
-	constructor(name: string) {
+	constructor(name: string, isCompatibility: boolean) {
 		super(name);
-	}
-
-	/**
-	 * Load the script fom a string
-	 * @param str The *.gml file contents
-	 */
-	public loadFromString(str: string) {
-		this._text = str;
+		this.isCompatibility = isCompatibility;
 	}
 
 	/**
@@ -41,21 +31,17 @@ export default class GMS2Script extends GMScript {
 	}
 
 	/**
-	 * Returns an iterable with a pair of [name, text] for each
-	 * subscript in this script object
+	 * Returns an iterable with a GMSubscript for each subscript in this script object
+	 * @param gmlText The content of the *.gml file.
 	 */
-	public * subScripts(): IterableIterator<[string, string]> {
-		if (this._text === null) {
-			throw new Error("Must call loadFromString() before accessing the subScripts() function");
-		}
-
+	public * subScripts(gmlText: string): IterableIterator<GMSubscript> {
 		// This lines converts the triple slash comments ( ///comment) to JSDoc comments
-		let str = this._text.replace(/^\/{3}(?!\/) *(.*)$/gm, "/**\n * $1\n */\n");
+		let str = gmlText.replace(/^\/{3}(?!\/) *(.*)$/gm, "/**\n * $1\n */\n");
 
 		// This regex combines multiple triple JSDoc comments into one.
 		str = str.replace(/ ?\*\/\n\/\*\* ?\n/g, "");
 
-		yield [this.name, str];
+		yield new GMSubscript(this.name, str);
 	}
 
 }

@@ -17,13 +17,6 @@
             "tabs",
             4
         ],
-        "completed-docs": [
-            true, 
-            "classes", 
-            "functions",
-            "methods", 
-            "properties"
-        ],
         "object-literal-sort-keys": false
     },
     "rulesDirectory": []

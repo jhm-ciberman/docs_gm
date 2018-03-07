@@ -1,23 +1,18 @@
 import * as path from "path";
 
-import GMScript from "../common/GMScript";
+import GMResource from "../GMResource";
+import GMSubscript from "../GMSubscript";
+import IGMScript from "../interfaces/IGMScript";
 
 /**
  * Represents a GMS1 Script. Can contain subscripts.
  */
-export default class GMS1Script extends GMScript {
+export default class GMS1Script extends GMResource implements IGMScript {
 
 	/**
 	 * The filename of the script
 	 */
-	private _path: string;
-
-	/**
-	 * A map with each subscript.
-	 * Key: subscript name.
-	 * value: gml of the subscript
-	 */
-	private _subScripts: Map<string, string> = new Map();
+	public readonly filepath: string;
 
 	/**
 	 * This regex captures the script name in the capture group 1, and
@@ -31,54 +26,45 @@ export default class GMS1Script extends GMScript {
 	 */
 	constructor(file: string) {
 		super(path.basename(file).split(".")[0]);
-		this._path = file;
-	}
-
-	/**
-	 * Loads and parses the script with subscripts
-	 * from a string.
-	 * @param str The content of the *.gml file
-	 * @returns A promise
-	 */
-	public async loadFromString(str: string): Promise<this> {
-		this._subScripts.clear();
-		// Normalize new lines (to use the next regex)
-		str = str.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-
-		let m = this._captureSubscriptsRegex.exec(str);
-		if (m === null) {
-			this._subScripts.set(this.name, str);
-		} else {
-			while (m) {
-				this._subScripts.set(m[1], m[2]);
-				m = this._captureSubscriptsRegex.exec(str);
-			}
-		}
-
-		return this;
-	}
-
-	/**
-	 * The relative file path of the *.gml file.
-	 */
-	get filepath(): string {
-		return this._path;
+		this.filepath = file;
 	}
 
 	/**
 	 * Returns an iterable with a pair of [name, text] for each
 	 * subscript in this script object
 	 */
-	public * subScripts(): IterableIterator<[string, string]> {
-		if (this._subScripts.size === 0) {
-			throw new Error("Must call loadFromString() before accesing the subScripts() function");
-		}
-		for (let [name, content] of this._subScripts.entries()) {
+	public * subScripts(gmlText: string): IterableIterator<GMSubscript> {
+
+		for (let [name, content] of this._parseSubscripts(gmlText).entries()) {
 			// This lines converts the triple slash comments ( ///comment)
 			// to a @function JSDoc comments
 			content = content.replace(/\/\/\/ ?(.*)\n/g, "/**\n * @function $1 \n */\n");
-			yield [name, content];
+			yield new GMSubscript(name, content);
 		}
+	}
+
+	/**
+	 * Parses the gml file contents and returns a map were each key is the name of
+	 * one subscript and each value is the gml content of that subscript
+	 * @private
+	 * @returns {Map<string, string>}
+	 * @memberof GMS1Script
+	 */
+	private _parseSubscripts(gmlText: string): Map<string, string> {
+		// Key: subscript name, value: gmlText of the subscript
+		const subScripts: Map<string, string> = new Map();
+		// Normalize new lines (to use the next regex)
+		gmlText = gmlText.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+		let m = this._captureSubscriptsRegex.exec(gmlText);
+		if (m === null) {
+			subScripts.set(this.name, gmlText);
+		} else {
+			while (m) {
+				subScripts.set(m[1], m[2]);
+				m = this._captureSubscriptsRegex.exec(gmlText);
+			}
+		}
+		return subScripts;
 	}
 
 }
