@@ -12,7 +12,7 @@ export default class GMS1Script extends GMResource implements IGMScript {
 	/**
 	 * The filename of the script
 	 */
-	private _path: string;
+	public readonly filepath: string;
 
 	/**
 	 * This regex captures the script name in the capture group 1, and
@@ -26,14 +26,7 @@ export default class GMS1Script extends GMResource implements IGMScript {
 	 */
 	constructor(file: string) {
 		super(path.basename(file).split(".")[0]);
-		this._path = file;
-	}
-
-	/**
-	 * The relative file path of the *.gml file.
-	 */
-	get filepath(): string {
-		return this._path;
+		this.filepath = file.replace("\\", "/");
 	}
 
 	/**
