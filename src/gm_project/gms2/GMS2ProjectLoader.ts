@@ -18,13 +18,14 @@ export default class GMS2ProjectLoader implements IGMProjectLoader {
 	 * @returns A Promise with the created GMS2Project
 	 */
 	public async load(projectFile: string): Promise<IGMProject> {
+		projectFile = path.normalize(projectFile);
 		const projectFolder = path.dirname(projectFile);
 		const factory = new GMS2ProjectFactory(projectFolder);
 
 		const data: IProject = await fse.readJson(projectFile);
 
 		for (const item of data.resources) {
-			const resourceJsonFile = path.resolve(projectFolder, item.Value.resourcePath);
+			const resourceJsonFile = path.normalize(path.resolve(projectFolder, item.Value.resourcePath));
 			const resourceData: IResource = await fse.readJson(resourceJsonFile);
 			this._createFromData(factory, item.Key, resourceData);
 		}

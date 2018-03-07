@@ -20,6 +20,7 @@ export default class GMS1ProjectLoader implements IGMProjectLoader {
 	 * @returns A Promise with the GMS1Project
 	 */
 	public async load(file: string): Promise<IGMProject> {
+		file = path.normalize(file);
 		const project = new GMProject(path.dirname(file));
 
 		const str = await fse.readFile(file, "utf8");
