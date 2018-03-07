@@ -35,11 +35,6 @@ export default class DocPage {
 	 */
 	public scripts: DocScript[] = [];
 
-	/**
-	 * An array of DocModule objects representing ALL the **ROOT** modules in the project documentation
-	 */
-	public folders: DocScript[] = [];
-
 	constructor(docProject: DocProject) {
 		this.project = docProject;
 	}

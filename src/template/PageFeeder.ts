@@ -32,6 +32,32 @@ export default class PageFeeder implements IPageFeeder {
 	}
 
 	/**
+	 * Returns an iterator that generates one DocPage for each folder in the docProject recursively.
+	 */
+	public * oneFolderPerPage(docProject: DocProject): IterableIterator<DocPage> {
+		const folders = this._getAllFolders(docProject.scripts);
+		for (const folder of folders) {
+			const page = new DocPage(docProject);
+			page.folder = folder;
+			yield page;
+		}
+	}
+
+	/**
+	 * Returns an array with all the DocFolders recursively.
+	 * @param folder The root folder
+	 */
+	private _getAllFolders(folder: DocFolder): DocFolder[] {
+		let arr: DocFolder[] = [folder];
+		for (const res of folder.children) {
+			if (res instanceof DocFolder) {
+				arr = arr.concat(this._getAllFolders(res));
+			}
+		}
+		return arr;
+	}
+
+	/**
 	 * Returns recursively an array with all the scripts in a given folder.
 	 */
 	private _getAllScripts(folder: DocFolder): DocScript[] {

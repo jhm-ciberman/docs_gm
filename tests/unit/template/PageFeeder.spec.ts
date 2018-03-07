@@ -57,4 +57,12 @@ export class DocProjectGeneratorFixture {
 		Expect((arr[0].script as DocScript).name).toBe("my_script1");
 		Expect((arr[1].script as DocScript).name).toBe("my_script2");
 	}
+
+	@AsyncTest("pageFeeder_oneFolderPerPage")
+	public async pageFeeder_oneFolderPerPage() {
+		const arr = Array.from(this.pageFeeder.oneFolderPerPage(this.docProject));
+		Expect(arr.length).toBe(2);
+		Expect((arr[0].folder as DocFolder).name).toBe("scripts");
+		Expect((arr[1].folder as DocFolder).name).toBe("my_folder");
+	}
 }
