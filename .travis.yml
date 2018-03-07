@@ -8,5 +8,6 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - npm test
+  - npm run integration
 after_script:
   - export CC_TEST_REPORTER_ID=a4a5234a5623ca4cbde912c8d34281ecccf1454d45297257b53272e1fd812dd2 && ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

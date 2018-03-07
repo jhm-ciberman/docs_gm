@@ -83,6 +83,11 @@ export default class Cli {
 				"The glob pattern to use to include files in the project documentation",
 				(value) => { this._cliGenerateFacade.pattern = value; },
 			)
+			.option(
+				"--noOpen",
+				"The documentation will not be opened on the browser after the generation",
+				() => { this._cliGenerateFacade.open = false; },
+			)
 			.action((folder) => this._generate(folder));
 	}
 

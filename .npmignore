@@ -1,6 +1,18 @@
 # Source Folders
 src/
+test/
+
+# Test dist folders
+dist/tests/
+
+# This folder can exists if the integration test fails
+docs/
+
+# Other files (only used in the repo)
 tsconfig.json
+tslint.json
+*.md
+.travis.yml
 .vscode
 img/
 

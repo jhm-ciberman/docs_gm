@@ -10,5 +10,7 @@ export default interface ICliGenerateFacade {
 
 	pattern: string | undefined;
 
+	open: boolean;
+
 	generate(projectPath?: string ): Promise<void>;
 }

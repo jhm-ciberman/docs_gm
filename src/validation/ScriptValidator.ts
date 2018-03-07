@@ -33,8 +33,9 @@ export default class ScriptValidator implements IScriptValidator {
 
 		const rules = this._rulesProvider.getRules();
 		const config = this._rulesProvider.getConfig(rulesConfig);
-
-		return rules.every((rule, i) => this._ruleValidator.validate(rule, validable, config[i]));
+		return rules.every((rule, i) => {
+			return this._ruleValidator.validate(rule, validable, config[i]);
+		});
 	}
 
 }

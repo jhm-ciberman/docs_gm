@@ -7,14 +7,15 @@
   "scripts": {
     "test": "npm run lint && npm run coverage",
     "test-only": "npm run build && npm run unit-tests",
-    "unit-tests": "alsatian \"./dist/**/*.spec.js\"",
+    "unit-tests": "alsatian \"./dist/tests/unit/**/*.spec.js\"",
     "build": "tsc -p .",
     "watch": "tsc -p . --watch",
     "clean": "rimraf ./dist/ ./coverage/ ./.nyc_output/",
     "coverage": "npm run build && nyc npm run unit-tests",
     "report-coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint --project . -t verbose",
-    "prepublishOnly": "npm run clean && npm run build"
+    "prepublishOnly": "npm run clean && npm run build",
+    "integration": "npm run build && npm link && alsatian \"./dist/tests/integration/**/*.spec.js\""
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,7 @@
   },
   "homepage": "https://github.com/jhm-ciberman/docs_gm#readme",
   "bin": {
-    "docs_gm": "dist/docs_gm.js"
+    "docs_gm": "dist/src/docs_gm.js"
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.0",

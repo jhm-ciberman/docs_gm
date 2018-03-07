@@ -1,4 +1,5 @@
 import { injectable } from "inversify";
+import ScriptValidationRules from "../config/entities/ScriptValidationRules";
 import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
 import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
 import IRule from "./interfaces/IRule";
@@ -24,6 +25,8 @@ export default class RulesProvider implements IRulesProvider {
 	}
 
 	public getConfig(rules: IScriptValidationRules): IValidationRuleConfig[] {
+		rules = Object.assign(new ScriptValidationRules(), rules);
+
 		return [
 			{ warn: false, ignore: rules.ignorePrivate },
 			rules.undocumented,

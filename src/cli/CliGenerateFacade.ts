@@ -39,6 +39,11 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 	public pattern: string | undefined;
 
 	/**
+	 * Should open the index.html of the documentation after generate it?
+	 */
+	public open: boolean = true;
+
+	/**
 	 * The reporter used (used for dependency injection)
 	 */
 	@inject(TYPES.IReporter)
@@ -94,8 +99,14 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 		this._reporter.info("Ready!");
 
 		const url = path.resolve(outFolder, "index.html");
-		this._reporter.info(`Opening ${url}`);
-		this._open(url);
+
+		if (this.open) {
+			this._reporter.info(`Opening: ${url}`);
+			this._open(url);
+		} else {
+			this._reporter.info(`Documentation generated at: ${url}`);
+		}
+
 	}
 
 	/**

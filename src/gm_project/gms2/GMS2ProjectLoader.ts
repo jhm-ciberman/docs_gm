@@ -40,7 +40,7 @@ export default class GMS2ProjectLoader implements IGMProjectLoader {
 		switch (modelData.modelName) {
 			case GMS2ResourceType.GMFolder:
 				const folderData = modelData as IFolder;
-				return factory.addFolder(key, folderData.name, folderData.localisedFolderName, folderData.children);
+				return factory.addFolder(key, folderData.folderName, folderData.localisedFolderName, folderData.children);
 			case GMS2ResourceType.GMScript:
 				const scriptData = modelData as IScript;
 				return factory.addScript(key, scriptData.name, scriptData.IsCompatibility);
