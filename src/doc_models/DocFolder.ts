@@ -1,11 +1,12 @@
 import DocResource from "./DocResource";
-import { ISerializedFolder } from "./interfaces/interfaces";
-import ISerializable from "./interfaces/ISerializable";
+import DocScript from "./DocScript";
+import { DocElementType } from "./enums/DocElementType";
+import IDocElement from "./interfaces/IDocElement";
 
 /**
  * Represents a single folder of the GameMaker resource tree.
  */
-export default class DocFolder extends DocResource implements ISerializable<ISerializedFolder> {
+export default class DocFolder extends DocResource implements IDocElement {
 	/**
 	 * The folder description, if exists. It will be extracted from the
 	 * first script whose name starts with `MODULE_` or `FOLDER_`.
@@ -15,7 +16,7 @@ export default class DocFolder extends DocResource implements ISerializable<ISer
 	/**
 	 * The resource type
 	 */
-	public readonly type: string = "folder";
+	public readonly type: DocElementType = DocElementType.Folder;
 
 	/**
 	 * The children resources inside the folder
@@ -36,13 +37,20 @@ export default class DocFolder extends DocResource implements ISerializable<ISer
 		super(name);
 	}
 
-	public serialize(): ISerializedFolder {
-		return Object.assign(super.serialize(), {
-			description: this.description,
-			type: this.type,
-			children: this.children.map((c) => c.serialize()),
-			name: this.name,
-		});
+	/**
+	 * Returns an array with all the leaf elements of the folder
+	 * (The resources excluding the subfolders)
+	 */
+	get all() {
+		const arr = [];
+		for (const element of this.children) {
+			if (element instanceof DocScript) {
+				arr.push(element);
+			} else if (element instanceof DocFolder) {
+				arr.concat(element.all);
+			}
+		}
+		return arr;
 	}
 
 }

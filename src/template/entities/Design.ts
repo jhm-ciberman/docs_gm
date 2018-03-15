@@ -1,6 +1,6 @@
+import { DocElementType } from "../../doc_models/enums/DocElementType";
 import { ITemplate } from "../interfaces/ITemplate";
 import * as TemplateJSON from "../interfaces/TemplateJSON";
-import Page from "./Page";
 
 /**
  * Represents a single design of one Template
@@ -24,9 +24,15 @@ export default class Design {
 	public template: ITemplate;
 
 	/**
-	 * An array with the pages of the template
+	 * The input file for the index file
 	 */
-	private _pages: Page[] = [];
+	public index: string;
+
+	public script: string = "";
+
+	public folder: string = "";
+
+	public resource: string = "";
 
 	/**
 	 * Creates an instance of Design.
@@ -36,22 +42,21 @@ export default class Design {
 	public constructor(template: ITemplate, data: TemplateJSON.IDesign) {
 		this.template = template;
 		this.displayName = data.displayName;
-		if (data.copy) {
-			this.copy = data.copy;
-		}
-		for (const page of data.pages) {
-			this._pages.push(new Page(page.in, page.out, page.feedWith));
-		}
+		this.copy = data.copy || this.copy;
+		this.index = data.index;
+		this.script = data.script || this.script;
+		this.folder = data.folder || this.folder;
 	}
 
-	/**
-	 * An iterator with the pages
-	 *
-	 * @readonly
-	 * @type {IterableIterator<Page>}
-	 * @memberof Design
-	 */
-	get pages(): IterableIterator<Page> {
-		return this._pages[Symbol.iterator]();
+	public getInputFile(type: DocElementType): string {
+		switch (type) {
+			case DocElementType.Script:
+				return this.script;
+			case DocElementType.Folder:
+				return this.folder;
+			case DocElementType.Project:
+				return this.index;
+		}
+		throw new Error("Unknown resource type");
 	}
 }

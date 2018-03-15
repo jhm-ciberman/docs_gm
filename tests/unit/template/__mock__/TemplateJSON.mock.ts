@@ -1,4 +1,3 @@
-import PageFeedWith from "../../../../src/template/enums/PageFeedWith";
 import { IRoot } from "../../../../src/template/interfaces/TemplateJSON";
 
 export const myTemplateJSON: IRoot = {
@@ -9,15 +8,11 @@ export const myTemplateJSON: IRoot = {
 	designs: {
 		myDesign: {
 			displayName: "My design",
-			pages: [
-				{ in: "page.njk", out: "index.html", feedWith: PageFeedWith.Scripts },
-			],
+			index: "index.njk",
 		},
 		myOtherDesign: {
 			displayName: "My Other design",
-			pages: [
-				{ in: "page.njk", out: "index.html", feedWith: PageFeedWith.Scripts },
-			],
+			index: "index.njk",
 		},
 	},
 };

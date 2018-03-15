@@ -1,10 +1,7 @@
-import { ISerializedReturns } from "./interfaces/interfaces";
-import ISerializable from "./interfaces/ISerializable";
-
 /**
  * Represents a returned value of a script.
  */
-export default class DocReturns implements ISerializable<ISerializedReturns> {
+export default class DocReturns {
 
 	/**
 	 * The type of the returned value.
@@ -16,10 +13,4 @@ export default class DocReturns implements ISerializable<ISerializedReturns> {
 	 */
 	public description: string | null = null;
 
-	public serialize(): ISerializedReturns {
-		return {
-			type: this.type,
-			description: this.description,
-		};
-	}
 }

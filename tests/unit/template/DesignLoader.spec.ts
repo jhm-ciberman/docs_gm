@@ -26,12 +26,12 @@ class MockModuleFinder implements IModuleFinder {
 class MockTemplate implements ITemplate {
 	public folder: string;
 	public author: string | undefined;
-	public defaultDesign: Design = new Design(this, { displayName: "NOT THIS DESIGN", pages: [] });
+	public defaultDesign: Design = new Design(this, { displayName: "NOT THIS DESIGN", index: "index.njk" });
 	public description: string | undefined;
 	public web: string | undefined;
 	public getDesign(design: string): Design | undefined {
 		return (design === "has_this_design")
-			? new Design(this, {displayName: "my super design", pages: []})
+			? new Design(this, { displayName: "my super design", index: "index.njk"})
 			: undefined;
 	}
 	public hasDesign(design: string): boolean {

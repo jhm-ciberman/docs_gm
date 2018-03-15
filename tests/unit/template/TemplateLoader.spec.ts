@@ -9,7 +9,6 @@ import {
 
 import { Container, injectable } from "inversify";
 import Design from "../../../src/template/entities/Design";
-import { PageFeedWith } from "../../../src/template/enums/PageFeedWith";
 import { ITemplate } from "../../../src/template/interfaces/ITemplate";
 import ITemplateFactory from "../../../src/template/interfaces/ITemplateFactory";
 import { IRoot } from "../../../src/template/interfaces/TemplateJSON";
@@ -54,11 +53,7 @@ const json: IRoot = {
 		myDesign: {
 			displayName: "My design name",
 			copy: ["aaa"],
-			pages: [{
-				in: "foo",
-				out: "bar",
-				feedWith: PageFeedWith.Scripts,
-			}],
+			index: "index-foo.njk",
 		},
 	},
 };

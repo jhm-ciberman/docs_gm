@@ -6,7 +6,6 @@ import {
 
 import { Container } from "inversify";
 import Design from "../../../src/template/entities/Design";
-import { PageFeedWith } from "../../../src/template/enums/PageFeedWith";
 import { IRoot } from "../../../src/template/interfaces/TemplateJSON";
 import TemplateFactory from "../../../src/template/TemplateFactory";
 
@@ -31,9 +30,7 @@ export class TemplateFactoryFixture {
 
 		Expect(design.displayName).toBe("My design name");
 		Expect(design.copy[0]).toBe("aaa");
-		Expect(Array.from(design.pages)[0].in).toBe("foo");
-		Expect(Array.from(design.pages)[0].out).toBe("bar");
-		Expect(Array.from(design.pages)[0].feedWith).toBe(PageFeedWith.Scripts);
+		Expect(design.index).toBe("index-foo.njk");
 
 		Expect(t.defaultDesign).toBe(design);
 		Expect(t.hasDesign("myDesign")).toBe(true);
@@ -73,11 +70,7 @@ export class TemplateFactoryFixture {
 				myDesign: {
 					displayName: "My design name",
 					copy: ["aaa"],
-					pages: [{
-						in: "foo",
-						out: "bar",
-						feedWith: PageFeedWith.Scripts,
-					}],
+					index: "index-foo.njk",
 				},
 			},
 		};

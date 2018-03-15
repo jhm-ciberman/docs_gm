@@ -15,9 +15,10 @@ import IInputConfig from "../../../src/config/interfaces/IOutputConfig";
 import IProjectConfig from "../../../src/config/interfaces/IProjectConfig";
 import DocProject from "../../../src/doc_models/DocProject";
 import IGMProject from "../../../src/gm_project/interfaces/IGMProject";
+import IDesignFilesCopier from "../../../src/renderer/interfaces/IDesignFilesCopier";
+import INunjucksRenderer from "../../../src/renderer/interfaces/INunjucksRenderer";
 import Design from "../../../src/template/entities/Design";
 import IDesignLoader from "../../../src/template/interfaces/IDesignLoader";
-import IDesignRenderer from "../../../src/template/interfaces/IDesignRenderer";
 import { ITemplate } from "../../../src/template/interfaces/ITemplate";
 import { TYPES } from "../../../src/types";
 import MockGMProject from "../__mock__/MockGMProject.mock";
@@ -30,9 +31,9 @@ class MockDocProjectGenerator implements IDocProjectGenerator {
 	}
 }
 @injectable()
-class MockDesignRenderer implements IDesignRenderer {
-	public async render(_design: Design, _docProject: DocProject, outputFolder: string): Promise<string> {
-		return outputFolder + "YEAH!";
+class MockRenderer implements INunjucksRenderer {
+	public async render(_design: Design, _docProject: DocProject, _outputFolder: string): Promise<void> {
+		// void
 	}
 }
 class MockTemplate implements ITemplate {
@@ -54,7 +55,13 @@ class MockTemplate implements ITemplate {
 @injectable()
 class MockDesignLoader implements IDesignLoader {
 	public async load(_output: IInputConfig): Promise<Design> {
-		return new Design(new MockTemplate(), {displayName: "my design", pages: []});
+		return new Design(new MockTemplate(), {displayName: "my design", index: "index.njk"});
+	}
+}
+@injectable()
+class MockDesignFilesCopier implements IDesignFilesCopier {
+	public async copy(_outputFolder: string, _design: Design): Promise<void> {
+		// void
 	}
 }
 @TestFixture("DocumentationGenerator")
@@ -68,8 +75,9 @@ export class DocumentationGeneratorFixture {
 
 		const container = new Container();
 		container.bind<IDocProjectGenerator>(TYPES.IDocProjectGenerator).to(MockDocProjectGenerator);
-		container.bind<IDesignRenderer>(TYPES.IDesignRenderer).to(MockDesignRenderer);
+		container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(MockRenderer);
 		container.bind<IDesignLoader>(TYPES.IDesignLoader).to(MockDesignLoader);
+		container.bind<IDesignFilesCopier>(TYPES.IDesignFilesCopier).to(MockDesignFilesCopier);
 		const dg = container.resolve(DocumentationGenerator);
 
 		const output = await dg.generate(gmProject, config);

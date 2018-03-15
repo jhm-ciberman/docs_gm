@@ -1,5 +1,3 @@
-import PageFeedWith from "../enums/PageFeedWith";
-
 /**
  * @fileOverview
  * docs_gm template.json file
@@ -20,11 +18,7 @@ export interface IDesignsMap {
 export interface IDesign {
 	displayName: string;
 	copy?: string[];
-	pages: IPage[];
-}
-
-export interface IPage {
-	in: string;
-	out: string;
-	feedWith: PageFeedWith;
+	index: string;
+	script?: string;
+	folder?: string;
 }

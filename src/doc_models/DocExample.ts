@@ -1,10 +1,7 @@
-import { ISerializedExample } from "./interfaces/interfaces";
-import ISerializable from "./interfaces/ISerializable";
-
 /**
  * Represents an example code
  */
-export default class DocExample implements ISerializable<ISerializedExample> {
+export default class DocExample {
 
 	/**
 	 * The escaped code of the example
@@ -16,10 +13,4 @@ export default class DocExample implements ISerializable<ISerializedExample> {
 	 */
 	public caption: string | null = null;
 
-	public serialize(): ISerializedExample {
-		return {
-			code: this.code,
-			caption: this.caption,
-		};
-	}
 }

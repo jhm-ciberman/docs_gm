@@ -16,6 +16,11 @@ const TYPES = {
 	// parser
 	IJSDocParser: Symbol.for("IJSDocParser"),
 
+	// Rendering
+	IRenderingContextGenerator: Symbol.for("IRenderingContextGenerator"),
+	INunjucksRenderer: Symbol.for("INunjucksRenderer"),
+	IDesignFilesCopier: Symbol.for("IDesignFilesCopier"),
+
 	// Reporter
 	IReporter: Symbol.for("IReporter"),
 
@@ -29,12 +34,10 @@ const TYPES = {
 
 	// Template
 	IModuleFinder: Symbol.for("IModuleFinder"),
-	IRenderablePageGenerator: Symbol.for("IRenderablePageGenerator"),
-	IPageFeeder: Symbol.for("IPageFeeder"),
-	IDesignRenderer: Symbol.for("IDesignRenderer"),
 	ITemplateLoader: Symbol.for("ITemplateLoader"),
 	IDesignLoader: Symbol.for("IDesignLoader"),
 	ITemplateFactory: Symbol.for("ITemplateFactory"),
+	IFilesCopier: Symbol.for("IFilesCopier"),
 
 	// npm modules
 	IGetInstalledPath: Symbol.for("IGetInstalledPath"),

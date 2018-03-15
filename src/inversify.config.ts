@@ -25,15 +25,7 @@ import IDocumentationGenerator from "../src/generator/interfaces/IDocumentationG
 import { IGetInstalledPath, IOpen } from "../src/npmmodules";
 import ConsoleReporter from "../src/reporter/ConsoleReporter";
 import IReporter from "../src/reporter/interfaces/IReporter";
-import DesignRenderer from "../src/template/DesignRenderer";
-import IDesignRenderer from "../src/template/interfaces/IDesignRenderer";
-import IModuleFinder from "../src/template/interfaces/IModuleFinder";
-import IPageFeeder from "../src/template/interfaces/IPageFeeder";
-import IRenderablePageGenerator from "../src/template/interfaces/IRenderablePageGenerator";
 import ITemplateLoader from "../src/template/interfaces/ITemplateLoader";
-import ModuleFinder from "../src/template/ModuleFinder";
-import PageFeeder from "../src/template/PageFeeder";
-import RenderablePageGenerator from "../src/template/RenderablePageGenerator";
 import TemplateLoader from "../src/template/TemplateLoader";
 import IRuleValidator from "../src/validation/interfaces/IRuleValidator";
 import IScriptValidator from "../src/validation/interfaces/IScriptValidator";
@@ -43,9 +35,15 @@ import IScriptLoader from "./generator/interfaces/IScriptLoader";
 import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
 import IGMProjectLoader from "./gm_project/interfaces/IGMProjectLoader";
+import DesignFilesCopier from "./renderer/DesignFilesCopier";
+import IDesignFilesCopier from "./renderer/interfaces/IDesignFilesCopier";
+import INunjucksRenderer from "./renderer/interfaces/INunjucksRenderer";
+import NunjucksRenderer from "./renderer/NunjucksRenderer";
 import DesignLoader from "./template/DesignLoader";
 import IDesignLoader from "./template/interfaces/IDesignLoader";
+import IModuleFinder from "./template/interfaces/IModuleFinder";
 import ITemplateFactory from "./template/interfaces/ITemplateFactory";
+import ModuleFinder from "./template/ModuleFinder";
 import TemplateFactory from "./template/TemplateFactory";
 import IRulesProvider from "./validation/interfaces/IRulesProvider";
 import RulesProvider from "./validation/RulesProvider";
@@ -71,14 +69,15 @@ container.bind<IGMProjectLoader>(TYPES.IGMProjectLoader).to(GMProjectLoader);
 container.bind<IJSDocParser>(TYPES.IJSDocParser).to(JSDocParser);
 container.bind<IDocProjectGenerator>(TYPES.IDocProjectGenerator).to(DocProjectGenerator);
 
+// Renderer
+container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(NunjucksRenderer);
+container.bind<IDesignFilesCopier>(TYPES.IDesignFilesCopier).to(DesignFilesCopier);
+
 // Reporter
 container.bind<IReporter>(TYPES.IReporter).to(ConsoleReporter);
 
 // Template
 container.bind<IModuleFinder>(TYPES.IModuleFinder).to(ModuleFinder);
-container.bind<IRenderablePageGenerator>(TYPES.IRenderablePageGenerator).to(RenderablePageGenerator);
-container.bind<IPageFeeder>(TYPES.IPageFeeder).to(PageFeeder);
-container.bind<IDesignRenderer>(TYPES.IDesignRenderer).to(DesignRenderer);
 container.bind<ITemplateLoader>(TYPES.ITemplateLoader).to(TemplateLoader);
 container.bind<IDesignLoader>(TYPES.IDesignLoader).to(DesignLoader);
 container.bind<ITemplateFactory>(TYPES.ITemplateFactory).to(TemplateFactory);
