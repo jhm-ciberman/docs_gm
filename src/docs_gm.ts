@@ -9,4 +9,4 @@ import Cli from "./cli/Cli";
 
 // CLI Composition root
 const cli = container.resolve(Cli);
-cli.parse(process.argv);
+cli.parse(process.argv.slice(2));

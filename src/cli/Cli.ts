@@ -39,7 +39,7 @@ export default class Cli {
 	 * Parses the arguments and shows the CLI on screen.
 	 * @param argv The argv array (normally process.argv)
 	 */
-	public parse(_argv: string[]): void {
+	public parse(argv: string[]): void {
 		const lang = new StringsEnglish();
 		// tslint:disable-next-line:no-unused-expression
 		yargs
@@ -58,7 +58,7 @@ export default class Cli {
 			.demandCommand()
 			.showHelpOnFail(true)
 			.help()
-			.argv;
+			.parse(argv);
 	}
 
 	private _commandGenerateBuilder(builder: yargs.Argv, lang: StringsEnglish) {

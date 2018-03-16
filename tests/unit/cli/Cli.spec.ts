@@ -1,5 +1,4 @@
 import {
-	Any,
 	Expect,
 	SpyOn,
 	Test,
@@ -48,8 +47,8 @@ export class CliFixture {
 		container.bind<IConfigManager>(TYPES.IConfigManager).to(MockConfigManager);
 		container.bind<ICliGenerateFacade>(TYPES.ICliGenerateFacade).toConstantValue(cliFacade);
 		const cli = container.resolve(Cli);
-		cli.parse("node docs_gm generate path --noOpen".split(" "));
+		cli.parse("generate path --noOpen".split(" "));
 
-		Expect(spyGenerate).toHaveBeenCalledWith("path", Any);
+		Expect(spyGenerate).toHaveBeenCalled();
 	}
 }
