@@ -4,7 +4,7 @@ import * as path from "path";
 import DocProject from "../doc_models/DocProject";
 import { DocElementType } from "../doc_models/enums/DocElementType";
 import IDocElement from "../doc_models/interfaces/IDocElement";
-import Design from "../template/entities/Design";
+import Design from "../template/Design";
 import IRenderingContext from "./interfaces/IRenderingContext";
 import NunjucksTemplateLookup from "./NunjucksTemplateLookup";
 import RenderingQueue from "./RenderingQueue";

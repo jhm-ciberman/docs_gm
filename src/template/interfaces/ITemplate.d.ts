@@ -1,4 +1,4 @@
-import Design from "../entities/Design";
+import Design from "../Design";
 
 export interface ITemplate {
 	/**
@@ -42,4 +42,10 @@ export interface ITemplate {
 	 * Iterator function to get all the designs of the template
 	 */
 	designs(): IterableIterator<Design>;
+
+	/**
+	 * Tries to return an specific design if specified, or the default design if a empty string is passed
+	 * @param designName The design name. If empty, the default design will be returned
+	 */
+	findDesign(designName: string): Design;
 }

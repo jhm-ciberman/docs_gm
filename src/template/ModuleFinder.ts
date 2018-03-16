@@ -29,7 +29,7 @@ export default class ModuleFinder implements IModuleFinder {
 				const cwd = await pkgDir() as string;
 				return await this._getInstalledPath(moduleName, { local: true, cwd });
 			} catch (e) {
-				throw new Error(`Cannot find the module ${moduleName}`);
+				throw new Error(`Cannot find the module "${moduleName}"`);
 			}
 		}
 	}

@@ -1,10 +1,11 @@
-import * as TemplateJSON from "../interfaces/TemplateJSON";
 import Design from "./Design";
+import { ITemplate } from "./interfaces/ITemplate";
+import * as TemplateJSON from "./interfaces/TemplateJSON";
 
 /**
  * Represents a Documentation HTML Template
  */
-export default class Template {
+export default class Template implements ITemplate {
 
 	/**
 	 * The folder of the template
@@ -82,6 +83,23 @@ export default class Template {
 	 */
 	public designs(): IterableIterator<Design> {
 		return this._designs.values();
+	}
+
+	/**
+	 * Tries to return an specific design if specified, or the default design if a empty string is passed
+	 * @param designName The design name. If empty, the default design will be returned
+	 */
+	public findDesign(designName: string): Design {
+		if (designName === "") {
+			return this.defaultDesign;
+		} else {
+			const d = this.getDesign(designName);
+			if (d) {
+				return d;
+			} else {
+				throw new Error(`Design "${designName}" not found`);
+			}
+		}
 	}
 
 }

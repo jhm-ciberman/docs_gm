@@ -5,7 +5,7 @@ import {
 } from "alsatian";
 
 import { Container } from "inversify";
-import Design from "../../../src/template/entities/Design";
+import Design from "../../../src/template/Design";
 import { IRoot } from "../../../src/template/interfaces/TemplateJSON";
 import TemplateFactory from "../../../src/template/TemplateFactory";
 
@@ -58,6 +58,20 @@ export class TemplateFactoryFixture {
 		const t = tf.create("foo_folder", json);
 		const expected = ["**/*", "!template.json", "!*.njk", "!package.json"];
 		Expect((t.getDesign("myDesign") as Design).copy).toEqual(expected);
+	}
+
+	@Test()
+	public TemplateFactory_findDesign() {
+		const container = new Container();
+		const tf = container.resolve(TemplateFactory);
+
+		const json = this._getMockJSON();
+
+		const t = tf.create("foo_folder", json);
+
+		Expect(t.findDesign("")).toBe(t.defaultDesign);
+		Expect(t.findDesign("myDesign").displayName).toBe("My design name");
+		Expect(() => t.findDesign("foo")).toThrowError(Error, `Design "foo" not found`);
 	}
 
 	private _getMockJSON(): IRoot {

@@ -35,7 +35,6 @@ const TYPES = {
 	// Template
 	IModuleFinder: Symbol.for("IModuleFinder"),
 	ITemplateLoader: Symbol.for("ITemplateLoader"),
-	IDesignLoader: Symbol.for("IDesignLoader"),
 	ITemplateFactory: Symbol.for("ITemplateFactory"),
 	IFilesCopier: Symbol.for("IFilesCopier"),
 

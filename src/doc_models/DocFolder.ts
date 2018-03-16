@@ -1,5 +1,4 @@
 import DocResource from "./DocResource";
-import DocScript from "./DocScript";
 import { DocElementType } from "./enums/DocElementType";
 import IDocElement from "./interfaces/IDocElement";
 
@@ -42,12 +41,12 @@ export default class DocFolder extends DocResource implements IDocElement {
 	 * (The resources excluding the subfolders)
 	 */
 	get all() {
-		const arr = [];
+		let arr: DocResource[] = [];
 		for (const element of this.children) {
-			if (element instanceof DocScript) {
+			if (element instanceof DocFolder) {
+				arr = arr.concat(element.all);
+			} else {
 				arr.push(element);
-			} else if (element instanceof DocFolder) {
-				arr.concat(element.all);
 			}
 		}
 		return arr;

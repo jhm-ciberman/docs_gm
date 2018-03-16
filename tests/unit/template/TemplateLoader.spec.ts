@@ -8,7 +8,9 @@ import {
 } from "alsatian";
 
 import { Container, injectable } from "inversify";
-import Design from "../../../src/template/entities/Design";
+import OutputConfig from "../../../src/config/entities/OutputConfig";
+import Design from "../../../src/template/Design";
+import IModuleFinder from "../../../src/template/interfaces/IModuleFinder";
 import { ITemplate } from "../../../src/template/interfaces/ITemplate";
 import ITemplateFactory from "../../../src/template/interfaces/ITemplateFactory";
 import { IRoot } from "../../../src/template/interfaces/TemplateJSON";
@@ -26,7 +28,12 @@ class MockTemplateFactory implements ITemplateFactory {
 		return new MockTemplate();
 	}
 }
-
+@injectable()
+class MockModuleFinder implements IModuleFinder {
+	public async find(moduleName: string): Promise<string> {
+		return (moduleName === "docs_gm-foo") ? "foo-folder" : "ERROR";
+	}
+}
 class MockTemplate implements ITemplate {
 	public folder: string;
 	public author: string | undefined;
@@ -40,6 +47,9 @@ class MockTemplate implements ITemplate {
 		throw new Error("Method not implemented.");
 	}
 	public designs(): IterableIterator<Design> {
+		throw new Error("Method not implemented.");
+	}
+	public findDesign(_designName: string): Design {
 		throw new Error("Method not implemented.");
 	}
 }
@@ -89,6 +99,7 @@ export class TemplateLoaderFixture {
 
 		const container = new Container();
 		container.bind<ITemplateFactory>(TYPES.ITemplateFactory).toConstantValue(tf);
+		container.bind<IModuleFinder>(TYPES.IModuleFinder).to(MockModuleFinder);
 
 		const tl = container.resolve(TemplateLoader);
 		const t = await tl.loadFrom(this.folderProject.dir);
@@ -98,10 +109,37 @@ export class TemplateLoaderFixture {
 
 	@AsyncTest("TemplateLoader_load")
 	public async TemplateLoader_load_error() {
+		return this._getTL().loadFrom(this.folderEmpty.dir).then(() => {
+			throw new Error("load from not throw");
+		}, (e: Error) => {
+			Expect(e.message).toContain("Error loading Template from");
+		});
+	}
+
+	@AsyncTest()
+	public async TemplateLoader_getFolder_folder() {
+		const output = new OutputConfig();
+		output.templatesFolder = "my_folder";
+		output.template = "foo";
+		const folder = await this._getTL().getFolder(output);
+		Expect(folder).toContain("my_folder");
+		Expect(folder).toContain("foo");
+	}
+
+	@AsyncTest()
+	public async TemplateLoader_getFolder_external() {
+		const output = new OutputConfig();
+		output.templatesFolder = "";
+		output.template = "foo";
+		const folder = await this._getTL().getFolder(output);
+		Expect(folder).toBe("foo-folder");
+	}
+
+	private _getTL() {
 		const container = new Container();
 		container.bind<ITemplateFactory>(TYPES.ITemplateFactory).to(MockTemplateFactory);
-		const tl = container.resolve(TemplateLoader);
-		Expect(async () => tl.loadFrom(this.folderEmpty.dir)).toThrowAsync();
+		container.bind<IModuleFinder>(TYPES.IModuleFinder).to(MockModuleFinder);
+		return container.resolve(TemplateLoader);
 	}
 
 }

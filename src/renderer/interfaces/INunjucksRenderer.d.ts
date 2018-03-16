@@ -1,4 +1,4 @@
-import Design from "../../template/entities/Design";
+import Design from "../../template/Design";
 import DocProject from "../../doc_models/DocProject";
 
 export default interface INunjucksRenderer {

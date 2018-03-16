@@ -37,7 +37,12 @@ export class ModuleFinderFixture {
 		const container = new Container();
 		container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(this._mockGetInstalledPath_NotFound);
 		const mf = container.resolve(ModuleFinder);
-		Expect(async () => await mf.find("bar")).toThrowAsync();
+
+		return mf.find("bar").then(() => {
+			throw new Error("load from not throw");
+		}, (e: Error) => {
+			Expect(e.message).toBe(`Cannot find the module "bar"`);
+		});
 	}
 
 	private async _mockGetInstalledPath_Global(

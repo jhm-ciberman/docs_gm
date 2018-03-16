@@ -2,7 +2,6 @@ import {
 	// Expect,
 	Expect,
 	SetupFixture,
-	SpyOn,
 	TeardownFixture,
 	Test,
 	TestFixture,
@@ -31,7 +30,6 @@ class MockGMScript implements IGMScript {
 		if (gmlText === "my gml") {
 			yield new GMSubscript("foo", "text");
 		}
-		throw new Error("Invalid argument");
 	}
 	public match(pattern: string): boolean {
 		return (pattern === "foo");
@@ -64,14 +62,34 @@ export class DocumentationGeneratorFixture {
 		TempDir.removeAll();
 	}
 
-	@Test("Test")
-	public async test() {
+	@Test("Test normal")
+	public async test_normal() {
+		const output = await this._doTheTest("foo", "script.gml");
+		Expect(output[0].name).toBe("hi");
+	}
+
+	@Test("Test not match")
+	public async test_not_match() {
+		const output = await this._doTheTest("NOT_MATCH", "script.gml");
+		Expect(output.length).toBe(0);
+	}
+
+	@Test("test_should_throw_on_non_existent_file")
+	public async test_should_throw_on_non_existent_file() {
+		return this._doTheTest("foo", "NON_EXISTENT_FILE.gml").then(() => {
+			throw new Error("Not throw on non existent file");
+		}).catch((e: Error) => {
+			Expect(e.message).toContain("Error loading file");
+		});
+
+	}
+
+	private _doTheTest(pattern: string, filepath: string) {
 		const gmScript = new MockGMScript();
-		gmScript.filepath = "script.gml";
-		SpyOn(gmScript, "match").andReturn(true);
+		gmScript.filepath = filepath;
 
 		const config = new ProjectConfig();
-		config.pattern = "foo";
+		config.pattern = pattern;
 
 		const gmProject = new MockGMProject("my-project", []);
 		gmProject.path = this.folder.dir;
@@ -81,8 +99,6 @@ export class DocumentationGeneratorFixture {
 
 		const sl = container.resolve(ScriptLoader);
 
-		const output = await sl.load(gmScript, config, gmProject);
-
-		Expect(output[0].name).toBe("hi");
+		return sl.load(gmScript, config, gmProject);
 	}
 }

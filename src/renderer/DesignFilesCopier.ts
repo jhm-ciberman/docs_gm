@@ -2,7 +2,7 @@ import * as fse from "fs-extra";
 import * as globby from "globby";
 import { injectable } from "inversify";
 import * as path from "path";
-import Design from "../template/entities/Design";
+import Design from "../template/Design";
 import IDesignFilesCopier from "./interfaces/IDesignFilesCopier";
 
 @injectable()

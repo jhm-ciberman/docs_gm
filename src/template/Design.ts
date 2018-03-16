@@ -1,6 +1,6 @@
-import { DocElementType } from "../../doc_models/enums/DocElementType";
-import { ITemplate } from "../interfaces/ITemplate";
-import * as TemplateJSON from "../interfaces/TemplateJSON";
+import { DocElementType } from "../doc_models/enums/DocElementType";
+import { ITemplate } from "./interfaces/ITemplate";
+import * as TemplateJSON from "./interfaces/TemplateJSON";
 
 /**
  * Represents a single design of one Template

@@ -17,9 +17,9 @@ import DocProject from "../../../src/doc_models/DocProject";
 import IGMProject from "../../../src/gm_project/interfaces/IGMProject";
 import IDesignFilesCopier from "../../../src/renderer/interfaces/IDesignFilesCopier";
 import INunjucksRenderer from "../../../src/renderer/interfaces/INunjucksRenderer";
-import Design from "../../../src/template/entities/Design";
-import IDesignLoader from "../../../src/template/interfaces/IDesignLoader";
+import Design from "../../../src/template/Design";
 import { ITemplate } from "../../../src/template/interfaces/ITemplate";
+import ITemplateLoader from "../../../src/template/interfaces/ITemplateLoader";
 import { TYPES } from "../../../src/types";
 import MockGMProject from "../__mock__/MockGMProject.mock";
 
@@ -34,6 +34,21 @@ class MockDocProjectGenerator implements IDocProjectGenerator {
 class MockRenderer implements INunjucksRenderer {
 	public async render(_design: Design, _docProject: DocProject, _outputFolder: string): Promise<void> {
 		// void
+	}
+}
+@injectable()
+class MockDesignFilesCopier implements IDesignFilesCopier {
+	public async copy(_outputFolder: string, _design: Design): Promise<void> {
+		// void
+	}
+}
+@injectable()
+class MockTemplateLoader implements ITemplateLoader {
+	public async loadFrom(_folder: string): Promise<ITemplate> {
+		return new MockTemplate();
+	}
+	public async getFolder(_output: IInputConfig): Promise<string> {
+		return "foo";
 	}
 }
 class MockTemplate implements ITemplate {
@@ -51,17 +66,8 @@ class MockTemplate implements ITemplate {
 	public designs(): IterableIterator<Design> {
 		throw new Error("Method not implemented.");
 	}
-}
-@injectable()
-class MockDesignLoader implements IDesignLoader {
-	public async load(_output: IInputConfig): Promise<Design> {
-		return new Design(new MockTemplate(), {displayName: "my design", index: "index.njk"});
-	}
-}
-@injectable()
-class MockDesignFilesCopier implements IDesignFilesCopier {
-	public async copy(_outputFolder: string, _design: Design): Promise<void> {
-		// void
+	public findDesign(_designName: string): Design {
+		return new Design(this, {displayName: "foo", index: "foo.bar"});
 	}
 }
 @TestFixture("DocumentationGenerator")
@@ -76,8 +82,8 @@ export class DocumentationGeneratorFixture {
 		const container = new Container();
 		container.bind<IDocProjectGenerator>(TYPES.IDocProjectGenerator).to(MockDocProjectGenerator);
 		container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(MockRenderer);
-		container.bind<IDesignLoader>(TYPES.IDesignLoader).to(MockDesignLoader);
 		container.bind<IDesignFilesCopier>(TYPES.IDesignFilesCopier).to(MockDesignFilesCopier);
+		container.bind<ITemplateLoader>(TYPES.ITemplateLoader).to(MockTemplateLoader);
 		const dg = container.resolve(DocumentationGenerator);
 
 		const output = await dg.generate(gmProject, config);

@@ -39,8 +39,6 @@ import DesignFilesCopier from "./renderer/DesignFilesCopier";
 import IDesignFilesCopier from "./renderer/interfaces/IDesignFilesCopier";
 import INunjucksRenderer from "./renderer/interfaces/INunjucksRenderer";
 import NunjucksRenderer from "./renderer/NunjucksRenderer";
-import DesignLoader from "./template/DesignLoader";
-import IDesignLoader from "./template/interfaces/IDesignLoader";
 import IModuleFinder from "./template/interfaces/IModuleFinder";
 import ITemplateFactory from "./template/interfaces/ITemplateFactory";
 import ModuleFinder from "./template/ModuleFinder";
@@ -79,7 +77,6 @@ container.bind<IReporter>(TYPES.IReporter).to(ConsoleReporter);
 // Template
 container.bind<IModuleFinder>(TYPES.IModuleFinder).to(ModuleFinder);
 container.bind<ITemplateLoader>(TYPES.ITemplateLoader).to(TemplateLoader);
-container.bind<IDesignLoader>(TYPES.IDesignLoader).to(DesignLoader);
 container.bind<ITemplateFactory>(TYPES.ITemplateFactory).to(TemplateFactory);
 
 // Validation

@@ -1,6 +1,6 @@
 import * as nunjucks from "nunjucks";
 import { DocElementType } from "../doc_models/enums/DocElementType";
-import Design from "../template/entities/Design";
+import Design from "../template/Design";
 
 export default class NunjucksTemplateLookup {
 
