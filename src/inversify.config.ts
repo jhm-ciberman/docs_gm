@@ -31,6 +31,8 @@ import IRuleValidator from "../src/validation/interfaces/IRuleValidator";
 import IScriptValidator from "../src/validation/interfaces/IScriptValidator";
 import RuleValidator from "../src/validation/RuleValidator";
 import ScriptValidator from "../src/validation/ScriptValidator";
+import ConfigOverrider from "./config/ConfigOverrider";
+import IConfigOverrider from "./config/interfaces/IConfigOverrider";
 import IScriptLoader from "./generator/interfaces/IScriptLoader";
 import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
@@ -54,6 +56,7 @@ container.bind<ICliGenerateFacade>(TYPES.ICliGenerateFacade).to(CliGenerateFacad
 
 // Config
 container.bind<IConfigManager>(TYPES.IConfigManager).to(ConfigManager);
+container.bind<IConfigOverrider>(TYPES.IConfigOverrider).to(ConfigOverrider);
 
 // Generator
 container.bind<IDocumentationExtractor>(TYPES.IDocumentationExtractor).to(DocumentationExtractor);

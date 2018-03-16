@@ -19,7 +19,7 @@ export class GMResourceFixture {
 		this.resource = new GMResource("my-name");
 	}
 
-	@Test("should get the name")
+	@Test()
 	public name() {
 		Expect(this.resource.name).toBe("my-name");
 	}

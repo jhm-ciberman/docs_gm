@@ -23,7 +23,7 @@ export class GMFolderFixture {
 		this.folder.addChild(this.child);
 	}
 
-	@Test("should get the name")
+	@Test()
 	public name() {
 		Expect(this.folder.name).toBe("my-name");
 	}

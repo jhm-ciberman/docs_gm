@@ -19,7 +19,7 @@ export class GMProjectFixture {
 		this.project = new GMProject("my-path/my-project/");
 	}
 
-	@Test("should get the name")
+	@Test()
 	public name() {
 		Expect(this.project.name).toBe("my-project");
 	}

@@ -6,6 +6,7 @@ const TYPES = {
 
 	// Config
 	IConfigManager: Symbol.for("IConfigManager"),
+	IConfigOverrider: Symbol.for("IConfigOverrider"),
 
 	// generator
 	IDocumentationExtractor: Symbol.for("IDocumentationExtractor"),

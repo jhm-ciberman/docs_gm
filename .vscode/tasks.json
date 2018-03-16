@@ -4,15 +4,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "watch",
-            "type": "typescript",
-            "tsconfig": "tsconfig.json",
-            "option": "watch",
-            "problemMatcher": [
-                "$tsc-watch"
-            ]
-        },
-        {
             "label": "lint",
             "type": "npm",
             "script": "lint",
@@ -26,18 +17,6 @@
             "type": "npm",
             "script": "clean",
             "problemMatcher": []
-        },
-        {
-            "label": "build",
-            "type": "typescript",
-            "tsconfig": "tsconfig.json",
-            "problemMatcher": [
-                "$tsc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
         },
         {
             "label": "coverage",

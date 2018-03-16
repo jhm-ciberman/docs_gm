@@ -8,6 +8,7 @@ import { Container, injectable } from "inversify";
 import CliGenerateFacade from "../../../src/cli/CliGenerateFacade";
 import ProjectConfig from "../../../src/config/entities/ProjectConfig";
 import IConfigManager from "../../../src/config/interfaces/IConfigManager";
+import IConfigOverrider from "../../../src/config/interfaces/IConfigOverrider";
 import IProjectConfig from "../../../src/config/interfaces/IProjectConfig";
 import IDocumentationGenerator from "../../../src/generator/interfaces/IDocumentationGenerator";
 import IGMProject from "../../../src/gm_project/interfaces/IGMProject";
@@ -34,8 +35,8 @@ class MockConfigManager implements IConfigManager {
 	public async exportConfig(_outputPath: string): Promise<string> {
 		throw new Error("Method not implemented.");
 	}
-	public async loadConfig(_jsonOrProjectPath: string): Promise<IProjectConfig | undefined> {
-		return config;
+	public async loadConfig(jsonOrProjectPath: string): Promise<IProjectConfig | undefined> {
+		return jsonOrProjectPath === "." ? config : undefined;
 	}
 }
 @injectable()
@@ -47,11 +48,31 @@ class MockDocumentationGenerator implements IDocumentationGenerator {
 		return "";
 	}
 }
+@injectable()
+class MockConfigOverrider implements IConfigOverrider {
+	public override(conf: IProjectConfig, _overrideConfig: { [key: string]: string; }): IProjectConfig {
+		return conf;
+	}
+}
 @TestFixture("CliGenerateFacade")
 export class CliGenerateFacadeFixture {
 
-	@AsyncTest("generate")
-	public async generate() {
+	@AsyncTest()
+	public async generate_default() {
+		return this._getCgf().generate();
+	}
+
+	@AsyncTest()
+	public async generate_noDefaultConfig() {
+		return this._getCgf().generate("other/path/with/no/config");
+	}
+
+	@AsyncTest()
+	public async generate_noOpen() {
+		return this._getCgf().generate("other/path/with/no/config", {noOpen: "true"});
+	}
+
+	private _getCgf(): CliGenerateFacade {
 		const container = new Container();
 		const reporter = new MockReporter();
 		SpyOn(reporter, "info").andStub();
@@ -59,13 +80,13 @@ export class CliGenerateFacadeFixture {
 		container.bind<IGMProjectLoader>(TYPES.IGMProjectLoader).to(MockGMProjectLoader);
 		container.bind<IConfigManager>(TYPES.IConfigManager).to(MockConfigManager);
 		container.bind<IDocumentationGenerator>(TYPES.IDocumentationGenerator).to(MockDocumentationGenerator);
+		container.bind<IConfigOverrider>(TYPES.IConfigOverrider).to(MockConfigOverrider);
 		container.bind<IOpen>(TYPES.IOpen).toFunction((target) => this._mockOpen(target));
-		const cgf = container.resolve(CliGenerateFacade);
-		await cgf.generate();
+		return container.resolve(CliGenerateFacade);
 	}
 
 	private _mockOpen(target: string) {
-		if (!target.includes("my_output_folder") || !target.includes("index.html")) {
+		if (!target.includes("my_output_folder") && !target.includes("index.html")) {
 			throw new Error("Invalid target: " + target);
 		}
 	}

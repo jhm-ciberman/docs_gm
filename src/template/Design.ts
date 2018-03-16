@@ -27,11 +27,17 @@ export default class Design {
 	 * The input file for the index file
 	 */
 	public index: string;
-
+	/**
+	 * The input file for the script files
+	 */
 	public script: string = "";
-
+	/**
+	 * The input file for the folders
+	 */
 	public folder: string = "";
-
+	/**
+	 * The input file for the other resources
+	 */
 	public resource: string = "";
 
 	/**

@@ -5,7 +5,7 @@ import { TYPES } from "../types";
 
 import ProjectConfig from "../config/entities/ProjectConfig";
 import IConfigManager from "../config/interfaces/IConfigManager";
-import IProjectConfig from "../config/interfaces/IProjectConfig";
+import IConfigOverrider from "../config/interfaces/IConfigOverrider";
 import IDocumentationGenerator from "../generator/interfaces/IDocumentationGenerator";
 import IGMProjectLoader from "../gm_project/interfaces/IGMProjectLoader";
 import { IOpen } from "../npmmodules";
@@ -18,66 +18,31 @@ import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
 @injectable()
 export default class CliGenerateFacade implements ICliGenerateFacade {
 
-	/**
-	 * The overridden design
-	 */
-	public design: string | undefined;
-
-	/**
-	 * The overridden template
-	 */
-	public template: string | undefined;
-
-	/**
-	 * The overridden outputFolder
-	 */
-	public outputFolder: string | undefined;
-
-	/**
-	 * The overridden pattern
-	 */
-	public pattern: string | undefined;
-
-	/**
-	 * Should open the index.html of the documentation after generate it?
-	 */
-	public open: boolean = true;
-
-	/**
-	 * The reporter used (used for dependency injection)
-	 */
 	@inject(TYPES.IReporter)
 	private _reporter: IReporter;
 
-	/**
-	 * The GMProjectLoader
-	 */
 	@inject(TYPES.IGMProjectLoader)
 	private _loader: IGMProjectLoader;
 
-	/**
-	 * The config manager
-	 */
 	@inject(TYPES.IConfigManager)
 	private _configManager: IConfigManager;
 
-	/**
-	 * The documentation generator
-	 */
 	@inject(TYPES.IDocumentationGenerator)
 	private _documentationGenerator: IDocumentationGenerator;
 
-	/**
-	 * Open npm module
-	 */
+	@inject(TYPES.IConfigOverrider)
+	private _configOverrider: IConfigOverrider;
+
 	@inject(TYPES.IOpen)
 	private _open: IOpen;
+
 	/**
 	 * Generates the documentation for a given project
 	 * @param projectPath The path to the project
+	 * @param overrideConfig An object with the new configuration
 	 * @param opts The option object to override
 	 */
-	public async generate(projectPath: string = "."): Promise<void> {
+	public async generate(projectPath: string = ".", overrideConfig: { [key: string]: string } = {}): Promise<void> {
 
 		this._reporter.info("Loading Project...");
 
@@ -91,7 +56,7 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 			this._reporter.info("Configuration not found. Using default configuration.");
 			config = new ProjectConfig();
 		}
-		config = this._overrideConfig(config);
+		config = this._configOverrider.override(config, overrideConfig);
 
 		this._reporter.info("Generating documentation... ");
 		const outFolder = await this._documentationGenerator.generate(project, config);
@@ -100,32 +65,13 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 
 		const url = path.resolve(outFolder, "index.html");
 
-		if (this.open) {
+		if (overrideConfig.noOpen) {
+			this._reporter.info(`Documentation generated at: ${url}`);
+		} else {
 			this._reporter.info(`Opening: ${url}`);
 			this._open(url);
-		} else {
-			this._reporter.info(`Documentation generated at: ${url}`);
 		}
 
 	}
 
-	/**
-	 * Overrides the configuration with the local values
-	 * @param config The config
-	 */
-	private _overrideConfig(config: IProjectConfig): IProjectConfig {
-		if (this.design) {
-			config.output.design = this.design;
-		}
-		if (this.template) {
-			config.output.template = this.template;
-		}
-		if (this.outputFolder) {
-			config.output.outputFolder = this.outputFolder;
-		}
-		if (this.pattern) {
-			config.pattern = this.pattern;
-		}
-		return config;
-	}
 }
