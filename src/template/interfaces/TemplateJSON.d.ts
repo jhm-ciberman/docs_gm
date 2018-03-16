@@ -21,4 +21,5 @@ export interface IDesign {
 	index: string;
 	script?: string;
 	folder?: string;
+	resource?: string;
 }

@@ -46,6 +46,7 @@ export default class Design {
 		this.index = data.index;
 		this.script = data.script || this.script;
 		this.folder = data.folder || this.folder;
+		this.resource = data.resource || this.resource;
 	}
 
 	public getInputFile(type: DocElementType): string {
@@ -56,7 +57,8 @@ export default class Design {
 				return this.folder;
 			case DocElementType.Project:
 				return this.index;
+			case DocElementType.Resource:
+				return this.resource;
 		}
-		throw new Error("Unknown resource type");
 	}
 }
