@@ -17,13 +17,8 @@ import MockReporter from "../__mock__/MockReporter.mock";
 /* tslint:disable:max-classes-per-file completed-docs */
 @injectable()
 class MockCliGGenerateFacade implements ICliGenerateFacade {
-	public open: boolean = false;
-	public design: string | undefined;
-	public template: string | undefined;
-	public outputFolder: string | undefined;
-	public pattern: string | undefined;
-	public async generate(_projectPath?: string | undefined, opts: {[key: string]: any} = {}): Promise<void> {
-		Expect(opts.noOpen).not.toBeTruthy();
+	public async generate(_projectPath?: string | undefined, _opts: {[key: string]: any} = {}): Promise<void> {
+		// void
 	}
 }
 @injectable()
@@ -31,8 +26,8 @@ class MockConfigManager implements IConfigManager {
 	public exportConfig(_outputPath: string): Promise<string> {
 		throw new Error("Method not implemented.");
 	}
-	public loadConfig(_jsonOrProjectPath: string): Promise<IProjectConfig | undefined> {
-		throw new Error("Method not implemented.");
+	public async loadConfig(_jsonOrProjectPath: string): Promise<IProjectConfig | undefined> {
+		return undefined;
 	}
 }
 @TestFixture("Cli")
@@ -42,8 +37,11 @@ export class CliFixture {
 		const cliFacade = new MockCliGGenerateFacade();
 		const spyGenerate = SpyOn(cliFacade, "generate");
 
+		const reporter = new MockReporter();
+		SpyOn(reporter, "info").andStub();
+
 		const container = new Container();
-		container.bind<IReporter>(TYPES.IReporter).to(MockReporter);
+		container.bind<IReporter>(TYPES.IReporter).toConstantValue(reporter);
 		container.bind<IConfigManager>(TYPES.IConfigManager).to(MockConfigManager);
 		container.bind<ICliGenerateFacade>(TYPES.ICliGenerateFacade).toConstantValue(cliFacade);
 		const cli = container.resolve(Cli);
