@@ -1,15 +1,14 @@
 import {
+	AsyncTest,
 	Expect,
 	SpyOn,
-	Test,
+	TestCase,
 	TestFixture,
 } from "alsatian";
 
 import { Container, injectable } from "inversify";
 import Cli from "../../../src/cli/Cli";
 import ICliGenerateFacade from "../../../src/cli/interfaces/ICliGenerateFacade";
-import IConfigManager from "../../../src/config/interfaces/IConfigManager";
-import IProjectConfig from "../../../src/config/interfaces/IProjectConfig";
 import IReporter from "../../../src/reporter/interfaces/IReporter";
 import { TYPES } from "../../../src/types";
 import MockReporter from "../__mock__/MockReporter.mock";
@@ -17,36 +16,53 @@ import MockReporter from "../__mock__/MockReporter.mock";
 /* tslint:disable:max-classes-per-file completed-docs */
 @injectable()
 class MockCliGGenerateFacade implements ICliGenerateFacade {
+	public async init(): Promise<string> {
+		throw new Error("Fake error init");
+	}
 	public async generate(_projectPath?: string | undefined, _opts: {[key: string]: any} = {}): Promise<void> {
-		// void
-	}
-}
-@injectable()
-class MockConfigManager implements IConfigManager {
-	public exportConfig(_outputPath: string): Promise<string> {
-		throw new Error("Method not implemented.");
-	}
-	public async loadConfig(_jsonOrProjectPath: string): Promise<IProjectConfig | undefined> {
-		return undefined;
+		throw new Error("Fake error generate");
 	}
 }
 @TestFixture("Cli")
 export class CliFixture {
-	@Test()
-	public cli_test() {
+
+	@TestCase("generate", "generate path --noOpen", true)
+	@TestCase("generate", "generate path --noOpen", false)
+	@TestCase("init", "init", true)
+	@TestCase("init", "init", false)
+	@AsyncTest()
+	public async cli(spyOnMethod: string, command: string, shouldFail: boolean) {
 		const cliFacade = new MockCliGGenerateFacade();
-		const spyGenerate = SpyOn(cliFacade, "generate");
+		const spy = SpyOn(cliFacade, spyOnMethod);
+		spy.andReturn(shouldFail
+			? Promise.reject(new Error("Fake error"))
+			: Promise.resolve(),
+		);
 
 		const reporter = new MockReporter();
 		SpyOn(reporter, "info").andStub();
 
+		const errorSpy = SpyOn(reporter, "error");
+		errorSpy.andStub();
+
 		const container = new Container();
 		container.bind<IReporter>(TYPES.IReporter).toConstantValue(reporter);
-		container.bind<IConfigManager>(TYPES.IConfigManager).to(MockConfigManager);
 		container.bind<ICliGenerateFacade>(TYPES.ICliGenerateFacade).toConstantValue(cliFacade);
 		const cli = container.resolve(Cli);
-		cli.parse("generate path --noOpen".split(" "));
 
-		Expect(spyGenerate).toHaveBeenCalled();
+		cli.parse(command.split(" "));
+
+		// TODO: refactor cli.parse to return a promise
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				Expect(spy).toHaveBeenCalled();
+				// Todo: this reporter.error() should be called. Why is not called?
+				if (shouldFail) {
+					Expect(errorSpy).toHaveBeenCalled();
+				}
+				resolve();
+			}, 50);
+		});
+
 	}
 }

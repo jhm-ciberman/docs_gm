@@ -1,9 +1,8 @@
 import { TYPES } from "../types";
 
 import { inject, injectable } from "inversify";
-import * as os from "os";
+
 import * as yargs from "yargs";
-import IConfigManager from "../config/interfaces/IConfigManager";
 import StringsEnglish from "../l18n/StringsEnglish";
 import IReporter from "../reporter/interfaces/IReporter";
 import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
@@ -28,12 +27,6 @@ export default class Cli {
 	 */
 	@inject(TYPES.ICliGenerateFacade)
 	private _cliGenerateFacade: ICliGenerateFacade;
-
-	/**
-	 * The config manager
-	 */
-	@inject(TYPES.IConfigManager)
-	private _configManager: IConfigManager;
 
 	/**
 	 * Parses the arguments and shows the CLI on screen.
@@ -99,8 +92,7 @@ export default class Cli {
 	 * Exports the docs_gm config json and output the instructions to the screen.
 	 */
 	private _init(lang: StringsEnglish) {
-		this._configManager
-			.exportConfig(os.homedir())
+		this._cliGenerateFacade.init()
 			.then((file) => {
 				for (const str of lang.CONFIG_INSTRUCTIONS) {
 					this._reporter.info(str.replace("%%FILE%%", file));

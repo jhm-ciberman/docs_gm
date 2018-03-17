@@ -39,8 +39,12 @@ import GMProjectLoader from "./gm_project/GMProjectLoader";
 import IGMProjectLoader from "./gm_project/interfaces/IGMProjectLoader";
 import DesignFilesCopier from "./renderer/DesignFilesCopier";
 import IDesignFilesCopier from "./renderer/interfaces/IDesignFilesCopier";
+import ILinkToBuilder from "./renderer/interfaces/ILinkToBuilder";
 import INunjucksRenderer from "./renderer/interfaces/INunjucksRenderer";
+import IRenderingContextGenerator from "./renderer/interfaces/IRenderingContextGenerator";
+import LinkToBuilder from "./renderer/LinkToBuilder";
 import NunjucksRenderer from "./renderer/NunjucksRenderer";
+import RenderingContextGenerator from "./renderer/RenderingContextGenerator";
 import IModuleFinder from "./template/interfaces/IModuleFinder";
 import ITemplateFactory from "./template/interfaces/ITemplateFactory";
 import ModuleFinder from "./template/ModuleFinder";
@@ -73,6 +77,8 @@ container.bind<IDocProjectGenerator>(TYPES.IDocProjectGenerator).to(DocProjectGe
 // Renderer
 container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(NunjucksRenderer);
 container.bind<IDesignFilesCopier>(TYPES.IDesignFilesCopier).to(DesignFilesCopier);
+container.bind<IRenderingContextGenerator>(TYPES.IRenderingContextGenerator).to(RenderingContextGenerator);
+container.bind<ILinkToBuilder>(TYPES.ILinkToBuilder).to(LinkToBuilder);
 
 // Reporter
 container.bind<IReporter>(TYPES.IReporter).to(ConsoleReporter);

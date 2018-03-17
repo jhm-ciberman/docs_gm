@@ -21,6 +21,7 @@ const TYPES = {
 	IRenderingContextGenerator: Symbol.for("IRenderingContextGenerator"),
 	INunjucksRenderer: Symbol.for("INunjucksRenderer"),
 	IDesignFilesCopier: Symbol.for("IDesignFilesCopier"),
+	ILinkToBuilder: Symbol.for("ILinkToBuilder"),
 
 	// Reporter
 	IReporter: Symbol.for("IReporter"),

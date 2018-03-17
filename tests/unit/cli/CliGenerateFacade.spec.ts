@@ -33,7 +33,7 @@ class MockGMProjectLoader implements IGMProjectLoader {
 @injectable()
 class MockConfigManager implements IConfigManager {
 	public async exportConfig(_outputPath: string): Promise<string> {
-		throw new Error("Method not implemented.");
+		return "foo";
 	}
 	public async loadConfig(jsonOrProjectPath: string): Promise<IProjectConfig | undefined> {
 		return jsonOrProjectPath === "." ? config : undefined;
@@ -70,6 +70,11 @@ export class CliGenerateFacadeFixture {
 	@AsyncTest()
 	public async generate_noOpen() {
 		return this._getCgf().generate("other/path/with/no/config", {noOpen: "true"});
+	}
+
+	@AsyncTest()
+	public async generate_init() {
+		return this._getCgf().init();
 	}
 
 	private _getCgf(): CliGenerateFacade {

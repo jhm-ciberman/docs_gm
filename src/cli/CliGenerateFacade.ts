@@ -3,6 +3,7 @@ import * as path from "path";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
 
+import * as os from "os";
 import ProjectConfig from "../config/entities/ProjectConfig";
 import IConfigManager from "../config/interfaces/IConfigManager";
 import IConfigOverrider from "../config/interfaces/IConfigOverrider";
@@ -72,6 +73,10 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 			this._open(url);
 		}
 
+	}
+
+	public async init(): Promise<string> {
+		return this._configManager.exportConfig(os.homedir());
 	}
 
 }
