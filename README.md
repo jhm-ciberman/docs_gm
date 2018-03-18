@@ -130,7 +130,7 @@ docs_gm generate --design myDesignName
 
 Each **template** can have multiple **designs**.
 
-`docs_gm` includes on integrated default template (called `docs_gm-basic`).
+`docs_gm` includes [one integrated default template](https://github.com/jhm-ciberman/docs_gm-basic) (called `docs_gm-basic`).
 That template includes three possible designs:
 
 - `onepage`: Shows all the project scripts in one single HTML pages with a table of contents. It does not shows the folder structure. Ideal for smaller projects.
