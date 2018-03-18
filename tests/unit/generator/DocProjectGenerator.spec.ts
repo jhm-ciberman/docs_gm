@@ -69,11 +69,15 @@ export class DocProjectGeneratorFixture {
 
 		Expect(doc.scripts.children.length).toBe(1);
 		Expect(doc.scripts.children[0].name).toBe("subfolder");
-		const children = (doc.scripts.children[0] as DocFolder).children;
-		Expect(children.length).toBe(3);
-		Expect(children[0].name).toBe("a");
-		Expect(children[1].name).toBe("b");
-		Expect(children[2].name).toBe("c");
+		Expect(doc.scripts.children[0].parent).toBe(doc.scripts);
+		const parent = (doc.scripts.children[0] as DocFolder);
+		Expect(parent.children.length).toBe(3);
+		Expect(parent.children[0].name).toBe("a");
+		Expect(parent.children[0].parent).toBe(parent);
+		Expect(parent.children[1].name).toBe("b");
+		Expect(parent.children[1].parent).toBe(parent);
+		Expect(parent.children[2].name).toBe("c");
+		Expect(parent.children[2].parent).toBe(parent);
 
 		Expect(loadSpy).toHaveBeenCalled();
 	}

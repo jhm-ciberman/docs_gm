@@ -57,7 +57,11 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 	private async _loadFolder(folder: IGMFolder, config: IProjectConfig, gmProject: IGMProject): Promise<DocFolder> {
 		const docFolder = new DocFolder(folder.name);
 		for (const res of folder.children) {
-			docFolder.children = docFolder.children.concat(await this._loadResource(res, config, gmProject));
+			const children = await this._loadResource(res, config, gmProject);
+			for (const child of children) {
+				child.parent = docFolder;
+				docFolder.children.push(child);
+			}
 		}
 		return docFolder;
 	}
