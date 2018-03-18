@@ -38,7 +38,9 @@ import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
 import IGMProjectLoader from "./gm_project/interfaces/IGMProjectLoader";
 import DesignFilesCopier from "./renderer/DesignFilesCopier";
+import InputFileResolver from "./renderer/InputFileResolver";
 import IDesignFilesCopier from "./renderer/interfaces/IDesignFilesCopier";
+import IInputFileResolver from "./renderer/interfaces/IInputFileResolver";
 import ILinkToBuilder from "./renderer/interfaces/ILinkToBuilder";
 import INunjucksRenderer from "./renderer/interfaces/INunjucksRenderer";
 import IRenderingContextGenerator from "./renderer/interfaces/IRenderingContextGenerator";
@@ -79,6 +81,7 @@ container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(NunjucksRenderer);
 container.bind<IDesignFilesCopier>(TYPES.IDesignFilesCopier).to(DesignFilesCopier);
 container.bind<IRenderingContextGenerator>(TYPES.IRenderingContextGenerator).to(RenderingContextGenerator);
 container.bind<ILinkToBuilder>(TYPES.ILinkToBuilder).to(LinkToBuilder);
+container.bind<IInputFileResolver>(TYPES.IInputFileResolver).to(InputFileResolver);
 
 // Reporter
 container.bind<IReporter>(TYPES.IReporter).to(ConsoleReporter);

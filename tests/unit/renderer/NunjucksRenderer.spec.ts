@@ -2,19 +2,24 @@ import {
 	AsyncTest,
 	Expect,
 	SetupFixture,
+	SpyOn,
 	TeardownFixture,
 	TestFixture,
 } from "alsatian";
 import { Container, injectable } from "inversify";
 import DocProject from "../../../src/doc_models/DocProject";
+import { DocElementType } from "../../../src/doc_models/enums/DocElementType";
 import IDocElement from "../../../src/doc_models/interfaces/IDocElement";
+import IInputFileResolver from "../../../src/renderer/interfaces/IInputFileResolver";
 import IRenderingContext from "../../../src/renderer/interfaces/IRenderingContext";
 import IRenderingContextGenerator from "../../../src/renderer/interfaces/IRenderingContextGenerator";
 import NunjucksRenderer from "../../../src/renderer/NunjucksRenderer";
 import RenderingQueue from "../../../src/renderer/RenderingQueue";
+import IReporter from "../../../src/reporter/interfaces/IReporter";
 import Design from "../../../src/template/Design";
 import { TYPES } from "../../../src/types";
 import { TempDir } from "../../_testing_helpers/TempDir.help";
+import MockReporter from "../__mock__/MockReporter.mock";
 import MockTemplate from "../__mock__/MockTemplate.mock";
 
 /* tslint:disable:max-classes-per-file completed-docs */
@@ -27,6 +32,12 @@ class MockRenderingContextGenerator implements IRenderingContextGenerator {
 		_currentPath: string,
 	): IRenderingContext {
 		return {project, linkTo: (_e) => "foo"};
+	}
+}
+@injectable()
+class MockInputFileResolver implements IInputFileResolver {
+	public resolve(design: Design, _type: DocElementType): string {
+		return design.index;
 	}
 }
 @TestFixture("NunjucksRendererFixture")
@@ -47,9 +58,14 @@ export class NunjucksRendererFixture {
 	}
 
 	@AsyncTest()
-	public async test() {
+	public async NunjucksRenderer_test() {
+		const mockReporter = new MockReporter();
+		SpyOn(mockReporter, "info").andStub();
+
 		const container = new Container();
 		container.bind<IRenderingContextGenerator>(TYPES.IRenderingContextGenerator).to(MockRenderingContextGenerator);
+		container.bind<IInputFileResolver>(TYPES.IInputFileResolver).to(MockInputFileResolver);
+		container.bind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
 		const renderer = container.resolve(NunjucksRenderer);
 
 		const template = new MockTemplate();

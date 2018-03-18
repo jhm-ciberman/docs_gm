@@ -1,4 +1,3 @@
-import { DocElementType } from "../doc_models/enums/DocElementType";
 import { ITemplate } from "./interfaces/ITemplate";
 import * as TemplateJSON from "./interfaces/TemplateJSON";
 
@@ -55,16 +54,4 @@ export default class Design {
 		this.resource = data.resource || this.resource;
 	}
 
-	public getInputFile(type: DocElementType): string {
-		switch (type) {
-			case DocElementType.Script:
-				return this.script;
-			case DocElementType.Folder:
-				return this.folder;
-			case DocElementType.Project:
-				return this.index;
-			case DocElementType.Resource:
-				return this.resource;
-		}
-	}
 }
