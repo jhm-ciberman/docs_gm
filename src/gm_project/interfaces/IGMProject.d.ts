@@ -16,12 +16,6 @@ export default interface IGMProject extends IGMFolder {
 	readonly name: string;
 
 	/**
-	 * Returns an array of the resources that match certain glob pattern
-	 * @param pattern The glob pattern to use to find files
-	 */
-	find(pattern: string): IGMResource[];
-
-	/**
 	 * An iterator with the top level folders
 	 */
 	readonly children: IterableIterator<IGMFolder>;

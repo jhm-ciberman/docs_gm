@@ -18,11 +18,5 @@ export default interface IGMFolder extends IGMResource {
 	 */
 	addChild(child: IGMResource): void;
 
-	/**
-	 * Gets all the subtree leafs nodes recursively. That are
-	 * all the GMResources that are not folders
-	 */
-	getSubtreeLeafs(): IGMResource[];
-
 
 }

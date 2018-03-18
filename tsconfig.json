@@ -1,6 +1,7 @@
 {
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "tests/**/*.ts"
   ],
   "exclude": [
     "node_modules"
@@ -14,14 +15,17 @@
     "sourceMap": true,
     //"inlineSourceMap": true,
     "outDir": "./dist/",
-    "rootDir": "./src/",
     "strict": true,
-
+    "strictPropertyInitialization": false, /* TODO: allow strict property initialization. Must wait to tslint to support the new definite assignment */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
+    "types": [
+      "reflect-metadata"
+    ],
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   }
 }

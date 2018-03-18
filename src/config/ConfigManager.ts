@@ -1,13 +1,17 @@
+import { injectable } from "inversify";
+
 import * as fse from "fs-extra";
-import * as JSON5 from "json5";
 import * as path from "path";
 import IProjectConfig from "../config/interfaces/IProjectConfig";
-import ProjectConfig from "../config/models/ProjectConfig";
+import ProjectConfig from "./entities/ProjectConfig";
+import IConfigManager from "./interfaces/IConfigManager";
 
 /**
  * This class exports and loads the configuration
  */
-export default class ConfigManager {
+@injectable()
+export default class ConfigManager implements IConfigManager {
+
 	/**
 	 * Copy the docs_gm.json file to the specified outputPath.
 	 * @param outputPath The output filepath
@@ -15,7 +19,9 @@ export default class ConfigManager {
 	 */
 	public async exportConfig(outputPath: string): Promise<string> {
 		outputPath = path.resolve(outputPath, "docs_gm.json");
-		await fse.writeJSON(outputPath, new ProjectConfig());
+		await fse.writeJSON(outputPath, new ProjectConfig(), {
+			spaces: "\t",
+		});
 		return outputPath;
 	}
 
@@ -24,20 +30,18 @@ export default class ConfigManager {
 	 * You can provide a path to a json file to be loaded or to a GameMaker
 	 * project directory. It returns null if the file does not exists, and fails the promise
 	 * if the file is badly formated.
-	 * @param jsonOrProjectPath The path to the JSON file or to the GameMaer project
+	 * @param jsonOrProjectPath The path to the JSON file or to the GameMaker project
 	 * @returns A promise with the created OutputConfig object or null if the file does not exists
 	 */
 	public async loadConfig(jsonOrProjectPath: string): Promise<IProjectConfig | undefined> {
 		let jsonPath: string;
-		let str: string;
 		if (path.extname(jsonOrProjectPath) === ".json") {
 			jsonPath = path.resolve(jsonOrProjectPath);
 		} else {
 			jsonPath = path.resolve(jsonOrProjectPath, "datafiles/docs_gm.json");
 		}
 		try {
-			str = await fse.readFile(jsonPath, "utf8");
-			const data: IProjectConfig = JSON5.parse(str);
+			const data: IProjectConfig = await fse.readJSON(jsonPath);
 			const config: IProjectConfig = new ProjectConfig();
 			return Object.assign(config, data);
 		} catch (e) {

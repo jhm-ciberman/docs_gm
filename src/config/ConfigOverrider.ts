@@ -1,0 +1,25 @@
+import { injectable } from "inversify";
+import IProjectConfig from "./interfaces/IProjectConfig";
+
+@injectable()
+export default class ConfigOverrider {
+	/**
+	 * Overrides the configuration with the local values
+	 * @param config The config
+	 */
+	public override(config: IProjectConfig, overrideConfig: { [key: string]: string }): IProjectConfig {
+		if (overrideConfig.design) {
+			config.output.design = overrideConfig.design;
+		}
+		if (overrideConfig.template) {
+			config.output.template = overrideConfig.template;
+		}
+		if (overrideConfig.outputFolder) {
+			config.output.outputFolder = overrideConfig.outputFolder;
+		}
+		if (overrideConfig.pattern) {
+			config.pattern = overrideConfig.pattern;
+		}
+		return config;
+	}
+}
