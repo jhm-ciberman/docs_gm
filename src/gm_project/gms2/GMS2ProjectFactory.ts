@@ -94,12 +94,16 @@ export default class GMS2ProjectFactory {
 	private _buildSubtree(folder: IGMFolder) {
 		const children = this._folderChildrenKeys.get(folder) as string[];
 		for (const childKey of children) {
-			const child = this._resourcesByKey.get(childKey);
-			if (child) {
-				folder.addChild(child);
-				if (this._isFolder(child)) {
-					this._buildSubtree(child);
-				}
+			this._findAndBuildChild(childKey, folder);
+		}
+	}
+
+	private _findAndBuildChild(childKey: string, folder: IGMFolder) {
+		const child = this._resourcesByKey.get(childKey);
+		if (child) {
+			folder.addChild(child);
+			if (this._isFolder(child)) {
+				this._buildSubtree(child);
 			}
 		}
 	}

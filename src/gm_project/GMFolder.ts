@@ -1,4 +1,5 @@
 import GMResource from "./GMResource";
+import GMResourceHelper from "./GMResourceHelper";
 import IGMFolder from "./interfaces/IGMFolder";
 import IGMResource from "./interfaces/IGMResource";
 import IGMScript from "./interfaces/IGMScript";
@@ -33,19 +34,12 @@ export default class GMFolder extends GMResource implements IGMFolder {
 	 */
 	public addChild(child: IGMResource): void {
 		child.parent = this;
-		if (this._isScript(child) && (child.name.startsWith("MODULE_") || child.name.startsWith("FOLDER_"))) {
+		if (GMResourceHelper.isScript(child) && (child.name.startsWith("MODULE_") || child.name.startsWith("FOLDER_"))) {
 			this._moduleScript = child;
 		} else {
 			this._children.push(child);
 		}
 
-	}
-
-	/**
-	 * Returns true if the resource is a GMScript
-	 */
-	private _isScript(res: IGMResource): res is IGMScript {
-		return (res as IGMScript).subScripts !== undefined;
 	}
 
 	/**
