@@ -125,6 +125,7 @@ The DocPage represents a single page of your Documentation.  It has the followin
 - `script`: **{DocScript}** A DocScript object representing the SINGLE script your must document in the current template page. You will only use this if you are making a multipage template. **Its available only when docs_gm is rendering the "script" page defined on your template.json file.**
 - `folder`: **{DocFolder}** A DocFolder object representing the SINGLE Folder your must document in the current template page. You will only use this if you are making a multipage template. **Its available only when docs_gm is rendering the "folder" page defined on your template.json file.**
 - `resource`: **{DocResource}** A DocResource object representing the SINGLE generic game maker resource (not a folder nor a script) that your must document in the current template page. You will only use this if you are making a multipage template. **Its available only when docs_gm is rendering the "resource" page defined on your template.json file.**
+- `linkTo(docElement)` **{Function}** This function is available in all the njk files rendered with docs_gm. Check below for more info about `linkTo` function.
 
 ### DocProject
 
@@ -190,6 +191,52 @@ Represents a single script usage Example
 
 - `code`: **{string}** The code for the Example
 - `caption`: **{string}** The example caption (not supported for now, wait for a next update)
+
+## LinkTo(docElement) function
+
+This global function is available in any nunjucks template file rendered with `docs_gm`.
+
+You can pass a DocElement object (DocScript, DocFolder or DocProject) and it will generate a relative link to that resource, and will tell docs_gm that you want to render an HTML page for that resource.
+
+For example:
+
+```html
+    {# Prints the table of contents #}
+    <ul id="table-of-contents">
+
+    {# Loops over each direct child resource on the base "scripts" folder in the project #}
+
+    {% for resource in project.scripts.children %}
+
+        <a href="{{ linkTo(resource) }}"><li>{{ resource.name }}</li></a>
+
+    {% endfor %}
+
+    </ul>
+```
+
+When `linkTo(resource)` it will do two thigs:
+
+- Will generate and return a relative link to the html page for the given resource.
+- It will tell the docs_gm system that you want to render another HTML page for that given resource.
+
+The njk file used to render the HTML page for the given resource will be determined by the resource type, (script, folder, project...) and the design configuration on the `template.json` file.
+
+For example if you set:
+
+```json
+    "index": "my-index.njk",
+    "script": "my-script.njk",
+    "folder": "my-folder.njk"
+```
+
+And from `my-index.njk` you call `linkTo`:
+
+```html
+   <a href="{{ linkTo(project.scripts.children[0]) }}">Link</a>
+```
+
+Asuming that the first children in the scripts folder on your project is another folder then a new page will be rendered using the `my-folder.njk` file.
 
 ## Using custom templates from NPM (recommended)
 
