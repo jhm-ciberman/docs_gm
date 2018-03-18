@@ -7,6 +7,7 @@ import IReporter from "../reporter/interfaces/IReporter";
 import Design from "../template/Design";
 import { TYPES } from "../types";
 import IInputFileResolver from "./interfaces/IInputFileResolver";
+import ILinkToBuilder from "./interfaces/ILinkToBuilder";
 import IRenderingContextGenerator from "./interfaces/IRenderingContextGenerator";
 import RenderingQueue from "./RenderingQueue";
 
@@ -18,6 +19,9 @@ export default class NunjucksRenderer {
 
 	@inject(TYPES.IInputFileResolver)
 	private _inputFileResolver: IInputFileResolver;
+
+	@inject(TYPES.ILinkToBuilder)
+	private _linkToBuilder: ILinkToBuilder;
 
 	@inject(TYPES.IReporter)
 	private _reporter: IReporter;
@@ -39,7 +43,9 @@ export default class NunjucksRenderer {
 			const currentPath = queue.linkTo(element);
 			const filename = path.resolve(outputFolder, currentPath);
 
-			const ctx = this._renderingContextGenerator.generate(docProject, element, queue, currentPath);
+			env.addGlobal("linkTo", this._linkToBuilder.build(queue, currentPath));
+
+			const ctx = this._renderingContextGenerator.generate(docProject, element);
 			const html = template.render(ctx);
 
 			await fse.outputFile(filename, html);

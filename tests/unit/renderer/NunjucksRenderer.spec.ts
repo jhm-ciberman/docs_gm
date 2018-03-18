@@ -11,6 +11,7 @@ import DocProject from "../../../src/doc_models/DocProject";
 import { DocElementType } from "../../../src/doc_models/enums/DocElementType";
 import IDocElement from "../../../src/doc_models/interfaces/IDocElement";
 import IInputFileResolver from "../../../src/renderer/interfaces/IInputFileResolver";
+import ILinkToBuilder from "../../../src/renderer/interfaces/ILinkToBuilder";
 import IRenderingContext from "../../../src/renderer/interfaces/IRenderingContext";
 import IRenderingContextGenerator from "../../../src/renderer/interfaces/IRenderingContextGenerator";
 import NunjucksRenderer from "../../../src/renderer/NunjucksRenderer";
@@ -25,13 +26,14 @@ import MockTemplate from "../__mock__/MockTemplate.mock";
 /* tslint:disable:max-classes-per-file completed-docs */
 @injectable()
 class MockRenderingContextGenerator implements IRenderingContextGenerator {
-	public generate(
-		project: DocProject,
-		_element: IDocElement,
-		_queue: RenderingQueue,
-		_currentPath: string,
-	): IRenderingContext {
-		return {project, linkTo: (_e) => "foo"};
+	public generate(project: DocProject, _element: IDocElement): IRenderingContext {
+		return {project};
+	}
+}
+@injectable()
+class MockLinkToBuilder implements ILinkToBuilder {
+	public build(_queue: RenderingQueue, _currentFile: string): (e: IDocElement) => string {
+		return (_e) => "foo";
 	}
 }
 @injectable()
@@ -66,6 +68,7 @@ export class NunjucksRendererFixture {
 		container.bind<IRenderingContextGenerator>(TYPES.IRenderingContextGenerator).to(MockRenderingContextGenerator);
 		container.bind<IInputFileResolver>(TYPES.IInputFileResolver).to(MockInputFileResolver);
 		container.bind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
+		container.bind<ILinkToBuilder>(TYPES.ILinkToBuilder).to(MockLinkToBuilder);
 		const renderer = container.resolve(NunjucksRenderer);
 
 		const template = new MockTemplate();

@@ -5,5 +5,4 @@ export default interface IRenderingContext {
 	folder?: IDocElement;
 	script?: IDocElement;
 	resource?: IDocElement;
-	linkTo(element: IDocElement): string;
 }
