@@ -18,7 +18,7 @@ export default abstract class DocResource implements IDocElement {
 	public readonly abstract type: DocElementType = DocElementType.Resource;
 
 	/**
-	 * The parent folder
+	 * The parent folder. For the base folder (for example the base "script" folder), this value is null
 	 */
 	public parent: DocFolder | null = null;
 

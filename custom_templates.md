@@ -140,6 +140,7 @@ Base type that represents a generic game maker resource (or folder) on the proje
 
 - `type`: **{string}** It will the type of resource. If for some reason `docs_gm` have troubles identifying the type of the resource the value will be `"resource"`.
 - `name`: **{string}** The name of the resource. Examples: `"spr_wall"`, `"my_super_folder"`, `"scr_walljump"`.
+- `parent` **{ DocFolder | null }** The parent folder. For the base folder (for example the base "script" folder), this value is null.
 
 ### DocFolder
 
@@ -149,6 +150,7 @@ Represents a single GameMaker folder or subfolder on the resource tree.
 
 - `type`: **{string}** It will be allways the value `"folder"`.
 - `name`: **{string}** The name of the folder. Example: `"my_folder_name"`.
+- `parent` **{ DocFolder | null }** The parent folder. For the base folder (for example the base "script" folder), this value is null.
 - `description`: **{string}** The description of the folder if present. (The default is an empty string `""`). See the `@module` tag for more info about folder descriptions. (Not implemented at the moment)
 - `children`: **{DocResource[]}** An array with all the direct children of that folder.
 - `all`: **{DocResource[]}** Returns an array that contains ALL the DocResources including NESTED resources recursively. For example. If you have a parent folder with a script1 and a subfolder with script2 and script3, `parentFolder.all` will return `[DocScript (script1), DocScript (script2), DocScript (script3)]`
@@ -161,9 +163,10 @@ Represents a single script of the GameMaker project.
 
 - `type`: **{string}** It will be allways the value `"script"`.
 - `name`: **{string}** The name of the script. Example: `"scr_character_jump"`.
+- `parent` **{ DocFolder }** The parent folder.
 - `description`: **{string}** The description of the script.
 - `params`: **{DocParam[]}** An array of DocParams objects. Representing each parameter or argument of the script.
-- `returns`: **{DocReturns}** A DocReturns object, representing the returned value of the script.
+- `returns`: **{DocReturns | null}** A DocReturns object, representing the returned value of the script. (or null if the script has no `@returns` documentation)
 - `examples`: **{DocExample[]}** An array of DocExample objects. Representing each usage example code provided for the script.
 - `private`: **{boolean}** `true` or `false` depending if the script is a private script or not (can be marked with the @private JSDoc or with a script name starting with underscore).
 - `undocumented`: **{boolean}** `true` if is undocumented script, `false` if not.
