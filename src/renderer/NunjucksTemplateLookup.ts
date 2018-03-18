@@ -2,6 +2,7 @@ import * as nunjucks from "nunjucks";
 import { DocElementType } from "../doc_models/enums/DocElementType";
 import Design from "../template/Design";
 
+// TODO: remove this class (its useless since nunjucks already caches the files)
 export default class NunjucksTemplateLookup {
 
 	private _env: nunjucks.Environment;
@@ -12,7 +13,10 @@ export default class NunjucksTemplateLookup {
 
 	constructor(design: Design) {
 		this._design = design;
-		this._env = nunjucks.configure(design.template.folder, { autoescape: false });
+		this._env = nunjucks.configure(design.template.folder, {
+			autoescape: false,
+			throwOnUndefined: true,
+		});
 	}
 
 	public get(elementType: DocElementType) {

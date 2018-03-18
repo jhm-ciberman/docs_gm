@@ -6,17 +6,17 @@ export default class DocParam {
 	/**
 	 * The name of the argument.
 	 */
-	public name: string | null = null;
+	public name: string = "";
 
 	/**
 	 * The type of the argument.
 	 */
-	public type: string | null = null;
+	public type: string = "";
 
 	/**
 	 * The description of the argument
 	 */
-	public description: string | null = null;
+	public description: string = "";
 
 	/**
 	 * `true` or `false` depending if the argument is marked

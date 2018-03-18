@@ -6,11 +6,11 @@ export default class DocReturns {
 	/**
 	 * The type of the returned value.
 	 */
-	public type: string | null = null;
+	public type: string = "";
 
 	/**
 	 * The description of the returned value
 	 */
-	public description: string | null = null;
+	public description: string = "";
 
 }

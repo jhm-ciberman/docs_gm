@@ -108,7 +108,7 @@ export class JSDocParserFixture {
 			" * @description ",
 			" */",
 		].join("\n"));
-		Expect(doc.description).toBeNull();
+		Expect(doc.description).toBe("");
 		Expect(doc.undocumented).toBe(true);
 	}
 
@@ -172,9 +172,9 @@ export class JSDocParserFixture {
 			" */",
 		].join("\n"));
 		Expect(doc.examples.length).toBe(2);
-		Expect(doc.examples[0].caption).toBeNull();
+		Expect(doc.examples[0].caption).toBe("");
 		Expect(doc.examples[0].code).toBe("my_script(a, b, c);");
-		Expect(doc.examples[1].caption).toBeNull();
+		Expect(doc.examples[1].caption).toBe("");
 		Expect(doc.examples[1].code).toBe("my_script(1, 2, 3);");
 		Expect(doc.undocumented).toBe(false);
 		Expect(doc.undocumented).toBe(false);
@@ -199,12 +199,12 @@ export class JSDocParserFixture {
 
 		Expect(doc.params[1].name).toBe("jump");
 		Expect(doc.params[1].description).toBe("If the character should jump");
-		Expect(doc.params[1].type).toBeNull();
+		Expect(doc.params[1].type).toBe("");
 		Expect(doc.params[1].optional).toBe(true);
 
 		Expect(doc.params[2].name).toBe("multiline");
 		Expect(doc.params[2].description).toBe("This is a\nmultiline description.");
-		Expect(doc.params[2].type).toBeNull();
+		Expect(doc.params[2].type).toBe("");
 		Expect(doc.params[2].optional).toBe(false);
 
 		Expect(doc.undocumented).toBe(false);

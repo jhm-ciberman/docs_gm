@@ -18,7 +18,7 @@ export default class DocScript extends DocResource implements IDocElement {
 	/**
 	 * The description of the script
 	 */
-	public description: string | null = null;
+	public description: string = "";
 
 	/**
 	 * An array of DocParams objects.

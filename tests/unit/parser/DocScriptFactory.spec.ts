@@ -54,7 +54,7 @@ export class DocScriptFactoryFixture {
 		Expect(params[0].description).toBe("param1_description");
 
 		Expect(params[1].name).toBe("param2_name");
-		Expect(params[1].type).toBeNull();
+		Expect(params[1].type).toBe("");
 		Expect(params[1].optional).toBe(true);
 		Expect(params[1].description).toBe("param2_description");
 	}
@@ -67,9 +67,9 @@ export class DocScriptFactoryFixture {
 		const examples = script.examples;
 		Expect(examples.length).toBe(2);
 		Expect(examples[0].code).toBe("my_example1");
-		Expect(examples[0].caption).toBeNull();
+		Expect(examples[0].caption).toBe("");
 		Expect(examples[1].code).toBe("my_example2");
-		Expect(examples[1].caption).toBeNull();
+		Expect(examples[1].caption).toBe("");
 	}
 
 	@Test("Should not add an empty example")

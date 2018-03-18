@@ -39,7 +39,7 @@ export default class DocScriptFactory {
 			const example = new DocExample();
 			const str = StringUtils.stripInitialLineFeeds(exampleString);
 			example.code = StringUtils.escapeHtml(str);
-			example.caption = null;
+			example.caption = "";
 
 			this._script.examples.push(example);
 			this._script.undocumented = false;
@@ -56,7 +56,7 @@ export default class DocScriptFactory {
 	public addParam(name: string, type: string, optional: boolean, description: string): void {
 		const param = new DocParam();
 		param.name = StringUtils.escapeHtml(name);
-		param.type = type ? StringUtils.escapeHtml(type) : null;
+		param.type = type ? StringUtils.escapeHtml(type) : "";
 		param.optional = optional;
 		let str = StringUtils.stripInitialHypen(description);
 		str = StringUtils.markdown2Html(str);

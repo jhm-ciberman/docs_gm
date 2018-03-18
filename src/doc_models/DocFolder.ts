@@ -10,7 +10,7 @@ export default class DocFolder extends DocResource implements IDocElement {
 	 * The folder description, if exists. It will be extracted from the
 	 * first script whose name starts with `MODULE_` or `FOLDER_`.
 	 */
-	public description: string | null = null;
+	public description: string = "";
 
 	/**
 	 * The resource type
