@@ -1,6 +1,7 @@
 import {
 	Expect,
 	Test,
+	TestCase,
 	TestFixture,
 } from "alsatian";
 
@@ -14,18 +15,17 @@ import RenderingQueue from "../../../src/renderer/RenderingQueue";
 @TestFixture("LinkToBuilderFixture")
 export class LinkToBuilderFixture {
 
+	@TestCase("index.html", "my_script.html")
+	@TestCase("dir/index.html", "../my_script.html")
 	@Test()
-	public test() {
+	public test(baseFile: string, expected: string) {
 		const element = new DocScript("my_script");
-
-		const queue = new RenderingQueue();
-		const linkToScript = queue.linkTo(element);
 
 		const container = new Container();
 		const linkToBuilder = container.resolve(LinkToBuilder);
-		const linkTo = linkToBuilder.build(queue, "");
+		const linkTo = linkToBuilder.build(new RenderingQueue(), baseFile);
 
-		Expect(linkTo(element)).toBe(linkToScript);
+		Expect(linkTo(element)).toBe(expected);
 		Expect(() => linkTo(null as any)).toThrow();
 	}
 }
