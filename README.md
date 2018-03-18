@@ -54,13 +54,13 @@ You will need to document your scripts following JSDoc syntax. You can learn mor
 For example:  In the script `my_script`
 
 ```js
-/// my_script(coffe_type, cakes_number [, clean_after_work]);
+/// my_script(coffee_type, cakes_number [, clean_after_work]);
 /**
  * This script will do a lot of things. Like make
- * coffe, and bake a cake. It will return the
+ * coffee, and bake a cake. It will return the
  * index of the generated breakfast.
  *
- * @param {string} coffe_type - The type of coffee
+ * @param {string} coffee_type - The type of coffee
  * you want
  * @param {integer} cakes_number - The number of cakes
  * to bake.
@@ -131,7 +131,7 @@ docs_gm generate --design myDesignName
 Each **template** can have multiple **designs**. 
 
 `docs_gm` includes on integrated default template (called `docs_gm-basic`).
-That template includes three posible designs:
+That template includes three possible designs:
 
 - `onepage` (The default)
 - `multipage`

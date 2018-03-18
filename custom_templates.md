@@ -77,7 +77,7 @@ In the above example, the template has only one design named `onepage`.
 ### Design
 
 - `"displayName"`: **{string}** (required)  The display name of the design. It can be shown on the screen. Examples: `"My super awesome design"`. Try to avoid using the word "Design" in the name.
-- `"copy"`: **{string}** (optional)  An array of files to copy for this design. The array can be a glob. More info about globs [here](https://github.com/isaacs/node-glob). You can also use [negated globs](https://github.com/sindresorhus/globby). If omited, the default for the `"copy"` will be `["**/*", "!template.json", "!*.njk", "!package.json"]`. (All files and folders will be copied except for template.json, package.json and all files with *.njk extension).
+- `"copy"`: **{string}** (optional)  An array of files to copy for this design. The array can be a glob. More info about globs [here](https://github.com/isaacs/node-glob). You can also use [negated globs](https://github.com/sindresorhus/globby). If omitted, the default for the `"copy"` will be `["**/*", "!template.json", "!*.njk", "!package.json"]`. (All files and folders will be copied except for template.json, package.json and all files with *.njk extension).
 - `"pages"`: **{Page[]}** (required)  An array with the pages of the documentation that needs to be processed with the template engine.
 - `"index"`: **{string}** (required) The path of the *.njk file that will be used as the index.html file for that design.
 - `"folder"`: **{string}** (optional) The path of the *.njk file that will be used, if required, to render the page for a Game Maker folder page.
@@ -86,7 +86,7 @@ In the above example, the template has only one design named `onepage`.
 
 ## Template Pages
 
-Each page is a `*.njk` file, that is a simple HTML file that uses Nunjucks templating. You can name your template pages files however you want. If you want autocomplete options for Nunjucks tags in your text editor, you can [download your prefered editor plugin](https://mozilla.github.io/nunjucks/templating.html#syntax-highlighting).
+Each page is a `*.njk` file, that is a simple HTML file that uses Nunjucks templating. You can name your template pages files however you want. If you want autocomplete options for Nunjucks tags in your text editor, you can [download your preferred editor plugin](https://mozilla.github.io/nunjucks/templating.html#syntax-highlighting).
 
 > **INFO**: **docs_gm** provides a number of Templates you can inspect to learn about.
 
@@ -138,7 +138,7 @@ Represents the current GameMaker project that you are documenting. This object h
 
 Base type that represents a generic game maker resource (or folder) on the project
 
-- `type`: **{string}** It will the type of resource. If for some reason `docs_gm` have troubles identifing the type of the resource the value will be `"resource"`.
+- `type`: **{string}** It will the type of resource. If for some reason `docs_gm` have troubles identifying the type of the resource the value will be `"resource"`.
 - `name`: **{string}** The name of the resource. Examples: `"spr_wall"`, `"my_super_folder"`, `"scr_walljump"`.
 
 ### DocFolder
@@ -215,7 +215,7 @@ For example:
     </ul>
 ```
 
-When `linkTo(resource)` it will do two thigs:
+When `linkTo(resource)` it will do two things:
 
 - Will generate and return a relative link to the html page for the given resource.
 - It will tell the docs_gm system that you want to render another HTML page for that given resource.
@@ -236,7 +236,7 @@ And from `my-index.njk` you call `linkTo`:
    <a href="{{ linkTo(project.scripts.children[0]) }}">Link</a>
 ```
 
-Asuming that the first children in the scripts folder on your project is another folder then a new page will be rendered using the `my-folder.njk` file.
+Assuming that the first children in the scripts folder on your project is another folder then a new page will be rendered using the `my-folder.njk` file.
 
 ## Using custom templates from NPM (recommended)
 
