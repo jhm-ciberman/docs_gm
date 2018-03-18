@@ -128,25 +128,25 @@ docs_gm generate --design myDesignName
 
 ## Changing the template and design
 
-Each **template** can have multiple **designs**. 
+Each **template** can have multiple **designs**.
 
 `docs_gm` includes on integrated default template (called `docs_gm-basic`).
 That template includes three possible designs:
 
-- `onepage` (The default)
-- `multipage`
-- `multipage-modules`
+- `onepage`: Shows all the project scripts in one single HTML pages with a table of contents. It does not shows the folder structure. Ideal for smaller projects.
+- `multipage`: Each script documentation is generated in a separate HTML file, and the index file contains a table of contents with links to each script page. It does not shows the project folder structure. Ideal for medium sizes projects.
+- `modules`: Each script and each folder is generated in a separate HTML file. Each folder shows the folder children with links to each one and to his parent folder. It shows the folder structure, but it requires more clicks to reach an specific script documentation. Ideal for huge sized projects.
 
-For example, if you want to change the **design**, you can change the `design` value in your configuration file (See `docs_gm init`) to the design name you want to use. For example: 
+For example, if you want to change the **design**, you can change the `design` value in your configuration file (See `docs_gm init`) to the design name you want to use. For example:
 
 ```json
-"design": "multipage-modules", 
+"design": "multipage",
 ```
 
 You can also change the name of the template to use (the template package must be installed globally). For example, if you have a template named `docs_gm-awesome-template`, you can write this in your configuration file:
 
 ```json
-"template": "awesome-template", 
+"template": "awesome-template",
 ```
 
 Another alternative is to set the values using the console:
