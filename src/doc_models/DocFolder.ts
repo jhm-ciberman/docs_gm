@@ -52,4 +52,10 @@ export default class DocFolder extends DocResource implements IDocElement {
 		return arr;
 	}
 
+	/**
+	 * Returns the fullpath of the resource
+	 */
+	get fullpath(): string {
+		return this.parent ? this.parent.fullpath + this.name + "/" : this.name + "/";
+	}
 }

@@ -19,7 +19,17 @@ export default class DocProject implements IDocElement {
 	/**
 	 * The root scripts folder
 	 */
-	public scripts: DocFolder = new DocFolder("scripts");
+	public scripts: DocFolder;
+
+	/**
+	 * The DocProject parent is allways null
+	 */
+	public readonly parent: null = null;
+
+	/**
+	 * The fullpath of the project is allways an empty string
+	 */
+	public readonly fullpath: string = "";
 
 	/**
 	 * Creates an instance of DocProject.
@@ -28,5 +38,7 @@ export default class DocProject implements IDocElement {
 	 */
 	constructor(name: string) {
 		this.name = name;
+		this.scripts = new DocFolder("scripts");
+		this.scripts.parent = this;
 	}
 }

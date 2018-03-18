@@ -4,6 +4,7 @@ import {
 	TestFixture,
 } from "alsatian";
 
+import DocFolder from "../../../src/doc_models/DocFolder";
 import DocProject from "../../../src/doc_models/DocProject";
 import DocScript from "../../../src/doc_models/DocScript";
 import IDocElement from "../../../src/doc_models/interfaces/IDocElement";
@@ -34,5 +35,19 @@ export class RenderingQueueFixture {
 		const p = new DocProject("my project");
 		const link = rq.linkTo(p);
 		Expect(link).toBe("index.html");
+	}
+
+	@Test()
+	public test_parents() {
+		const rq = new RenderingQueue();
+		const p = new DocProject("my project");
+		const f = new DocFolder("my_folder");
+		Expect(rq.linkTo(f)).toBe("my_folder.html");
+		f.parent = p;
+		const el = new DocScript("my_script");
+		el.parent = f;
+		Expect(rq.linkTo(el)).toBe("my_folder/my_script.html");
+		Expect(rq.linkTo(f)).toBe("my_folder.html");
+		Expect(rq.linkTo(p)).toBe("index.html");
 	}
 }

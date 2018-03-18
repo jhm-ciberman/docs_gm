@@ -1,4 +1,3 @@
-import { DocElementType } from "../doc_models/enums/DocElementType";
 import IDocElement from "../doc_models/interfaces/IDocElement";
 /**
  * This class represents a Queue that stores the DocElement items to be rendered. It also generates
@@ -12,9 +11,9 @@ export default class RenderingQueue {
 	private _queue: IDocElement[] = [];
 
 	/**
-	 * A cache with the links
+	 * A Map cache with the links
 	 */
-	private _links: Map<IDocElement, string> = new Map();
+	private _linksMap: Map<IDocElement, string> = new Map();
 
 	/**
 	 * Returns the relative path of the HTML file for the given IDocElement. Also,
@@ -22,10 +21,10 @@ export default class RenderingQueue {
 	 * @param element The doc element
 	 */
 	public linkTo(element: IDocElement) {
-		let link = this._links.get(element);
+		let link = this._linksMap.get(element);
 		if (!link) {
-			link = this._getLinkTo(element);
-			this._links.set(element, link);
+			link = this._createLinkTo(element);
+			this._linksMap.set(element, link);
 			this._queue.push(element);
 		}
 		return link + ".html";
@@ -42,11 +41,12 @@ export default class RenderingQueue {
 	 * Returns a new unique url for a given element
 	 * @param element The doc element
 	 */
-	private _getLinkTo(element: IDocElement) {
-		if (element.type === DocElementType.Project) {
-			return "index";
+	private _createLinkTo(element: IDocElement) {
+		const p = element.fullpath;
+		if (p) {
+			return (p.endsWith("/")) ? p.slice(0, -1) : p;
 		} else {
-			return element.name;
+			return "index";
 		}
 	}
 
