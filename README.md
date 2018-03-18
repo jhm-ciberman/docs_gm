@@ -31,10 +31,16 @@ Then open the windows console and install it with the following command:
 npm install -g docs_gm
 ```
 
-To view the HELP of docs_gm run the program without arguments:
+To view the HELP of docs_gm run:
 
 ```bash
-docs_gm
+docs_gm --help
+```
+
+You can also see the help for some specific command:
+
+```bash
+docs_gm generate --help
 ```
 
 ----------
@@ -113,6 +119,43 @@ docs_gm init
 ```
 
 You must follow the instructions that appears on the console and then you can edit the configuration file with any text editor and re-run `docs_gm generate`.
+
+You can also override some specific configuration using the arguments on the console. For example, to change the design to use:
+
+```bash
+docs_gm generate --design myDesignName
+```
+
+## Changing the template and design
+
+Each **template** can have multiple **designs**. 
+
+`docs_gm` includes on integrated default template (called `docs_gm-basic`).
+That template includes three posible designs:
+
+- `onepage` (The default)
+- `multipage`
+- `multipage-modules`
+
+For example, if you want to change the **design**, you can change the `design` value in your configuration file (See `docs_gm init`) to the design name you want to use. For example: 
+
+```json
+"design": "multipage-modules", 
+```
+
+You can also change the name of the template to use (the template package must be installed globally). For example, if you have a template named `docs_gm-awesome-template`, you can write this in your configuration file:
+
+```json
+"template": "awesome-template", 
+```
+
+Another alternative is to set the values using the console:
+
+```bash
+docs_gm generate --design multipage --template awesome-template
+```
+
+Check the help for the `generate` command with `docs_gm generate --help` to see all the possible values that can be overwritten in the console.
 
 ## Custom templates
 
