@@ -1,13 +1,16 @@
 import parse = require("comment-parser");
-import DocScript from "../doc/models/DocScript";
-import IReporter from "../reporter/IReporter";
-import ReporterManager from "../reporter/ReporterManager";
+import { inject, injectable } from "inversify";
+import DocScript from "../doc_models/DocScript";
+import IReporter from "../reporter/interfaces/IReporter";
+import { TYPES } from "../types";
 import DocScriptFactory from "./DocScriptFactory";
+import IJSDocParser from "./interfaces/IJSDocParser";
 
 /**
  * Class for parsing the GML scripts and JSDocs comments inside those scripts
  */
-export default class JSDocParser {
+@injectable()
+export default class JSDocParser implements IJSDocParser {
 
 	/**
 	 * Should warn about unrecognized JSDoc tags?
@@ -17,14 +20,15 @@ export default class JSDocParser {
 	/**
 	 * The reporter to use
 	 */
-	public reporter: IReporter = ReporterManager.reporter;
+	@inject(TYPES.IReporter)
+	private _reporter: IReporter;
 
 	/**
 	 * Parses a gml script string and extracts all the documentation for a passed script
 	 * and returns a new DocScript object.
 	 * @param name The script name
 	 * @param text The script content
-	 * @returns A new DocStript object
+	 * @returns A new DocScript object
 	 */
 	public parse(name: string, text: string): DocScript {
 
@@ -79,7 +83,7 @@ export default class JSDocParser {
 				break;
 			default:
 				if (this.warnUnrecognizedTags) {
-					this.reporter.warn(`Unrecognized tag "${ tag.tag.toLowerCase() }" at script "${ name }"`);
+					this._reporter.warn(`Unrecognized tag "${ tag.tag.toLowerCase() }" at script "${ name }"`);
 				}
 		}
 	}
@@ -96,7 +100,7 @@ export default class JSDocParser {
 	/**
 	 * Recreates the content of a splitted tag into a single string.
 	 * For example, in a description tag, if you start your description
-	 * with {} or with [], then the ComentParser will treat those brackets
+	 * with {} or with [], then the CommentParser will treat those brackets
 	 * like an optional argument. This script, recreates the original description
 	 * tag.
 	 * @param tag The tag to reconstruct

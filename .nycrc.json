@@ -1,10 +1,12 @@
 {
 	"include": [
-		"**/*.js"
+		"dist/src/**/*.js"
 	],
 	"exclude": [
 		"**/index.js",
 		"**/docs_gm.js",
+		"**/inversify.config.js",
+		"**/types.ts",
 		"**/*.spec.js",
 		"**/*.help.js",
 		"**/*.mock.js",

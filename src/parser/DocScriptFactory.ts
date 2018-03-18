@@ -1,7 +1,7 @@
-import DocExample from "../doc/models/DocExample";
-import DocParam from "../doc/models/DocParam";
-import DocReturns from "../doc/models/DocReturns";
-import DocScript from "../doc/models/DocScript";
+import DocExample from "../doc_models/DocExample";
+import DocParam from "../doc_models/DocParam";
+import DocReturns from "../doc_models/DocReturns";
+import DocScript from "../doc_models/DocScript";
 import StringUtils from "./StringUtils";
 
 /**
@@ -19,8 +19,7 @@ export default class DocScriptFactory {
 	 * Creates a DocScriptFactory to build DocScript objects.
 	 */
 	public constructor(name: string) {
-		this._script = new DocScript();
-		this._script.name = name;
+		this._script = new DocScript(name);
 	}
 
 	/**
@@ -40,7 +39,7 @@ export default class DocScriptFactory {
 			const example = new DocExample();
 			const str = StringUtils.stripInitialLineFeeds(exampleString);
 			example.code = StringUtils.escapeHtml(str);
-			example.caption = null;
+			example.caption = "";
 
 			this._script.examples.push(example);
 			this._script.undocumented = false;
@@ -57,7 +56,7 @@ export default class DocScriptFactory {
 	public addParam(name: string, type: string, optional: boolean, description: string): void {
 		const param = new DocParam();
 		param.name = StringUtils.escapeHtml(name);
-		param.type = type ? StringUtils.escapeHtml(type) : null;
+		param.type = type ? StringUtils.escapeHtml(type) : "";
 		param.optional = optional;
 		let str = StringUtils.stripInitialHypen(description);
 		str = StringUtils.markdown2Html(str);

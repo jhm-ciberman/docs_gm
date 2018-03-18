@@ -20,5 +20,13 @@
     "dist": true,
     "coverage": true,
     ".nyc_output": true,
-  }
+  },
+  "cSpell.words": [
+    "j",
+    "myfolder",
+    "myotherfolder",
+    "myotherfoler",
+    "sdoc",
+    "yoyo"
+  ]
 }

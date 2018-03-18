@@ -1,100 +1,82 @@
-import open = require("open");
 import * as path from "path";
-import ConfigManager from "../config/ConfigManager";
-import IProjectConfig from "../config/interfaces/IProjectConfig";
-import ProjectConfig from "../config/models/ProjectConfig";
-import DocumentationGenerator from "../core/DocumentationGenerator";
-import ProjectLoader from "../gm_project/ProjectLoader";
-import IReporter from "../reporter/IReporter";
-import ReporterManager from "../reporter/ReporterManager";
+
+import { inject, injectable } from "inversify";
+import { TYPES } from "../types";
+
+import * as os from "os";
+import ProjectConfig from "../config/entities/ProjectConfig";
+import IConfigManager from "../config/interfaces/IConfigManager";
+import IConfigOverrider from "../config/interfaces/IConfigOverrider";
+import IDocumentationGenerator from "../generator/interfaces/IDocumentationGenerator";
+import IGMProjectLoader from "../gm_project/interfaces/IGMProjectLoader";
+import { IOpen } from "../npmmodules";
+import IReporter from "../reporter/interfaces/IReporter";
+import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
 
 /**
  * A facade class to manage all the basic process of the ComandLine
  */
-export default class CliGenerateFacade {
+@injectable()
+export default class CliGenerateFacade implements ICliGenerateFacade {
 
-	/**
-	 * Open method (used for dependency injection)
-	 */
-	public open: (url: string) => void = open;
+	@inject(TYPES.IReporter)
+	private _reporter: IReporter;
 
-	/**
-	 * The reporter used (used for dependency injection)
-	 */
-	public reporter: IReporter = ReporterManager.reporter;
+	@inject(TYPES.IGMProjectLoader)
+	private _loader: IGMProjectLoader;
 
-	/**
-	 * The overriten design
-	 */
-	public design: string | undefined;
+	@inject(TYPES.IConfigManager)
+	private _configManager: IConfigManager;
 
-	/**
-	 * The overriten template
-	 */
-	public template: string | undefined;
+	@inject(TYPES.IDocumentationGenerator)
+	private _documentationGenerator: IDocumentationGenerator;
 
-	/**
-	 * The overriten outputFolder
-	 */
-	public outputFolder: string | undefined;
+	@inject(TYPES.IConfigOverrider)
+	private _configOverrider: IConfigOverrider;
 
-	/**
-	 * The overriten pattern
-	 */
-	public pattern: string | undefined;
+	@inject(TYPES.IOpen)
+	private _open: IOpen;
 
 	/**
 	 * Generates the documentation for a given project
 	 * @param projectPath The path to the project
+	 * @param overrideConfig An object with the new configuration
 	 * @param opts The option object to override
 	 */
-	public async generate(projectPath: string = ".") {
+	public async generate(projectPath: string = ".", overrideConfig: { [key: string]: string } = {}): Promise<void> {
 
-		this.reporter.info("Loading Project...");
+		this._reporter.info("Loading Project...");
 
-		const loader = new ProjectLoader(projectPath);
-		const project = await loader.load();
+		const project = await this._loader.load(projectPath);
 
-		this.reporter.info("Loading project configuration...");
+		this._reporter.info("Loading project configuration...");
 
-		const configManager = new ConfigManager();
-		let config = await configManager.loadConfig(projectPath);
+		let config = await this._configManager.loadConfig(projectPath);
 
 		if (!config) {
-			this.reporter.info("Configuration not found. Using default configuration.");
+			this._reporter.info("Configuration not found. Using default configuration.");
 			config = new ProjectConfig();
 		}
-		config = this._overrideConfig(config);
+		config = this._configOverrider.override(config, overrideConfig);
 
-		this.reporter.info("Generating documentation... ");
-		const docsGenerator = new DocumentationGenerator();
-		const outFolder = await docsGenerator.generate(project, config);
+		this._reporter.info("Generating documentation... ");
+		const outFolder = await this._documentationGenerator.generate(project, config);
 
-		this.reporter.info("Ready!");
+		this._reporter.info("Ready!");
 
 		const url = path.resolve(outFolder, "index.html");
-		this.reporter.info(`Opening ${url}`);
-		this.open(url);
+
+		if (overrideConfig.noOpen) {
+			this._reporter.info(`Documentation generated at: ${url}`);
+		} else {
+			this._reporter.info(`Opening: ${url}`);
+			this._open(url);
+		}
+
 	}
 
-	/**
-	 * Overrides the configuration with the local values
-	 * @param config The config
-	 */
-	private _overrideConfig(config: IProjectConfig): IProjectConfig {
-		if (this.design) {
-			config.output.design = this.design;
-		}
-		if (this.template) {
-			config.output.template = this.template;
-		}
-		if (this.outputFolder) {
-			config.output.outputFolder = this.outputFolder;
-		}
-		if (this.pattern) {
-			config.output.pattern = this.pattern;
-		}
-		return config;
+	public async init(): Promise<string> {
+		return this._configManager.exportConfig(os.homedir());
 	}
 
 }

@@ -1,4 +1,5 @@
-import GMResource from "../common/GMResource";
+import GMResource from "../GMResource";
+import GMSubscript from "../GMSubscript";
 import IGMScript from "../interfaces/IGMScript";
 
 /**
@@ -9,27 +10,15 @@ export default class GMS2Script extends GMResource implements IGMScript {
 	/**
 	 * Is a compatibility script?
 	 */
-	public isCompatibility: boolean;
-
-	/**
-	 * The GML content
-	 */
-	private _text: string | null = null;
+	public readonly isCompatibility: boolean;
 
 	/**
 	 * Creates a new Script
-	 * @param data The YOYO model data for the script
+	 * @param data The yoyo model data for the script
 	 */
-	constructor(name: string) {
+	constructor(name: string, isCompatibility: boolean) {
 		super(name);
-	}
-
-	/**
-	 * Load the script fom a string
-	 * @param str The *.gml file contents
-	 */
-	public loadFromString(str: string) {
-		this._text = str;
+		this.isCompatibility = isCompatibility;
 	}
 
 	/**
@@ -42,20 +31,17 @@ export default class GMS2Script extends GMResource implements IGMScript {
 	}
 
 	/**
-	 * Returns an iterable with a pair of [name, text] for each
-	 * subscript in this script object
+	 * Returns an iterable with a GMSubscript for each subscript in this script object
+	 * @param gmlText The content of the *.gml file.
 	 */
-	public * subScripts(): IterableIterator<[string, string]> {
-		if (this._text === null) {
-			throw new Error("Must call loadFromString() before accesing the subScripts() function");
-		}
-		// This lines converts the triple slash comments ( ///comment)
-		// to JSDoc comments
-		const str = this._text
-			.replace(/\/\/\/ ?(.*)\n/g, "/**\n * $1 \n */\n")
-			.replace(/ ?\*\/\n\/\*\* ?\n/g, "");
+	public * subScripts(gmlText: string): IterableIterator<GMSubscript> {
+		// This lines converts the triple slash comments ( ///comment) to JSDoc comments
+		let str = gmlText.replace(/^\/{3}(?!\/) *(.*)$/gm, "/**\n * $1\n */\n");
 
-		yield [this.name, str];
+		// This regex combines multiple triple JSDoc comments into one.
+		str = str.replace(/ ?\*\/\n\/\*\* ?\n/g, "");
+
+		yield new GMSubscript(this.name, str);
 	}
 
 }

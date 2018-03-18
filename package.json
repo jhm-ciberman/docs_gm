@@ -1,20 +1,21 @@
 {
   "name": "docs_gm",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "test": "npm run lint && npm run coverage",
     "test-only": "npm run build && npm run unit-tests",
-    "unit-tests": "alsatian \"./dist/**/*.spec.js\"",
+    "unit-tests": "alsatian \"./dist/tests/unit/**/*.spec.js\"",
     "build": "tsc -p .",
     "watch": "tsc -p . --watch",
     "clean": "rimraf ./dist/ ./coverage/ ./.nyc_output/",
     "coverage": "npm run build && nyc npm run unit-tests",
     "report-coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint --project . -t verbose",
-    "prepublishOnly": "npm run clean && npm run build"
+    "prepublishOnly": "npm run clean && npm run build",
+    "integration": "npm run build && npm link && alsatian \"./dist/tests/integration/**/*.spec.js\""
   },
   "repository": {
     "type": "git",
@@ -40,12 +41,11 @@
   },
   "homepage": "https://github.com/jhm-ciberman/docs_gm#readme",
   "bin": {
-    "docs_gm": "dist/docs_gm.js"
+    "docs_gm": "dist/src/docs_gm.js"
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.0",
     "@types/globby": "^6.1.0",
-    "@types/json5": "0.0.29",
     "@types/minimatch": "^3.0.3",
     "@types/mock-fs": "^3.6.30",
     "@types/mock-require": "^2.0.0",
@@ -55,6 +55,7 @@
     "@types/pkg-dir": "^2.0.0",
     "@types/showdown": "^1.7.2",
     "@types/xml2js": "^0.4.2",
+    "@types/yargs": "^11.0.0",
     "alsatian": "^2.0.0",
     "coveralls": "^3.0.0",
     "mock-fs": "^4.4.2",
@@ -62,22 +63,23 @@
     "nyc": "^11.4.1",
     "rimraf": "^2.6.2",
     "tslint": "^5.9.1",
-    "typescript": "^2.6.2"
+    "typescript": "^2.7.2"
   },
   "dependencies": {
-    "commander": "^2.13.0",
     "comment-parser": "^0.5.0",
     "del": "^3.0.0",
-    "docs_gm-basic": "^1.0.0",
+    "docs_gm-basic": "^2.0.3",
     "fs-extra": "^5.0.0",
     "get-installed-path": "^4.0.8",
     "globby": "^8.0.0",
-    "json5": "^0.5.1",
+    "inversify": "^4.11.1",
     "minimatch": "^3.0.4",
     "nunjucks": "^3.0.1",
     "open": "0.0.5",
     "pkg-dir": "^2.0.0",
+    "reflect-metadata": "^0.1.12",
     "showdown": "^1.8.6",
-    "xml2js": "^0.4.19"
+    "xml2js": "^0.4.19",
+    "yargs": "^11.0.0"
   }
 }
