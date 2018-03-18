@@ -26,7 +26,7 @@ export default class NunjucksRenderer {
 			const currentPath = queue.linkTo(element);
 			const filename = path.resolve(outputFolder, currentPath);
 
-			const ctx = this._renderingContextGenerator.generate(element, queue, currentPath);
+			const ctx = this._renderingContextGenerator.generate(docProject, element, queue, currentPath);
 			const html = template.render(ctx);
 
 			await fse.outputFile(filename, html);

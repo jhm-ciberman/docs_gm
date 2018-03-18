@@ -31,40 +31,46 @@ export class RenderingContextGeneratorFixture {
 
 	@Test()
 	public test_script() {
+		const project = new DocProject("my project");
 		const element = new DocScript("my_script");
-		const context = this._getContext(element);
+		const context = this._getContext(project, element);
 		Expect(context.linkTo(element)).toBe("foo");
+		Expect(context.project).toBe(project);
 		Expect(context.script).toBe(element);
 	}
 
 	@Test()
 	public test_project() {
-		const element = new DocProject("my project");
-		const context = this._getContext(element);
-		Expect(context.linkTo(element)).toBe("foo");
-		Expect(context.project).toBe(element);
+		const project = new DocProject("my project");
+		const context = this._getContext(project, project);
+		Expect(context.linkTo(project)).toBe("foo");
+		Expect(context.project).toBe(project);
 	}
 
 	@Test()
 	public test_folder() {
+		const project = new DocProject("my project");
 		const element = new DocFolder("my_folder");
-		const context = this._getContext(element);
+		const context = this._getContext(project, element);
 		Expect(context.linkTo(element)).toBe("foo");
+		Expect(context.project).toBe(project);
 		Expect(context.folder).toBe(element);
 	}
 
 	@Test()
 	public test_resource() {
+		const project = new DocProject("my project");
 		const element = new MockDocResource("my_resource");
-		const context = this._getContext(element);
+		const context = this._getContext(project, element);
 		Expect(context.linkTo(element)).toBe("foo");
+		Expect(context.project).toBe(project);
 		Expect(context.resource).toBe(element);
 	}
 
-	private _getContext(element: IDocElement) {
+	private _getContext(project: DocProject, element: IDocElement) {
 		const container = new Container();
 		container.bind<ILinkToBuilder>(TYPES.ILinkToBuilder).to(MockLinkToBuilder);
 		const rcg = container.resolve(RenderingContextGenerator);
-		return rcg.generate(element, new RenderingQueue(), "");
+		return rcg.generate(project, element, new RenderingQueue(), "");
 	}
 }

@@ -20,8 +20,13 @@ import MockTemplate from "../__mock__/MockTemplate.mock";
 /* tslint:disable:max-classes-per-file completed-docs */
 @injectable()
 class MockRenderingContextGenerator implements IRenderingContextGenerator {
-	public generate(_element: IDocElement, _queue: RenderingQueue, _currentPath: string): IRenderingContext {
-		return {linkTo: (_e) => "foo"};
+	public generate(
+		project: DocProject,
+		_element: IDocElement,
+		_queue: RenderingQueue,
+		_currentPath: string,
+	): IRenderingContext {
+		return {project, linkTo: (_e) => "foo"};
 	}
 }
 @TestFixture("NunjucksRendererFixture")
