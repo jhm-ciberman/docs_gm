@@ -117,14 +117,17 @@ For example, if you want to show a list with all the scripts names in a OnePage 
 
 As you can see, you can iterate over an array to access all the scripts.
 
-### DocPage
+## Template exposed global variables
 
-The DocPage represents a single page of your Documentation.  It has the following properties:
+When rendering a template, docs_gm exposes a number of global variables that you can use:
 
-- `project`: **{DocProject}** The DocProject object representing the GameMaker Project that you are creating the documentation for. **Its available only when docs_gm is rendering the "index" page defined on your template.json file.**
+- `project`: **{DocProject}** The DocProject object representing the GameMaker Project that you are creating the documentation for. **It will be allways available**
 - `script`: **{DocScript}** A DocScript object representing the SINGLE script your must document in the current template page. You will only use this if you are making a multipage template. **Its available only when docs_gm is rendering the "script" page defined on your template.json file.**
 - `folder`: **{DocFolder}** A DocFolder object representing the SINGLE Folder your must document in the current template page. You will only use this if you are making a multipage template. **Its available only when docs_gm is rendering the "folder" page defined on your template.json file.**
 - `resource`: **{DocResource}** A DocResource object representing the SINGLE generic game maker resource (not a folder nor a script) that your must document in the current template page. You will only use this if you are making a multipage template. **Its available only when docs_gm is rendering the "resource" page defined on your template.json file.**
+
+Also, the following global functions are defined:
+
 - `linkTo(docElement)` **{Function}** This function is available in all the njk files rendered with docs_gm. Check below for more info about `linkTo` function.
 
 ### DocProject
