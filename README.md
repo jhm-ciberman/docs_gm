@@ -161,6 +161,45 @@ Check the help for the `generate` command with `docs_gm generate --help` to see 
 
 You can create custom HTML templates and use them with docs_gm. Refer to [this page](./custom_templates.md) for how to create a custom template.
 
+## Folder scoped documentation
+
+If you want to add documentation for one folder containing multiple scripts, you can create a GameMaker script called: `FOLDER_anyname` or `MODULE_anyname` inside your folder and add a simple JSDoc comment inside that script with the documentation for your module. You can use [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet). 
+
+For example:
+
+```text
++ scripts [root folder]
+  + inventory_system [folder]
+    - FOLDER_inventory_system [script]
+    - inventory_add_item [script]
+    - inventory_get_item [script]
+    - inventory_draw [script]
+```
+
+Inside FOLDER_inventory_system script you can write something like this:
+
+```js
+/**
+ * Inventory System
+ * ================
+ *
+ * > By Javier "Ciberman" Mora
+ *
+ * You can use this functions to create your inventory
+ * and you need to... bla bla bla...
+ * More documentation **with markup** here.
+ *
+ * - You can create bullets
+ * - with items
+ *
+ * And also add [links](http://google.com).
+ */
+```
+
+Then you can use any template with a design that supports modules. (For example the `docs_gm-basic` Template has `modules-onepage` and `modules-multipage` designs.)
+
+> Note: you can create multiple subfolders and document each one with one `MODULE_` or `FOLDER_` script inside each subfolder.
+
 ## Contribute
 
 I would love to see people interested in contributing to docs_gm. If you have some idea, or bug, you can send a Issue in the github page. Also, you can check the [contribute document](CONTRIBUTE.md)
