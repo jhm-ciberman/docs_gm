@@ -11,11 +11,7 @@ export default class ProjectRootFinder implements IProjectRootFinder {
 	}
 
 	private _findRootFolder(folder: IGMFolder, pathArr: string[]): IGMFolder {
-		let name: string | undefined;
-		do {
-			name = pathArr.shift();
-		} while (name === "");
-
+		const name = this._getNextPathPortion(pathArr);
 		if (name === undefined) {
 			return folder;
 		}
@@ -25,5 +21,13 @@ export default class ProjectRootFinder implements IProjectRootFinder {
 			}
 		}
 		throw new Error("Project root folder not found");
+	}
+
+	private _getNextPathPortion(pathArr: string[]): string | undefined {
+		let name: string | undefined;
+		do {
+			name = pathArr.shift();
+		} while (name === "");
+		return name;
 	}
 }
