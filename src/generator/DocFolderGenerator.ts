@@ -22,10 +22,7 @@ export default class DocFolderGenerator implements IDocFolderGenerator {
 	 */
 	public async generate(folder: IGMFolder, config: IProjectConfig, gmProject: IGMProject): Promise<DocFolder> {
 		const docFolder = new DocFolder(folder.name);
-		if (folder.moduleScript) {
-			const docScript = await this._scriptLoader.load(folder.moduleScript, config, gmProject);
-			docFolder.description = docScript.length > 0 ? docScript[0].description : "";
-		}
+		docFolder.description = await this._loadFolderDocumentation(folder, config, gmProject);
 		for (const res of folder.children) {
 			const children = await this._loadResource(res, config, gmProject);
 			for (const child of children) {
@@ -34,6 +31,16 @@ export default class DocFolderGenerator implements IDocFolderGenerator {
 			}
 		}
 		return docFolder;
+	}
+
+	private async _loadFolderDocumentation(folder: IGMFolder, config: IProjectConfig, gmProject: IGMProject) {
+		if (folder.moduleScript) {
+			const docScript = await this._scriptLoader.load(folder.moduleScript, config, gmProject);
+			if (docScript.length > 0) {
+				return docScript[0].description;
+			}
+		}
+		return "";
 	}
 
 	private async _loadResource(res: IGMResource, config: IProjectConfig, gmProject: IGMProject): Promise<DocResource[]> {
