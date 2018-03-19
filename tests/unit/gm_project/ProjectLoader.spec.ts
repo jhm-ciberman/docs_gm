@@ -61,7 +61,7 @@ export class DocsGMFixture {
 	@AsyncTest("load should thrown when loading an invalid project")
 	public async load_Invalid() {
 		const loader = new GMProjectLoader();
-		await loader.load(this.noProject.dir).then(() => {
+		return await loader.load(this.noProject.dir).then(() => {
 			throw new Error("load() did not throw on invalid project");
 		}).catch((e) => {
 			Expect(e).toBeDefined();

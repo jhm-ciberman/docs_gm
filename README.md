@@ -1,7 +1,6 @@
 # docs_gm
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/jhm-ciberman/docs_gm.svg)](https://greenkeeper.io/)
-
 [![npm](https://img.shields.io/npm/dt/docs_gm.svg)](https://www.npmjs.com/package/docs_gm)
 [![npm](https://img.shields.io/npm/v/npm.svg)](https://www.npmjs.com/package/docs_gm)
 [![Build Status](https://travis-ci.org/jhm-ciberman/docs_gm.svg?branch=master)](https://travis-ci.org/jhm-ciberman/docs_gm)
@@ -131,11 +130,12 @@ docs_gm generate --design myDesignName
 Each **template** can have multiple **designs**.
 
 `docs_gm` includes [one integrated default template](https://github.com/jhm-ciberman/docs_gm-basic) (called `docs_gm-basic`).
-That template includes three possible designs:
+That template includes four possible designs:
 
-- `onepage`: Shows all the project scripts in one single HTML pages with a table of contents. It does not shows the folder structure. Ideal for smaller projects.
+- `onepage`: (The default design) Shows all the project scripts in one single HTML pages with a table of contents. It does not shows the folder structure. Ideal for smaller projects.
 - `multipage`: Each script documentation is generated in a separate HTML file, and the index file contains a table of contents with links to each script page. It does not shows the project folder structure. Ideal for medium sizes projects.
-- `modules`: Each script and each folder is generated in a separate HTML file. Each folder shows the folder children with links to each one and to his parent folder. It shows the folder structure, but it requires more clicks to reach an specific script documentation. Ideal for huge sized projects.
+- `modules-onepage`: Each script and each folder is generated in a separate HTML file. Each folder shows the folder children with the documentation of each script on the same page. It shows the folder structure. Ideal for big sized projects.
+- `modules-multipage`: Each script and each folder is generated in a separate HTML file. Each folder shows the folder children with links to each one and to his parent folder. It shows the folder structure, but it requires more clicks to reach an specific script documentation. Ideal for huge sized projects.
 
 For example, if you want to change the **design**, you can change the `design` value in your configuration file (See `docs_gm init`) to the design name you want to use. For example:
 
@@ -160,6 +160,45 @@ Check the help for the `generate` command with `docs_gm generate --help` to see 
 ## Custom templates
 
 You can create custom HTML templates and use them with docs_gm. Refer to [this page](./custom_templates.md) for how to create a custom template.
+
+## Folder scoped documentation
+
+If you want to add documentation for one folder containing multiple scripts, you can create a GameMaker script called: `FOLDER_anyname` or `MODULE_anyname` inside your folder and add a simple JSDoc comment inside that script with the documentation for your module. You can use [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet). 
+
+For example:
+
+```text
++ scripts [root folder]
+  + inventory_system [folder]
+    - FOLDER_inventory_system [script]
+    - inventory_add_item [script]
+    - inventory_get_item [script]
+    - inventory_draw [script]
+```
+
+Inside FOLDER_inventory_system script you can write something like this:
+
+```js
+/**
+ * Inventory System
+ * ================
+ *
+ * > By Javier "Ciberman" Mora
+ *
+ * You can use this functions to create your inventory
+ * and you need to... bla bla bla...
+ * More documentation **with markup** here.
+ *
+ * - You can create bullets
+ * - with items
+ *
+ * And also add [links](http://google.com).
+ */
+```
+
+Then you can use any template with a design that supports modules. (For example the `docs_gm-basic` Template has `modules-onepage` and `modules-multipage` designs.)
+
+> Note: you can create multiple subfolders and document each one with one `MODULE_` or `FOLDER_` script inside each subfolder.
 
 ## Contribute
 
