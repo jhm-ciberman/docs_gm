@@ -1,5 +1,4 @@
 import { injectable } from "inversify";
-import GMFolder from "../gm_project/GMFolder";
 import GMResourceHelper from "../gm_project/GMResourceHelper";
 import IGMFolder from "../gm_project/interfaces/IGMFolder";
 import IProjectRootFinder from "./interfaces/IProjectRootFinder";
