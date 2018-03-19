@@ -19,11 +19,9 @@ const TYPES = {
 	IJSDocParser: Symbol.for("IJSDocParser"),
 
 	// Rendering
-	IRenderingContextGenerator: Symbol.for("IRenderingContextGenerator"),
 	INunjucksRenderer: Symbol.for("INunjucksRenderer"),
 	IDesignFilesCopier: Symbol.for("IDesignFilesCopier"),
 	ILinkToBuilder: Symbol.for("ILinkToBuilder"),
-	IInputFileResolver: Symbol.for("IInputFileResolver"),
 
 	// Reporter
 	IReporter: Symbol.for("IReporter"),

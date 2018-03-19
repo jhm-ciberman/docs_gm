@@ -2,18 +2,17 @@ import DocExample from "./DocExample";
 import DocParam from "./DocParam";
 import DocResource from "./DocResource";
 import DocReturns from "./DocReturns";
-import { DocElementType } from "./enums/DocElementType";
-import IDocElement from "./interfaces/IDocElement";
+import { DocResourceType } from "./enums/DocResourceType";
 
 /**
  * Represents a single script of the GameMaker project.
  */
-export default class DocScript extends DocResource implements IDocElement {
+export default class DocScript extends DocResource {
 
 	/**
 	 * The resource type
 	 */
-	public readonly type: DocElementType = DocElementType.Script;
+	public readonly type: DocResourceType = DocResourceType.Script;
 
 	/**
 	 * The description of the script

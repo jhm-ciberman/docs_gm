@@ -6,19 +6,12 @@ import DocProject from "../doc_models/DocProject";
 import IReporter from "../reporter/interfaces/IReporter";
 import Design from "../template/Design";
 import { TYPES } from "../types";
-import IInputFileResolver from "./interfaces/IInputFileResolver";
 import ILinkToBuilder from "./interfaces/ILinkToBuilder";
-import IRenderingContextGenerator from "./interfaces/IRenderingContextGenerator";
+import IRenderingContext from "./interfaces/IRenderingContext";
 import RenderingQueue from "./RenderingQueue";
 
 @injectable()
 export default class NunjucksRenderer {
-
-	@inject(TYPES.IRenderingContextGenerator)
-	private _renderingContextGenerator: IRenderingContextGenerator;
-
-	@inject(TYPES.IInputFileResolver)
-	private _inputFileResolver: IInputFileResolver;
 
 	@inject(TYPES.ILinkToBuilder)
 	private _linkToBuilder: ILinkToBuilder;
@@ -32,20 +25,19 @@ export default class NunjucksRenderer {
 			throwOnUndefined: true,
 		});
 
-		const queue = new RenderingQueue();
-		queue.linkTo(docProject);
+		const queue = new RenderingQueue(docProject);
+		queue.linkTo(docProject.root);
 
 		let element = queue.next();
 		while (element) {
 			this._reporter.info(`Rendering page for element: ${element.name} [${element.type}]`);
-			const inputFile = this._inputFileResolver.resolve(design, element.type);
-			const template =  env.getTemplate(inputFile, true);
+			const template = env.getTemplate(design.index, true);
 			const currentPath = queue.linkTo(element);
 			const filename = path.resolve(outputFolder, currentPath);
 
 			env.addGlobal("linkTo", this._linkToBuilder.build(queue, currentPath));
 
-			const ctx = this._renderingContextGenerator.generate(docProject, element);
+			const ctx: IRenderingContext = {project: docProject, element};
 			const html = template.render(ctx);
 
 			await fse.outputFile(filename, html);

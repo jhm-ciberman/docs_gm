@@ -1,6 +1,6 @@
 {
   "name": "docs_gm",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -68,7 +68,7 @@
   "dependencies": {
     "comment-parser": "^0.5.0",
     "del": "^3.0.0",
-    "docs_gm-basic": "^2.0.5",
+    "docs_gm-basic": "^3.0.0",
     "fs-extra": "^5.0.0",
     "get-installed-path": "^4.0.8",
     "globby": "^8.0.0",

@@ -8,12 +8,8 @@ import {
 } from "alsatian";
 import { Container, injectable } from "inversify";
 import DocProject from "../../../src/doc_models/DocProject";
-import { DocElementType } from "../../../src/doc_models/enums/DocElementType";
-import IDocElement from "../../../src/doc_models/interfaces/IDocElement";
-import IInputFileResolver from "../../../src/renderer/interfaces/IInputFileResolver";
+import DocResource from "../../../src/doc_models/DocResource";
 import ILinkToBuilder from "../../../src/renderer/interfaces/ILinkToBuilder";
-import IRenderingContext from "../../../src/renderer/interfaces/IRenderingContext";
-import IRenderingContextGenerator from "../../../src/renderer/interfaces/IRenderingContextGenerator";
 import NunjucksRenderer from "../../../src/renderer/NunjucksRenderer";
 import RenderingQueue from "../../../src/renderer/RenderingQueue";
 import IReporter from "../../../src/reporter/interfaces/IReporter";
@@ -25,21 +21,9 @@ import MockTemplate from "../__mock__/MockTemplate.mock";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 @injectable()
-class MockRenderingContextGenerator implements IRenderingContextGenerator {
-	public generate(project: DocProject, _element: IDocElement): IRenderingContext {
-		return {project};
-	}
-}
-@injectable()
 class MockLinkToBuilder implements ILinkToBuilder {
-	public build(_queue: RenderingQueue, _currentFile: string): (e: IDocElement) => string {
+	public build(_queue: RenderingQueue, _currentFile: string): (e: DocResource) => string {
 		return (_e) => "foo";
-	}
-}
-@injectable()
-class MockInputFileResolver implements IInputFileResolver {
-	public resolve(design: Design, _type: DocElementType): string {
-		return design.index;
 	}
 }
 @TestFixture("NunjucksRendererFixture")
@@ -50,7 +34,7 @@ export class NunjucksRendererFixture {
 	@SetupFixture
 	public setup() {
 		this.folder = TempDir.create("folder", {
-			"index.njk": "Link: {{ linkTo(project.scripts) }}",
+			"folder.njk": "Link: {{ linkTo(project.scripts) }}",
 		});
 	}
 
@@ -65,8 +49,6 @@ export class NunjucksRendererFixture {
 		SpyOn(mockReporter, "info").andStub();
 
 		const container = new Container();
-		container.bind<IRenderingContextGenerator>(TYPES.IRenderingContextGenerator).to(MockRenderingContextGenerator);
-		container.bind<IInputFileResolver>(TYPES.IInputFileResolver).to(MockInputFileResolver);
 		container.bind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
 		container.bind<ILinkToBuilder>(TYPES.ILinkToBuilder).to(MockLinkToBuilder);
 		const renderer = container.resolve(NunjucksRenderer);
@@ -76,7 +58,7 @@ export class NunjucksRendererFixture {
 
 		const design = new Design(template, {
 			displayName: "My design",
-			index: "index.njk",
+			index: "folder.njk",
 		});
 
 		const p = new DocProject("my-project");

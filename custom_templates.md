@@ -4,19 +4,22 @@ A custom template is a npm package composed by a `template.json`, one or more HT
 
 Example of a template folder:
 
-- package.json
-- template.json
-- src/
-  - index.njk
-  - folder.njk
-  - script.njk
-- css/
-  - bootstrap.css
-  - styles.css
-- js/
-  - main.js
+- `my-template/`
+  - `package.json`
+  - `template.json`
+  - `src/`
+    - `index.njk`
+    - `helper-files.njk`
+    - `another-template-files.njk`
+  - `css/`
+    - `bootstrap.css`
+    - `styles.css`
+  - `js/`
+    - `main.js`
 
-Each ***template*** have multiple ***designs***. Each design is a variation of your template. *For example*, possible designs for one imaginary template are: `onepage-blue`, `onepage-orange`, `multipage-blue` and `multipage-orange`.
+Each ***template*** have multiple ***designs***. Each design is a variation of your template. 
+
+> *For example*, possible designs for one imaginary template are: `onepage-blue`, `onepage-orange`, `multipage-blue` and `multipage-orange`.
 
 ## Creating a package.json file
 
@@ -54,8 +57,6 @@ The `template.json` file describes your template, and each design that your temp
             "displayName": "One Page Awesome",
             "copy": ["css/**/*", "js/**/*"],
             "index": "src/index.njk",
-            "folder": "src/folder.njk",
-            "script": "src/script.njk",
         }
     }
 }
@@ -77,12 +78,9 @@ In the above example, the template has only one design named `onepage`.
 ### Design
 
 - `"displayName"`: **{string}** (required)  The display name of the design. It can be shown on the screen. Examples: `"My super awesome design"`. Try to avoid using the word "Design" in the name.
+- `"index"`: **{string}** (required) The path of the *.njk file that will be used to render **each** resource and folder documentation. That is the entry file of your design.
 - `"copy"`: **{string}** (optional)  An array of files to copy for this design. The array can be a glob. More info about globs [here](https://github.com/isaacs/node-glob). You can also use [negated globs](https://github.com/sindresorhus/globby). If omitted, the default for the `"copy"` will be `["**/*", "!template.json", "!*.njk", "!package.json"]`. (All files and folders will be copied except for template.json, package.json and all files with *.njk extension).
-- `"pages"`: **{Page[]}** (required)  An array with the pages of the documentation that needs to be processed with the template engine.
-- `"index"`: **{string}** (required) The path of the *.njk file that will be used as the index.html file for that design.
-- `"folder"`: **{string}** (optional) The path of the *.njk file that will be used, if required, to render the page for a Game Maker folder page.
-- `"script"`: **{string}** (optional) The path of the *.njk file that will be used, if required, to render the page for a Game Maker Script page.
-- `"resource"`: **{string}** (optional) The path of the *.njk file that will be used, if required, to render the page for a generic Game Maker Resource page. (Not used at the moment)
+
 
 ## Template Pages
 
@@ -119,61 +117,66 @@ As you can see, you can iterate over an array to access all the scripts.
 
 ## Template exposed global variables
 
-When rendering a template, docs_gm exposes a number of global variables that you can use:
+When rendering a template, docs_gm exposes a set of global variables that you can use:
 
-- `project`: **{DocProject}** The DocProject object representing the GameMaker Project that you are creating the documentation for. **It will be allways available**
-- `script`: **{DocScript}** A DocScript object representing the SINGLE script your must document in the current template page. You will only use this if you are making a multipage template. **Its available only when docs_gm is rendering the "script" page defined on your template.json file.**
-- `folder`: **{DocFolder}** A DocFolder object representing the SINGLE Folder your must document in the current template page. You will only use this if you are making a multipage template. **Its available only when docs_gm is rendering the "folder" page defined on your template.json file.**
-- `resource`: **{DocResource}** A DocResource object representing the SINGLE generic game maker resource (not a folder nor a script) that your must document in the current template page. You will only use this if you are making a multipage template. **Its available only when docs_gm is rendering the "resource" page defined on your template.json file.**
+- `project`: **{DocProject}** The DocProject object representing the GameMaker Project that you are creating the documentation for.
+- `resource`: **{DocResource}** A DocResource object (DocFolder or DocScript) representing the SINGLE game maker resource that your must document in the current template page. To know what kind or resource it is you can access to `resource.type` as shown below.
+
+```html
+{% if resource.type == "script" %}
+    <p>Documentation for the script: {{ resource.name }}</p>
+{% elif resource.type == "folder" %}
+    <p>Documentation for the folder: {{ resource.name }}</p>
+{% else %}
+    <p>Documentation for the unknown resource: {{ resource.name }}</p>
+{% endif %}
+```
+
+See the documentation for DocResource for more information.
 
 Also, the following global functions are defined:
 
-- `linkTo(docElement)` **{Function}** This function is available in all the njk files rendered with docs_gm. Check below for more info about `linkTo` function.
+- `linkTo(resource)` **{Function}** This function is available in all the njk files rendered with docs_gm. Check below for more info about `linkTo` function.
 
 ### DocProject
 
 Represents the current GameMaker project that you are documenting. This object has the following properties:
 
-- `name`: **{string}** The name of the GameMaker project in a readable format. You can use it for titles, or descriptions inside your documentation.
-- `scripts`: **{DocFolder}** The GameMaker "scripts" resource tree folder.
+- `name`: **{ string }** The name of the GameMaker project in a readable format. You can use it for titles, or descriptions inside your documentation.
+- `root`: **{ DocFolder }** The root folder for the documentation. Normally is the "scripts" folder, but it can be any other folder, for example the root folder where you put all the scripts for your GameMaker Marketplace Extension.
 
 ### DocResource
 
 Base type that represents a generic game maker resource (or folder) on the project
 
-- `type`: **{string}** It will the type of resource. If for some reason `docs_gm` have troubles identifying the type of the resource the value will be `"resource"`.
-- `name`: **{string}** The name of the resource. Examples: `"spr_wall"`, `"my_super_folder"`, `"scr_walljump"`.
-- `parent` **{ DocFolder | null }** The parent folder. For the base folder (for example the base "script" folder), this value is null.
+- `type`: **{ string }** It will the type of resource. If for some reason `docs_gm` have troubles identifying the type of the resource the value will be `"resource"`. The possible values are: `"script"`, `"folder"` or `"resource"`.
+- `name`: **{ string }** The name of the resource. Examples: `"spr_wall"`, `"my_super_folder"`, `"scr_walljump"`.
+- `parent` **{ DocFolder | null }** The parent folder. For the `project.root` folder (for example the root "scripts" folder), this value is allways null.
+- `fullpath` **{ string }** The fullpath of the resource, relative to the `project.root` folder. For example: `"inventory_system/drawing/draw_inventory"`
 
 ### DocFolder
 
-> DocScript extends DocResource
+> DocScript extends DocResource. So it also have the properties described in the DocResource section.
 
 Represents a single GameMaker folder or subfolder on the resource tree.
 
-- `type`: **{string}** It will be allways the value `"folder"`.
-- `name`: **{string}** The name of the folder. Example: `"my_folder_name"`.
-- `parent` **{ DocFolder | null }** The parent folder. For the base folder (for example the base "script" folder), this value is null.
-- `description`: **{string}** The description of the folder if present. (The default is an empty string `""`). See the `@module` tag for more info about folder descriptions. (Not implemented at the moment)
-- `children`: **{DocResource[]}** An array with all the direct children of that folder.
-- `all`: **{DocResource[]}** Returns an array that contains ALL the DocResources including NESTED resources recursively. For example. If you have a parent folder with a script1 and a subfolder with script2 and script3, `parentFolder.all` will return `[DocScript (script1), DocScript (script2), DocScript (script3)]`
+- `description`: **{ string }** The description of the folder if present. (The default is an empty string `""`). See the `@module` tag for more info about folder descriptions. (Not implemented at the moment)
+- `children`: **{ DocResource[] }** An array with all the direct children of that folder.
+- `all`: **{ DocResource[] }** Returns an array that contains ALL the DocResources including NESTED resources recursively. For example. If you have a parent folder with a script1 and a subfolder with script2 and script3, `parentFolder.all` will return `[DocScript (script1), DocScript (script2), DocScript (script3)]`
 
 ### DocScript
 
-> DocScript extends DocResource
+> DocScript extends DocResource. So it also have the properties described in the DocResource section.
 
 Represents a single script of the GameMaker project.
 
-- `type`: **{string}** It will be allways the value `"script"`.
-- `name`: **{string}** The name of the script. Example: `"scr_character_jump"`.
-- `parent` **{ DocFolder }** The parent folder.
-- `description`: **{string}** The description of the script.
-- `params`: **{DocParam[]}** An array of DocParams objects. Representing each parameter or argument of the script.
-- `returns`: **{DocReturns | null}** A DocReturns object, representing the returned value of the script. (or null if the script has no `@returns` documentation)
-- `examples`: **{DocExample[]}** An array of DocExample objects. Representing each usage example code provided for the script.
-- `private`: **{boolean}** `true` or `false` depending if the script is a private script or not (can be marked with the @private JSDoc or with a script name starting with underscore).
-- `undocumented`: **{boolean}** `true` if is undocumented script, `false` if not.
-- `function`: **{string}** The function name. Is declared in the documentation with the `@function` tag. Normally, is the same as the `name`.
+- `description`: **{ string }** The description of the script.
+- `params`: **{ DocParam[] }** An array of DocParams objects. Representing each parameter or argument of the script.
+- `returns`: **{ DocReturns | null }** A DocReturns object, representing the returned value of the script. (or null if the script has no `@returns` documentation)
+- `examples`: **{ DocExample[] }** An array of DocExample objects. Representing each usage example code provided for the script.
+- `private`: **{ boolean }** `true` or `false` depending if the script is a private script or not (can be marked with the @private JSDoc or with a script name starting with underscore).
+- `undocumented`: **{ boolean }** `true` if is undocumented script, `false` if not.
+- `function`: **{ string }** The function name. Is declared in the documentation with the `@function` tag. Normally, is the same as the `name`.
 
 ### DocParam
 
@@ -198,11 +201,11 @@ Represents a single script usage Example
 - `code`: **{string}** The code for the Example
 - `caption`: **{string}** The example caption (not supported for now, wait for a next update)
 
-## LinkTo(docElement) function
+## LinkTo(docResource) function
 
 This global function is available in any nunjucks template file rendered with `docs_gm`.
 
-You can pass a DocElement object (DocScript, DocFolder or DocProject) and it will generate a relative link to that resource, and will tell docs_gm that you want to render an HTML page for that resource.
+You can pass a DocResource object (DocScript or DocFolder) and it will generate a relative link to that resource, and will tell docs_gm that you want to render an HTML page for that resource.
 
 For example:
 
@@ -212,9 +215,11 @@ For example:
 
     {# Loops over each direct child resource on the base "scripts" folder in the project #}
 
-    {% for resource in project.scripts.children %}
+    {% for resource in project.root.children %}
 
-        <a href="{{ linkTo(resource) }}"><li>{{ resource.name }}</li></a>
+        <a href="{{ linkTo(resource) }}">
+            <li>{{ resource.name }}</li>
+        </a>
 
     {% endfor %}
 
@@ -226,23 +231,13 @@ When `linkTo(resource)` it will do two things:
 - Will generate and return a relative link to the html page for the given resource.
 - It will tell the docs_gm system that you want to render another HTML page for that given resource.
 
-The njk file used to render the HTML page for the given resource will be determined by the resource type, (script, folder, project...) and the design configuration on the `template.json` file.
-
-For example if you set:
-
-```json
-    "index": "my-index.njk",
-    "script": "my-script.njk",
-    "folder": "my-folder.njk"
-```
-
-And from `my-index.njk` you call `linkTo`:
+Example. If you want to create a link to the first child resource on the project root folder:
 
 ```html
-   <a href="{{ linkTo(project.scripts.children[0]) }}">Link</a>
+   <a href="{{ linkTo(project.root.children[0]) }}">Link</a>
 ```
 
-Assuming that the first children in the scripts folder on your project is another folder then a new page will be rendered using the `my-folder.njk` file.
+Assuming that the first children in the scripts folder on your project is another folder then a new page will be rendered using the file defined in the `"index": "my-index.njk"` property on the `template.json` file.
 
 ## Using custom templates from NPM (recommended)
 

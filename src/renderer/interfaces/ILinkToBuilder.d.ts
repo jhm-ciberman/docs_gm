@@ -1,6 +1,6 @@
 import RenderingQueue from "../RenderingQueue";
-import IDocElement from "../../doc_models/interfaces/IDocElement";
+import DocResource from "../../doc_models/DocResource";
 
 export default interface ILinkToBuilder {
-	build(queue: RenderingQueue, currentFile: string): (e: IDocElement) => string;
+	build(queue: RenderingQueue, currentFile: string): (e: DocResource) => string;
 }

@@ -1,8 +1,9 @@
-import IDocElement from "../../doc_models/interfaces/IDocElement";
+import DocProject from "../../doc_models/DocProject";
+import DocFolder from "../../doc_models/DocFolder";
+import DocScript from "../../doc_models/DocScript";
+import DocResource from "../../doc_models/DocResource";
 
 export default interface IRenderingContext {
-	project: IDocElement;
-	folder?: IDocElement;
-	script?: IDocElement;
-	resource?: IDocElement;
+	project: DocProject;
+	element: DocResource;
 }

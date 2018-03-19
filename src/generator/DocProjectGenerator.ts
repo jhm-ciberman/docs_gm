@@ -27,7 +27,7 @@ export default class DocProjectGenerator implements IDocProjectGenerator {
 		}
 		const docProject = new DocProject(gmProject.name);
 		const scriptFolder = this._getRootFolder(rootFoldersMap, "scripts");
-		docProject.scripts = await this._docFolderGenerator.generate(scriptFolder, config, gmProject);
+		docProject.root = await this._docFolderGenerator.generate(scriptFolder, config, gmProject);
 		return docProject;
 	}
 

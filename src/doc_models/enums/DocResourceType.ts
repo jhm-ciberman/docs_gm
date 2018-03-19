@@ -1,6 +1,5 @@
-export enum DocElementType {
+export enum DocResourceType {
 	Script = "script",
 	Folder = "folder",
 	Resource = "resource",
-	Project = "project",
 }

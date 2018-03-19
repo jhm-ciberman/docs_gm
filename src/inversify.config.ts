@@ -40,15 +40,11 @@ import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
 import IGMProjectLoader from "./gm_project/interfaces/IGMProjectLoader";
 import DesignFilesCopier from "./renderer/DesignFilesCopier";
-import InputFileResolver from "./renderer/InputFileResolver";
 import IDesignFilesCopier from "./renderer/interfaces/IDesignFilesCopier";
-import IInputFileResolver from "./renderer/interfaces/IInputFileResolver";
 import ILinkToBuilder from "./renderer/interfaces/ILinkToBuilder";
 import INunjucksRenderer from "./renderer/interfaces/INunjucksRenderer";
-import IRenderingContextGenerator from "./renderer/interfaces/IRenderingContextGenerator";
 import LinkToBuilder from "./renderer/LinkToBuilder";
 import NunjucksRenderer from "./renderer/NunjucksRenderer";
-import RenderingContextGenerator from "./renderer/RenderingContextGenerator";
 import IModuleFinder from "./template/interfaces/IModuleFinder";
 import ITemplateFactory from "./template/interfaces/ITemplateFactory";
 import ModuleFinder from "./template/ModuleFinder";
@@ -82,9 +78,7 @@ container.bind<IJSDocParser>(TYPES.IJSDocParser).to(JSDocParser);
 // Renderer
 container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(NunjucksRenderer);
 container.bind<IDesignFilesCopier>(TYPES.IDesignFilesCopier).to(DesignFilesCopier);
-container.bind<IRenderingContextGenerator>(TYPES.IRenderingContextGenerator).to(RenderingContextGenerator);
 container.bind<ILinkToBuilder>(TYPES.ILinkToBuilder).to(LinkToBuilder);
-container.bind<IInputFileResolver>(TYPES.IInputFileResolver).to(InputFileResolver);
 
 // Reporter
 container.bind<IReporter>(TYPES.IReporter).to(ConsoleReporter);

@@ -19,7 +19,4 @@ export interface IDesign {
 	displayName: string;
 	copy?: string[];
 	index: string;
-	script?: string;
-	folder?: string;
-	resource?: string;
 }

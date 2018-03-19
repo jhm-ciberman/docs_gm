@@ -23,21 +23,9 @@ export default class Design {
 	public template: ITemplate;
 
 	/**
-	 * The input file for the index file
+	 * The input file for the design
 	 */
 	public index: string;
-	/**
-	 * The input file for the script files
-	 */
-	public script: string = "";
-	/**
-	 * The input file for the folders
-	 */
-	public folder: string = "";
-	/**
-	 * The input file for the other resources
-	 */
-	public resource: string = "";
 
 	/**
 	 * Creates an instance of Design.
@@ -48,10 +36,8 @@ export default class Design {
 		this.template = template;
 		this.displayName = data.displayName;
 		this.copy = data.copy || this.copy;
+
 		this.index = data.index;
-		this.script = data.script || this.script;
-		this.folder = data.folder || this.folder;
-		this.resource = data.resource || this.resource;
 	}
 
 }

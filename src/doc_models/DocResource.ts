@@ -1,10 +1,10 @@
-import { DocElementType } from "./enums/DocElementType";
-import IDocElement from "./interfaces/IDocElement";
+import DocFolder from "./DocFolder";
+import { DocResourceType } from "./enums/DocResourceType";
 
 /**
  * Represents any resource in the output documentation
  */
-export default abstract class DocResource implements IDocElement {
+export default class DocResource {
 
 	/**
 	 * The name of the resource. Example "src_enemies" or "scripts" or "obj_control".
@@ -14,12 +14,12 @@ export default abstract class DocResource implements IDocElement {
 	/**
 	 * The type of resource
 	 */
-	public readonly abstract type: DocElementType = DocElementType.Resource;
+	public readonly type: DocResourceType = DocResourceType.Resource;
 
 	/**
 	 * The parent folder. For the base folder (for example the base "script" folder), this value is null
 	 */
-	public parent: IDocElement | null = null;
+	public parent: DocFolder | null = null;
 
 	/**
 	 * Creates an instance of DocResource.

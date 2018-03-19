@@ -40,7 +40,7 @@ export class DesignFilesCopierFixture {
 		const dfc = container.resolve(DesignFilesCopier);
 		const template = new MockTemplate();
 		template.folder = this.folder.dir;
-		const design = new Design(template, {displayName: "My design", index: "foo.bar"});
+		const design = new Design(template, { displayName: "My design", index: "foo.bar"});
 		design.copy = ["**/*"];
 		await dfc.copy(this.outFolder.dir, design);
 		Expect(this.outFolder.read("a.txt")).toBe("my txt");

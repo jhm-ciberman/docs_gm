@@ -6,6 +6,7 @@ import {
 } from "alsatian";
 
 import { Container } from "inversify";
+import DocProject from "../../../src/doc_models/DocProject";
 import DocScript from "../../../src/doc_models/DocScript";
 import LinkToBuilder from "../../../src/renderer/LinkToBuilder";
 import RenderingQueue from "../../../src/renderer/RenderingQueue";
@@ -23,7 +24,7 @@ export class LinkToBuilderFixture {
 
 		const container = new Container();
 		const linkToBuilder = container.resolve(LinkToBuilder);
-		const linkTo = linkToBuilder.build(new RenderingQueue(), baseFile);
+		const linkTo = linkToBuilder.build(new RenderingQueue(new DocProject("my project")), baseFile);
 
 		Expect(linkTo(element)).toBe(expected);
 		Expect(() => linkTo(null as any)).toThrow();

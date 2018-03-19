@@ -1,13 +1,9 @@
 import DocFolder from "./DocFolder";
-import { DocElementType } from "./enums/DocElementType";
-import IDocElement from "./interfaces/IDocElement";
 
 /**
  * Represents the current GameMaker project that you are documenting.
  */
-export default class DocProject implements IDocElement {
-
-	public type: DocElementType = DocElementType.Project;
+export default class DocProject {
 
 	/**
 	 * The name of the GameMaker project in a readable format.
@@ -17,19 +13,11 @@ export default class DocProject implements IDocElement {
 	public name: string = "";
 
 	/**
-	 * The root scripts folder
+	 * The root folder for the documentation. Normally is the "scripts" folder, but
+	 * it can be any other folder, for example the root folder where you put all the
+	 * scripts for your GameMaker Marketplace Extension.
 	 */
-	public scripts: DocFolder;
-
-	/**
-	 * The DocProject parent is allways null
-	 */
-	public readonly parent: null = null;
-
-	/**
-	 * The fullpath of the project is allways an empty string
-	 */
-	public readonly fullpath: string = "";
+	public root: DocFolder = new DocFolder("scripts");
 
 	/**
 	 * Creates an instance of DocProject.
@@ -38,7 +26,5 @@ export default class DocProject implements IDocElement {
 	 */
 	constructor(name: string) {
 		this.name = name;
-		this.scripts = new DocFolder("scripts");
-		this.scripts.parent = this;
 	}
 }

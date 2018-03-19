@@ -27,4 +27,13 @@ export class DocFolderFixture {
 		Expect(arr[2].name).toBe("bar");
 	}
 
+	@Test()
+	public async DocFolder_fullpath() {
+		const parent = new DocFolder("folder1");
+		const child = new DocFolder("folder2");
+		child.parent = parent;
+
+		Expect(child.fullpath).toBe("folder2/folder1/");
+	}
+
 }

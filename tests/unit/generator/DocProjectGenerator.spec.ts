@@ -39,7 +39,7 @@ export class DocProjectGeneratorFixture {
 
 		const doc = await generator.generate(p, new ProjectConfig());
 		Expect(doc.name).toBe("my project");
-		Expect(doc.scripts.name).toBe("my_super_script_folder");
+		Expect(doc.root.name).toBe("my_super_script_folder");
 	}
 
 	@AsyncTest()
