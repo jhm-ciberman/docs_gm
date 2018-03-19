@@ -33,6 +33,8 @@ import RuleValidator from "../src/validation/RuleValidator";
 import ScriptValidator from "../src/validation/ScriptValidator";
 import ConfigOverrider from "./config/ConfigOverrider";
 import IConfigOverrider from "./config/interfaces/IConfigOverrider";
+import DocFolderGenerator from "./generator/DocFolderGenerator";
+import IDocFolderGenerator from "./generator/interfaces/IDocFolderGenerator";
 import IScriptLoader from "./generator/interfaces/IScriptLoader";
 import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
@@ -68,13 +70,14 @@ container.bind<IConfigOverrider>(TYPES.IConfigOverrider).to(ConfigOverrider);
 container.bind<IDocumentationExtractor>(TYPES.IDocumentationExtractor).to(DocumentationExtractor);
 container.bind<IDocumentationGenerator>(TYPES.IDocumentationGenerator).to(DocumentationGenerator);
 container.bind<IScriptLoader>(TYPES.IScriptLoader).to(ScriptLoader);
+container.bind<IDocProjectGenerator>(TYPES.IDocProjectGenerator).to(DocProjectGenerator);
+container.bind<IDocFolderGenerator>(TYPES.IDocFolderGenerator).to(DocFolderGenerator);
 
 // GM Project
 container.bind<IGMProjectLoader>(TYPES.IGMProjectLoader).to(GMProjectLoader);
 
 // Parser
 container.bind<IJSDocParser>(TYPES.IJSDocParser).to(JSDocParser);
-container.bind<IDocProjectGenerator>(TYPES.IDocProjectGenerator).to(DocProjectGenerator);
 
 // Renderer
 container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(NunjucksRenderer);

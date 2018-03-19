@@ -1,0 +1,48 @@
+import { inject, injectable } from "inversify";
+import IProjectConfig from "../config/interfaces/IProjectConfig";
+import DocFolder from "../doc_models/DocFolder";
+import DocResource from "../doc_models/DocResource";
+import GMResourceHelper from "../gm_project/GMResourceHelper";
+import IGMFolder from "../gm_project/interfaces/IGMFolder";
+import IGMProject from "../gm_project/interfaces/IGMProject";
+import IGMResource from "../gm_project/interfaces/IGMResource";
+import { TYPES } from "../types";
+import IDocFolderGenerator from "./interfaces/IDocFolderGenerator";
+import IScriptLoader from "./interfaces/IScriptLoader";
+
+@injectable()
+export default class DocFolderGenerator implements IDocFolderGenerator {
+
+	@inject(TYPES.IScriptLoader)
+	private _scriptLoader: IScriptLoader;
+
+	/**
+	 * Load a GMFolder and all its content
+	 * @param folder The GMFolder to load
+	 */
+	public async generate(folder: IGMFolder, config: IProjectConfig, gmProject: IGMProject): Promise<DocFolder> {
+		const docFolder = new DocFolder(folder.name);
+		if (folder.moduleScript) {
+			const docScript = await this._scriptLoader.load(folder.moduleScript, config, gmProject);
+			docFolder.description = docScript.length > 0 ? docScript[0].description : "";
+		}
+		for (const res of folder.children) {
+			const children = await this._loadResource(res, config, gmProject);
+			for (const child of children) {
+				child.parent = docFolder;
+				docFolder.children.push(child);
+			}
+		}
+		return docFolder;
+	}
+
+	private async _loadResource(res: IGMResource, config: IProjectConfig, gmProject: IGMProject): Promise<DocResource[]> {
+		if (GMResourceHelper.isFolder(res)) {
+			return [await this.generate(res, config, gmProject)];
+		} else if (GMResourceHelper.isScript(res)) {
+			return this._scriptLoader.load(res, config, gmProject);
+		} else {
+			throw new Error(`Unrecognized resource type for resource "${res.name}"`);
+		}
+	}
+}
