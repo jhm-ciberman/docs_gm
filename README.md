@@ -130,11 +130,12 @@ docs_gm generate --design myDesignName
 Each **template** can have multiple **designs**.
 
 `docs_gm` includes [one integrated default template](https://github.com/jhm-ciberman/docs_gm-basic) (called `docs_gm-basic`).
-That template includes three possible designs:
+That template includes four possible designs:
 
-- `onepage`: Shows all the project scripts in one single HTML pages with a table of contents. It does not shows the folder structure. Ideal for smaller projects.
+- `onepage`: (The default design) Shows all the project scripts in one single HTML pages with a table of contents. It does not shows the folder structure. Ideal for smaller projects.
 - `multipage`: Each script documentation is generated in a separate HTML file, and the index file contains a table of contents with links to each script page. It does not shows the project folder structure. Ideal for medium sizes projects.
-- `modules`: Each script and each folder is generated in a separate HTML file. Each folder shows the folder children with links to each one and to his parent folder. It shows the folder structure, but it requires more clicks to reach an specific script documentation. Ideal for huge sized projects.
+- `modules-onepage`: Each script and each folder is generated in a separate HTML file. Each folder shows the folder children with the documentation of each script on the same page. It shows the folder structure. Ideal for big sized projects.
+- `modules-multipage`: Each script and each folder is generated in a separate HTML file. Each folder shows the folder children with links to each one and to his parent folder. It shows the folder structure, but it requires more clicks to reach an specific script documentation. Ideal for huge sized projects.
 
 For example, if you want to change the **design**, you can change the `design` value in your configuration file (See `docs_gm init`) to the design name you want to use. For example:
 
