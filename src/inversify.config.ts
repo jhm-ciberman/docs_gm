@@ -9,9 +9,7 @@ import ICliGenerateFacade from "../src/cli/interfaces/ICliGenerateFacade";
 import ConfigManager from "../src/config/ConfigManager";
 import IConfigManager from "../src/config/interfaces/IConfigManager";
 
-import DocProjectGenerator from "../src/generator/DocProjectGenerator";
 import DocumentationExtractor from "../src/generator/DocumentationExtractor";
-import IDocProjectGenerator from "../src/generator/interfaces/IDocProjectGenerator";
 import IDocumentationExtractor from "../src/generator/interfaces/IDocumentationExtractor";
 
 import IJSDocParser from "../src/parser/interfaces/IJSDocParser";
@@ -35,7 +33,9 @@ import ConfigOverrider from "./config/ConfigOverrider";
 import IConfigOverrider from "./config/interfaces/IConfigOverrider";
 import DocFolderGenerator from "./generator/DocFolderGenerator";
 import IDocFolderGenerator from "./generator/interfaces/IDocFolderGenerator";
+import IProjectRootFinder from "./generator/interfaces/IProjectRootFinder";
 import IScriptLoader from "./generator/interfaces/IScriptLoader";
+import ProjectRootFinder from "./generator/ProjectRootFinder";
 import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
 import IGMProjectLoader from "./gm_project/interfaces/IGMProjectLoader";
@@ -66,8 +66,8 @@ container.bind<IConfigOverrider>(TYPES.IConfigOverrider).to(ConfigOverrider);
 container.bind<IDocumentationExtractor>(TYPES.IDocumentationExtractor).to(DocumentationExtractor);
 container.bind<IDocumentationGenerator>(TYPES.IDocumentationGenerator).to(DocumentationGenerator);
 container.bind<IScriptLoader>(TYPES.IScriptLoader).to(ScriptLoader);
-container.bind<IDocProjectGenerator>(TYPES.IDocProjectGenerator).to(DocProjectGenerator);
 container.bind<IDocFolderGenerator>(TYPES.IDocFolderGenerator).to(DocFolderGenerator);
+container.bind<IProjectRootFinder>(TYPES.IProjectRootFinder).to(ProjectRootFinder);
 
 // GM Project
 container.bind<IGMProjectLoader>(TYPES.IGMProjectLoader).to(GMProjectLoader);

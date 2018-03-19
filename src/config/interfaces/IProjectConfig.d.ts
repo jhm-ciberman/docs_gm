@@ -6,5 +6,6 @@ export default interface IProjectConfig {
 	output: IOutputConfig;
 	warnUnrecognizedTags: boolean;
 	pattern: string;
+	root: string;
 	scripts: IScriptValidationRules;
 }

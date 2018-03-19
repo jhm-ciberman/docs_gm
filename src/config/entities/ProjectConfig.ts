@@ -20,6 +20,11 @@ export default class ProjectConfig implements IProjectConfig {
 	public pattern: string = "**/*";
 
 	/**
+	 * The documentation root folder
+	 */
+	public root: string = "scripts";
+
+	/**
 	 * Warn about unrecognized JSDoc tags
 	 */
 	public warnUnrecognizedTags: boolean = true;
