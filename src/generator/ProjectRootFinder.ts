@@ -1,4 +1,5 @@
 import { injectable } from "inversify";
+import GMFolder from "../gm_project/GMFolder";
 import GMResourceHelper from "../gm_project/GMResourceHelper";
 import IGMFolder from "../gm_project/interfaces/IGMFolder";
 import IProjectRootFinder from "./interfaces/IProjectRootFinder";
@@ -14,7 +15,12 @@ export default class ProjectRootFinder implements IProjectRootFinder {
 		const name = this._getNextPathPortion(pathArr);
 		if (name === undefined) {
 			return folder;
+		} else {
+			return this._findChild(folder, pathArr, name);
 		}
+	}
+
+	private _findChild(folder: IGMFolder, pathArr: string[], name: string): IGMFolder {
 		for (const child of folder.children) {
 			if (GMResourceHelper.isFolder(child) && child.name === name) {
 				return this._findRootFolder(child, pathArr);
