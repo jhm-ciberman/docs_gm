@@ -1,6 +1,7 @@
 import {
 	Expect,
 	Test,
+	TestCase,
 	TestFixture,
 } from "alsatian";
 
@@ -15,8 +16,12 @@ import MockGMScript from "../__mock__/MockGMScript.mock";
 @TestFixture("ProjectRootFinder")
 export class ProjectRootFinderFixture {
 
+	@TestCase("scripts/subfolder", "subfolder")
+	@TestCase("scripts//subfolder", "subfolder")
+	@TestCase("/scripts/subfolder/", "subfolder")
+	@TestCase("/scripts/////", "scripts")
 	@Test()
-	public async ProjectRootFinder_normal() {
+	public ProjectRootFinder_normal(find: string, expected: string) {
 		const p = new MockGMProject("my project", [
 			new MockGMFolder("scripts", [
 				new MockGMScript("my_script"),
@@ -29,8 +34,7 @@ export class ProjectRootFinderFixture {
 		const container = new Container();
 		const finder = container.resolve(ProjectRootFinder);
 
-		const doc = finder.find(p, "scripts/subfolder");
-		Expect(doc.name).toBe("subfolder");
+		Expect(finder.find(p, find).name).toBe(expected);
 	}
 
 	@Test()

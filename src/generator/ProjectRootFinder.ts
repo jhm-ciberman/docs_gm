@@ -11,7 +11,11 @@ export default class ProjectRootFinder implements IProjectRootFinder {
 	}
 
 	private _findRootFolder(folder: IGMFolder, pathArr: string[]): IGMFolder {
-		const name = pathArr.shift();
+		let name: string | undefined;
+		do {
+			name = pathArr.shift();
+		} while (name === "");
+
 		if (name === undefined) {
 			return folder;
 		}
