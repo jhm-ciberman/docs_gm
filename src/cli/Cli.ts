@@ -73,6 +73,10 @@ export default class Cli {
 				type: "string",
 				describe: lang.OPTION_PATTERN,
 			})
+			.option("root", {
+				type: "string",
+				describe: lang.OPTION_ROOT,
+			})
 			.option("noOpen", {
 				type: "boolean",
 				default: false,
