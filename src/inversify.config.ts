@@ -9,9 +9,7 @@ import ICliGenerateFacade from "../src/cli/interfaces/ICliGenerateFacade";
 import ConfigManager from "../src/config/ConfigManager";
 import IConfigManager from "../src/config/interfaces/IConfigManager";
 
-import DocProjectGenerator from "../src/generator/DocProjectGenerator";
 import DocumentationExtractor from "../src/generator/DocumentationExtractor";
-import IDocProjectGenerator from "../src/generator/interfaces/IDocProjectGenerator";
 import IDocumentationExtractor from "../src/generator/interfaces/IDocumentationExtractor";
 
 import IJSDocParser from "../src/parser/interfaces/IJSDocParser";
@@ -35,20 +33,18 @@ import ConfigOverrider from "./config/ConfigOverrider";
 import IConfigOverrider from "./config/interfaces/IConfigOverrider";
 import DocFolderGenerator from "./generator/DocFolderGenerator";
 import IDocFolderGenerator from "./generator/interfaces/IDocFolderGenerator";
+import IProjectRootFinder from "./generator/interfaces/IProjectRootFinder";
 import IScriptLoader from "./generator/interfaces/IScriptLoader";
+import ProjectRootFinder from "./generator/ProjectRootFinder";
 import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
 import IGMProjectLoader from "./gm_project/interfaces/IGMProjectLoader";
 import DesignFilesCopier from "./renderer/DesignFilesCopier";
-import InputFileResolver from "./renderer/InputFileResolver";
 import IDesignFilesCopier from "./renderer/interfaces/IDesignFilesCopier";
-import IInputFileResolver from "./renderer/interfaces/IInputFileResolver";
 import ILinkToBuilder from "./renderer/interfaces/ILinkToBuilder";
 import INunjucksRenderer from "./renderer/interfaces/INunjucksRenderer";
-import IRenderingContextGenerator from "./renderer/interfaces/IRenderingContextGenerator";
 import LinkToBuilder from "./renderer/LinkToBuilder";
 import NunjucksRenderer from "./renderer/NunjucksRenderer";
-import RenderingContextGenerator from "./renderer/RenderingContextGenerator";
 import IModuleFinder from "./template/interfaces/IModuleFinder";
 import ITemplateFactory from "./template/interfaces/ITemplateFactory";
 import ModuleFinder from "./template/ModuleFinder";
@@ -70,8 +66,8 @@ container.bind<IConfigOverrider>(TYPES.IConfigOverrider).to(ConfigOverrider);
 container.bind<IDocumentationExtractor>(TYPES.IDocumentationExtractor).to(DocumentationExtractor);
 container.bind<IDocumentationGenerator>(TYPES.IDocumentationGenerator).to(DocumentationGenerator);
 container.bind<IScriptLoader>(TYPES.IScriptLoader).to(ScriptLoader);
-container.bind<IDocProjectGenerator>(TYPES.IDocProjectGenerator).to(DocProjectGenerator);
 container.bind<IDocFolderGenerator>(TYPES.IDocFolderGenerator).to(DocFolderGenerator);
+container.bind<IProjectRootFinder>(TYPES.IProjectRootFinder).to(ProjectRootFinder);
 
 // GM Project
 container.bind<IGMProjectLoader>(TYPES.IGMProjectLoader).to(GMProjectLoader);
@@ -82,9 +78,7 @@ container.bind<IJSDocParser>(TYPES.IJSDocParser).to(JSDocParser);
 // Renderer
 container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(NunjucksRenderer);
 container.bind<IDesignFilesCopier>(TYPES.IDesignFilesCopier).to(DesignFilesCopier);
-container.bind<IRenderingContextGenerator>(TYPES.IRenderingContextGenerator).to(RenderingContextGenerator);
 container.bind<ILinkToBuilder>(TYPES.ILinkToBuilder).to(LinkToBuilder);
-container.bind<IInputFileResolver>(TYPES.IInputFileResolver).to(InputFileResolver);
 
 // Reporter
 container.bind<IReporter>(TYPES.IReporter).to(ConsoleReporter);

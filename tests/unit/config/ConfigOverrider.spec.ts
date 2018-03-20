@@ -12,6 +12,7 @@ import ProjectConfig from "../../../src/config/entities/ProjectConfig";
 export class ConfigOverriderFixture {
 
 	@TestCase("pattern")
+	@TestCase("root")
 	@Test()
 	public async override_base(key: string) {
 		const confOverrider = (new Container()).resolve(ConfigOverrider);

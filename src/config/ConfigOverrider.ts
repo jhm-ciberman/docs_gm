@@ -20,6 +20,9 @@ export default class ConfigOverrider {
 		if (overrideConfig.pattern) {
 			config.pattern = overrideConfig.pattern;
 		}
+		if (overrideConfig.root) {
+			config.root = overrideConfig.root;
+		}
 		return config;
 	}
 }

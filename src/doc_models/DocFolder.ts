@@ -1,11 +1,10 @@
 import DocResource from "./DocResource";
-import { DocElementType } from "./enums/DocElementType";
-import IDocElement from "./interfaces/IDocElement";
+import { DocResourceType } from "./enums/DocResourceType";
 
 /**
  * Represents a single folder of the GameMaker resource tree.
  */
-export default class DocFolder extends DocResource implements IDocElement {
+export default class DocFolder extends DocResource {
 	/**
 	 * The folder description, if exists. It will be extracted from the
 	 * first script whose name starts with `MODULE_` or `FOLDER_`.
@@ -15,7 +14,7 @@ export default class DocFolder extends DocResource implements IDocElement {
 	/**
 	 * The resource type
 	 */
-	public readonly type: DocElementType = DocElementType.Folder;
+	public readonly type: DocResourceType = DocResourceType.Folder;
 
 	/**
 	 * The children resources inside the folder

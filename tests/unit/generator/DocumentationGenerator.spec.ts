@@ -1,7 +1,6 @@
 import {
-	// Expect,
+	AsyncTest,
 	Expect,
-	Test,
 	TestFixture,
 } from "alsatian";
 
@@ -9,11 +8,14 @@ import { Container, injectable } from "inversify";
 
 import ProjectConfig from "../../../src/config/entities/ProjectConfig";
 import DocumentationGenerator from "../../../src/generator/DocumentationGenerator";
-import IDocProjectGenerator from "../../../src/generator/interfaces/IDocProjectGenerator";
 
 import IInputConfig from "../../../src/config/interfaces/IOutputConfig";
 import IProjectConfig from "../../../src/config/interfaces/IProjectConfig";
+import DocFolder from "../../../src/doc_models/DocFolder";
 import DocProject from "../../../src/doc_models/DocProject";
+import IDocFolderGenerator from "../../../src/generator/interfaces/IDocFolderGenerator";
+import IProjectRootFinder from "../../../src/generator/interfaces/IProjectRootFinder";
+import IGMFolder from "../../../src/gm_project/interfaces/IGMFolder";
 import IGMProject from "../../../src/gm_project/interfaces/IGMProject";
 import IDesignFilesCopier from "../../../src/renderer/interfaces/IDesignFilesCopier";
 import INunjucksRenderer from "../../../src/renderer/interfaces/INunjucksRenderer";
@@ -25,9 +27,9 @@ import MockGMProject from "../__mock__/MockGMProject.mock";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 @injectable()
-class MockDocProjectGenerator implements IDocProjectGenerator {
-	public async generate(_gmProject: IGMProject, _config: IProjectConfig): Promise<DocProject> {
-		return new DocProject("project");
+class MockProjectRootFinder implements IProjectRootFinder {
+	public find(folder: IGMFolder, _path: string): IGMFolder {
+		return folder;
 	}
 }
 @injectable()
@@ -70,24 +72,31 @@ class MockTemplate implements ITemplate {
 		return new Design(this, {displayName: "foo", index: "foo.bar"});
 	}
 }
+@injectable()
+class MockDocFolderGenerator implements IDocFolderGenerator {
+	public async generate(_res: IGMFolder, _config: IProjectConfig, _gmProject: IGMProject): Promise<DocFolder> {
+		return new DocFolder("folder");
+	}
+}
 @TestFixture("DocumentationGenerator")
 export class DocumentationGeneratorFixture {
 
-	@Test("Test")
-	public async test() {
+	@AsyncTest()
+	public async DocumentationGenerator() {
 		const gmProject = new MockGMProject("my project", []);
 		const config = new ProjectConfig();
 		config.output.outputFolder = "output_folder";
 
 		const container = new Container();
-		container.bind<IDocProjectGenerator>(TYPES.IDocProjectGenerator).to(MockDocProjectGenerator);
+		container.bind<IProjectRootFinder>(TYPES.IProjectRootFinder).to(MockProjectRootFinder);
 		container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(MockRenderer);
 		container.bind<IDesignFilesCopier>(TYPES.IDesignFilesCopier).to(MockDesignFilesCopier);
 		container.bind<ITemplateLoader>(TYPES.ITemplateLoader).to(MockTemplateLoader);
+		container.bind<IDocFolderGenerator>(TYPES.IDocFolderGenerator).to(MockDocFolderGenerator);
 		const dg = container.resolve(DocumentationGenerator);
 
 		const output = await dg.generate(gmProject, config);
 
-		Expect(output).toBe(config.output.outputFolder + "YEAH!");
+		Expect(output).toBe(config.output.outputFolder);
 	}
 }

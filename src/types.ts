@@ -10,20 +10,18 @@ const TYPES = {
 
 	// generator
 	IDocumentationExtractor: Symbol.for("IDocumentationExtractor"),
-	IDocProjectGenerator: Symbol.for("IDocProjectGenerator"),
 	IDocFolderGenerator: Symbol.for("IDocFolderGenerator"),
 	IDocumentationGenerator: Symbol.for("IDocumentationGenerator"),
 	IScriptLoader: Symbol.for("IScriptLoader"),
+	IProjectRootFinder: Symbol.for("IProjectRootFinder"),
 
 	// parser
 	IJSDocParser: Symbol.for("IJSDocParser"),
 
 	// Rendering
-	IRenderingContextGenerator: Symbol.for("IRenderingContextGenerator"),
 	INunjucksRenderer: Symbol.for("INunjucksRenderer"),
 	IDesignFilesCopier: Symbol.for("IDesignFilesCopier"),
 	ILinkToBuilder: Symbol.for("ILinkToBuilder"),
-	IInputFileResolver: Symbol.for("IInputFileResolver"),
 
 	// Reporter
 	IReporter: Symbol.for("IReporter"),
