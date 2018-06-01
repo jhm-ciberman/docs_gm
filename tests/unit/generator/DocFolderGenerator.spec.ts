@@ -37,7 +37,9 @@ export class DocFolderGeneratorFixture {
 		const f = new MockGMFolder("my_folder", [
 			new MockGMScript("my_script1"),
 			new MockGMScript("my_script2"),
-			new MockGMFolder("subfolder", []),
+			new MockGMFolder("subfolder", [
+				new MockGMScript("my_script2"),
+			]),
 		]);
 
 		const docFolder = await this._get().generate(f, new ProjectConfig(), new MockGMProject("My project", []));
@@ -59,6 +61,25 @@ export class DocFolderGeneratorFixture {
 		const docFolder = await this._get().generate(f, new ProjectConfig(), new MockGMProject("My project", []));
 
 		Expect(docFolder.description).toBe(expectedDescription);
+	}
+
+	@AsyncTest()
+	public async DocFolderGenerator_shouldIgnoreEmptyFolders() {
+		const f = new MockGMFolder("my_folder", [
+			new MockGMScript("my_script1"),
+			new MockGMScript("my_script2"),
+			new MockGMFolder("subfolder", [
+				new MockGMScript("RETURN_EMPTY"),
+				new MockGMScript("RETURN_EMPTY"),
+				new MockGMScript("RETURN_EMPTY"),
+			]),
+		]);
+
+		const docFolder = await this._get().generate(f, new ProjectConfig(), new MockGMProject("My project", []));
+
+		Expect(docFolder.children.length).toBe(2);
+		Expect(docFolder.children[0].name).toBe("my_script1");
+		Expect(docFolder.children[1].name).toBe("my_script2");
 	}
 
 	@AsyncTest()
