@@ -51,9 +51,13 @@ export class DesignFilesCopierFixture {
 	@TestCase("package.json", false)
 	@TestCase("index.njk", false)
 	@TestCase("template.json", false)
+	@TestCase("package-lock.json", false)
+	@TestCase(".gitignore", false)
 	@TestCase("subfolder/package.json", false)
 	@TestCase("subfolder/index.njk", false)
 	@TestCase("subfolder/template.json", false)
+	@TestCase("subfolder/package-lock.json", false)
+	@TestCase("subfolder/.gitignore", false)
 	@AsyncTest("Test ignore files")
 	public async test_shouldNotCopyIgnoredFiles(file: string, expected: boolean) {
 		const folder = TempDir.create("folder", {
