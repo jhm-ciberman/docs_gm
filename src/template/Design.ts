@@ -15,7 +15,7 @@ export default class Design {
 	 * An array with the globs used when copying files from the input template folder to the
 	 * output documentation folder.
 	 */
-	public copy: string[] = ["**/*", "!template.json", "!*.njk", "!package.json"];
+	public copy: string[] = ["**/*", "!**/template.json", "!**/*.njk", "!**/package.json"];
 
 	/**
 	 * The parent template

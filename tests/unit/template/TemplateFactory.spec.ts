@@ -56,7 +56,7 @@ export class TemplateFactoryFixture {
 		json.designs.myDesign.copy = undefined;
 
 		const t = tf.create("foo_folder", json);
-		const expected = ["**/*", "!template.json", "!*.njk", "!package.json"];
+		const expected = ["**/*", "!**/template.json", "!**/*.njk", "!**/package.json"];
 		Expect((t.getDesign("myDesign") as Design).copy).toEqual(expected);
 	}
 
