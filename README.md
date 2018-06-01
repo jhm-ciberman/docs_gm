@@ -22,6 +22,8 @@
 - Markdown supported!
 - Reports when some scripts are bad documented, or lack documentation.
 
+![Generated documentation example](img/docs_gm-screenshot.png)
+
 ## ☁️ Installation
 
 Install [Node JS from the official website](https://nodejs.org/).
