@@ -4,6 +4,7 @@ import {
 	SpyOn,
 	TestCase,
 	TestFixture,
+	Timeout,
 } from "alsatian";
 
 import { Container, injectable } from "inversify";
@@ -30,6 +31,7 @@ export class CliFixture {
 	@TestCase("generate", "generate path --noOpen", false)
 	@TestCase("init", "init", true)
 	@TestCase("init", "init", false)
+	@Timeout(2000)
 	@AsyncTest()
 	public async cli(spyOnMethod: string, command: string, shouldFail: boolean) {
 		const cliFacade = new MockCliGGenerateFacade();
