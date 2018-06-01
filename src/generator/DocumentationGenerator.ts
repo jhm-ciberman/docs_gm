@@ -37,8 +37,9 @@ export default class DocumentationGenerator implements IDocumentationGenerator {
 	 */
 	public async generate(project: IGMProject, config: IProjectConfig): Promise<string> {
 
-		const docProject = new DocProject(project.name);
 		const rootFolder = this._projectRootFinder.find(project, config.root);
+
+		const docProject = new DocProject(project.name);
 		docProject.root = await this._docFolderGenerator.generate(rootFolder, config, project);
 
 		const templateFolder = await this._templateLoader.getFolder(config.output);
