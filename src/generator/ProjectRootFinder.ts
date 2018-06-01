@@ -6,6 +6,12 @@ import IProjectRootFinder from "./interfaces/IProjectRootFinder";
 @injectable()
 export default class ProjectRootFinder implements IProjectRootFinder {
 
+	/**
+	 * Finds the project root according to a given path
+	 * @param folder The base project folder
+	 * @param path The path to the project root
+	 * @returns The project root folder according to the given path
+	 */
 	public find(folder: IGMFolder, path: string): IGMFolder {
 		return this._findRootFolder(folder, path.split("/"));
 	}

@@ -3,7 +3,7 @@ import { TYPES } from "../types";
 import { inject, injectable } from "inversify";
 
 import * as yargs from "yargs";
-import StringsEnglish from "../l18n/StringsEnglish";
+import StringsEnglish from "../i18n/StringsEnglish";
 import IReporter from "../reporter/interfaces/IReporter";
 import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
 

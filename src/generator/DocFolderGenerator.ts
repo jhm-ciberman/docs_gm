@@ -45,7 +45,8 @@ export default class DocFolderGenerator implements IDocFolderGenerator {
 
 	private async _loadResource(res: IGMResource, config: IProjectConfig, gmProject: IGMProject): Promise<DocResource[]> {
 		if (GMResourceHelper.isFolder(res)) {
-			return [await this.generate(res, config, gmProject)];
+			const f = await this.generate(res, config, gmProject);
+			return f.children.length === 0 ? [] : [f];
 		} else if (GMResourceHelper.isScript(res)) {
 			return this._scriptLoader.load(res, config, gmProject);
 		} else {
