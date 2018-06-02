@@ -4,6 +4,7 @@ import IScriptValidationRules from "../config/interfaces/IScriptValidationRules"
 import IValidationRuleConfig from "../config/interfaces/IValidationRuleConfig";
 import IRule from "./interfaces/IRule";
 import IRulesProvider from "./interfaces/IRulesProvider";
+import RuleFunctionSignatureInDescription from "./rules/RuleFunctionSignatureInDescription";
 import RuleMismatchingArguments from "./rules/RuleMismatchingArguments";
 import RuleMismatchingFunctionName from "./rules/RuleMismatchingFunctionName";
 import RuleNoDescription from "./rules/RuleNoDescription";
@@ -25,6 +26,7 @@ export default class RulesProvider implements IRulesProvider {
 			new RuleUndocumentedArguments(),
 			new RuleNoParamDescription(),
 			new RuleNoParamType(),
+			new RuleFunctionSignatureInDescription(),
 		];
 	}
 
@@ -40,6 +42,7 @@ export default class RulesProvider implements IRulesProvider {
 			rules.undocumentedArguments,
 			rules.noParamDescription,
 			rules.noParamType,
+			rules.functionSignatureInDescription,
 		];
 	}
 }
