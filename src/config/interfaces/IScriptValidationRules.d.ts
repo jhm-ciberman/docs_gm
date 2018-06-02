@@ -8,4 +8,6 @@ export default interface IScriptValidationRules {
 	noDescription: IValidationRuleConfig;
 	undocumentedArguments: IValidationRuleConfig;
 	mismatchingArguments: IValidationRuleConfig;
+	noParamDescription: IValidationRuleConfig;
+	noParamType: IValidationRuleConfig;
 }

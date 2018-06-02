@@ -7,6 +7,8 @@ import IRulesProvider from "./interfaces/IRulesProvider";
 import RuleMismatchingArguments from "./rules/RuleMismatchingArguments";
 import RuleMismatchingFunctionName from "./rules/RuleMismatchingFunctionName";
 import RuleNoDescription from "./rules/RuleNoDescription";
+import RuleNoParamDescription from "./rules/RuleNoParamDescription";
+import RuleNoParamType from "./rules/RuleNoParamType";
 import RulePrivate from "./rules/RulePrivate";
 import RuleUndocumented from "./rules/RuleUndocumented";
 import RuleUndocumentedArguments from "./rules/RuleUndocumentedArguments";
@@ -21,6 +23,8 @@ export default class RulesProvider implements IRulesProvider {
 			new RuleMismatchingFunctionName(),
 			new RuleMismatchingArguments(),
 			new RuleUndocumentedArguments(),
+			new RuleNoParamDescription(),
+			new RuleNoParamType(),
 		];
 	}
 
@@ -34,6 +38,8 @@ export default class RulesProvider implements IRulesProvider {
 			rules.mismatchingFunctionName,
 			rules.mismatchingArguments,
 			rules.undocumentedArguments,
+			rules.noParamDescription,
+			rules.noParamType,
 		];
 	}
 }

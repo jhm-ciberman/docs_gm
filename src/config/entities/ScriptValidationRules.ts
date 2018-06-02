@@ -44,4 +44,13 @@ export default class ScriptValidationRules implements IScriptValidationRules {
 	 */
 	public mismatchingArguments: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 
+	/**
+	 * Ignore scripts with some argument without description.
+	 */
+	public noParamDescription: IValidationRuleConfig = new ValidationRuleConfig(true, true);
+
+	/**
+	 * Ignore scripts with some argument without argument data type.
+	 */
+	public noParamType: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 }
