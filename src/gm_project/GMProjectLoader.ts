@@ -1,4 +1,4 @@
-import * as globby from "globby";
+import * as fg from "fast-glob";
 import * as path from "path";
 
 import { injectable } from "inversify";
@@ -20,7 +20,7 @@ export default class GMProjectLoader implements IGMProjectLoader {
 	 */
 	public async load(gmProjectPath: string): Promise<IGMProject> {
 
-		const files = await globby(gmProjectPath + "/*.{yyp,gmx}");
+		const files = await fg.async(gmProjectPath + "/*.{yyp,gmx}") as string[];
 
 		if (files.length === 0) {
 			throw new Error("Unrecognized GM project. No *.yyp or *.gmx file found");

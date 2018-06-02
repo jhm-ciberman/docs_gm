@@ -1,5 +1,5 @@
+import * as fg from "fast-glob";
 import * as fse from "fs-extra";
-import * as globby from "globby";
 import { injectable } from "inversify";
 import * as path from "path";
 import Design from "../template/Design";
@@ -13,7 +13,11 @@ export default class DesignFilesCopier implements IDesignFilesCopier {
 	 * @param outputFolder The output folder
 	 */
 	public async copy(outputFolder: string, design: Design): Promise<void> {
-		const files = await globby(design.copy, { cwd: design.template.folder });
+		const files = await fg.async(design.copy, {
+			cwd: design.template.folder,
+			matchBase: true,
+			ignore: Design.DEFAULT_IGNORE,
+		}) as string[];
 		for (const file of files) {
 			const outputFile = path.resolve(outputFolder, file);
 			const inputFile = path.resolve(design.template.folder, file);
