@@ -61,4 +61,15 @@ export default class ScriptValidationRules implements IScriptValidationRules {
 	 * tag is filled with the function generated signature.
 	 */
 	public functionSignatureInDescription: IValidationRuleConfig = new ValidationRuleConfig(true, true);
+
+	/**
+	 * This rule checks if the script has a return statement
+	 * but has not documentation for the returned value
+	 */
+	public noReturnDescription: IValidationRuleConfig = new ValidationRuleConfig(true, true);
+
+	/**
+	 * This rule checks if the script has no data type for the returned value
+	 */
+	public noReturnType: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 }
