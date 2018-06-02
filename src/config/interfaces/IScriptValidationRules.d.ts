@@ -11,4 +11,6 @@ export default interface IScriptValidationRules {
 	noParamDescription: IValidationRuleConfig;
 	noParamType: IValidationRuleConfig;
 	functionSignatureInDescription: IValidationRuleConfig;
+	noReturnDescription: IValidationRuleConfig;
+	noReturnType: IValidationRuleConfig;
 }
