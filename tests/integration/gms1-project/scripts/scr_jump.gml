@@ -1,6 +1,6 @@
 /**
  * Makes the player jump
- * @param height The jump height
+ * @param {number} height The jump height
  */
 
 return argument0;
