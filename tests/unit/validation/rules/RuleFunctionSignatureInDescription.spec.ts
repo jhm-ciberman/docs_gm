@@ -6,7 +6,6 @@ import {
 } from "alsatian";
 
 import RuleFunctionSignatureInDescription from "../../../../src/validation/rules/RuleFunctionSignatureInDescription";
-import RuleMismatchingArguments from "../../../../src/validation/rules/RuleMismatchingArguments";
 import MockValidableScript from "./__mock__/MockValidableScript.mock";
 
 /* tslint:disable:max-classes-per-file completed-docs */
@@ -35,7 +34,7 @@ export class RuleFunctionSignatureInDescriptionFixture {
 		const vs = new MockValidableScript();
 		vs.doc.name = "foo";
 
-		const rule = new RuleMismatchingArguments();
+		const rule = new RuleFunctionSignatureInDescription();
 		const str = rule.getWarnMessage(vs);
 		Expect(str).toContain("foo");
 	}
