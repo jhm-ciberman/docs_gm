@@ -68,6 +68,15 @@ export class TempDir {
 	}
 
 	/**
+	 * Add a file to the folder
+	 * @param name The file name
+	 * @param content the content of the file
+	 */
+	public addFile(name: string, content: string) {
+		fse.outputFileSync(path.join(this.dir, name), content);
+	}
+
+	/**
 	 * Remove the current temp directory
 	 */
 	public removeSelf() {

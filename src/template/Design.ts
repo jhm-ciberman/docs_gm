@@ -6,6 +6,18 @@ import * as TemplateJSON from "./interfaces/TemplateJSON";
  */
 export default class Design {
 
+	public static DEFAULT_COPY: string[] = [
+		"**/*",
+	];
+
+	public static DEFAULT_IGNORE: string[] = [
+		"**/template.json",
+		"**/*.njk",
+		"**/package.json",
+		"**/package-lock.json",
+		"**/.gitignore",
+	];
+
 	/**
 	 * The design display name
 	 */
@@ -15,7 +27,7 @@ export default class Design {
 	 * An array with the globs used when copying files from the input template folder to the
 	 * output documentation folder.
 	 */
-	public copy: string[] = ["**/*", "!template.json", "!*.njk", "!package.json"];
+	public copy: string[] = Design.DEFAULT_COPY;
 
 	/**
 	 * The parent template
