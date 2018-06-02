@@ -14,7 +14,6 @@ export default class RuleFunctionSignatureInDescription implements IRule {
 	 */
 	public isValid(element: IValidableScript): boolean {
 		const d = element.doc.description.trim().split(" ").join();
-		if (d === "") { return true; }
 		return (!d.startsWith(element.doc.name + "("));
 	}
 	/**
