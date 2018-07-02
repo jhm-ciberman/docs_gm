@@ -24,9 +24,20 @@
 
 ![Generated documentation example](img/docs_gm-screenshot.png)
 
+## Documentation
+
+Check the project wiki to get started!
+
+- [Getting Started](https://github.com/jhm-ciberman/docs_gm/wiki/Getting-started)
+- [Changing the theme (template) of the documentation](https://github.com/jhm-ciberman/docs_gm/wiki/Changing-the-theme-(template)-of-the-documentation)
+- [Creating custom templates](https://github.com/jhm-ciberman/docs_gm/wiki/Creating-custom-templates)
+- [Folder scoped documentation](https://github.com/jhm-ciberman/docs_gm/wiki/Folder-scoped-documentation)
+- [docs_gm.json configuration file](https://github.com/jhm-ciberman/docs_gm/wiki/docs_gm.json-configuration-file)
+- [Contribute with docs_gm](https://github.com/jhm-ciberman/docs_gm/wiki/docs_gm.json-configuration-file)
+
 ## Contribute
 
-I would love to see people interested in contributing to docs_gm. If you have some idea, or bug, you can send a Issue in the github page. Also, you can check the [contribute document](wiki/Contribute)
+I would love to see people interested in contributing to docs_gm. If you have some idea, or bug, you can send a Issue in the github page. Also, you can check the [contribute document](https://github.com/jhm-ciberman/docs_gm/wiki/Contribute)
 
 ## Contributors
 
