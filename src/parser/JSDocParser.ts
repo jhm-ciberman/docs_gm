@@ -1,5 +1,7 @@
 import parse = require("comment-parser");
 import { inject, injectable } from "inversify";
+import ParsingConfig from "../config/entities/ParsingConfig";
+import IParsingConfig from "../config/interfaces/IParsingConfig";
 import DocScript from "../doc_models/DocScript";
 import IReporter from "../reporter/interfaces/IReporter";
 import { TYPES } from "../types";
@@ -11,11 +13,6 @@ import IJSDocParser from "./interfaces/IJSDocParser";
  */
 @injectable()
 export default class JSDocParser implements IJSDocParser {
-
-	/**
-	 * Should warn about unrecognized JSDoc tags?
-	 */
-	public warnUnrecognizedTags: boolean = true;
 
 	/**
 	 * The reporter to use
@@ -30,18 +27,20 @@ export default class JSDocParser implements IJSDocParser {
 	 * @param text The script content
 	 * @returns A new DocScript object
 	 */
-	public parse(name: string, text: string): DocScript {
+	public parse(name: string, text: string, parsingConfig?: IParsingConfig): DocScript {
+
+		parsingConfig = parsingConfig || new ParsingConfig();
 
 		const comments = parse(text);
 
-		const factory = new DocScriptFactory(name);
+		const factory = new DocScriptFactory(name, parsingConfig.mergeDuplicateParams);
 
 		for (const comment of comments) {
 			if (comment.description) {
 				factory.setDescription(comment.description);
 			}
 			for (const tag of comment.tags) {
-				this._parseTag(factory, tag, name);
+				this._parseTag(factory, tag, name, parsingConfig.warnUnrecognizedTags);
 			}
 		}
 
@@ -54,7 +53,7 @@ export default class JSDocParser implements IJSDocParser {
 	 * @param tag The tag to add
 	 * @param name The name of the script to add the tag to
 	 */
-	private _parseTag(factory: DocScriptFactory, tag: CommentParser.Tag, name: string) {
+	private _parseTag(factory: DocScriptFactory, tag: CommentParser.Tag, name: string, warnUnrecognizedTags: boolean) {
 		switch (tag.tag.toLowerCase()) {
 			case "param":
 			case "arg":
@@ -82,7 +81,7 @@ export default class JSDocParser implements IJSDocParser {
 				factory.setFunction(this._parseFunction(this._reconstructTag(tag)));
 				break;
 			default:
-				if (this.warnUnrecognizedTags) {
+				if (warnUnrecognizedTags) {
 					this._reporter.warn(`Unrecognized tag "${ tag.tag.toLowerCase() }" at script "${ name }"`);
 				}
 		}

@@ -95,4 +95,40 @@ export class DocScriptFactoryFixture {
 		Expect((script.returns as DocReturns).type).toBe("return_type");
 		Expect((script.returns as DocReturns).description).toBe("return_description");
 	}
+
+	@Test("Should merge duplicated params")
+	public mergeDuplicatedParams() {
+		this.factory = new DocScriptFactory("name", true);
+		this.factory.addParam("foo", "foo_type", false, "description1");
+		this.factory.addParam("foo", "foo2_type", true, "description2");
+		this.factory.addParam("foo", "foo3_type", true, "description3");
+		this.factory.addParam("bar", "", true, "param2_description");
+
+		const script = this.factory.make();
+		const params = script.params;
+		Expect(params.length).toBe(2);
+
+		Expect(params[0].name).toBe("foo");
+		Expect(params[0].type).toBe("foo3_type");
+		Expect(params[0].optional).toBe(true);
+		Expect(params[0].description).toBe("description1 description2 description3");
+
+		Expect(params[1].name).toBe("bar");
+		Expect(params[1].type).toBe("");
+		Expect(params[1].optional).toBe(true);
+		Expect(params[1].description).toBe("param2_description");
+	}
+
+	@Test("Should NOT merge duplicated params")
+	public shouldNOTmergeDuplicatedParams() {
+		this.factory = new DocScriptFactory("name", false);
+		this.factory.addParam("foo", "foo_type", false, "description1");
+		this.factory.addParam("foo", "foo2_type", true, "description2");
+		this.factory.addParam("foo", "foo3_type", true, "description3");
+		this.factory.addParam("bar", "", true, "param2_description");
+
+		const script = this.factory.make();
+		const params = script.params;
+		Expect(params.length).toBe(4);
+	}
 }

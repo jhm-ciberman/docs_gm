@@ -7,6 +7,8 @@ import {
 } from "alsatian";
 
 import { Container } from "inversify";
+import ParsingConfig from "../../../src/config/entities/ParsingConfig";
+import IParsingConfig from "../../../src/config/interfaces/IParsingConfig";
 import DocReturns from "../../../src/doc_models/DocReturns";
 import JSDocParser from "../../../src/parser/JSDocParser";
 import IReporter from "../../../src/reporter/interfaces/IReporter";
@@ -121,12 +123,13 @@ export class JSDocParserFixture {
 		container.bind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
 		this.p = container.resolve(JSDocParser);
 
-		this.p.warnUnrecognizedTags = true;
+		const config: IParsingConfig = new ParsingConfig();
+		config.warnUnrecognizedTags = true;
 		const doc = this.p.parse("my_script", [
 			"/**",
 			" * @nonexistent a b c",
 			" */",
-		].join("\n"));
+		].join("\n"), config);
 		Expect(doc.undocumented).toBe(true);
 		Expect(mockReporter.warn).toHaveBeenCalled();
 	}
@@ -138,13 +141,14 @@ export class JSDocParserFixture {
 		const container = new Container();
 		container.bind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
 
+		const config: IParsingConfig = new ParsingConfig();
+		config.warnUnrecognizedTags = false;
 		this.p = container.resolve(JSDocParser);
-		this.p.warnUnrecognizedTags = false;
 		const doc = this.p.parse("my_script", [
 			"/**",
 			" * @nonexistent a b c",
 			" */",
-		].join("\n"));
+		].join("\n"), config);
 		Expect(doc.undocumented).toBe(true);
 		Expect(mockReporter.warn).not.toHaveBeenCalled();
 	}
@@ -206,6 +210,51 @@ export class JSDocParserFixture {
 		Expect(doc.params[2].description).toBe("This is a\nmultiline description.");
 		Expect(doc.params[2].type).toBe("");
 		Expect(doc.params[2].optional).toBe(false);
+
+		Expect(doc.undocumented).toBe(false);
+	}
+
+	@Test("parser should merge arguments with the same name if mergeDuplicateParams is set to true in ProjectConfig")
+	public parser_mergeDuplicates() {
+		const config: IParsingConfig = new ParsingConfig();
+		config.mergeDuplicateParams = true;
+		const doc = this.p.parse("my_script", [
+			"/**",
+			" * @param {string} name The name of the character",
+			" * @param {string} name is cool",
+			" */",
+		].join("\n"), config);
+		Expect(doc.params.length).toBe(1);
+
+		Expect(doc.params[0].name).toBe("name");
+		Expect(doc.params[0].description).toBe("The name of the character is cool");
+		Expect(doc.params[0].type).toBe("string");
+		Expect(doc.params[0].optional).toBe(false);
+
+		Expect(doc.undocumented).toBe(false);
+	}
+
+	@Test("parser should NOT merge arguments with the same name if mergeDuplicateParams is set to false in ProjectConfig")
+	public parser_not_mergeDuplicates() {
+		const config: IParsingConfig = new ParsingConfig();
+		config.mergeDuplicateParams = false;
+		const doc = this.p.parse("my_script", [
+			"/**",
+			" * @param {string} name The name of the character",
+			" * @param {string} name is cool",
+			" */",
+		].join("\n"), config);
+		Expect(doc.params.length).toBe(2);
+
+		Expect(doc.params[0].name).toBe("name");
+		Expect(doc.params[0].description).toBe("The name of the character");
+		Expect(doc.params[0].type).toBe("string");
+		Expect(doc.params[0].optional).toBe(false);
+
+		Expect(doc.params[1].name).toBe("name");
+		Expect(doc.params[1].description).toBe("is cool");
+		Expect(doc.params[1].type).toBe("string");
+		Expect(doc.params[1].optional).toBe(false);
 
 		Expect(doc.undocumented).toBe(false);
 	}

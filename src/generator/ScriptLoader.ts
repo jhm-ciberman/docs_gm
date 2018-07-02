@@ -40,6 +40,6 @@ export default class ScriptLoader implements IScriptLoader {
 			throw new Error(`Error loading file ${pathStr}`);
 		}
 		const it = gmScript.subScripts(str);
-		return this._extractor.extractDocScripts(it, config.scripts, config.warnUnrecognizedTags);
+		return this._extractor.extractDocScripts(it, config.scripts, config.parser);
 	}
 }

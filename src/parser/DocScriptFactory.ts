@@ -11,15 +11,24 @@ import StringUtils from "./StringUtils";
 export default class DocScriptFactory {
 
 	/**
+	 * If true, the arguments with the same name will be merged.
+	 * If false, it will be added as different arguments.
+	 */
+	private _mergeDuplicateParams: boolean;
+
+	/**
 	 * The DocScript to generate
 	 */
 	private _script: DocScript;
 
+	private _paramsMap: Map<string, DocParam> = new Map();
+
 	/**
 	 * Creates a DocScriptFactory to build DocScript objects.
 	 */
-	public constructor(name: string) {
+	public constructor(name: string, mergeDuplicateParams: boolean = false) {
 		this._script = new DocScript(name);
+		this._mergeDuplicateParams = mergeDuplicateParams;
 	}
 
 	/**
@@ -63,7 +72,20 @@ export default class DocScriptFactory {
 		str = StringUtils.compactHtmlSingleParagraph(str);
 		param.description = str;
 
-		this._script.params.push(param);
+		const originalParam = this._paramsMap.get(param.name);
+		if (originalParam) {
+			if (this._mergeDuplicateParams) {
+				originalParam.description += " " + param.description;
+				originalParam.optional = param.optional;
+				originalParam.type = param.type;
+			} else {
+				this._script.params.push(param);
+			}
+		} else {
+			this._paramsMap.set(param.name, param);
+			this._script.params.push(param);
+		}
+
 		this._script.undocumented = false;
 	}
 
