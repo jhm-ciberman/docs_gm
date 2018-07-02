@@ -50,4 +50,14 @@ export default class DocScript extends DocResource {
 	 */
 	public function: string = "";
 
+	/**
+	 * Returns the full script(a,b,c) signature.
+	 */
+	public get signature(): string {
+		const paramNames = this.params
+				.map((param) => param.optional ? `[${ param.name }]` : param.name);
+
+		return this.name + "(" + paramNames.join(", ") + ");";
+	}
+
 }

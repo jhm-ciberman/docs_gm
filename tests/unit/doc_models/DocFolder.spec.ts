@@ -12,7 +12,7 @@ import DocScript from "../../../src/doc_models/DocScript";
 export class DocFolderFixture {
 
 	@Test()
-	public async DocFolder_all() {
+	public DocFolder_all() {
 		const folder1 = new DocFolder("my-folder1");
 		folder1.children.push(new DocScript("foo"));
 		folder1.children.push(new DocScript("bar"));
@@ -28,12 +28,12 @@ export class DocFolderFixture {
 	}
 
 	@Test()
-	public async DocFolder_fullpath() {
+	public DocFolder_fullpath() {
 		const parent = new DocFolder("folder1");
 		const child = new DocFolder("folder2");
 		child.parent = parent;
 
-		Expect(child.fullpath).toBe("folder2/folder1/");
+		Expect(child.fullpath).toBe("folder1/folder2/");
 	}
 
 }
