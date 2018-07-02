@@ -2,20 +2,34 @@ language: node_js
 node_js:
   - "8"
   - "10"
-after_success: npm run report-coverage
+
+# ===== INSTALL ========
+
+install:
+  - npm install
+
+before_install:
+  # package-lock.json was introduced in npm@5
+  - '[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest' # skipped when using node 9
+  - npm install -g greenkeeper-lockfile@1
+
+# ===== TEST ========
+
+script:
+  - npm test
+  - npm run integration
+
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
-script:
-  - npm test
-  - npm run integration
-before_script: 
   - greenkeeper-lockfile-update
+
 after_script:
   - greenkeeper-lockfile-upload
   - export CC_TEST_REPORTER_ID=a4a5234a5623ca4cbde912c8d34281ecccf1454d45297257b53272e1fd812dd2 && ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-before_install:
-# package-lock.json was introduced in npm@5
-- '[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest' # skipped when using node 9
-- npm install -g greenkeeper-lockfile@1
+
+# ===== SUCCESS ========
+
+after_success: 
+  - npm run report-coverage
