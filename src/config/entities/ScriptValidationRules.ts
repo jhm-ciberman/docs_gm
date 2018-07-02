@@ -18,44 +18,45 @@ export default class ScriptValidationRules implements IScriptValidationRules {
 	public ignorePrivate: boolean = true;
 
 	/**
-	 * Undocumented scripts
+	 * This rule will fail if the script has undocumented scripts
 	 */
 	public undocumented: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 
 	/**
-	 * Mismatching script name and "function" JSDoc tags.
+	 * This rule will fail if the script has a mismatching script
+	 * name and "function" JSDoc tags.
 	 */
 	public mismatchingFunctionName: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 
 	/**
-	 * Scripts with no description
+	 * This rule will fail if the script has no description
 	 */
 	public noDescription: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 
 	/**
-	 * Scripts with undocumented arguments.
+	 * This rule will fail if the script has undocumented arguments.
 	 * For example, if a script has documentation for 0 arguments, but the GML code uses arguments.
 	 */
 	public undocumentedArguments: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 
 	/**
-	 * Ignore scripts with a mismatching number of arguments.
+	 * This rule will fail if the script has a mismatching number of arguments.
 	 * For example, if the scripts has documentation for 4 arguments but the GML code uses 6 arguments.
 	 */
 	public mismatchingArguments: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 
 	/**
-	 * Ignore scripts with some argument without description.
+	 * This rule will fail if the script has some argument without description.
 	 */
 	public noParamDescription: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 
 	/**
-	 * Ignore scripts with some argument without argument data type.
+	 * This rule will fail if the script has some argument without argument data type.
 	 */
 	public noParamType: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 
 	/**
-	 * This rule should detect if the "description" JSDoc tag has a function
+	 * This rule should detect and fail if the "description" JSDoc tag has a function
 	 * signature instead of the actual function description.
 	 * This is because, when you import a GMS1 project into GMS2, the "description"
 	 * tag is filled with the function generated signature.
@@ -63,13 +64,13 @@ export default class ScriptValidationRules implements IScriptValidationRules {
 	public functionSignatureInDescription: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 
 	/**
-	 * This rule checks if the script has a return statement
+	 * This rule fails if the script has a return statement
 	 * but has not documentation for the returned value
 	 */
 	public noReturnDescription: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 
 	/**
-	 * This rule checks if the script has no data type for the returned value
+	 * This rule fails if the script has no data type for the returned value
 	 */
 	public noReturnType: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 }
