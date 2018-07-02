@@ -1,3 +1,5 @@
+<!-- {% raw %} -->
+
 # 📝Creating custom templates
 
 A custom template is a npm package composed by a `template.json`, one or more HTML file with a `*.njk` extension and all the resources files (CSS, Javascript, fonts, images, etc).
@@ -122,6 +124,7 @@ When rendering a template, docs_gm exposes a set of global variables that you ca
 - `project`: **{DocProject}** The DocProject object representing the GameMaker Project that you are creating the documentation for.
 - `resource`: **{DocResource}** A DocResource object (DocFolder or DocScript) representing the SINGLE game maker resource that your must document in the current template page. To know what kind or resource it is you can access to `resource.type` as shown below.
 
+
 ```html
 {% if resource.type == "script" %}
     <p>Documentation for the script: {{ resource.name }}</p>
@@ -131,6 +134,7 @@ When rendering a template, docs_gm exposes a set of global variables that you ca
     <p>Documentation for the unknown resource: {{ resource.name }}</p>
 {% endif %}
 ```
+
 
 See the documentation for DocResource for more information.
 
@@ -277,3 +281,5 @@ Then, you can change the Template name and design name to use your custom templa
     "templateName": "super-template",
     "design": "red-onepage",
 ```
+
+<!-- {% endraw %} -->

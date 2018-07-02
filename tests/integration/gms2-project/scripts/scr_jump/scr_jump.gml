@@ -1,6 +1,7 @@
 /**
  * Makes the player jump
- * @param height The jump height
+ * @param {number} height The jump height
+ * @return {string} The output string
  */
 
-return argument0;
+return string(argument0) + " meters jump";

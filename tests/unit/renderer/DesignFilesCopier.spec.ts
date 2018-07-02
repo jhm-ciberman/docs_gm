@@ -3,6 +3,7 @@ import {
 	Expect,
 	SetupFixture,
 	TeardownFixture,
+	TestCase,
 	TestFixture,
 } from "alsatian";
 
@@ -17,15 +18,10 @@ import MockTemplate from "../__mock__/MockTemplate.mock";
 @TestFixture("DesignFilesCopierFixture")
 export class DesignFilesCopierFixture {
 
-	public folder: TempDir;
 	public outFolder: TempDir;
 
 	@SetupFixture
 	public setup() {
-		this.folder = TempDir.create("folder", {
-			"a.txt": "my txt",
-			"b.txt": "my other txt",
-		});
 		this.outFolder = TempDir.create("folder");
 	}
 
@@ -36,14 +32,47 @@ export class DesignFilesCopierFixture {
 
 	@AsyncTest("Test normal")
 	public async test_normal() {
+		const folder = TempDir.create("folder", {
+			"a.txt": "my txt",
+			"b.txt": "my other txt",
+		});
+
 		const container = new Container();
 		const dfc = container.resolve(DesignFilesCopier);
 		const template = new MockTemplate();
-		template.folder = this.folder.dir;
+		template.folder = folder.dir;
 		const design = new Design(template, { displayName: "My design", index: "foo.bar"});
 		design.copy = ["**/*"];
 		await dfc.copy(this.outFolder.dir, design);
 		Expect(this.outFolder.read("a.txt")).toBe("my txt");
 		Expect(this.outFolder.read("b.txt")).toBe("my other txt");
+	}
+
+	@TestCase("package.json", false)
+	@TestCase("index.njk", false)
+	@TestCase("template.json", false)
+	@TestCase("package-lock.json", false)
+	@TestCase(".gitignore", false)
+	@TestCase("subfolder/package.json", false)
+	@TestCase("subfolder/index.njk", false)
+	@TestCase("subfolder/template.json", false)
+	@TestCase("subfolder/package-lock.json", false)
+	@TestCase("subfolder/.gitignore", false)
+	@AsyncTest("Test ignore files")
+	public async test_shouldNotCopyIgnoredFiles(file: string, expected: boolean) {
+		const folder = TempDir.create("folder", {
+			"a.txt": "my txt",
+		});
+		folder.addFile(file, "{}");
+
+		const container = new Container();
+		const dfc = container.resolve(DesignFilesCopier);
+		const template = new MockTemplate();
+		template.folder = folder.dir;
+		const design = new Design(template, { displayName: "My design", index: "foo.bar" });
+		await dfc.copy(this.outFolder.dir, design);
+		Expect(folder.exists(file)).toBe(true);
+		Expect(this.outFolder.exists(file)).toBe(expected);
+		Expect(this.outFolder.exists("a.txt")).toBe(true);
 	}
 }
