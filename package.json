@@ -44,23 +44,23 @@
     "docs_gm": "dist/src/docs_gm.js"
   },
   "devDependencies": {
-    "@types/fs-extra": "^5.0.2",
+    "@types/fs-extra": "^5.0.3",
     "@types/minimatch": "^3.0.3",
     "@types/mock-fs": "^3.6.30",
     "@types/mock-require": "^2.0.0",
-    "@types/node": "^10.3.0",
+    "@types/node": "^10.5.1",
     "@types/nunjucks": "3.0.0",
     "@types/open": "0.0.29",
     "@types/pkg-dir": "^2.0.0",
-    "@types/showdown": "^1.7.4",
-    "@types/xml2js": "^0.4.2",
+    "@types/showdown": "^1.7.5",
+    "@types/xml2js": "^0.4.3",
     "@types/yargs": "^11.0.0",
     "alsatian": "^2.2.1",
-    "coveralls": "^3.0.1",
-    "nyc": "^12.0.1",
+    "coveralls": "^3.0.2",
+    "nyc": "^12.0.2",
     "rimraf": "^2.6.2",
     "tslint": "^5.10.0",
-    "typescript": "^2.9.1"
+    "typescript": "^2.9.2"
   },
   "dependencies": {
     "comment-parser": "^0.5.0",
