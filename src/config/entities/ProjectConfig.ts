@@ -1,7 +1,9 @@
 import IOutputConfig from "../interfaces/IOutputConfig";
+import IParsingConfig from "../interfaces/IParsingConfig";
 import IProjectConfig from "../interfaces/IProjectConfig";
 import IScriptValidationRule from "../interfaces/IScriptValidationRules";
 import OutputConfig from "./OutputConfig";
+import ParsingConfig from "./ParsingConfig";
 import ScriptValidationRules from "./ScriptValidationRules";
 
 /**
@@ -25,9 +27,9 @@ export default class ProjectConfig implements IProjectConfig {
 	public root: string = "scripts";
 
 	/**
-	 * Warn about unrecognized JSDoc tags
+	 * The parser configuration
 	 */
-	public warnUnrecognizedTags: boolean = true;
+	public parser: IParsingConfig = new ParsingConfig();
 
 	/**
 	 * Rules for validating scripts

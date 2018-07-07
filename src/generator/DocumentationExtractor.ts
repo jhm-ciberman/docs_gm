@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
 
+import IParsingConfig from "../config/interfaces/IParsingConfig";
 import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
 import DocScript from "../doc_models/DocScript";
 import GMSubscript from "../gm_project/GMSubscript";
@@ -36,13 +37,11 @@ export default class DocumentationExtractor implements IDocumentationExtractor {
 	public extractDocScripts(
 		subscriptsIterator: IterableIterator<GMSubscript>,
 		rules: IScriptValidationRules,
-		warnUnrecognizedTags: boolean,
+		parsingConfig: IParsingConfig,
 	): DocScript[] {
 		const arr = [];
-
-		this._jsDocParser.warnUnrecognizedTags = warnUnrecognizedTags;
 		for (const subScript of subscriptsIterator) {
-			const docScript = this._jsDocParser.parse(subScript.name, subScript.text);
+			const docScript = this._jsDocParser.parse(subScript.name, subScript.text, parsingConfig);
 			const validable = new ValidableScript(docScript, subScript.text);
 			if (this._scriptValidator.validate(validable, rules)) {
 				arr.push(docScript);

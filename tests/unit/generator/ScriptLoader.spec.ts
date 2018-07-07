@@ -40,7 +40,6 @@ class MockDocumentationExtractor implements IDocumentationExtractor {
 	public extractDocScripts(
 		_subscriptsIterator: IterableIterator<GMSubscript>,
 		_rules: IScriptValidationRules,
-		_warnUnrecognizedTags: boolean,
 	): DocScript[] {
 		return [new DocScript("hi")];
 	}

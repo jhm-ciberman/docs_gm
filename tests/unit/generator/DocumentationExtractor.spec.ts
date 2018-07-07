@@ -8,6 +8,7 @@ import {
 import { Container, injectable } from "inversify";
 import { TYPES } from "../../../src/types";
 
+import ParsingConfig from "../../../src/config/entities/ParsingConfig";
 import ScriptValidationRules from "../../../src/config/entities/ScriptValidationRules";
 import IScriptValidationRules from "../../../src/config/interfaces/IScriptValidationRules";
 import DocScript from "../../../src/doc_models/DocScript";
@@ -21,7 +22,6 @@ import IValidableScript from "../../../src/validation/interfaces/IValidableScrip
 
 @injectable()
 class MockJSDocParser implements IJSDocParser {
-	public warnUnrecognizedTags: boolean = false;
 	public parse(name: string, _text: string): DocScript {
 		return new DocScript(name);
 	}
@@ -51,9 +51,8 @@ export class DocumentationExtractorFixture {
 		const extractor = container.resolve(DocumentationExtractor);
 
 		const it = this._mockIteratorFunction();
-		const docs = extractor.extractDocScripts(it, new ScriptValidationRules(), true);
+		const docs = extractor.extractDocScripts(it, new ScriptValidationRules(), new ParsingConfig());
 
-		Expect(jsDocParser.warnUnrecognizedTags).toBe(true);
 		Expect(docs.length).toBe(2);
 		Expect(docs[0].name).toBe("bar"); // scripts are sorted alphabetically
 		Expect(docs[1].name).toBe("foo");

@@ -11,15 +11,24 @@ import StringUtils from "./StringUtils";
 export default class DocScriptFactory {
 
 	/**
+	 * If true, the arguments with the same name will be merged.
+	 * If false, it will be added as different arguments.
+	 */
+	private _mergeDuplicateParams: boolean;
+
+	/**
 	 * The DocScript to generate
 	 */
 	private _script: DocScript;
 
+	private _paramsMap: Map<string, DocParam> = new Map();
+
 	/**
 	 * Creates a DocScriptFactory to build DocScript objects.
 	 */
-	public constructor(name: string) {
+	public constructor(name: string, mergeDuplicateParams: boolean = false) {
 		this._script = new DocScript(name);
+		this._mergeDuplicateParams = mergeDuplicateParams;
 	}
 
 	/**
@@ -54,16 +63,22 @@ export default class DocScriptFactory {
 	 * @param description The description of the parameter
 	 */
 	public addParam(name: string, type: string, optional: boolean, description: string): void {
-		const param = new DocParam();
-		param.name = StringUtils.escapeHtml(name);
-		param.type = type ? StringUtils.escapeHtml(type) : "";
-		param.optional = optional;
-		let str = StringUtils.stripInitialHypen(description);
-		str = StringUtils.markdown2Html(str);
-		str = StringUtils.compactHtmlSingleParagraph(str);
-		param.description = str;
+		const param = this._createParam(name, type, optional, description);
 
-		this._script.params.push(param);
+		const originalParam = this._paramsMap.get(param.name);
+		if (originalParam) {
+			if (this._mergeDuplicateParams) {
+				originalParam.description += " " + param.description;
+				originalParam.optional = param.optional;
+				originalParam.type = param.type;
+			} else {
+				this._script.params.push(param);
+			}
+		} else {
+			this._paramsMap.set(param.name, param);
+			this._script.params.push(param);
+		}
+
 		this._script.undocumented = false;
 	}
 
@@ -102,6 +117,25 @@ export default class DocScriptFactory {
 	 */
 	public setFunction(functionName: string) {
 		this._script.function = functionName;
+	}
+
+	/**
+	 * Creates a new DocParam
+	 * @param name The param name
+	 * @param type The param type
+	 * @param optional The param is optional?
+	 * @param description The description
+	 */
+	private _createParam(name: string, type: string, optional: boolean, description: string): DocParam {
+		const param = new DocParam();
+		param.name = StringUtils.escapeHtml(name);
+		param.type = type ? StringUtils.escapeHtml(type) : "";
+		param.optional = optional;
+		let str = StringUtils.stripInitialHypen(description);
+		str = StringUtils.markdown2Html(str);
+		str = StringUtils.compactHtmlSingleParagraph(str);
+		param.description = str;
+		return param;
 	}
 
 }
