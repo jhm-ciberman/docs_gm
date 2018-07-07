@@ -1,6 +1,6 @@
 # Source Folders
 src/
-test/
+tests/
 
 # Test dist folders
 dist/tests/
