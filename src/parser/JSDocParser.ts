@@ -36,13 +36,18 @@ export default class JSDocParser implements IJSDocParser {
 		const factory = new DocScriptFactory(name, parsingConfig.mergeDuplicateParams);
 
 		for (const comment of comments) {
-			this._parseComment(factory, comment, parsingConfig.warnUnrecognizedTags);
+			this._parseComment(name, factory, comment, parsingConfig.warnUnrecognizedTags);
 		}
 
 		return factory.make();
 	}
 
-	private _parseComment(factory: DocScriptFactory, comment: CommentParser.Comment, warnUnrecognizedTags: boolean) {
+	private _parseComment(
+		name: string,
+		factory: DocScriptFactory,
+		comment: CommentParser.Comment,
+		warnUnrecognizedTags: boolean,
+	) {
 		if (comment.description) {
 			factory.setDescription(comment.description);
 		}
