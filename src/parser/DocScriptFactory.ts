@@ -63,14 +63,7 @@ export default class DocScriptFactory {
 	 * @param description The description of the parameter
 	 */
 	public addParam(name: string, type: string, optional: boolean, description: string): void {
-		const param = new DocParam();
-		param.name = StringUtils.escapeHtml(name);
-		param.type = type ? StringUtils.escapeHtml(type) : "";
-		param.optional = optional;
-		let str = StringUtils.stripInitialHypen(description);
-		str = StringUtils.markdown2Html(str);
-		str = StringUtils.compactHtmlSingleParagraph(str);
-		param.description = str;
+		const param = this._createParam(name, type, optional, description);
 
 		const originalParam = this._paramsMap.get(param.name);
 		if (originalParam) {
@@ -89,6 +82,17 @@ export default class DocScriptFactory {
 		this._script.undocumented = false;
 	}
 
+	private _createParam(name: string, type: string, optional: boolean, description: string): DocParam {
+		const param = new DocParam();
+		param.name = StringUtils.escapeHtml(name);
+		param.type = type ? StringUtils.escapeHtml(type) : "";
+		param.optional = optional;
+		let str = StringUtils.stripInitialHypen(description);
+		str = StringUtils.markdown2Html(str);
+		str = StringUtils.compactHtmlSingleParagraph(str);
+		param.description = str;
+		return param;
+	}
 	/**
 	 * Set the description of the DocScript
 	 * @param descriptionText The description text
