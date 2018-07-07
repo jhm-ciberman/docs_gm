@@ -1,6 +1,6 @@
 {
   "name": "docs_gm",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
