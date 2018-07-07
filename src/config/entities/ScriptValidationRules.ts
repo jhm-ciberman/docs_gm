@@ -73,4 +73,9 @@ export default class ScriptValidationRules implements IScriptValidationRules {
 	 * This rule fails if the script has no data type for the returned value
 	 */
 	public noReturnType: IValidationRuleConfig = new ValidationRuleConfig(true, true);
+
+	/**
+	 * This rule fails if the script has one or more duplicated params names
+	 */
+	public duplicatedParams: IValidationRuleConfig = new ValidationRuleConfig(true, true);
 }
