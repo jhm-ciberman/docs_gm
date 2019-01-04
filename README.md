@@ -24,7 +24,14 @@
 
 ![Generated documentation example](img/docs_gm-screenshot.png)
 
-## Documentation
+## Projects using docs_gm
+
+Documentations created with docs_gm:
+
+- [Tweenline 2 Animation Engine for GMS2](http://ciberman.net/tweenline/docs2)
+- [Gesture Recognition Engine for GMS1/GMS2](https://ciberman.net/gr/docs/)
+
+## Get started! 
 
 Check the project wiki to get started!
 
