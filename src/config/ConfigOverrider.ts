@@ -1,4 +1,5 @@
 import { injectable } from "inversify";
+import ICliParamsConfig from "./interfaces/ICliParamsConfig";
 import IProjectConfig from "./interfaces/IProjectConfig";
 
 @injectable()
@@ -7,7 +8,7 @@ export default class ConfigOverrider {
 	 * Overrides the configuration with the local values
 	 * @param config The config
 	 */
-	public override(config: IProjectConfig, overrideConfig: { [key: string]: string }): IProjectConfig {
+	public override(config: IProjectConfig, overrideConfig: ICliParamsConfig): IProjectConfig {
 		if (overrideConfig.design) {
 			config.output.design = overrideConfig.design;
 		}

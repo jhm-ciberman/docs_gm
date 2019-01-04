@@ -69,7 +69,7 @@ export class CliGenerateFacadeFixture {
 
 	@AsyncTest()
 	public async generate_noOpen() {
-		return this._getCgf().generate("other/path/with/no/config", {noOpen: "true"});
+		return this._getCgf().generate("other/path/with/no/config", {noOpen: true});
 	}
 
 	@AsyncTest()

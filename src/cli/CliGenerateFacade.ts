@@ -5,6 +5,7 @@ import { TYPES } from "../types";
 
 import * as os from "os";
 import ProjectConfig from "../config/entities/ProjectConfig";
+import ICliParamsConfig from "../config/interfaces/ICliParamsConfig";
 import IConfigManager from "../config/interfaces/IConfigManager";
 import IConfigOverrider from "../config/interfaces/IConfigOverrider";
 import IDocumentationGenerator from "../generator/interfaces/IDocumentationGenerator";
@@ -43,7 +44,7 @@ export default class CliGenerateFacade implements ICliGenerateFacade {
 	 * @param overrideConfig An object with the new configuration
 	 * @param opts The option object to override
 	 */
-	public async generate(projectPath: string = ".", overrideConfig: { [key: string]: string } = {}): Promise<void> {
+	public async generate(projectPath: string = ".", overrideConfig: ICliParamsConfig = {}): Promise<void> {
 
 		this._reporter.info("Loading Project...");
 

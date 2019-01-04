@@ -3,12 +3,17 @@ import { TYPES } from "../types";
 import { inject, injectable } from "inversify";
 
 import * as yargs from "yargs";
+import ICliParamsConfig from "../config/interfaces/ICliParamsConfig";
 import StringsEnglish from "../i18n/StringsEnglish";
 import IReporter from "../reporter/interfaces/IReporter";
 import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
 
 // tslint:disable-next-line: no-var-requires
 const packageJSON = require("../../../package.json");
+
+interface IGenerateCommand extends ICliParamsConfig {
+	folder: string;
+}
 
 /**
  * This class is responsible for showing the CLI interface. It has a single method parse(argv).
@@ -35,7 +40,7 @@ export default class Cli {
 	public parse(argv: string[]): void {
 		const lang = new StringsEnglish();
 		// tslint:disable-next-line:no-unused-expression
-		yargs
+		(yargs as yargs.Argv<IGenerateCommand>)
 			.version(packageJSON.version)
 			.command({
 				command: "init",
@@ -45,8 +50,8 @@ export default class Cli {
 			.command({
 				command: "generate [folder]",
 				describe: lang.COMMAND_GENERATE,
-				builder: (builder) => this._commandGenerateBuilder(builder, lang),
-				handler: (arg) => this._generate(arg),
+				builder: (builder: any) => this._commandGenerateBuilder(builder, lang),
+				handler: (arg: yargs.Arguments<IGenerateCommand>) => this._generate(arg),
 			})
 			.demandCommand()
 			.showHelpOnFail(true)
@@ -54,7 +59,7 @@ export default class Cli {
 			.parse(argv);
 	}
 
-	private _commandGenerateBuilder(builder: yargs.Argv, lang: StringsEnglish) {
+	private _commandGenerateBuilder(builder: yargs.Argv<IGenerateCommand>, lang: StringsEnglish) {
 		return builder
 			.option("design", {type: "string", describe: lang.OPTION_DESIGN})
 			.option("template", {type: "string", describe: lang.OPTION_TEMPLATE})
@@ -68,7 +73,7 @@ export default class Cli {
 	 * Generates the documentation for the given project
 	 * @param folder The input folder
 	 */
-	private _generate(args: yargs.Arguments) {
+	private _generate(args: yargs.Arguments<IGenerateCommand>) {
 		this._cliGenerateFacade.generate(args.folder, args)
 			.catch((err) => this._reporter.error(err));
 	}
