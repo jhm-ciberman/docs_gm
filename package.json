@@ -54,7 +54,7 @@
     "@types/pkg-dir": "^2.0.0",
     "@types/showdown": "^1.7.5",
     "@types/xml2js": "^0.4.3",
-    "@types/yargs": "^11.0.0",
+    "@types/yargs": "^12.0.0",
     "alsatian": "^2.2.1",
     "coveralls": "^3.0.2",
     "nyc": "^12.0.2",
