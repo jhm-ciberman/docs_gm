@@ -67,7 +67,7 @@
     "del": "^3.0.0",
     "docs_gm-basic": "^3.0.0",
     "fast-glob": "^2.2.2",
-    "fs-extra": "^6.0.0",
+    "fs-extra": "^7.0.0",
     "get-installed-path": "^4.0.8",
     "inversify": "^5.0.1",
     "minimatch": "^3.0.4",
