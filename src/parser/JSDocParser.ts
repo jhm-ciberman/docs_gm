@@ -8,6 +8,16 @@ import { TYPES } from "../types";
 import DocScriptFactory from "./DocScriptFactory";
 import IJSDocParser from "./interfaces/IJSDocParser";
 
+interface ICommentParserTag {
+	tag: string;
+	name: string;
+	optional: boolean;
+	type: string;
+	description: string;
+	line: number;
+	source: string;
+}
+
 /**
  * Class for parsing the GML scripts and JSDocs comments inside those scripts
  */
@@ -36,24 +46,15 @@ export default class JSDocParser implements IJSDocParser {
 		const factory = new DocScriptFactory(name, parsingConfig.mergeDuplicateParams);
 
 		for (const comment of comments) {
-			this._parseComment(name, factory, comment, parsingConfig.warnUnrecognizedTags);
+			if (comment.description) {
+				factory.setDescription(comment.description);
+			}
+			for (const tag of comment.tags) {
+				this._parseTag(factory, tag, name, parsingConfig.warnUnrecognizedTags);
+			}
 		}
 
 		return factory.make();
-	}
-
-	private _parseComment(
-		name: string,
-		factory: DocScriptFactory,
-		comment: CommentParser.Comment,
-		warnUnrecognizedTags: boolean,
-	) {
-		if (comment.description) {
-			factory.setDescription(comment.description);
-		}
-		for (const tag of comment.tags) {
-			this._parseTag(factory, tag, name, warnUnrecognizedTags);
-		}
 	}
 
 	/**
@@ -62,7 +63,7 @@ export default class JSDocParser implements IJSDocParser {
 	 * @param tag The tag to add
 	 * @param name The name of the script to add the tag to
 	 */
-	private _parseTag(factory: DocScriptFactory, tag: CommentParser.Tag, name: string, warnUnrecognizedTags: boolean) {
+	private _parseTag(factory: DocScriptFactory, tag: ICommentParserTag, name: string, warnUnrecognizedTags: boolean) {
 		switch (tag.tag.toLowerCase()) {
 			case "param":
 			case "arg":
@@ -113,7 +114,7 @@ export default class JSDocParser implements IJSDocParser {
 	 * tag.
 	 * @param tag The tag to reconstruct
 	 */
-	private _reconstructTag(tag: CommentParser.Tag): string {
+	private _reconstructTag(tag: ICommentParserTag): string {
 		// TODO: reconstruct tag from tag.source.
 		const strArr = [];
 		if (tag.type) {
