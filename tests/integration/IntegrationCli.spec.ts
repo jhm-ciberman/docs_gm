@@ -39,16 +39,21 @@ export class CliFixture {
 		let stdoutStr = "";
 		let stderrStr = "";
 
-		result.stdout.on("data", (data: string) => {
-			stdoutStr += data;
-			// tslint:disable-next-line:no-console
-			console.log(data);
-		});
-		result.stderr.on("data", (data: string) => {
-			stderrStr += data;
-			// tslint:disable-next-line:no-console
-			console.log(data);
-		});
+		if (result.stdout) {
+			result.stdout.on("data", (data: string) => {
+				stdoutStr += data;
+				// tslint:disable-next-line:no-console
+				console.log(data);
+			});
+		}
+
+		if (result.stderr) {
+			result.stderr.on("data", (data: string) => {
+				stderrStr += data;
+				// tslint:disable-next-line:no-console
+				console.log(data);
+			});
+		}
 
 		return new Promise<void>((resolve, _reject) => {
 			result.on("close", (code: number) => {
