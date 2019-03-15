@@ -30,6 +30,8 @@ Documentations created with docs_gm:
 
 - [Tweenline 2 Animation Engine for GMS2](http://ciberman.net/tweenline/docs2)
 - [Gesture Recognition Engine for GMS1/GMS2](https://ciberman.net/gr/docs/)
+- [Sonic for GMS](https://github.com/VectorSatyr/SonicGMS)
+- Send me an email to jhn (dot) ciberman (at) gmail (dot) com, or create a new Issue/PR to add your project here!
 
 ## Get started! 
 
