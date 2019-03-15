@@ -36,4 +36,31 @@ export class DocFolderFixture {
 		Expect(child.fullpath).toBe("folder1/folder2/");
 	}
 
+	@Test()
+	public DocFolder_isParentOf() {
+		const parent = new DocFolder("folder1");
+		const child = new DocFolder("folder2");
+		child.parent = parent;
+
+		Expect(parent.isParentOf(child)).toBe(true);
+	}
+
+	@Test()
+	public DocFolder_isParentOf_indirect() {
+		const parent = new DocFolder("folder1");
+		const child = new DocFolder("folder2");
+		child.parent = parent;
+		const subchild = new DocFolder("folder3");
+		subchild.parent = child;
+
+		Expect(parent.isParentOf(subchild)).toBe(true);
+	}
+
+	@Test()
+	public DocFolder_isParentOf_noParent() {
+		const parent = new DocFolder("folder1");
+		const unrelatedFolder = new DocFolder("folder2");
+
+		Expect(parent.isParentOf(unrelatedFolder)).toBe(false);
+	}
 }
