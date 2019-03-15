@@ -57,4 +57,19 @@ export default class DocFolder extends DocResource {
 	get fullpath(): string {
 		return this.parent ? this.parent.fullpath + this.name + "/" : this.name + "/";
 	}
+
+	/**
+	 * Returns if the current folder is an ancestor of the the given resource
+	 * @param res The resource
+	 */
+	public isParentOf(res: DocResource): boolean {
+		if (res.parent) {
+			if (res.parent === this) {
+				return true;
+			} else {
+				return res.parent.isParentOf(res);
+			}
+		}
+		return false;
+	}
 }
