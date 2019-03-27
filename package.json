@@ -71,7 +71,7 @@
     "inversify": "^5.0.1",
     "minimatch": "^3.0.4",
     "nunjucks": "^3.1.1",
-    "open": "0.0.5",
+    "open": "6.0.0",
     "pkg-dir": "^4.0.0",
     "reflect-metadata": "^0.1.13",
     "showdown": "^1.9.0",
