@@ -44,7 +44,7 @@
     "docs_gm": "dist/src/docs_gm.js"
   },
   "devDependencies": {
-    "@types/fs-extra": "^5.0.5",
+    "@types/fs-extra": "^7.0.0",
     "@types/minimatch": "^3.0.3",
     "@types/mock-fs": "^3.6.30",
     "@types/mock-require": "^2.0.0",
