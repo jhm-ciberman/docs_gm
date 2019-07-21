@@ -44,7 +44,7 @@
     "docs_gm": "dist/src/docs_gm.js"
   },
   "devDependencies": {
-    "@types/fs-extra": "^5.0.5",
+    "@types/fs-extra": "^7.0.0",
     "@types/minimatch": "^3.0.3",
     "@types/mock-fs": "^3.6.30",
     "@types/mock-require": "^2.0.0",
@@ -62,11 +62,11 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "comment-parser": "^0.5.4",
-    "del": "^4.0.0",
+    "comment-parser": "^0.6.0",
+    "del": "^5.0.0",
     "docs_gm-basic": "^3.1.0",
     "fast-glob": "^2.2.6",
-    "fs-extra": "^7.0.1",
+    "fs-extra": "^8.0.0",
     "get-installed-path": "^4.0.8",
     "inversify": "^5.0.1",
     "minimatch": "^3.0.4",
