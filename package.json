@@ -44,38 +44,38 @@
     "docs_gm": "dist/src/docs_gm.js"
   },
   "devDependencies": {
-    "@types/fs-extra": "^7.0.0",
+    "@types/fs-extra": "^8.0.0",
     "@types/minimatch": "^3.0.3",
     "@types/mock-fs": "^3.6.30",
     "@types/mock-require": "^2.0.0",
-    "@types/node": "^12.0.0",
+    "@types/node": "^12.6.8",
     "@types/nunjucks": "^3.1.1",
-    "@types/open": "0.0.29",
-    "@types/showdown": "^1.9.2",
-    "@types/xml2js": "^0.4.3",
+    "@types/open": "^6.2.0",
+    "@types/showdown": "^1.9.3",
+    "@types/xml2js": "^0.4.4",
     "@types/yargs": "^13.0.0",
     "alsatian": "^2.4.0",
-    "coveralls": "^3.0.3",
+    "coveralls": "^3.0.5",
     "nyc": "^13.3.0",
     "rimraf": "^2.6.3",
-    "tslint": "^5.14.0",
-    "typescript": "^3.3.3333"
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
   },
   "dependencies": {
     "comment-parser": "^0.6.0",
     "del": "^5.0.0",
     "docs_gm-basic": "^3.1.0",
-    "fast-glob": "^2.2.6",
-    "fs-extra": "^8.0.0",
+    "fast-glob": "^3.0.4",
+    "fs-extra": "^8.1.0",
     "get-installed-path": "^4.0.8",
     "inversify": "^5.0.1",
     "minimatch": "^3.0.4",
-    "nunjucks": "^3.1.1",
-    "open": "0.0.5",
-    "pkg-dir": "^4.0.0",
+    "nunjucks": "^3.2.0",
+    "open": "6.4.0",
+    "pkg-dir": "^4.2.0",
     "reflect-metadata": "^0.1.13",
     "showdown": "^1.9.0",
     "xml2js": "^0.4.19",
-    "yargs": "^13.2.2"
+    "yargs": "^13.3.0"
   }
 }

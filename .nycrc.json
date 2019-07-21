@@ -1,6 +1,6 @@
 {
 	"include": [
-		"dist/src/**/*.js"
+		"dist/src/**/*"
 	],
 	"exclude": [
 		"**/index.js",
@@ -13,7 +13,8 @@
 		"**/node_modules/**",
 		"coverage"
 	],
-	"all": true,
+	"extension": [".js", ".ts"],
+	"all": false,
 	"reporter": [
 		"lcov",
 		"text",

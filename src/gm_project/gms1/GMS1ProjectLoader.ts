@@ -65,7 +65,7 @@ export default class GMS1ProjectLoader implements IGMProjectLoader {
 	private _xmlParse(str: string): Promise<any> {
 		return new Promise((accept) => {
 			xml2js.parseString(str, (err, result) => {
-				if (err) { throw new Error(err); }
+				if (err) { throw err; }
 				accept(result);
 			});
 		});

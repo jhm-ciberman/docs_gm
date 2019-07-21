@@ -4,6 +4,7 @@ import {
 	TestFixture,
 } from "alsatian";
 
+import { ChildProcess } from "child_process";
 import { Container, injectable } from "inversify";
 import CliGenerateFacade from "../../../src/cli/CliGenerateFacade";
 import ProjectConfig from "../../../src/config/entities/ProjectConfig";
@@ -90,9 +91,10 @@ export class CliGenerateFacadeFixture {
 		return container.resolve(CliGenerateFacade);
 	}
 
-	private _mockOpen(target: string) {
+	private _mockOpen(target: string): Promise<ChildProcess> {
 		if (!target.includes("my_output_folder") && !target.includes("index.html")) {
 			throw new Error("Invalid target: " + target);
 		}
+		return null as unknown as Promise<ChildProcess>;
 	}
 }

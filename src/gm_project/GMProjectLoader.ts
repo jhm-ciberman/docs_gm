@@ -19,8 +19,10 @@ export default class GMProjectLoader implements IGMProjectLoader {
 	 * @return A promise with the loaded project
 	 */
 	public async load(gmProjectPath: string): Promise<IGMProject> {
-
-		const files = await fg.async(gmProjectPath + "/*.{yyp,gmx}") as string[];
+		const files = await fg("./*.{yyp,gmx}", {
+			absolute: true,
+			cwd: path.resolve(gmProjectPath),
+		});
 
 		if (files.length === 0) {
 			throw new Error("Unrecognized GM project. No *.yyp or *.gmx file found");

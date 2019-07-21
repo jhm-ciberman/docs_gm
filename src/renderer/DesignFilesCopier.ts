@@ -13,11 +13,11 @@ export default class DesignFilesCopier implements IDesignFilesCopier {
 	 * @param outputFolder The output folder
 	 */
 	public async copy(outputFolder: string, design: Design): Promise<void> {
-		const files = await fg.async(design.copy, {
+		const files = await fg(design.copy, {
 			cwd: design.template.folder,
-			matchBase: true,
+			baseNameMatch: true,
 			ignore: Design.DEFAULT_IGNORE,
-		}) as string[];
+		});
 		for (const file of files) {
 			const outputFile = path.resolve(outputFolder, file);
 			const inputFile = path.resolve(design.template.folder, file);
