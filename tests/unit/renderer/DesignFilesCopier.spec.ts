@@ -1,8 +1,8 @@
 import {
-	AsyncTest,
 	Expect,
-	SetupFixture,
-	TeardownFixture,
+	Setup,
+	Teardown,
+	Test,
 	TestCase,
 	TestFixture,
 } from "alsatian";
@@ -20,17 +20,17 @@ export class DesignFilesCopierFixture {
 
 	public outFolder: TempDir;
 
-	@SetupFixture
+	@Setup
 	public setup() {
 		this.outFolder = TempDir.create("folder");
 	}
 
-	@TeardownFixture
+	@Teardown
 	public teardown() {
 		TempDir.removeAll();
 	}
 
-	@AsyncTest("Test normal")
+	@Test("Test normal")
 	public async test_normal() {
 		const folder = TempDir.create("folder", {
 			"a.txt": "my txt",
@@ -58,7 +58,7 @@ export class DesignFilesCopierFixture {
 	@TestCase("subfolder/template.json", false)
 	@TestCase("subfolder/package-lock.json", false)
 	@TestCase("subfolder/.gitignore", false)
-	@AsyncTest("Test ignore files")
+	@Test("Test ignore files")
 	public async test_shouldNotCopyIgnoredFiles(file: string, expected: boolean) {
 		const folder = TempDir.create("folder", {
 			"a.txt": "my txt",

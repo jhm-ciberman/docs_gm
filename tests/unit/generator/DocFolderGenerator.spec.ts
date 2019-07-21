@@ -1,6 +1,6 @@
 import {
-	AsyncTest,
 	Expect,
+	Test,
 	TestCase,
 	TestFixture,
 } from "alsatian";
@@ -32,7 +32,7 @@ class MockScriptLoader implements IScriptLoader {
 @TestFixture("DocFolder")
 export class DocFolderGeneratorFixture {
 
-	@AsyncTest()
+	@Test()
 	public async DocFolderGenerator_generate() {
 		const f = new MockGMFolder("my_folder", [
 			new MockGMScript("my_script1"),
@@ -53,7 +53,7 @@ export class DocFolderGeneratorFixture {
 
 	@TestCase(new MockGMScript("MODULE_my_folder"), "foo description MODULE_my_folder")
 	@TestCase(new MockGMScript("RETURN_EMPTY"), "")
-	@AsyncTest()
+	@Test()
 	public async DocFolderGenerator_moduleScript(moduleScript: IGMScript | null, expectedDescription: string) {
 		const f = new MockGMFolder("my_folder", []);
 		f.moduleScript = moduleScript;
@@ -63,7 +63,7 @@ export class DocFolderGeneratorFixture {
 		Expect(docFolder.description).toBe(expectedDescription);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async DocFolderGenerator_shouldIgnoreEmptyFolders() {
 		const f = new MockGMFolder("my_folder", [
 			new MockGMScript("my_script1"),
@@ -82,7 +82,7 @@ export class DocFolderGeneratorFixture {
 		Expect(docFolder.children[1].name).toBe("my_script2");
 	}
 
-	@AsyncTest()
+	@Test()
 	public async DocFolderGenerator_throw_on_unrecognized() {
 		const f = new MockGMFolder("my_folder", [
 			new GMResource("my_script"),

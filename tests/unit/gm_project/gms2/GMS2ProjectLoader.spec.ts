@@ -1,8 +1,8 @@
 import {
-	AsyncTest,
 	Expect,
-	SetupFixture,
-	TeardownFixture,
+	Setup,
+	Teardown,
+	Test,
 	TestFixture,
 } from "alsatian";
 import { TempDir } from "../../../_testing_helpers/TempDir.help";
@@ -32,7 +32,7 @@ export class GMS2ProjectLoaderFixture {
 
 	public projectBad: TempDir;
 
-	@SetupFixture
+	@Setup
 	public setup() {
 		this.projectEmpty = TempDir.create("my-project-empty", {
 			"project.json": JSON.stringify(projectEmpty.project),
@@ -64,12 +64,12 @@ export class GMS2ProjectLoaderFixture {
 
 	}
 
-	@TeardownFixture
+	@Teardown
 	public teardown() {
 		TempDir.removeAll();
 	}
 
-	@AsyncTest("should load an empty project")
+	@Test("should load an empty project")
 	public async load_empty() {
 		const factory = new GMS2ProjectLoader();
 		const proj: IGMProject = await factory.load(this.projectEmpty.join("project.json"));
@@ -79,7 +79,7 @@ export class GMS2ProjectLoaderFixture {
 		Expect(proj.name).toBe("my-project-empty");
 	}
 
-	@AsyncTest("should load a single folder project")
+	@Test("should load a single folder project")
 	public async load_singleFolder() {
 		const factory = new GMS2ProjectLoader();
 		const proj: IGMProject = await factory.load(this.projectSingleFolder.join("project.json"));
@@ -89,7 +89,7 @@ export class GMS2ProjectLoaderFixture {
 		Expect(arr[0].name).toBe("my_folder");
 	}
 
-	@AsyncTest("should load a folder/script project")
+	@Test("should load a folder/script project")
 	public async load_folderScript() {
 		const factory = new GMS2ProjectLoader();
 		const proj: IGMProject = await factory.load(this.projectFolderScript.join("project.json"));
@@ -103,7 +103,7 @@ export class GMS2ProjectLoaderFixture {
 		Expect(children[0].name).toBe("my_script");
 	}
 
-	@AsyncTest("should load a folder/folder/room project")
+	@Test("should load a folder/folder/room project")
 	public async load_folder_folder_script() {
 		const factory = new GMS2ProjectLoader();
 		const proj: IGMProject = await factory.load(this.projectFolderFolderScript.join("project.json"));
@@ -122,7 +122,7 @@ export class GMS2ProjectLoaderFixture {
 		Expect(subchildren[0].name).toBe("my_room");
 	}
 
-	@AsyncTest("should load a project with bad keys references")
+	@Test("should load a project with bad keys references")
 	public async load_bad() {
 		const factory = new GMS2ProjectLoader();
 		const proj: IGMProject = await factory.load(this.projectBad.join("project.json"));

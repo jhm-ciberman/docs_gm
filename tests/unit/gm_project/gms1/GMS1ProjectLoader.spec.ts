@@ -1,8 +1,8 @@
 import {
-	AsyncTest,
 	Expect,
-	SetupFixture,
-	TeardownFixture,
+	Setup,
+	Teardown,
+	Test,
 	TestFixture,
 } from "alsatian";
 
@@ -21,7 +21,7 @@ export class GMS1ProjectLoaderFixture {
 
 	public folder: TempDir;
 
-	@SetupFixture
+	@Setup
 	public setup() {
 		const projectNormal: IGMS1DescriptorRoot = {
 			assets: {
@@ -51,12 +51,12 @@ export class GMS1ProjectLoaderFixture {
 
 	}
 
-	@TeardownFixture
+	@Teardown
 	public teardown() {
 		TempDir.removeAll();
 	}
 
-	@AsyncTest("should load a normal project")
+	@Test("should load a normal project")
 	public async load_normal() {
 		const factory = new GMS1ProjectLoader();
 		const proj: IGMProject = await factory.load(this.folder.join("my-project-normal.xml"));
@@ -73,7 +73,7 @@ export class GMS1ProjectLoaderFixture {
 		]);
 	}
 
-	@AsyncTest("should load an empty project")
+	@Test("should load an empty project")
 	public async load_empty() {
 		const loader = new GMS1ProjectLoader();
 		const proj: IGMProject = await loader.load(this.folder.join("my-project-empty.xml"));
@@ -84,7 +84,7 @@ export class GMS1ProjectLoaderFixture {
 		]);
 	}
 
-	@AsyncTest("should thrown on invalid XML project")
+	@Test("should thrown on invalid XML project")
 	public async load_invalid() {
 		const loader = new GMS1ProjectLoader();
 		return loader.load(this.folder.join("my-project-invalid.xml")).then(() => {

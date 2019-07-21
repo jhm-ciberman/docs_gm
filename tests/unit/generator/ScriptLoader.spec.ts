@@ -1,8 +1,8 @@
 import {
 	// Expect,
 	Expect,
-	SetupFixture,
-	TeardownFixture,
+	Setup,
+	Teardown,
 	Test,
 	TestFixture,
 } from "alsatian";
@@ -49,14 +49,14 @@ export class DocumentationGeneratorFixture {
 
 	public folder: TempDir;
 
-	@SetupFixture
+	@Setup
 	public setup() {
 		this.folder = TempDir.create("folder", {
 			"script.gml": "my gml",
 		});
 	}
 
-	@TeardownFixture
+	@Teardown
 	public teardown() {
 		TempDir.removeAll();
 	}

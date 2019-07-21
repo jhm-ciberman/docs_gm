@@ -1,7 +1,7 @@
 import {
-	AsyncTest,
 	Expect,
 	SpyOn,
+	Test,
 	TestCase,
 	TestFixture,
 	Timeout,
@@ -32,8 +32,8 @@ export class CliFixture {
 	@TestCase("init", "init", true)
 	@TestCase("init", "init", false)
 	@Timeout(2000)
-	@AsyncTest()
-	public async cli(spyOnMethod: string, command: string, shouldFail: boolean) {
+	@Test()
+	public async cli(spyOnMethod: "init" | "generate", command: string, shouldFail: boolean) {
 		const cliFacade = new MockCliGGenerateFacade();
 		const spy = SpyOn(cliFacade, spyOnMethod);
 		spy.andReturn(shouldFail

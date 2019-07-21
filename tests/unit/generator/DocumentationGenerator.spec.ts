@@ -1,6 +1,6 @@
 import {
-	AsyncTest,
 	Expect,
+	Test,
 	TestFixture,
 } from "alsatian";
 
@@ -81,7 +81,7 @@ class MockDocFolderGenerator implements IDocFolderGenerator {
 @TestFixture("DocumentationGenerator")
 export class DocumentationGeneratorFixture {
 
-	@AsyncTest()
+	@Test()
 	public async DocumentationGenerator() {
 		const gmProject = new MockGMProject("my project", []);
 		const config = new ProjectConfig();

@@ -1,8 +1,8 @@
 import {
-	AsyncTest,
 	Expect,
 	Setup,
 	Teardown,
+	Test,
 	TestCase,
 	TestFixture,
 	Timeout,
@@ -29,7 +29,7 @@ export class CliFixture {
 
 	@TestCase("gms1-project")
 	@TestCase("gms2-project")
-	@AsyncTest("generate")
+	@Test("generate")
 	@Timeout(10000)
 	public generate(folder: string) {
 		const result = exec(

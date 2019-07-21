@@ -1,6 +1,6 @@
 import {
-	AsyncTest,
 	Expect,
+	Test,
 	TestFixture,
 } from "alsatian";
 
@@ -14,7 +14,7 @@ import { TYPES } from "../../../src/types";
 @TestFixture("ModuleFinder")
 export class ModuleFinderFixture {
 
-	@AsyncTest("ModuleFinder_find_Global")
+	@Test("ModuleFinder_find_Global")
 	public async ModuleFinder_find_Global() {
 		const container = new Container();
 		container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(this._mockGetInstalledPath_Global);
@@ -23,7 +23,7 @@ export class ModuleFinderFixture {
 		Expect(result).toBe("a");
 	}
 
-	@AsyncTest("ModuleFinder_find_Local")
+	@Test("ModuleFinder_find_Local")
 	public async ModuleFinder_find_Local() {
 		const container = new Container();
 		container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(this._mockGetInstalledPath_Local);
@@ -32,7 +32,7 @@ export class ModuleFinderFixture {
 		Expect(result).toBe("b");
 	}
 
-	@AsyncTest("ModuleFinder_find_NotFound")
+	@Test("ModuleFinder_find_NotFound")
 	public async ModuleFinder_find_NotFound() {
 		const container = new Container();
 		container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(this._mockGetInstalledPath_NotFound);

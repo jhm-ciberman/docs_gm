@@ -1,9 +1,9 @@
 import {
-	AsyncTest,
 	Expect,
-	SetupFixture,
+	Setup,
 	SpyOn,
-	TeardownFixture,
+	Teardown,
+	Test,
 	TestFixture,
 } from "alsatian";
 
@@ -74,7 +74,7 @@ export class TemplateLoaderFixture {
 	public folderProject: TempDir;
 	public folderEmpty: TempDir;
 
-	@SetupFixture
+	@Setup
 	public setup() {
 
 		this.folderProject = TempDir.create("folder", {
@@ -84,12 +84,12 @@ export class TemplateLoaderFixture {
 
 	}
 
-	@TeardownFixture
+	@Teardown
 	public teardown() {
 		TempDir.removeAll();
 	}
 
-	@AsyncTest("TemplateLoader_load")
+	@Test("TemplateLoader_load")
 	public async TemplateLoader_load() {
 		const template = new MockTemplate();
 
@@ -107,7 +107,7 @@ export class TemplateLoaderFixture {
 		Expect(spy).toHaveBeenCalled();
 	}
 
-	@AsyncTest("TemplateLoader_load")
+	@Test("TemplateLoader_load")
 	public async TemplateLoader_load_error() {
 		return this._getTL().loadFrom(this.folderEmpty.dir).then(() => {
 			throw new Error("load from not throw");
@@ -116,7 +116,7 @@ export class TemplateLoaderFixture {
 		});
 	}
 
-	@AsyncTest()
+	@Test()
 	public async TemplateLoader_getFolder_folder() {
 		const output = new OutputConfig();
 		output.templatesFolder = "my_folder";
@@ -126,7 +126,7 @@ export class TemplateLoaderFixture {
 		Expect(folder).toContain("foo");
 	}
 
-	@AsyncTest()
+	@Test()
 	public async TemplateLoader_getFolder_external() {
 		const output = new OutputConfig();
 		output.templatesFolder = "";

@@ -1,9 +1,9 @@
 import {
-	AsyncTest,
 	Expect,
-	SetupFixture,
+	Setup,
 	SpyOn,
-	TeardownFixture,
+	Teardown,
+	Test,
 	TestFixture,
 } from "alsatian";
 import { Container, injectable } from "inversify";
@@ -31,19 +31,19 @@ export class NunjucksRendererFixture {
 
 	public folder: TempDir;
 
-	@SetupFixture
+	@Setup
 	public setup() {
 		this.folder = TempDir.create("folder", {
 			"folder.njk": "Link: {{ linkTo(project.scripts) }}",
 		});
 	}
 
-	@TeardownFixture
+	@Teardown
 	public teardown() {
 		TempDir.removeAll();
 	}
 
-	@AsyncTest()
+	@Test()
 	public async NunjucksRenderer_test() {
 		const mockReporter = new MockReporter();
 		SpyOn(mockReporter, "info").andStub();

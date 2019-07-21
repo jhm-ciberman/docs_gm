@@ -1,8 +1,8 @@
 import {
-	AsyncTest,
 	Expect,
-	SetupFixture,
-	TeardownFixture,
+	Setup,
+	Teardown,
+	Test,
 	TestFixture,
 } from "alsatian";
 
@@ -24,7 +24,7 @@ export class GMS1ProjectFactoryFixture {
 
 	public configManager: IConfigManager;
 
-	@SetupFixture
+	@Setup
 	public setup() {
 		const conf = new ProjectConfig();
 		conf.output.template = "my_template_foo";
@@ -37,32 +37,32 @@ export class GMS1ProjectFactoryFixture {
 		this.configManager = container.resolve(ConfigManager);
 	}
 
-	@TeardownFixture
+	@Teardown
 	public teardown() {
 		TempDir.removeAll();
 	}
 
-	@AsyncTest("exportConfig")
+	@Test("exportConfig")
 	public async exportConfig() {
 		await this.configManager.exportConfig(this.output.dir);
 		Expect(this.output.exists("docs_gm.json")).toBe(true);
 	}
 
-	@AsyncTest("exportConfig from dir")
+	@Test("exportConfig from dir")
 	public async loadConfig_fromDir() {
 		const conf = await this.configManager.loadConfig(this.input.dir);
 		Expect(conf).toBeDefined();
 		Expect((conf as IProjectConfig).output.template).toBe("my_template_foo");
 	}
 
-	@AsyncTest("exportConfig from json")
+	@Test("exportConfig from json")
 	public async loadConfig_fromJson() {
 		const conf = await this.configManager.loadConfig(this.input.join("datafiles/docs_gm.json"));
 		Expect(conf).toBeDefined();
 		Expect((conf as IProjectConfig).output.template).toBe("my_template_foo");
 	}
 
-	@AsyncTest("exportConfig invalid json")
+	@Test("exportConfig invalid json")
 	public async loadConfig_invalid() {
 		const conf = await this.configManager.loadConfig(this.input.join("invalid.json"));
 		Expect(conf).not.toBeDefined();

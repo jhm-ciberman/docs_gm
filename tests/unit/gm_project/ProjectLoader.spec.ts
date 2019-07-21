@@ -1,8 +1,8 @@
 import {
-	AsyncTest,
 	Expect,
-	SetupFixture,
-	TeardownFixture,
+	Setup,
+	Teardown,
+	Test,
 	TestFixture,
 } from "alsatian";
 
@@ -24,7 +24,7 @@ export class DocsGMFixture {
 
 	public noProject: TempDir;
 
-	@SetupFixture
+	@Setup
 	public setup() {
 		const projectEmpty: IGMS1DescriptorRoot = {
 			assets: {},
@@ -39,26 +39,26 @@ export class DocsGMFixture {
 		this.noProject = TempDir.create("project-Invalid", {});
 	}
 
-	@TeardownFixture
+	@Teardown
 	public teardown() {
 		TempDir.removeAll();
 	}
 
-	@AsyncTest("load should load a GMS1 Project")
+	@Test("load should load a GMS1 Project")
 	public async load_GMS1() {
 		const loader = new GMProjectLoader();
 		const p = await loader.load(this.projectGMS1.dir);
 		Expect(p).toBeDefined();
 	}
 
-	@AsyncTest("load should load a GMS2 Project")
+	@Test("load should load a GMS2 Project")
 	public async load_GMS2() {
 		const loader = new GMProjectLoader();
 		const p = await loader.load(this.projectGMS2.dir);
 		Expect(p).toBeDefined();
 	}
 
-	@AsyncTest("load should thrown when loading an invalid project")
+	@Test("load should thrown when loading an invalid project")
 	public async load_Invalid() {
 		const loader = new GMProjectLoader();
 		return await loader.load(this.noProject.dir).then(() => {

@@ -1,5 +1,4 @@
 import {
-	AsyncTest,
 	Expect,
 	Setup,
 	Test,
@@ -25,7 +24,7 @@ export class GMS1ScriptFixture {
 		Expect(this.script.filepath).toBe("path/to/my_script.gml");
 	}
 
-	@AsyncTest("subScripts() should generate multiple SubScripts")
+	@Test("subScripts() should generate multiple SubScripts")
 	public async subScripts_multipleScripts() {
 		const mockGML = [
 			"#define my_script_1",
@@ -41,7 +40,7 @@ export class GMS1ScriptFixture {
 		Expect(arr[1].text).toEqual('return "bar";');
 	}
 
-	@AsyncTest("subScripts() should generate single SubScripts")
+	@Test("subScripts() should generate single SubScripts")
 	public async subScripts_singleScript() {
 		const arr = Array.from(this.script.subScripts("return \"foo\";"));
 		Expect(arr.length).toEqual(1);

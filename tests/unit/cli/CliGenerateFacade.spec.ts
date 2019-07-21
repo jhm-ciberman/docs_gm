@@ -1,6 +1,6 @@
 import {
-	AsyncTest,
 	SpyOn,
+	Test,
 	TestFixture,
 } from "alsatian";
 
@@ -58,22 +58,22 @@ class MockConfigOverrider implements IConfigOverrider {
 @TestFixture("CliGenerateFacade")
 export class CliGenerateFacadeFixture {
 
-	@AsyncTest()
+	@Test()
 	public async generate_default() {
 		return this._getCgf().generate();
 	}
 
-	@AsyncTest()
+	@Test()
 	public async generate_noDefaultConfig() {
 		return this._getCgf().generate("other/path/with/no/config");
 	}
 
-	@AsyncTest()
+	@Test()
 	public async generate_noOpen() {
 		return this._getCgf().generate("other/path/with/no/config", {noOpen: true});
 	}
 
-	@AsyncTest()
+	@Test()
 	public async generate_init() {
 		return this._getCgf().init();
 	}
