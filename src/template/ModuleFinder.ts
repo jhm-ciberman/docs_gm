@@ -22,15 +22,26 @@ export default class ModuleFinder implements IModuleFinder {
 	 * @param templateName The name of the template to find
 	 */
 	public async find(moduleName: string): Promise<string> {
-		try {
-			return await this._getInstalledPath(moduleName);
-		} catch (e) {
-			try {
-				const cwd = await pkgDir() as string;
-				return await this._getInstalledPath(moduleName, { local: true, cwd });
-			} catch (e) {
-				throw new Error(`Cannot find the module "${moduleName}"`);
-			}
-		}
+		return this._findGlobalModule(moduleName)
+			.catch(() => this._findLocal(moduleName))
+			.catch(() => Promise.reject(new Error(`Cannot find the module "${moduleName}"`)));
+	}
+
+	protected async _findLocal(moduleName: string) {
+		const packageRoot = await pkgDir() as string;
+		return this._findBundledModule(moduleName, packageRoot )
+			.catch(() => this._findLocalModule(moduleName, packageRoot));
+	}
+
+	protected async _findGlobalModule(moduleName: string): Promise<string> {
+		return await this._getInstalledPath(moduleName);
+	}
+
+	protected async _findLocalModule(moduleName: string, packageRoot: string): Promise<string> {
+		return await this._getInstalledPath(moduleName, { local: true, cwd: packageRoot });
+	}
+
+	protected async _findBundledModule(moduleName: string, packageRoot: string): Promise<string> {
+		return await this._getInstalledPath(moduleName, { cwd: packageRoot + "/templates/" });
 	}
 }

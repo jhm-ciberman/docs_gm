@@ -1,15 +1,6 @@
 {
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "gitflow4code.features": [
-    {
-      "name": "feature/add-jest",
-      "base": "develop"
-    }
-  ],
   "editor.insertSpaces": false,
-  "explorerExcludedFiles.patterns": [
-    "file://.gitignore"
-  ],
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -20,12 +11,4 @@
     "coverage": true,
     ".nyc_output": true,
   },
-  "cSpell.words": [
-    "j",
-    "myfolder",
-    "myotherfolder",
-    "myotherfoler",
-    "sdoc",
-    "yoyo"
-  ]
 }
