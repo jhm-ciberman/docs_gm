@@ -1,0 +1,42 @@
+{% extends "src/parent.njk" %}
+{% import "src/macros/script.njk" as scriptMacro %}
+{% import "src/macros/breadcrumb.njk" as breadcrumbMacro %}
+
+{# Overrides the block named "content" that is declared in the parent.njk file #}
+{% block content %}
+
+    {# Main header of the page #}
+    <h1>{{ project.name }} Documentation</h1>
+
+    {{ breadcrumbMacro.breadcrumb(element) }}
+
+
+
+    {% if element.type == "script" %}
+        {# If the current element is a script, prints the script documentation #}
+        {{ scriptMacro.show(element) }}
+    
+    {% elif element.type == "folder" %}
+
+        <h2>{{ element.name }}</h2>
+
+        {{ element.description }}
+
+        {# Prints the table of contents #}
+        <ul class="nav flex-column">
+            {% for res in element.children %}
+                <li class="nav-item">
+                    {% if res.type === "folder" %}
+                        <a class="nav-link" href="{{ linkTo(res) }}">Folder: {{ res.name }}</a>
+                    {% elif res.type === "script" %}
+                        <a class="nav-link" href="{{ linkTo(res) }}">{{ res.name }}</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+
+{% endblock content %}
+
+

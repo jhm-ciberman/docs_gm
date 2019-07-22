@@ -1,0 +1,60 @@
+{# 
+This has the HTML to display a SINGLE gml function documentation 
+It's called a fragment, because its a fragment of page, not a complete page, 
+and it's INCLUDED from another njk files.
+#}
+
+{% macro show(script) %}
+
+    {# Shows the script name #}
+    <h3 id="{{ script.name }}">{{ script.name }}</h3>
+
+    <p><b>Syntax: </b></p>
+    <pre class="lang-js"><code>{{ script.signature }}</code></pre>
+
+    {# Shows the script arguments (only if there any argument to show} #}
+    {% if script.params.length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped js-options-table js-options-table">
+                <thead>
+                    <tr>
+                        <th>Argument name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {# Loop all over the scripts arguments (params) and shows them #}
+                    {% for param in script.params %}
+                        <tr>
+                            <td>{{ param.name }}</td>
+                            <td>{{ param.type }}</td>
+                            <td>{{ param.description }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    {# Shows the script return value #}
+    {% if script.returns %}
+        <p><b>Returns:</b> ({{ script.returns.type }}) {{ script.returns.description }} </p>
+    {% endif %}
+
+    {# Show the script description #}
+    {% if script.description %}
+        <div class ="description">
+            <p><b>Description: </b></p>
+            {{ script.description }}
+        </div>
+    {% endif %}
+
+    {# Loop over all script examples and shows them #}
+    {% for example in script.examples %}
+        <p><b>Example: {{ example.caption }}</b></p>
+        <pre class="lang-js"><code>{{ example.code }}</code></pre>
+    {% endfor %}
+    
+{% endmacro %}
+
