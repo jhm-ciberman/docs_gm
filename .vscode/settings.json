@@ -7,7 +7,6 @@
     }
   ],
   "editor.insertSpaces": false,
-  "tslint.autoFixOnSave": true,
   "explorerExcludedFiles.patterns": [
     "file://.gitignore"
   ],
