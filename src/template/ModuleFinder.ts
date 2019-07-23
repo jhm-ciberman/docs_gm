@@ -1,9 +1,11 @@
 
+import * as fse from "fs-extra";
 import { inject, injectable } from "inversify";
-import pkgDir from "pkg-dir";
+import * as path from "path";
 import { IGetInstalledPath } from "../npmmodules";
 import { TYPES } from "../types";
 import IModuleFinder from "./interfaces/IModuleFinder";
+import ModuleFinderConfig from "./ModuleFinderConfig";
 
 /**
  * Finds a module installed locally or globally and returns his path
@@ -21,16 +23,15 @@ export default class ModuleFinder implements IModuleFinder {
 	 * Gets the path of a template npm module from a global installation or local installation.
 	 * @param templateName The name of the template to find
 	 */
-	public async find(moduleName: string): Promise<string> {
+	public async find(moduleName: string, moduleFinderConfig: ModuleFinderConfig): Promise<string> {
 		return this._findGlobalModule(moduleName)
-			.catch(() => this._findLocal(moduleName))
+			.catch(() => this._findLocal(moduleName, moduleFinderConfig))
 			.catch(() => Promise.reject(new Error(`Cannot find the module "${moduleName}"`)));
 	}
 
-	protected async _findLocal(moduleName: string) {
-		const packageRoot = await pkgDir() as string;
-		return this._findBundledModule(moduleName, packageRoot )
-			.catch(() => this._findLocalModule(moduleName, packageRoot));
+	protected async _findLocal(moduleName: string, moduleFinderConfig: ModuleFinderConfig) {
+		return this._findBundledModule(moduleName, moduleFinderConfig.templatesPath)
+			.catch(() => this._findLocalModule(moduleName, moduleFinderConfig.packageRoot));
 	}
 
 	protected async _findGlobalModule(moduleName: string): Promise<string> {
@@ -41,7 +42,16 @@ export default class ModuleFinder implements IModuleFinder {
 		return await this._getInstalledPath(moduleName, { local: true, cwd: packageRoot });
 	}
 
-	protected async _findBundledModule(moduleName: string, packageRoot: string): Promise<string> {
-		return await this._getInstalledPath(moduleName, { cwd: packageRoot + "/templates/" });
+	protected async _findBundledModule(moduleName: string, templatesPath: string): Promise<string> {
+		const templatePath = path.resolve(templatesPath, moduleName);
+		return new Promise((resolve, reject) => {
+			fse.access(path.resolve(templatePath, "package.json"), (err) => {
+				if (err) {
+					reject();
+				} else {
+					resolve(templatePath);
+				}
+			});
+		});
 	}
 }

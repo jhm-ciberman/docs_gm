@@ -1,6 +1,7 @@
 import * as fse from "fs-extra";
 import { inject, injectable } from "inversify";
 import * as path from "path";
+import * as pkgDir from "pkg-dir";
 import IOutputConfig from "../config/interfaces/IOutputConfig";
 import { TYPES } from "../types";
 import IModuleFinder from "./interfaces/IModuleFinder";
@@ -8,6 +9,7 @@ import { ITemplate } from "./interfaces/ITemplate";
 import ITemplateFactory from "./interfaces/ITemplateFactory";
 import ITemplateLoader from "./interfaces/ITemplateLoader";
 import { IRoot } from "./interfaces/TemplateJSON";
+import ModuleFinderConfig from "./ModuleFinderConfig";
 /**
  * This class is used to load a Template from disk.
  * It can be installed as an npm module or in a local folder.
@@ -45,8 +47,15 @@ export default class TemplateLoader implements ITemplateLoader {
 		if (output.templatesFolder !== "") {
 			return path.resolve(output.templatesFolder, output.template);
 		} else {
-			return await this._moduleFinder.find("docs_gm-" + output.template);
+			return await this._moduleFinder.find("docs_gm-" + output.template, await this._createConfig());
 		}
+	}
+
+	protected async _createConfig() {
+		const config = new ModuleFinderConfig();
+		config.packageRoot = await pkgDir() as string;
+		config.templatesPath = config.packageRoot + "/templates/";
+		return config;
 	}
 
 }

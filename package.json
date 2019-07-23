@@ -64,7 +64,6 @@
   "dependencies": {
     "comment-parser": "^0.6.0",
     "del": "^5.0.0",
-    "docs_gm-basic": "^3.1.0",
     "fast-glob": "^3.0.4",
     "fs-extra": "^8.1.0",
     "get-installed-path": "^4.0.8",

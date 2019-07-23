@@ -1,3 +1,5 @@
+import ModuleFinderConfig from "../ModuleFinderConfig";
+
 export default interface IModuleFinder {
-	find(moduleName: string): Promise<string>
+	find(moduleName: string, moduleFinderConfig: ModuleFinderConfig): Promise<string>
 }

@@ -111,4 +111,12 @@ export class TempDir {
 	public join(...paths: string[]) {
 		return path.join(this.dir, ...paths);
 	}
+
+	/**
+	 * Same as path.resolve, but the base directory is the current temp directory
+	 * @param paths The paths to resolve
+	 */
+	public resolve(...paths: string[]) {
+		return path.resolve(this.dir, ...paths);
+	}
 }
