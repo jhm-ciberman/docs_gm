@@ -1,4 +1,4 @@
-import { IRoot } from "../../../../src/template/interfaces/TemplateJSON";
+import { IRoot } from "../../../../src/template/TemplateJSON";
 
 export const myTemplateJSON: IRoot = {
 	author: "Darth Vader",

@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import IReporter from "./interfaces/IReporter";
+import IReporter from "./IReporter";
 
 /**
  * The standard console reporter

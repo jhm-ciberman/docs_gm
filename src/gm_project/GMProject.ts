@@ -1,8 +1,8 @@
 import * as path from "path";
 
 import GMFolder from "./GMFolder";
-import IGMFolder from "./interfaces/IGMFolder";
-import IGMProject from "./interfaces/IGMProject";
+import IGMFolder from "./IGMFolder";
+import IGMProject from "./IGMProject";
 
 /**
  * Represents a GameMaker Project.

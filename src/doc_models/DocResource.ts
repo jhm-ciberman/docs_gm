@@ -1,5 +1,5 @@
 import DocFolder from "./DocFolder";
-import { DocResourceType } from "./enums/DocResourceType";
+import { DocResourceType } from "./DocResourceType";
 
 /**
  * Represents any resource in the output documentation

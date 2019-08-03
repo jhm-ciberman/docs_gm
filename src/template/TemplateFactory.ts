@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
-import ITemplateFactory from "./interfaces/ITemplateFactory";
-import { IRoot } from "./interfaces/TemplateJSON";
+import ITemplateFactory from "./ITemplateFactory";
 import Template from "./Template";
+import { IRoot } from "./TemplateJSON";
 
 @injectable()
 export default class TemplateFactory implements ITemplateFactory {

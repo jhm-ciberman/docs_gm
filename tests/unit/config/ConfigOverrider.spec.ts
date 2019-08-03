@@ -4,7 +4,7 @@ import {
 
 import { Container } from "inversify";
 import ConfigOverrider from "../../../src/config/ConfigOverrider";
-import ProjectConfig from "../../../src/config/entities/ProjectConfig";
+import ProjectConfig from "../../../src/config/ProjectConfig";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 

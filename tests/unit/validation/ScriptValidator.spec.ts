@@ -4,10 +4,10 @@ import {
 	TestFixture,
 } from "alsatian";
 import { Container, injectable } from "inversify";
-import ScriptValidationRules from "../../../src/config/entities/ScriptValidationRules";
-import ValidationRuleConfig from "../../../src/config/entities/ValidationRuleConfig";
-import IScriptValidationRules from "../../../src/config/interfaces/IScriptValidationRules";
-import IValidationRuleConfig from "../../../src/config/interfaces/IValidationRuleConfig";
+import IScriptValidationRules from "../../../src/config/IScriptValidationRules";
+import IValidationRuleConfig from "../../../src/config/IValidationRuleConfig";
+import ScriptValidationRules from "../../../src/config/ScriptValidationRules";
+import ValidationRuleConfig from "../../../src/config/ValidationRuleConfig";
 import DocScript from "../../../src/doc_models/DocScript";
 import { TYPES } from "../../../src/types";
 import IRule from "../../../src/validation/interfaces/IRule";

@@ -7,11 +7,11 @@ import {
 } from "alsatian";
 
 import { Container } from "inversify";
-import ParsingConfig from "../../../src/config/entities/ParsingConfig";
-import IParsingConfig from "../../../src/config/interfaces/IParsingConfig";
+import IParsingConfig from "../../../src/config/IParsingConfig";
+import ParsingConfig from "../../../src/config/ParsingConfig";
 import DocReturns from "../../../src/doc_models/DocReturns";
 import JSDocParser from "../../../src/parser/JSDocParser";
-import IReporter from "../../../src/reporter/interfaces/IReporter";
+import IReporter from "../../../src/reporter/IReporter";
 import { TYPES } from "../../../src/types";
 import MockReporter from "../__mock__/MockReporter.mock";
 

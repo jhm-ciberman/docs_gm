@@ -4,49 +4,49 @@ import { Container } from "inversify";
 import { TYPES } from "./types";
 
 import CliGenerateFacade from "../src/cli/CliGenerateFacade";
-import ICliGenerateFacade from "../src/cli/interfaces/ICliGenerateFacade";
+import ICliGenerateFacade from "./cli/ICliGenerateFacade";
 
 import ConfigManager from "../src/config/ConfigManager";
-import IConfigManager from "../src/config/interfaces/IConfigManager";
+import IConfigManager from "./config/IConfigManager";
 
 import DocumentationExtractor from "../src/generator/DocumentationExtractor";
-import IDocumentationExtractor from "../src/generator/interfaces/IDocumentationExtractor";
+import IDocumentationExtractor from "./generator/IDocumentationExtractor";
 
-import IJSDocParser from "../src/parser/interfaces/IJSDocParser";
 import JSDocParser from "../src/parser/JSDocParser";
+import IJSDocParser from "./parser/IJSDocParser";
 
 import { getInstalledPath } from "get-installed-path";
 import open = require("open");
 
 import DocumentationGenerator from "../src/generator/DocumentationGenerator";
-import IDocumentationGenerator from "../src/generator/interfaces/IDocumentationGenerator";
 import { IGetInstalledPath, IOpen } from "../src/npmmodules";
 import ConsoleReporter from "../src/reporter/ConsoleReporter";
-import IReporter from "../src/reporter/interfaces/IReporter";
-import ITemplateLoader from "../src/template/interfaces/ITemplateLoader";
 import TemplateLoader from "../src/template/TemplateLoader";
 import IRuleValidator from "../src/validation/interfaces/IRuleValidator";
 import IScriptValidator from "../src/validation/interfaces/IScriptValidator";
 import RuleValidator from "../src/validation/RuleValidator";
 import ScriptValidator from "../src/validation/ScriptValidator";
 import ConfigOverrider from "./config/ConfigOverrider";
-import IConfigOverrider from "./config/interfaces/IConfigOverrider";
+import IConfigOverrider from "./config/IConfigOverrider";
 import DocFolderGenerator from "./generator/DocFolderGenerator";
-import IDocFolderGenerator from "./generator/interfaces/IDocFolderGenerator";
-import IProjectRootFinder from "./generator/interfaces/IProjectRootFinder";
-import IScriptLoader from "./generator/interfaces/IScriptLoader";
+import IDocFolderGenerator from "./generator/IDocFolderGenerator";
+import IDocumentationGenerator from "./generator/IDocumentationGenerator";
+import IProjectRootFinder from "./generator/IProjectRootFinder";
+import IScriptLoader from "./generator/IScriptLoader";
 import ProjectRootFinder from "./generator/ProjectRootFinder";
 import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
-import IGMProjectLoader from "./gm_project/interfaces/IGMProjectLoader";
+import IGMProjectLoader from "./gm_project/IGMProjectLoader";
 import DesignFilesCopier from "./renderer/DesignFilesCopier";
-import IDesignFilesCopier from "./renderer/interfaces/IDesignFilesCopier";
-import ILinkToBuilder from "./renderer/interfaces/ILinkToBuilder";
-import INunjucksRenderer from "./renderer/interfaces/INunjucksRenderer";
+import IDesignFilesCopier from "./renderer/IDesignFilesCopier";
+import ILinkToBuilder from "./renderer/ILinkToBuilder";
+import INunjucksRenderer from "./renderer/INunjucksRenderer";
 import LinkToBuilder from "./renderer/LinkToBuilder";
 import NunjucksRenderer from "./renderer/NunjucksRenderer";
-import IModuleFinder from "./template/interfaces/IModuleFinder";
-import ITemplateFactory from "./template/interfaces/ITemplateFactory";
+import IReporter from "./reporter/IReporter";
+import IModuleFinder from "./template/IModuleFinder";
+import ITemplateFactory from "./template/ITemplateFactory";
+import ITemplateLoader from "./template/ITemplateLoader";
 import ModuleFinder from "./template/ModuleFinder";
 import TemplateFactory from "./template/TemplateFactory";
 import IRulesProvider from "./validation/interfaces/IRulesProvider";

@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
-import IGMFolder from "../../../src/gm_project/interfaces/IGMFolder";
-import IGMProject from "../../../src/gm_project/interfaces/IGMProject";
+import IGMFolder from "../../../src/gm_project/IGMFolder";
+import IGMProject from "../../../src/gm_project/IGMProject";
 import GMFolderMock from "./MockGMFolder.mock";
 
 /* tslint:disable:completed-docs */

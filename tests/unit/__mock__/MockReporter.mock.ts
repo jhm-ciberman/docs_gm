@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import IReporter from "../../../src/reporter/interfaces/IReporter";
+import IReporter from "../../../src/reporter/IReporter";
 
 /* tslint:disable:completed-docs */
 

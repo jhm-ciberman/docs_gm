@@ -3,10 +3,10 @@ import { TYPES } from "../types";
 import { inject, injectable } from "inversify";
 
 import * as yargs from "yargs";
-import ICliParamsConfig from "../config/interfaces/ICliParamsConfig";
+import ICliParamsConfig from "../config/ICliParamsConfig";
 import StringsEnglish from "../i18n/StringsEnglish";
-import IReporter from "../reporter/interfaces/IReporter";
-import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
+import IReporter from "../reporter/IReporter";
+import ICliGenerateFacade from "./ICliGenerateFacade";
 
 // tslint:disable-next-line: no-var-requires
 const packageJSON = require("../../../package.json");

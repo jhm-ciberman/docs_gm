@@ -8,14 +8,14 @@ import {
 } from "alsatian";
 
 import { Container, injectable } from "inversify";
-import ProjectConfig from "../../../src/config/entities/ProjectConfig";
-import IScriptValidationRules from "../../../src/config/interfaces/IScriptValidationRules";
+import IScriptValidationRules from "../../../src/config/IScriptValidationRules";
+import ProjectConfig from "../../../src/config/ProjectConfig";
 import DocScript from "../../../src/doc_models/DocScript";
-import IDocumentationExtractor from "../../../src/generator/interfaces/IDocumentationExtractor";
+import IDocumentationExtractor from "../../../src/generator/IDocumentationExtractor";
 import ScriptLoader from "../../../src/generator/ScriptLoader";
 import GMSubscript from "../../../src/gm_project/GMSubscript";
-import IGMFolder from "../../../src/gm_project/interfaces/IGMFolder";
-import IGMScript from "../../../src/gm_project/interfaces/IGMScript";
+import IGMFolder from "../../../src/gm_project/IGMFolder";
+import IGMScript from "../../../src/gm_project/IGMScript";
 import { TYPES } from "../../../src/types";
 import { TempDir } from "../../_testing_helpers/TempDir.help";
 import MockGMProject from "../__mock__/MockGMProject.mock";

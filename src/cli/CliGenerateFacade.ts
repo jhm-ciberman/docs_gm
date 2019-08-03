@@ -4,15 +4,15 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
 
 import * as os from "os";
-import ProjectConfig from "../config/entities/ProjectConfig";
-import ICliParamsConfig from "../config/interfaces/ICliParamsConfig";
-import IConfigManager from "../config/interfaces/IConfigManager";
-import IConfigOverrider from "../config/interfaces/IConfigOverrider";
-import IDocumentationGenerator from "../generator/interfaces/IDocumentationGenerator";
-import IGMProjectLoader from "../gm_project/interfaces/IGMProjectLoader";
+import ICliParamsConfig from "../config/ICliParamsConfig";
+import IConfigManager from "../config/IConfigManager";
+import IConfigOverrider from "../config/IConfigOverrider";
+import ProjectConfig from "../config/ProjectConfig";
+import IDocumentationGenerator from "../generator/IDocumentationGenerator";
+import IGMProjectLoader from "../gm_project/IGMProjectLoader";
 import { IOpen } from "../npmmodules";
-import IReporter from "../reporter/interfaces/IReporter";
-import ICliGenerateFacade from "./interfaces/ICliGenerateFacade.d";
+import IReporter from "../reporter/IReporter";
+import ICliGenerateFacade from "./ICliGenerateFacade";
 
 /**
  * A facade class to manage all the basic process of the ComandLine

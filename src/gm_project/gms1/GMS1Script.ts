@@ -2,7 +2,7 @@ import * as path from "path";
 
 import GMResource from "../GMResource";
 import GMSubscript from "../GMSubscript";
-import IGMScript from "../interfaces/IGMScript";
+import IGMScript from "../IGMScript";
 
 /**
  * Represents a GMS1 Script. Can contain subscripts.

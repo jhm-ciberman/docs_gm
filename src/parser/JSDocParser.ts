@@ -1,12 +1,12 @@
 import parse = require("comment-parser");
 import { inject, injectable } from "inversify";
-import ParsingConfig from "../config/entities/ParsingConfig";
-import IParsingConfig from "../config/interfaces/IParsingConfig";
+import IParsingConfig from "../config/IParsingConfig";
+import ParsingConfig from "../config/ParsingConfig";
 import DocScript from "../doc_models/DocScript";
-import IReporter from "../reporter/interfaces/IReporter";
+import IReporter from "../reporter/IReporter";
 import { TYPES } from "../types";
 import DocScriptFactory from "./DocScriptFactory";
-import IJSDocParser from "./interfaces/IJSDocParser";
+import IJSDocParser from "./IJSDocParser";
 
 interface ICommentParserTag {
 	tag: string;

@@ -1,14 +1,14 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
 
-import IParsingConfig from "../config/interfaces/IParsingConfig";
-import IScriptValidationRules from "../config/interfaces/IScriptValidationRules";
+import IParsingConfig from "../config/IParsingConfig";
+import IScriptValidationRules from "../config/IScriptValidationRules";
 import DocScript from "../doc_models/DocScript";
 import GMSubscript from "../gm_project/GMSubscript";
 import JSDocParser from "../parser/JSDocParser";
 import IScriptValidator from "../validation/interfaces/IScriptValidator";
 import ValidableScript from "../validation/ValidableScript";
-import IDocumentationExtractor from "./interfaces/IDocumentationExtractor";
+import IDocumentationExtractor from "./IDocumentationExtractor";
 
 /**
  * This class receives as input a GMScript and generates an array of DocScript[]

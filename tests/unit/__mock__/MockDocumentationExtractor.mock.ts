@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
-import IParsingConfig from "../../../src/config/interfaces/IParsingConfig";
-import IScriptValidationRules from "../../../src/config/interfaces/IScriptValidationRules";
+import IParsingConfig from "../../../src/config/IParsingConfig";
+import IScriptValidationRules from "../../../src/config/IScriptValidationRules";
 import DocScript from "../../../src/doc_models/DocScript";
-import IDocumentationExtractor from "../../../src/generator/interfaces/IDocumentationExtractor";
+import IDocumentationExtractor from "../../../src/generator/IDocumentationExtractor";
 import GMSubscript from "../../../src/gm_project/GMSubscript";
 
 /* tslint:disable:completed-docs */

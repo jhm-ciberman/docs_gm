@@ -1,5 +1,5 @@
 import Design from "../../../src/template/Design";
-import { ITemplate } from "../../../src/template/interfaces/ITemplate";
+import { ITemplate } from "../../../src/template/ITemplate";
 
 export default class MockTemplate implements ITemplate {
 	public folder: string;

@@ -6,22 +6,22 @@ import {
 
 import { Container, injectable } from "inversify";
 
-import ProjectConfig from "../../../src/config/entities/ProjectConfig";
+import ProjectConfig from "../../../src/config/ProjectConfig";
 import DocumentationGenerator from "../../../src/generator/DocumentationGenerator";
 
-import IInputConfig from "../../../src/config/interfaces/IOutputConfig";
-import IProjectConfig from "../../../src/config/interfaces/IProjectConfig";
+import IInputConfig from "../../../src/config/IOutputConfig";
+import IProjectConfig from "../../../src/config/IProjectConfig";
 import DocFolder from "../../../src/doc_models/DocFolder";
 import DocProject from "../../../src/doc_models/DocProject";
-import IDocFolderGenerator from "../../../src/generator/interfaces/IDocFolderGenerator";
-import IProjectRootFinder from "../../../src/generator/interfaces/IProjectRootFinder";
-import IGMFolder from "../../../src/gm_project/interfaces/IGMFolder";
-import IGMProject from "../../../src/gm_project/interfaces/IGMProject";
-import IDesignFilesCopier from "../../../src/renderer/interfaces/IDesignFilesCopier";
-import INunjucksRenderer from "../../../src/renderer/interfaces/INunjucksRenderer";
+import IDocFolderGenerator from "../../../src/generator/IDocFolderGenerator";
+import IProjectRootFinder from "../../../src/generator/IProjectRootFinder";
+import IGMFolder from "../../../src/gm_project/IGMFolder";
+import IGMProject from "../../../src/gm_project/IGMProject";
+import IDesignFilesCopier from "../../../src/renderer/IDesignFilesCopier";
+import INunjucksRenderer from "../../../src/renderer/INunjucksRenderer";
 import Design from "../../../src/template/Design";
-import { ITemplate } from "../../../src/template/interfaces/ITemplate";
-import ITemplateLoader from "../../../src/template/interfaces/ITemplateLoader";
+import { ITemplate } from "../../../src/template/ITemplate";
+import ITemplateLoader from "../../../src/template/ITemplateLoader";
 import { TYPES } from "../../../src/types";
 import MockGMProject from "../__mock__/MockGMProject.mock";
 

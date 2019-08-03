@@ -1,8 +1,8 @@
 import GMResource from "./GMResource";
 import GMResourceHelper from "./GMResourceHelper";
-import IGMFolder from "./interfaces/IGMFolder";
-import IGMResource from "./interfaces/IGMResource";
-import IGMScript from "./interfaces/IGMScript";
+import IGMFolder from "./IGMFolder";
+import IGMResource from "./IGMResource";
+import IGMScript from "./IGMScript";
 
 /**
  * Represents any folder in the resource tree of Game Maker

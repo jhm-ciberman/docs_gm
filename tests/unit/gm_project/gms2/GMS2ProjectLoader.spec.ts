@@ -7,8 +7,8 @@ import {
 } from "alsatian";
 import { TempDir } from "../../../_testing_helpers/TempDir.help";
 
-import IGMFolder from "../../../../src/gm_project/interfaces/IGMFolder";
-import IGMProject from "../../../../src/gm_project/interfaces/IGMProject";
+import IGMFolder from "../../../../src/gm_project/IGMFolder";
+import IGMProject from "../../../../src/gm_project/IGMProject";
 
 import GMS2ProjectLoader from "../../../../src/gm_project/gms2/GMS2ProjectLoader";
 import projectBad from "./__mock__/ProjectBad.mock";

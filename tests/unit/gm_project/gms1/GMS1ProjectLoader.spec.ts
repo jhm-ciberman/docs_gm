@@ -11,7 +11,7 @@ import GMFolder from "../../../../src/gm_project/GMFolder";
 import GMProject from "../../../../src/gm_project/GMProject";
 import GMS1ProjectLoader from "../../../../src/gm_project/gms1/GMS1ProjectLoader";
 import { IGMS1DescriptorRoot } from "../../../../src/gm_project/gms1/IGMS1Descriptor";
-import IGMProject from "../../../../src/gm_project/interfaces/IGMProject";
+import IGMProject from "../../../../src/gm_project/IGMProject";
 import { TempDir } from "../../../_testing_helpers/TempDir.help";
 
 /* tslint:disable:max-classes-per-file completed-docs */

@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import * as path from "path";
 import DocResource from "../doc_models/DocResource";
-import ILinkToBuilder from "./interfaces/ILinkToBuilder";
+import ILinkToBuilder from "./ILinkToBuilder";
 import RenderingQueue from "./RenderingQueue";
 
 @injectable()

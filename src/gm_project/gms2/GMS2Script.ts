@@ -1,6 +1,6 @@
 import GMResource from "../GMResource";
 import GMSubscript from "../GMSubscript";
-import IGMScript from "../interfaces/IGMScript";
+import IGMScript from "../IGMScript";
 
 /**
  * Represents a GMS2 Script

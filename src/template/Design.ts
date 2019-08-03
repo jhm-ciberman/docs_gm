@@ -1,5 +1,5 @@
-import { ITemplate } from "./interfaces/ITemplate";
-import * as TemplateJSON from "./interfaces/TemplateJSON";
+import { ITemplate } from "./ITemplate";
+import * as TemplateJSON from "./TemplateJSON";
 
 /**
  * Represents a single design of one Template

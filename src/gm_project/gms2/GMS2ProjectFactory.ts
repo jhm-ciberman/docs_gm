@@ -1,9 +1,9 @@
 import GMFolder from "../GMFolder";
 import GMProject from "../GMProject";
 import GMResource from "../GMResource";
-import IGMFolder from "../interfaces/IGMFolder";
-import IGMProject from "../interfaces/IGMProject";
-import IGMResource from "../interfaces/IGMResource";
+import IGMFolder from "../IGMFolder";
+import IGMProject from "../IGMProject";
+import IGMResource from "../IGMResource";
 import GMS2Script from "./GMS2Script";
 
 /**

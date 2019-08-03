@@ -1,4 +1,4 @@
-import IReporter from "../../reporter/interfaces/IReporter";
+import IReporter from "../../reporter/IReporter";
 
 export default interface IValidationRule<T> {
 	reporter: IReporter;

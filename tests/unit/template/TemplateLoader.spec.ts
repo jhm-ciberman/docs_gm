@@ -8,12 +8,12 @@ import {
 } from "alsatian";
 
 import { Container, injectable } from "inversify";
-import OutputConfig from "../../../src/config/entities/OutputConfig";
+import OutputConfig from "../../../src/config/OutputConfig";
 import Design from "../../../src/template/Design";
-import IModuleFinder from "../../../src/template/interfaces/IModuleFinder";
-import { ITemplate } from "../../../src/template/interfaces/ITemplate";
-import ITemplateFactory from "../../../src/template/interfaces/ITemplateFactory";
-import { IRoot } from "../../../src/template/interfaces/TemplateJSON";
+import IModuleFinder from "../../../src/template/IModuleFinder";
+import { ITemplate } from "../../../src/template/ITemplate";
+import ITemplateFactory from "../../../src/template/ITemplateFactory";
+import { IRoot } from "../../../src/template/TemplateJSON";
 import TemplateLoader from "../../../src/template/TemplateLoader";
 import { TYPES } from "../../../src/types";
 import { TempDir } from "../../_testing_helpers/TempDir.help";

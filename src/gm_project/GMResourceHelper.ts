@@ -1,6 +1,6 @@
-import IGMFolder from "./interfaces/IGMFolder";
-import IGMResource from "./interfaces/IGMResource";
-import IGMScript from "./interfaces/IGMScript";
+import IGMFolder from "./IGMFolder";
+import IGMResource from "./IGMResource";
+import IGMScript from "./IGMScript";
 
 export default class GMResourceHelper {
 	/**

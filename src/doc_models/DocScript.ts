@@ -1,8 +1,8 @@
 import DocExample from "./DocExample";
 import DocParam from "./DocParam";
 import DocResource from "./DocResource";
+import { DocResourceType } from "./DocResourceType";
 import DocReturns from "./DocReturns";
-import { DocResourceType } from "./enums/DocResourceType";
 
 /**
  * Represents a single script of the GameMaker project.

@@ -9,7 +9,7 @@ import { Container } from "inversify";
 import { TYPES } from "../../../src/types";
 
 import DocScript from "../../../src/doc_models/DocScript";
-import IReporter from "../../../src/reporter/interfaces/IReporter";
+import IReporter from "../../../src/reporter/IReporter";
 import IValidableScript from "../../../src/validation/interfaces/IValidableScript";
 import RuleValidator from "../../../src/validation/RuleValidator";
 import MockReporter from "../__mock__/MockReporter.mock";

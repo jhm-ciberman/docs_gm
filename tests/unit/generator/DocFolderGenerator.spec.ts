@@ -6,14 +6,14 @@ import {
 } from "alsatian";
 
 import { Container, injectable } from "inversify";
-import ProjectConfig from "../../../src/config/entities/ProjectConfig";
-import IProjectConfig from "../../../src/config/interfaces/IProjectConfig";
+import IProjectConfig from "../../../src/config/IProjectConfig";
+import ProjectConfig from "../../../src/config/ProjectConfig";
 import DocScript from "../../../src/doc_models/DocScript";
 import DocFolderGenerator from "../../../src/generator/DocFolderGenerator";
-import IScriptLoader from "../../../src/generator/interfaces/IScriptLoader";
+import IScriptLoader from "../../../src/generator/IScriptLoader";
 import GMResource from "../../../src/gm_project/GMResource";
-import IGMProject from "../../../src/gm_project/interfaces/IGMProject";
-import IGMScript from "../../../src/gm_project/interfaces/IGMScript";
+import IGMProject from "../../../src/gm_project/IGMProject";
+import IGMScript from "../../../src/gm_project/IGMScript";
 import { TYPES } from "../../../src/types";
 import MockGMFolder from "../__mock__/MockGMFolder.mock";
 import MockGMProject from "../__mock__/MockGMProject.mock";

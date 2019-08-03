@@ -1,8 +1,8 @@
 import * as fse from "fs-extra";
 import * as path from "path";
 
-import IGMProject from "../interfaces/IGMProject";
-import IGMProjectLoader from "../interfaces/IGMProjectLoader";
+import IGMProject from "../IGMProject";
+import IGMProjectLoader from "../IGMProjectLoader";
 import GMS2ProjectFactory from "./GMS2ProjectFactory";
 import GMS2ResourceType from "./GMS2ResourceType";
 import { IFolder, IProject, IResource, IScript } from "./IGMS2Descriptor";

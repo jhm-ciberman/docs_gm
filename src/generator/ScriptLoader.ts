@@ -4,12 +4,12 @@ import { TYPES } from "../types";
 import * as fse from "fs-extra";
 import * as path from "path";
 
-import IProjectConfig from "../config/interfaces/IProjectConfig";
+import IProjectConfig from "../config/IProjectConfig";
 import DocScript from "../doc_models/DocScript";
-import IGMProject from "../gm_project/interfaces/IGMProject";
-import IGMScript from "../gm_project/interfaces/IGMScript";
-import IDocumentationExtractor from "./interfaces/IDocumentationExtractor";
-import IScriptLoader from "./interfaces/IScriptLoader";
+import IGMProject from "../gm_project/IGMProject";
+import IGMScript from "../gm_project/IGMScript";
+import IDocumentationExtractor from "./IDocumentationExtractor";
+import IScriptLoader from "./IScriptLoader";
 
 /**
  * This class loads a GMScript and extracts the documentation for it

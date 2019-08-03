@@ -9,10 +9,10 @@ import {
 import { Container, injectable } from "inversify";
 import DocProject from "../../../src/doc_models/DocProject";
 import DocResource from "../../../src/doc_models/DocResource";
-import ILinkToBuilder from "../../../src/renderer/interfaces/ILinkToBuilder";
+import ILinkToBuilder from "../../../src/renderer/ILinkToBuilder";
 import NunjucksRenderer from "../../../src/renderer/NunjucksRenderer";
 import RenderingQueue from "../../../src/renderer/RenderingQueue";
-import IReporter from "../../../src/reporter/interfaces/IReporter";
+import IReporter from "../../../src/reporter/IReporter";
 import Design from "../../../src/template/Design";
 import { TYPES } from "../../../src/types";
 import { TempDir } from "../../_testing_helpers/TempDir.help";

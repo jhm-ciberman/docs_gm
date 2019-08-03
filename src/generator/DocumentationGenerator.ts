@@ -1,15 +1,15 @@
 import { inject, injectable } from "inversify";
-import IProjectConfig from "../config/interfaces/IProjectConfig";
+import IProjectConfig from "../config/IProjectConfig";
 import DocProject from "../doc_models/DocProject";
-import IGMProject from "../gm_project/interfaces/IGMProject";
-import IDesignFilesCopier from "../renderer/interfaces/IDesignFilesCopier";
-import INunjucksRenderer from "../renderer/interfaces/INunjucksRenderer";
+import IGMProject from "../gm_project/IGMProject";
+import IDesignFilesCopier from "../renderer/IDesignFilesCopier";
+import INunjucksRenderer from "../renderer/INunjucksRenderer";
 import Design from "../template/Design";
-import ITemplateLoader from "../template/interfaces/ITemplateLoader";
+import ITemplateLoader from "../template/ITemplateLoader";
 import { TYPES } from "../types";
-import IDocFolderGenerator from "./interfaces/IDocFolderGenerator";
-import IDocumentationGenerator from "./interfaces/IDocumentationGenerator";
-import IProjectRootFinder from "./interfaces/IProjectRootFinder";
+import IDocFolderGenerator from "./IDocFolderGenerator";
+import IDocumentationGenerator from "./IDocumentationGenerator";
+import IProjectRootFinder from "./IProjectRootFinder";
 
 /**
  * Generates the documentation.

@@ -4,8 +4,8 @@ import * as xml2js from "xml2js";
 
 import GMFolder from "../GMFolder";
 import GMProject from "../GMProject";
-import IGMProject from "../interfaces/IGMProject";
-import IGMProjectLoader from "../interfaces/IGMProjectLoader";
+import IGMProject from "../IGMProject";
+import IGMProjectLoader from "../IGMProjectLoader";
 import GMS1Script from "./GMS1Script";
 import { IGMS1DescriptorFolder, IGMS1DescriptorRoot } from "./IGMS1Descriptor";
 

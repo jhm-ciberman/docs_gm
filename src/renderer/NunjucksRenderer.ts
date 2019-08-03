@@ -3,11 +3,11 @@ import { inject, injectable } from "inversify";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
 import DocProject from "../doc_models/DocProject";
-import IReporter from "../reporter/interfaces/IReporter";
+import IReporter from "../reporter/IReporter";
 import Design from "../template/Design";
 import { TYPES } from "../types";
-import ILinkToBuilder from "./interfaces/ILinkToBuilder";
-import IRenderingContext from "./interfaces/IRenderingContext";
+import ILinkToBuilder from "./ILinkToBuilder";
+import IRenderingContext from "./IRenderingContext";
 import RenderingQueue from "./RenderingQueue";
 
 @injectable()

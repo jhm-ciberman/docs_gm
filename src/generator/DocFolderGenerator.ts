@@ -1,14 +1,14 @@
 import { inject, injectable } from "inversify";
-import IProjectConfig from "../config/interfaces/IProjectConfig";
+import IProjectConfig from "../config/IProjectConfig";
 import DocFolder from "../doc_models/DocFolder";
 import DocResource from "../doc_models/DocResource";
 import GMResourceHelper from "../gm_project/GMResourceHelper";
-import IGMFolder from "../gm_project/interfaces/IGMFolder";
-import IGMProject from "../gm_project/interfaces/IGMProject";
-import IGMResource from "../gm_project/interfaces/IGMResource";
+import IGMFolder from "../gm_project/IGMFolder";
+import IGMProject from "../gm_project/IGMProject";
+import IGMResource from "../gm_project/IGMResource";
 import { TYPES } from "../types";
-import IDocFolderGenerator from "./interfaces/IDocFolderGenerator";
-import IScriptLoader from "./interfaces/IScriptLoader";
+import IDocFolderGenerator from "./IDocFolderGenerator";
+import IScriptLoader from "./IScriptLoader";
 
 @injectable()
 export default class DocFolderGenerator implements IDocFolderGenerator {

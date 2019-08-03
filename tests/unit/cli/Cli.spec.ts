@@ -9,8 +9,8 @@ import {
 
 import { Container, injectable } from "inversify";
 import Cli from "../../../src/cli/Cli";
-import ICliGenerateFacade from "../../../src/cli/interfaces/ICliGenerateFacade";
-import IReporter from "../../../src/reporter/interfaces/IReporter";
+import ICliGenerateFacade from "../../../src/cli/ICliGenerateFacade";
+import IReporter from "../../../src/reporter/IReporter";
 import { TYPES } from "../../../src/types";
 import MockReporter from "../__mock__/MockReporter.mock";
 

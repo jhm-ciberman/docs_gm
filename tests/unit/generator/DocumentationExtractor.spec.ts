@@ -8,13 +8,13 @@ import {
 import { Container, injectable } from "inversify";
 import { TYPES } from "../../../src/types";
 
-import ParsingConfig from "../../../src/config/entities/ParsingConfig";
-import ScriptValidationRules from "../../../src/config/entities/ScriptValidationRules";
-import IScriptValidationRules from "../../../src/config/interfaces/IScriptValidationRules";
+import IScriptValidationRules from "../../../src/config/IScriptValidationRules";
+import ParsingConfig from "../../../src/config/ParsingConfig";
+import ScriptValidationRules from "../../../src/config/ScriptValidationRules";
 import DocScript from "../../../src/doc_models/DocScript";
 import DocumentationExtractor from "../../../src/generator/DocumentationExtractor";
 import GMSubscript from "../../../src/gm_project/GMSubscript";
-import IJSDocParser from "../../../src/parser/interfaces/IJSDocParser";
+import IJSDocParser from "../../../src/parser/IJSDocParser";
 import IScriptValidator from "../../../src/validation/interfaces/IScriptValidator";
 import IValidableScript from "../../../src/validation/interfaces/IValidableScript";
 

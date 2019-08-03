@@ -2,14 +2,14 @@ import * as fse from "fs-extra";
 import { inject, injectable } from "inversify";
 import * as path from "path";
 import * as pkgDir from "pkg-dir";
-import IOutputConfig from "../config/interfaces/IOutputConfig";
+import IOutputConfig from "../config/IOutputConfig";
 import { TYPES } from "../types";
-import IModuleFinder from "./interfaces/IModuleFinder";
-import { ITemplate } from "./interfaces/ITemplate";
-import ITemplateFactory from "./interfaces/ITemplateFactory";
-import ITemplateLoader from "./interfaces/ITemplateLoader";
-import { IRoot } from "./interfaces/TemplateJSON";
+import IModuleFinder from "./IModuleFinder";
+import { ITemplate } from "./ITemplate";
+import ITemplateFactory from "./ITemplateFactory";
+import ITemplateLoader from "./ITemplateLoader";
 import ModuleFinderConfig from "./ModuleFinderConfig";
+import { IRoot } from "./TemplateJSON";
 /**
  * This class is used to load a Template from disk.
  * It can be installed as an npm module or in a local folder.

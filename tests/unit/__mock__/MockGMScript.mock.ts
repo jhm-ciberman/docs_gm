@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import GMSubscript from "../../../src/gm_project/GMSubscript";
-import IGMFolder from "../../../src/gm_project/interfaces/IGMFolder";
-import IGMScript from "../../../src/gm_project/interfaces/IGMScript";
+import IGMFolder from "../../../src/gm_project/IGMFolder";
+import IGMScript from "../../../src/gm_project/IGMScript";
 
 /* tslint:disable:completed-docs */
 

@@ -6,8 +6,8 @@ import {
 
 import { Container } from "inversify";
 import Design from "../../../src/template/Design";
-import { IRoot } from "../../../src/template/interfaces/TemplateJSON";
 import TemplateFactory from "../../../src/template/TemplateFactory";
+import { IRoot } from "../../../src/template/TemplateJSON";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 

@@ -1,5 +1,5 @@
 import DocResource from "./DocResource";
-import { DocResourceType } from "./enums/DocResourceType";
+import { DocResourceType } from "./DocResourceType";
 
 /**
  * Represents a single folder of the GameMaker resource tree.

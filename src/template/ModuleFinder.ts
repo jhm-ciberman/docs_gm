@@ -4,7 +4,7 @@ import { inject, injectable } from "inversify";
 import * as path from "path";
 import { IGetInstalledPath } from "../npmmodules";
 import { TYPES } from "../types";
-import IModuleFinder from "./interfaces/IModuleFinder";
+import IModuleFinder from "./IModuleFinder";
 import ModuleFinderConfig from "./ModuleFinderConfig";
 
 /**

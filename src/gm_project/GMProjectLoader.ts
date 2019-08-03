@@ -2,10 +2,10 @@ import * as fg from "fast-glob";
 import * as path from "path";
 
 import { injectable } from "inversify";
-import IGMProject from "../gm_project/interfaces/IGMProject";
 import GMS1ProjectLoader from "./gms1/GMS1ProjectLoader";
 import GMS2ProjectLoader from "./gms2/GMS2ProjectLoader";
-import IGMProjectLoader from "./interfaces/IGMProjectLoader";
+import IGMProject from "./IGMProject";
+import IGMProjectLoader from "./IGMProjectLoader";
 
 /**
  * This Factory class loads a GMS1 or GMS2 project and returns a GMProject object

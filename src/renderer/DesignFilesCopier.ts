@@ -3,7 +3,7 @@ import * as fse from "fs-extra";
 import { injectable } from "inversify";
 import * as path from "path";
 import Design from "../template/Design";
-import IDesignFilesCopier from "./interfaces/IDesignFilesCopier";
+import IDesignFilesCopier from "./IDesignFilesCopier";
 
 @injectable()
 export default class DesignFilesCopier implements IDesignFilesCopier {

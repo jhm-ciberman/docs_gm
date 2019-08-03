@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import GMResourceHelper from "../gm_project/GMResourceHelper";
-import IGMFolder from "../gm_project/interfaces/IGMFolder";
-import IProjectRootFinder from "./interfaces/IProjectRootFinder";
+import IGMFolder from "../gm_project/IGMFolder";
+import IProjectRootFinder from "./IProjectRootFinder";
 
 @injectable()
 export default class ProjectRootFinder implements IProjectRootFinder {
