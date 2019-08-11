@@ -4,7 +4,7 @@ import {
 	TestFixture,
 } from "alsatian";
 import { Container } from "inversify";
-import ScriptValidationRules from "../../../src/config/ScriptValidationRules";
+import { ScriptValidationRules } from "../../../src/config/ProjectConfig";
 import RulesProvider from "../../../src/validation/RulesProvider";
 
 /* tslint:disable:max-classes-per-file completed-docs */

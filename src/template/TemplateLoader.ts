@@ -2,13 +2,12 @@ import * as fse from "fs-extra";
 import { inject, injectable } from "inversify";
 import * as path from "path";
 import * as pkgDir from "pkg-dir";
-import IOutputConfig from "../config/IOutputConfig";
+import { IOutputConfig } from "../config/IProjectConfig";
 import { TYPES } from "../types";
 import IModuleFinder from "./IModuleFinder";
-import { ITemplate } from "./ITemplate";
-import ITemplateFactory from "./ITemplateFactory";
 import ITemplateLoader from "./ITemplateLoader";
 import ModuleFinderConfig from "./ModuleFinderConfig";
+import Template from "./Template";
 import { IRoot } from "./TemplateJSON";
 /**
  * This class is used to load a Template from disk.
@@ -16,9 +15,6 @@ import { IRoot } from "./TemplateJSON";
  */
 @injectable()
 export default class TemplateLoader implements ITemplateLoader {
-
-	@inject(TYPES.ITemplateFactory)
-	private _templateFactory: ITemplateFactory;
 
 	@inject(TYPES.IModuleFinder)
 	private _moduleFinder: IModuleFinder;
@@ -28,7 +24,7 @@ export default class TemplateLoader implements ITemplateLoader {
 	 * @param folder The folder name
 	 * @returns A promise
 	 */
-	public async loadFrom(folder: string): Promise<ITemplate> {
+	public async loadFrom(folder: string): Promise<Template> {
 		let data: IRoot;
 		const jsonPath = path.resolve(folder, "template.json");
 		try {
@@ -36,7 +32,7 @@ export default class TemplateLoader implements ITemplateLoader {
 		} catch (e) {
 			throw new Error(`Error loading Template from "${jsonPath}"`);
 		}
-		return this._templateFactory.create(folder, data);
+		return new Template(folder, data);
 	}
 
 	/**

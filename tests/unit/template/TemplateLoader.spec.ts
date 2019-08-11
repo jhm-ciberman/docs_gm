@@ -1,18 +1,14 @@
 import {
 	Expect,
 	Setup,
-	SpyOn,
 	Teardown,
 	Test,
 	TestFixture,
 } from "alsatian";
 
 import { Container, injectable } from "inversify";
-import OutputConfig from "../../../src/config/OutputConfig";
-import Design from "../../../src/template/Design";
+import { OutputConfig } from "../../../src/config/ProjectConfig";
 import IModuleFinder from "../../../src/template/IModuleFinder";
-import { ITemplate } from "../../../src/template/ITemplate";
-import ITemplateFactory from "../../../src/template/ITemplateFactory";
 import { IRoot } from "../../../src/template/TemplateJSON";
 import TemplateLoader from "../../../src/template/TemplateLoader";
 import { TYPES } from "../../../src/types";
@@ -20,37 +16,9 @@ import { TempDir } from "../../_testing_helpers/TempDir.help";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 @injectable()
-class MockTemplateFactory implements ITemplateFactory {
-	public create(_folder: string, data: IRoot): ITemplate {
-		if (data.author !== "Darth Vader") {
-			throw new Error("Author is not Darth Vader");
-		}
-		return new MockTemplate();
-	}
-}
-@injectable()
 class MockModuleFinder implements IModuleFinder {
 	public async find(moduleName: string): Promise<string> {
 		return (moduleName === "docs_gm-foo") ? "foo-folder" : "ERROR";
-	}
-}
-class MockTemplate implements ITemplate {
-	public folder: string;
-	public author: string | undefined;
-	public defaultDesign: Design;
-	public description: string | undefined;
-	public web: string | undefined;
-	public getDesign(_design: string): Design | undefined {
-		throw new Error("Method not implemented.");
-	}
-	public hasDesign(_design: string): boolean {
-		throw new Error("Method not implemented.");
-	}
-	public designs(): IterableIterator<Design> {
-		throw new Error("Method not implemented.");
-	}
-	public findDesign(_designName: string): Design {
-		throw new Error("Method not implemented.");
 	}
 }
 
@@ -58,13 +26,10 @@ const json: IRoot = {
 	author: "Darth Vader",
 	description: "My description",
 	web: "http://myweb.com/",
-	defaultDesign: "myDesign",
-	designs: {
-		myDesign: {
-			displayName: "My design name",
-			copy: ["aaa"],
-			index: "index-foo.njk",
-		},
+	name: "My design name",
+	copy: ["aaa"],
+	pages: {
+		index: "index-foo.njk",
 	},
 };
 
@@ -91,20 +56,9 @@ export class TemplateLoaderFixture {
 
 	@Test("TemplateLoader_load")
 	public async TemplateLoader_load() {
-		const template = new MockTemplate();
-
-		const tf = new MockTemplateFactory();
-		const spy = SpyOn(tf, "create");
-		spy.andReturn(template);
-
-		const container = new Container();
-		container.bind<ITemplateFactory>(TYPES.ITemplateFactory).toConstantValue(tf);
-		container.bind<IModuleFinder>(TYPES.IModuleFinder).to(MockModuleFinder);
-
-		const tl = container.resolve(TemplateLoader);
-		const t = await tl.loadFrom(this.folderProject.dir);
-		Expect(t).toBe(template);
-		Expect(spy).toHaveBeenCalled();
+		const t = await this._getTL().loadFrom(this.folderProject.dir);
+		Expect(t.name).toBe(json.name);
+		Expect(t.description).toBe(json.description);
 	}
 
 	@Test("TemplateLoader_load")
@@ -137,7 +91,6 @@ export class TemplateLoaderFixture {
 
 	private _getTL() {
 		const container = new Container();
-		container.bind<ITemplateFactory>(TYPES.ITemplateFactory).to(MockTemplateFactory);
 		container.bind<IModuleFinder>(TYPES.IModuleFinder).to(MockModuleFinder);
 		return container.resolve(TemplateLoader);
 	}

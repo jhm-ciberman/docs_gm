@@ -8,8 +8,8 @@ import {
 } from "alsatian";
 
 import { Container, injectable } from "inversify";
-import IScriptValidationRules from "../../../src/config/IScriptValidationRules";
-import ProjectConfig from "../../../src/config/ProjectConfig";
+import { IScriptValidationRules } from "../../../src/config/IProjectConfig";
+import { ProjectConfig } from "../../../src/config/ProjectConfig";
 import DocScript from "../../../src/doc_models/DocScript";
 import IDocumentationExtractor from "../../../src/generator/IDocumentationExtractor";
 import ScriptLoader from "../../../src/generator/ScriptLoader";

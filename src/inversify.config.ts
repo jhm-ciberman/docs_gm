@@ -37,18 +37,12 @@ import ProjectRootFinder from "./generator/ProjectRootFinder";
 import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
 import IGMProjectLoader from "./gm_project/IGMProjectLoader";
-import DesignFilesCopier from "./renderer/DesignFilesCopier";
-import IDesignFilesCopier from "./renderer/IDesignFilesCopier";
-import ILinkToBuilder from "./renderer/ILinkToBuilder";
-import INunjucksRenderer from "./renderer/INunjucksRenderer";
-import LinkToBuilder from "./renderer/LinkToBuilder";
-import NunjucksRenderer from "./renderer/NunjucksRenderer";
+import IRenderer from "./renderer/IRenderer";
+import Renderer from "./renderer/Renderer";
 import IReporter from "./reporter/IReporter";
 import IModuleFinder from "./template/IModuleFinder";
-import ITemplateFactory from "./template/ITemplateFactory";
 import ITemplateLoader from "./template/ITemplateLoader";
 import ModuleFinder from "./template/ModuleFinder";
-import TemplateFactory from "./template/TemplateFactory";
 import IRulesProvider from "./validation/interfaces/IRulesProvider";
 import RulesProvider from "./validation/RulesProvider";
 
@@ -76,9 +70,7 @@ container.bind<IGMProjectLoader>(TYPES.IGMProjectLoader).to(GMProjectLoader);
 container.bind<IJSDocParser>(TYPES.IJSDocParser).to(JSDocParser);
 
 // Renderer
-container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(NunjucksRenderer);
-container.bind<IDesignFilesCopier>(TYPES.IDesignFilesCopier).to(DesignFilesCopier);
-container.bind<ILinkToBuilder>(TYPES.ILinkToBuilder).to(LinkToBuilder);
+container.bind<IRenderer>(TYPES.INunjucksRenderer).to(Renderer);
 
 // Reporter
 container.bind<IReporter>(TYPES.IReporter).to(ConsoleReporter);
@@ -86,7 +78,6 @@ container.bind<IReporter>(TYPES.IReporter).to(ConsoleReporter);
 // Template
 container.bind<IModuleFinder>(TYPES.IModuleFinder).to(ModuleFinder);
 container.bind<ITemplateLoader>(TYPES.ITemplateLoader).to(TemplateLoader);
-container.bind<ITemplateFactory>(TYPES.ITemplateFactory).to(TemplateFactory);
 
 // Validation
 container.bind<IScriptValidator>(TYPES.IScriptValidator).to(ScriptValidator);

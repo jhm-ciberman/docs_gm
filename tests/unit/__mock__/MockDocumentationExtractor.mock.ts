@@ -1,6 +1,5 @@
 import { injectable } from "inversify";
-import IParsingConfig from "../../../src/config/IParsingConfig";
-import IScriptValidationRules from "../../../src/config/IScriptValidationRules";
+import { IParsingConfig, IScriptValidationRules } from "../../../src/config/IProjectConfig";
 import DocScript from "../../../src/doc_models/DocScript";
 import IDocumentationExtractor from "../../../src/generator/IDocumentationExtractor";
 import GMSubscript from "../../../src/gm_project/GMSubscript";

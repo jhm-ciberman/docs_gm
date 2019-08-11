@@ -11,8 +11,8 @@ import { TempDir } from "../../_testing_helpers/TempDir.help";
 import { Container } from "inversify";
 import ConfigManager from "../../../src/config/ConfigManager";
 import IConfigManager from "../../../src/config/IConfigManager";
-import IProjectConfig from "../../../src/config/IProjectConfig";
-import ProjectConfig from "../../../src/config/ProjectConfig";
+import { IProjectConfig } from "../../../src/config/IProjectConfig";
+import { ProjectConfig } from "../../../src/config/ProjectConfig";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 

@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import ICliParamsConfig from "./ICliParamsConfig";
-import IProjectConfig from "./IProjectConfig";
+import { IProjectConfig } from "./IProjectConfig";
 
 @injectable()
 export default class ConfigOverrider {
@@ -9,9 +9,6 @@ export default class ConfigOverrider {
 	 * @param config The config
 	 */
 	public override(config: IProjectConfig, overrideConfig: ICliParamsConfig): IProjectConfig {
-		if (overrideConfig.design) {
-			config.output.design = overrideConfig.design;
-		}
 		if (overrideConfig.template) {
 			config.output.template = overrideConfig.template;
 		}

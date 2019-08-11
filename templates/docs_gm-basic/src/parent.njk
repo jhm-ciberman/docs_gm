@@ -52,9 +52,12 @@
     <body>
     
         <div class="container">
+            {# Main header of the page #}
+            <h1>{{ project.name }} Documentation</h1>
+
             {# This is the default content for the "content" block. We will be overrwitten by the content in the index-onepage.njk file. #}
             {% block content %}
-                <h1>Oops, this is an empty page</h1>
+                <p>Oops, this is an empty page</p>
             {% endblock %}
         </div>
         <footer class="footer">

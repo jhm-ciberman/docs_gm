@@ -7,16 +7,14 @@ export interface IRoot {
 	author: string;
 	description: string;
 	web: string;
-	defaultDesign: string;
-	designs: IDesignsMap;
-}
-
-export interface IDesignsMap {
-	[key: string]: IDesign;
-}
-
-export interface IDesign {
-	displayName: string;
+	name: string;
 	copy?: string[];
+	pages: IPages;
+}
+
+export interface IPages {
 	index: string;
+	script?: string;
+	folder?: string;
+	resource?: string;
 }

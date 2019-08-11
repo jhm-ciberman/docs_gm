@@ -1,12 +1,8 @@
 {% extends "src/parent.njk" %}
-{% import "src/macros/script.njk" as scriptMacro %}
 {% import "src/macros/breadcrumb.njk" as breadcrumbMacro %}
 
 {# Overrides the block named "content" that is declared in the parent.njk file #}
 {% block content %}
-
-    {# Main header of the page #}
-    <h1>{{ project.name }} Documentation</h1>
 
     {{ breadcrumbMacro.breadcrumb(element) }}
 
@@ -33,7 +29,7 @@
             {# Prints an horizontal separator line #}
             <hr />
             
-            {{ scriptMacro.show(res) }}
+            {% include "src/fragments/script.njk" %}
 
         {% endif %}
     {% else %}

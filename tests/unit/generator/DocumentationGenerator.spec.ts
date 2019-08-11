@@ -6,22 +6,19 @@ import {
 
 import { Container, injectable } from "inversify";
 
-import ProjectConfig from "../../../src/config/ProjectConfig";
-import DocumentationGenerator from "../../../src/generator/DocumentationGenerator";
-
-import IInputConfig from "../../../src/config/IOutputConfig";
-import IProjectConfig from "../../../src/config/IProjectConfig";
+import { IOutputConfig, IProjectConfig } from "../../../src/config/IProjectConfig";
+import { ProjectConfig } from "../../../src/config/ProjectConfig";
+// tslint:disable-next-line:ordered-imports
 import DocFolder from "../../../src/doc_models/DocFolder";
-import DocProject from "../../../src/doc_models/DocProject";
+import DocumentationGenerator from "../../../src/generator/DocumentationGenerator";
 import IDocFolderGenerator from "../../../src/generator/IDocFolderGenerator";
 import IProjectRootFinder from "../../../src/generator/IProjectRootFinder";
 import IGMFolder from "../../../src/gm_project/IGMFolder";
 import IGMProject from "../../../src/gm_project/IGMProject";
-import IDesignFilesCopier from "../../../src/renderer/IDesignFilesCopier";
-import INunjucksRenderer from "../../../src/renderer/INunjucksRenderer";
-import Design from "../../../src/template/Design";
-import { ITemplate } from "../../../src/template/ITemplate";
+import IRenderer from "../../../src/renderer/IRenderer";
+import RenderingQueue from "../../../src/renderer/RenderingQueue";
 import ITemplateLoader from "../../../src/template/ITemplateLoader";
+import Template from "../../../src/template/Template";
 import { TYPES } from "../../../src/types";
 import MockGMProject from "../__mock__/MockGMProject.mock";
 
@@ -33,43 +30,27 @@ class MockProjectRootFinder implements IProjectRootFinder {
 	}
 }
 @injectable()
-class MockRenderer implements INunjucksRenderer {
-	public async render(_design: Design, _docProject: DocProject, _outputFolder: string): Promise<void> {
-		// void
-	}
-}
-@injectable()
-class MockDesignFilesCopier implements IDesignFilesCopier {
-	public async copy(_outputFolder: string, _design: Design): Promise<void> {
-		// void
+class MockRenderer implements IRenderer {
+	public async render(_template: Template, _queue: RenderingQueue, _outputFolder: string): Promise<void> {
+		return;
 	}
 }
 @injectable()
 class MockTemplateLoader implements ITemplateLoader {
-	public async loadFrom(_folder: string): Promise<ITemplate> {
-		return new MockTemplate();
+	public async loadFrom(folder: string): Promise<Template> {
+		return new Template(folder, {
+			author: "Darth Vader",
+			description: "My description",
+			web: "http://myweb.com/",
+			name: "My design name",
+			copy: ["aaa"],
+			pages: {
+				index: "index-foo.njk",
+			},
+		});
 	}
-	public async getFolder(_output: IInputConfig): Promise<string> {
+	public async getFolder(_output: IOutputConfig): Promise<string> {
 		return "foo";
-	}
-}
-class MockTemplate implements ITemplate {
-	public folder: string;
-	public author: string | undefined;
-	public defaultDesign: Design;
-	public description: string | undefined;
-	public web: string | undefined;
-	public getDesign(_design: string): Design | undefined {
-		throw new Error("Method not implemented.");
-	}
-	public hasDesign(_design: string): boolean {
-		throw new Error("Method not implemented.");
-	}
-	public designs(): IterableIterator<Design> {
-		throw new Error("Method not implemented.");
-	}
-	public findDesign(_designName: string): Design {
-		return new Design(this, {displayName: "foo", index: "foo.bar"});
 	}
 }
 @injectable()
@@ -89,8 +70,7 @@ export class DocumentationGeneratorFixture {
 
 		const container = new Container();
 		container.bind<IProjectRootFinder>(TYPES.IProjectRootFinder).to(MockProjectRootFinder);
-		container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(MockRenderer);
-		container.bind<IDesignFilesCopier>(TYPES.IDesignFilesCopier).to(MockDesignFilesCopier);
+		container.bind<IRenderer>(TYPES.INunjucksRenderer).to(MockRenderer);
 		container.bind<ITemplateLoader>(TYPES.ITemplateLoader).to(MockTemplateLoader);
 		container.bind<IDocFolderGenerator>(TYPES.IDocFolderGenerator).to(MockDocFolderGenerator);
 		const dg = container.resolve(DocumentationGenerator);

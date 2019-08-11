@@ -6,8 +6,8 @@ import {
 } from "alsatian";
 
 import { Container, injectable } from "inversify";
-import IProjectConfig from "../../../src/config/IProjectConfig";
-import ProjectConfig from "../../../src/config/ProjectConfig";
+import { IProjectConfig } from "../../../src/config/IProjectConfig";
+import { ProjectConfig } from "../../../src/config/ProjectConfig";
 import DocScript from "../../../src/doc_models/DocScript";
 import DocFolderGenerator from "../../../src/generator/DocFolderGenerator";
 import IScriptLoader from "../../../src/generator/IScriptLoader";

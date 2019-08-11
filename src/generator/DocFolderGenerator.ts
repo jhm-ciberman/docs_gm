@@ -1,5 +1,6 @@
 import { inject, injectable } from "inversify";
-import IProjectConfig from "../config/IProjectConfig";
+
+import { IProjectConfig } from "../config/IProjectConfig";
 import DocFolder from "../doc_models/DocFolder";
 import DocResource from "../doc_models/DocResource";
 import GMResourceHelper from "../gm_project/GMResourceHelper";
