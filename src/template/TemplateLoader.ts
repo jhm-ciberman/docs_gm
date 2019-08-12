@@ -48,8 +48,13 @@ export default class TemplateLoader implements ITemplateLoader {
 	}
 
 	protected async _createConfig() {
+		const packageRoot = await pkgDir(__dirname);
+		if (!packageRoot) {
+			throw new Error("Cannot determine package root");
+		}
+
 		const config = new ModuleFinderConfig();
-		config.packageRoot = await pkgDir() as string;
+		config.packageRoot = packageRoot;
 		config.templatesPath = config.packageRoot + "/templates/";
 		return config;
 	}

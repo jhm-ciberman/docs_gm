@@ -6,10 +6,13 @@
 
     {{ breadcrumbMacro.breadcrumb(element) }}
 
+    {# If the current element is a script, prints the script documentation #}
+    <a href="{{ linkTo(project.root) }}">Back to index page</a>
+
     <h2>{{ element.name }}</h2>
 
     {{ element.description }}
-    
+
     {# Prints the table of contents #}
     <ul class="nav flex-column">
         {% for res in element.children %}
@@ -17,26 +20,11 @@
                 {% if res.type === "folder" %}
                     <a class="nav-link" href="{{ linkTo(res) }}">Folder: {{ res.name }}</a>
                 {% elif res.type === "script" %}
-                    <a class="nav-link" href="#{{ res.name }}">{{ res.name }}</a>
+                    <a class="nav-link" href="{{ linkTo(res) }}">{{ res.name }}</a>
                 {% endif %}
             </li>
         {% endfor %}
     </ul>
-
-    {# Loops over all the scripts of the folder #}
-    {% for res in element.children %}
-        {% if res.type === "script" %}
-            {# Prints an horizontal separator line #}
-            <hr />
-            
-            {% include "src/fragments/script.njk" %}
-
-        {% endif %}
-    {% else %}
-
-        <p> This project has no documented scripts </p>
-
-    {% endfor %}
 
 {% endblock content %}
 

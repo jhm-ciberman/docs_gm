@@ -1,6 +1,8 @@
 import DocProject from "../doc_models/DocProject";
 import DocResource from "../doc_models/DocResource";
 import IRenderingContext from "./IRenderingContext";
+import { DocResourceType } from "../doc_models/DocResourceType";
+import DocScript from "../doc_models/DocScript";
 
 export default class Page {
 
@@ -19,6 +21,7 @@ export default class Page {
 		return {
 			project: this.project,
 			element: this.resource,
+			script: (this.resource.type === DocResourceType.Script) ? this.resource as DocScript : undefined,
 		};
 	}
 
@@ -41,5 +44,9 @@ export default class Page {
 			const p = this.resource.fullpath;
 			return (p.endsWith("/")) ? p.slice(0, -1) : p;
 		}
+	}
+
+	public getFilename() {
+		return this.getLink() + ".html";
 	}
 }

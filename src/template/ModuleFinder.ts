@@ -24,8 +24,8 @@ export default class ModuleFinder implements IModuleFinder {
 	 * @param templateName The name of the template to find
 	 */
 	public async find(moduleName: string, moduleFinderConfig: ModuleFinderConfig): Promise<string> {
-		return this._findGlobalModule(moduleName)
-			.catch(() => this._findLocal(moduleName, moduleFinderConfig))
+		return this._findLocal(moduleName, moduleFinderConfig)
+			.catch(() => this._findGlobalModule(moduleName))
 			.catch(() => Promise.reject(new Error(`Cannot find the module "${moduleName}"`)));
 	}
 
@@ -47,6 +47,7 @@ export default class ModuleFinder implements IModuleFinder {
 		return new Promise((resolve, reject) => {
 			fse.access(path.resolve(templatePath, "package.json"), (err) => {
 				if (err) {
+					console.log(err);
 					reject();
 				} else {
 					resolve(templatePath);

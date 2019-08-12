@@ -6,4 +6,5 @@ import DocResource from "../doc_models/DocResource";
 export default interface IRenderingContext {
 	project: DocProject;
 	element: DocResource;
+	script?: DocScript;
 }

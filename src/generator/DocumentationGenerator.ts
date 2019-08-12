@@ -48,6 +48,7 @@ export default class DocumentationGenerator implements IDocumentationGenerator {
 
 	private async _loadTemplate(config: IProjectConfig): Promise<Template> {
 		const templateFolder = await this._templateLoader.getFolder(config.output);
+		console.log(templateFolder);
 		return this._templateLoader.loadFrom(templateFolder);
 	}
 

@@ -20,14 +20,15 @@ export default class Renderer implements IRenderer {
 	public async render(template: Template, queue: RenderingQueue, outputFolder: string): Promise<void> {
 
 		const env = this._createEnv(template.folder);
+		outputFolder = path.resolve(outputFolder);
+		this._reporter.info(`Output folder: ${outputFolder}`);
 
 		for (const page of queue.pages) {
-			const link = page.getLink();
-			this._reporter.info(`Rendering ${link}`);
+			const filename = page.getFilename();
+			this._reporter.info(`Rendering ${filename}`);
 
-			const filename = path.resolve(outputFolder, link);
-
-			env.addGlobal("linkTo", this._buildLinkToFunction(queue, filename));
+			const fullPath = path.resolve(outputFolder, filename);
+			env.addGlobal("linkTo", this._buildLinkToFunction(queue, page));
 
 			const html = this._renderPage(page, template, env);
 
@@ -37,7 +38,7 @@ export default class Renderer implements IRenderer {
 				continue;
 			}
 
-			await fse.outputFile(filename, html);
+			await fse.outputFile(fullPath, html);
 		}
 	}
 
@@ -57,17 +58,26 @@ export default class Renderer implements IRenderer {
 		return nunjucksTemplate.render(page.getContext());
 	}
 
-	private _buildLinkToFunction(queue: RenderingQueue, currentFile: string): (e: DocResource) => string {
-		return (e: DocResource) => {
-			if (!e) {
-				throw new Error("Invalid Element passed to linkTo(docElement) function: " + e);
+	private _buildLinkToFunction(queue: RenderingQueue, currentPage: Page): (e: DocResource) => string {
+		return (element: DocResource) => {
+			if (!element) {
+				throw new Error("Invalid Element passed to linkTo(docElement) function: " + element);
 			}
-			const page = queue.findPage(e);
-			if (!page) {
-				throw new Error(`Trying to get page for element  "${e.name}" that is not in the project.`);
+			const newPage = queue.findPage(element);
+			if (!newPage) {
+				throw new Error(`Trying to get page for element  "${element.name}" that is not in the project.`);
 			}
-			return path.relative(path.dirname(currentFile), page.getLink()).replace("\\", "/");
+
+			if (currentPage === newPage) {
+				return currentPage.getLink() + "#" + element.name;
+			}
+
+			return this._relativePath(currentPage, newPage);
 		};
+	}
+
+	private _relativePath(currentPage: Page, newPage: Page) {
+		return path.relative(path.dirname(currentPage.getFilename()), newPage.getFilename()).replace("\\", "/");
 	}
 
 }
