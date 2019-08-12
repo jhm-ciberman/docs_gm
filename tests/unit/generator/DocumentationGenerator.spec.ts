@@ -10,6 +10,7 @@ import { IOutputConfig, IProjectConfig } from "../../../src/config/IProjectConfi
 import { ProjectConfig } from "../../../src/config/ProjectConfig";
 // tslint:disable-next-line:ordered-imports
 import DocFolder from "../../../src/doc_models/DocFolder";
+import DocProject from "../../../src/doc_models/DocProject";
 import DocumentationGenerator from "../../../src/generator/DocumentationGenerator";
 import IDocFolderGenerator from "../../../src/generator/IDocFolderGenerator";
 import IProjectRootFinder from "../../../src/generator/IProjectRootFinder";
@@ -56,8 +57,8 @@ class MockTemplateLoader implements ITemplateLoader {
 }
 @injectable()
 class MockDocFolderGenerator implements IDocFolderGenerator {
-	public async generate(_res: IGMFolder, _config: IProjectConfig, _gmProject: IGMProject): Promise<DocFolder> {
-		return new DocFolder("folder");
+	public async generate(_res: IGMFolder, _config: IProjectConfig, gmProject: IGMProject): Promise<DocFolder> {
+		return new DocFolder("folder", new DocProject(gmProject.name));
 	}
 }
 @TestFixture("DocumentationGenerator")
