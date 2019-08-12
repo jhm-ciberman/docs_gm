@@ -27,15 +27,6 @@ export default class DocFolder extends DocResource {
 	public name: string;
 
 	/**
-	 * Creates an instance of DocFolder.
-	 * @param {string} name
-	 * @memberof DocFolder
-	 */
-	constructor(name: string) {
-		super(name);
-	}
-
-	/**
 	 * Returns an array with all the leaf elements of the folder
 	 * (The resources excluding the subfolders)
 	 */

@@ -42,13 +42,12 @@ export default class DocumentationGenerator implements IDocumentationGenerator {
 	private async _createDocProject(project: IGMProject, config: IProjectConfig): Promise<DocProject> {
 		const rootFolder = this._projectRootFinder.find(project, config.root);
 		const docProject = new DocProject(project.name);
-		docProject.root = await this._docFolderGenerator.generate(rootFolder, config, project);
+		docProject.root = await this._docFolderGenerator.generate(rootFolder, config, project, docProject);
 		return docProject;
 	}
 
 	private async _loadTemplate(config: IProjectConfig): Promise<Template> {
 		const templateFolder = await this._templateLoader.getFolder(config.output);
-		console.log(templateFolder);
 		return this._templateLoader.loadFrom(templateFolder);
 	}
 

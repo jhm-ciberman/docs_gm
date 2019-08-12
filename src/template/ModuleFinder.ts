@@ -47,7 +47,6 @@ export default class ModuleFinder implements IModuleFinder {
 		return new Promise((resolve, reject) => {
 			fse.access(path.resolve(templatePath, "package.json"), (err) => {
 				if (err) {
-					console.log(err);
 					reject();
 				} else {
 					resolve(templatePath);

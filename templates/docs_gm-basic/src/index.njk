@@ -5,7 +5,7 @@
 
     {# Prints the table of contents #}
     <ul class="nav flex-column">
-        {% for script in project.root.all %}
+        {% for script in subresources %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ linkTo(script) }}">{{ script.name }}</a>
             </li>
@@ -13,7 +13,7 @@
     </ul>
 
     {# Loops over all the scripts of the project #}
-    {% for script in project.root.all %}
+    {% for script in subresources %}
 
         {# Prints an horizontal separator line #}
         <hr />

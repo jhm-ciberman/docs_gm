@@ -42,7 +42,10 @@ export default class StringsEnglish {
 	public OPTION_TEMPLATE =
 		`The template name to use`;
 
-	public OPTION_DESIGN =
-		`The design name. If empty, it will use the first design in the designs list.`;
+	public OPTION_SCRIPT_PAGES =
+		`If true, it will generated one page for each script in the project.`;
+
+	public OPTION_FOLDER_PAGES =
+		`If true, it will generated one page for each folder in the project.`;
 
 }

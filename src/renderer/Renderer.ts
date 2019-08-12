@@ -69,7 +69,7 @@ export default class Renderer implements IRenderer {
 			}
 
 			if (currentPage === newPage) {
-				return currentPage.getLink() + "#" + element.name;
+				return newPage.getAnchorLinkToSubresource(element);
 			}
 
 			return this._relativePath(currentPage, newPage);

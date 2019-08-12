@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 
 import { IProjectConfig } from "../config/IProjectConfig";
 import DocFolder from "../doc_models/DocFolder";
+import DocProject from "../doc_models/DocProject";
 import DocResource from "../doc_models/DocResource";
 import GMResourceHelper from "../gm_project/GMResourceHelper";
 import IGMFolder from "../gm_project/IGMFolder";
@@ -21,11 +22,16 @@ export default class DocFolderGenerator implements IDocFolderGenerator {
 	 * Load a GMFolder and all its content
 	 * @param folder The GMFolder to load
 	 */
-	public async generate(folder: IGMFolder, config: IProjectConfig, gmProject: IGMProject): Promise<DocFolder> {
-		const docFolder = new DocFolder(folder.name);
+	public async generate(
+		folder: IGMFolder,
+		config: IProjectConfig,
+		gmProject: IGMProject,
+		docProject: DocProject,
+	): Promise<DocFolder> {
+		const docFolder = new DocFolder(folder.name, docProject);
 		docFolder.description = await this._loadFolderDocumentation(folder, config, gmProject);
 		for (const res of folder.children) {
-			const children = await this._loadResource(res, config, gmProject);
+			const children = await this._loadResource(res, config, gmProject, docProject);
 			for (const child of children) {
 				child.parent = docFolder;
 				docFolder.children.push(child);
@@ -44,12 +50,19 @@ export default class DocFolderGenerator implements IDocFolderGenerator {
 		return "";
 	}
 
-	private async _loadResource(res: IGMResource, config: IProjectConfig, gmProject: IGMProject): Promise<DocResource[]> {
+	private async _loadResource(
+		res: IGMResource,
+		config: IProjectConfig,
+		gmProject: IGMProject,
+		docProject: DocProject,
+	): Promise<DocResource[]> {
 		if (GMResourceHelper.isFolder(res)) {
-			const f = await this.generate(res, config, gmProject);
+			const f = await this.generate(res, config, gmProject, docProject);
 			return f.children.length === 0 ? [] : [f];
 		} else if (GMResourceHelper.isScript(res)) {
-			return this._scriptLoader.load(res, config, gmProject);
+			const scripts = await this._scriptLoader.load(res, config, gmProject);
+			scripts.forEach((script) => script.project = docProject);
+			return scripts;
 		} else {
 			throw new Error(`Unrecognized resource type for resource "${res.name}"`);
 		}

@@ -1,4 +1,5 @@
 import DocFolder from "./DocFolder";
+import DocProject from "./DocProject";
 import { DocResourceType } from "./DocResourceType";
 
 /**
@@ -22,12 +23,18 @@ export default class DocResource {
 	public parent: DocFolder | null = null;
 
 	/**
+	 * The project of this resource
+	 */
+	public project: DocProject | null = null;
+
+	/**
 	 * Creates an instance of DocResource.
 	 * @param {string} name The resource name
 	 * @memberof DocResource
 	 */
-	constructor(name: string) {
+	constructor(name: string, docProject?: DocProject) {
 		this.name = name;
+		this.project = docProject || null;
 	}
 
 	/**

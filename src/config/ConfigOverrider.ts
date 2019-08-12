@@ -9,17 +9,23 @@ export default class ConfigOverrider {
 	 * @param config The config
 	 */
 	public override(config: IProjectConfig, overrideConfig: ICliParamsConfig): IProjectConfig {
-		if (overrideConfig.template) {
+		if (overrideConfig.template !== undefined) {
 			config.output.template = overrideConfig.template;
 		}
-		if (overrideConfig.outputFolder) {
+		if (overrideConfig.outputFolder !== undefined) {
 			config.output.outputFolder = overrideConfig.outputFolder;
 		}
-		if (overrideConfig.pattern) {
+		if (overrideConfig.pattern !== undefined) {
 			config.pattern = overrideConfig.pattern;
 		}
-		if (overrideConfig.root) {
+		if (overrideConfig.root !== undefined) {
 			config.root = overrideConfig.root;
+		}
+		if (overrideConfig.folderPages !== undefined) {
+			config.output.folderPages = overrideConfig.folderPages;
+		}
+		if (overrideConfig.scriptPages !== undefined) {
+			config.output.scriptPages = overrideConfig.scriptPages;
 		}
 		return config;
 	}

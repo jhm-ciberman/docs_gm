@@ -4,23 +4,23 @@
 {# Overrides the block named "content" that is declared in the parent.njk file #}
 {% block content %}
 
-    {{ breadcrumbMacro.breadcrumb(element) }}
+    {{ breadcrumbMacro.breadcrumb(folder) }}
 
     {# If the current element is a script, prints the script documentation #}
     <a href="{{ linkTo(project.root) }}">Back to index page</a>
 
-    <h2>{{ element.name }}</h2>
+    <h2>{{ folder.name }}</h2>
 
-    {{ element.description }}
+    {{ folder.description }}
 
     {# Prints the table of contents #}
     <ul class="nav flex-column">
-        {% for res in element.children %}
+        {% for subresource in subresources %}
             <li class="nav-item">
-                {% if res.type === "folder" %}
-                    <a class="nav-link" href="{{ linkTo(res) }}">Folder: {{ res.name }}</a>
-                {% elif res.type === "script" %}
-                    <a class="nav-link" href="{{ linkTo(res) }}">{{ res.name }}</a>
+                {% if subresource.type === "folder" %}
+                    <a class="nav-link" href="{{ linkTo(subresource) }}">Folder: {{ subresource.name }}</a>
+                {% elif subresource.type === "script" %}
+                    <a class="nav-link" href="{{ linkTo(subresource) }}">{{ subresource.name }}</a>
                 {% endif %}
             </li>
         {% endfor %}

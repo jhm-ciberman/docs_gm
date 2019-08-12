@@ -4,4 +4,6 @@ export default interface ICliParamsConfig {
 	pattern?: string;
 	root?: string;
 	noOpen?: boolean;
+	scriptPages?: boolean;
+	folderPages?: boolean;
 }

@@ -5,6 +5,8 @@ import DocResource from "../doc_models/DocResource";
 
 export default interface IRenderingContext {
 	project: DocProject;
-	element: DocResource;
+	resource: DocResource;
 	script?: DocScript;
+	folder?: DocFolder;
+	subresources: IterableIterator<DocResource>;
 }

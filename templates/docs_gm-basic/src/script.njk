@@ -4,7 +4,7 @@
 {# Overrides the block named "content" that is declared in the parent.njk file #}
 {% block content %}
 
-    {{ breadcrumbMacro.breadcrumb(element) }}
+    {{ breadcrumbMacro.breadcrumb(script) }}
 
     {# If the current element is a script, prints the script documentation #}
     {#<a href="{{ linkTo(project.root) }}">Back to index page</a>#}
