@@ -1,27 +1,51 @@
 {% extends "src/parent.njk" %}
 
-
 {# Overrides the block named "content" that is declared in the parent.njk file #}
 {% block content %}
 
     {% include "src/fragments/breadcrumb.njk" %}
 
-    <h1>{{ folder.name }}</h1>
+    <h1 id="{{ folder.anchor }}">{{ folder.name }}</h1>
+    
+    {% if folder.description %}
+        {{ folder.description }}
+        <hr>
+    {% endif %}
 
-    {{ folder.description }}
+    {% if printFolderToc %}
+        <p>Folder contents:</p>
+        {# Prints the table of contents #}
+        <ul class="flex-column">
+            {% for subresource in folder.children %}
+                <li>
+                    <a class="nav-link" href="{{ linkTo(subresource) }}">
+                        {% if subresource.type === "folder" %}
+                            <i class="material-icons float-left mr-3">folder</i>
+                        {% endif %}
+                        {{ subresource.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
-    {# Prints the table of contents #}
-    <ul class="flex-column">
-        {% for subresource in folder.children %}
-            <li>
-                {% if subresource.type === "folder" %}
-                    <a class="nav-link" href="{{ linkTo(subresource) }}">Folder: {{ subresource.name }}</a>
-                {% elif subresource.type === "script" %}
-                    <a class="nav-link" href="{{ linkTo(subresource) }}">{{ subresource.name }}</a>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+    {% for subresource in subresources %}
+        {% if subresource.type === "folder" %}
+            {% if subresource.description %}
+                <h1 id="{{ subresource.anchor }}">{{ subresource.name }}</h1>
+                {{ subresource.description }}
+            {% endif %}
+        {% elif subresource.type === "script" %}
+
+            {% set script = subresource %}
+            {% include "src/fragments/script.njk" %}
+            
+        {% endif %}
+
+        {# Prints an horizontal separator line #}
+        <hr />
+    {% endfor %}
+
 
     {% include "src/fragments/bottom-navigation.njk" %}
 

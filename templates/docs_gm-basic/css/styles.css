@@ -1,0 +1,21 @@
+/* Sticky footer styles */
+html, body { height: 100%;}
+footer {flex-shrink: none;}
+.page-content {flex: 1 0 auto;}
+
+/* Navigation collapse folder button */
+#navigation button i {
+	transition: .4s;
+	transform: rotate(180deg);
+}
+#navigation button.collapsed i {
+	transition: .4s;
+	transform: rotate(0);
+}
+@media (min-width: 992px) {
+	.collapse.dont-collapse-sm {
+		display: block;
+		height: auto !important;
+		visibility: visible;
+	}
+}

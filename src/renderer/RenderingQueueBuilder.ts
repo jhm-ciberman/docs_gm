@@ -15,7 +15,17 @@ export default class RenderingQueueBuilder {
 	constructor(rootFolder: DocFolder, config: IOutputConfig) {
 		this._config = config;
 
-		this._addIndex(rootFolder);
+		if (!config.folderPages && rootFolder.project) {
+			const project = rootFolder.project;
+			project.root.children = this._flattenFolder(project.root, project.root);
+			project.root.parent = null;
+		}
+
+		const page = this._newPage(rootFolder);
+
+		for (const resource of rootFolder.children) {
+			this._addResource(page, resource);
+		}
 	}
 
 	public build(): RenderingQueue {
@@ -24,14 +34,6 @@ export default class RenderingQueueBuilder {
 			queue.addPage(page);
 		}
 		return queue;
-	}
-
-	private _addIndex(rootFolder: DocFolder) {
-		const page = this._newPage(rootFolder);
-
-		for (const resource of rootFolder.children) {
-			this._addResource(page, resource);
-		}
 	}
 
 	private _addResource(currentPage: Page, resource: DocResource) {
@@ -49,6 +51,8 @@ export default class RenderingQueueBuilder {
 	private _addFolder(currentPage: Page, folder: DocFolder): Page {
 		if (this._config.folderPages) {
 			currentPage = this._newPage(folder);
+		} else {
+			currentPage.addSubresource(folder);
 		}
 
 		for (const resource of folder.children) {
@@ -69,5 +73,16 @@ export default class RenderingQueueBuilder {
 		} else {
 			currentPage.addSubresource(script);
 		}
+	}
+
+	private _flattenFolder(newParent: DocFolder, folder: DocFolder): DocResource[] {
+		return folder.children.reduce<DocResource[]>((arr, child) => {
+			child.parent = newParent;
+			if (child.type === DocResourceType.Folder) {
+				return arr.concat(this._flattenFolder(newParent, child as DocFolder));
+			} else {
+				return [...arr, child];
+			}
+		}, []);
 	}
 }

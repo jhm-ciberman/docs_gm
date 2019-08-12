@@ -9,7 +9,7 @@
 	{% if element === resource %}
 		<li class="breadcrumb-item active" aria-current="page">{{ element.name }}</li>
 	{% else %}
-		<li class="breadcrumb-item"><a href="{{ linkTo(element) }}">{{ element.name }}</a></li>
+		<li class="breadcrumb-item"><a href="{{ linkTo(element) }}">{{ element.name if element !== project.root else "Main" }}</a></li>
 	{% endif %}
 
 {% endmacro %}

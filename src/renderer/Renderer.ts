@@ -20,6 +20,10 @@ export default class Renderer implements IRenderer {
 	public async render(template: Template, queue: RenderingQueue, outputFolder: string): Promise<void> {
 
 		const env = this._createEnv(template.folder);
+
+		const date = new Date();
+		env.addGlobal("date", date);
+
 		outputFolder = path.resolve(outputFolder);
 		this._reporter.info(`Output folder: ${outputFolder}`);
 
@@ -29,6 +33,7 @@ export default class Renderer implements IRenderer {
 
 			const fullPath = path.resolve(outputFolder, filename);
 			env.addGlobal("linkTo", this._buildLinkToFunction(queue, page));
+			env.addGlobal("asset", this._buildAssetFunction(page));
 
 			const html = this._renderPage(page, template, env);
 
@@ -50,7 +55,7 @@ export default class Renderer implements IRenderer {
 	}
 
 	private _renderPage(page: Page, template: Template, env: nunjucks.Environment): string | undefined {
-		const templatePath = template.getTemplatePathFor(page.resource.type);
+		const templatePath = template.getTemplatePathFor(page.type);
 		if (!templatePath) {
 			return;
 		}
@@ -68,8 +73,13 @@ export default class Renderer implements IRenderer {
 				throw new Error(`Trying to get page for element  "${element.name}" that is not in the project.`);
 			}
 
-			return currentPage.getRelativePath(newPage) + newPage.getAnchor(element);
+			return currentPage.getRelativePathToPage(newPage) + newPage.getAnchor(element);
 		};
 	}
 
+	private _buildAssetFunction(currentPage: Page) {
+		return (assetName: string) => {
+			return currentPage.getRelativePath(assetName);
+		};
+	}
 }

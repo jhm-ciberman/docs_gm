@@ -13,8 +13,6 @@ export interface IRoot {
 }
 
 export interface IPages {
-	index: string;
-	script?: string;
-	folder?: string;
-	resource?: string;
+	script: string;
+	folder: string;
 }

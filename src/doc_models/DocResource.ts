@@ -44,6 +44,10 @@ export default class DocResource {
 		return this.parent ? this.parent.fullpath +  this.name : this.name;
 	}
 
+	get anchor(): string {
+		return this.name;
+	}
+
 	get next(): DocResource | null {
 		if (!this.parent) {
 			return null;

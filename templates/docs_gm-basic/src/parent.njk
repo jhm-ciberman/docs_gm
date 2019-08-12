@@ -4,85 +4,58 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>{% block title %}{{ project.name }} Docs{% endblock %}</title>
+        <title>
+        {% block title %}
+            {% if resource === project.root %}
+                {{ project.name }} Documentation
+            {% else %}
+                {{ resource.name}} • {{ project.name }} Documentation
+            {% endif %}
+        {% endblock %}
+        </title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <style>
-        /* Sticky footer styles
-        -------------------------------------------------- */
-        html {
-            position: relative;
-            min-height: 100%;
-        }
-        body {
-            /* Margin bottom by footer height */
-            margin-bottom: 60px;
-        }
-        .footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            /* Set the fixed height of the footer here */
-            height: 60px;
-            line-height: 60px; /* Vertically center the text there */
-        }
-        #navigation button i {
-            transition: .4s;
-            transform: rotate(180deg);
-        }
-        #navigation button.collapsed i {
-            transition: .4s;
-            transform: rotate(0);
-        }
-        </style>
+        <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="{{ linkTo(project.root) }}">{{ project.name }}</a>
-            <div class="collapse navbar-collapse" id="navbarText">
-                <span class="navbar-text ml-auto">Generated with <a href="https://jhm-ciberman.github.io/docs_gm/" target="_blank">docs_gm</a></span>
-            </div>
-        </nav>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-3 border-right p-0 bg-white">
-
-                    {% include "src/fragments/navigation.njk" %}
+    <body class="d-flex flex-column">
+        <div class="page-content">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="{{ linkTo(project.root) }}">{{ project.name }}</a>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <span class="navbar-text ml-auto">Generated with <a href="https://jhm-ciberman.github.io/docs_gm/" target="_blank">docs_gm</a></span>
                 </div>
-                <div class="col-9">
-                    <main class="container my-4">
-                        {# This is the default content for the "content" block. We will be overrwitten by the content in the index-onepage.njk file. #}
-                        {% block content %}
-                            <p>Oops, this is an empty page</p>
-                        {% endblock %}
-                    </main>
+                <button class="navbar-toggler d-block d-lg-none collapsed" data-toggle="collapse" data-target="#navigation-column" aria-expanded="false" aria-controls="navigation-column" aria-label="Toggle index">
+                    <i class="material-icons">menu</i>
+                </button>
+            </nav>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-lg-3  border-right p-0 bg-white collapse dont-collapse-sm" id="navigation-column">
+
+                        {% include "src/fragments/navigation.njk" %}
+                    </div>
+                    <div class="col-12 col-lg-9">
+                        <main class="container my-4">
+                            {# This is the default content for the "content" block. We will be overrwitten by the content in the index-onepage.njk file. #}
+                            {% block content %}
+                                <p>Oops, this is an empty page</p>
+                            {% endblock %}
+                        </main>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <footer class="footer bg-light">
-            <div class="text-center">
-                <span class="text-muted">Documentation generated with <a href="https://jhm-ciberman.github.io/docs_gm/" target="_blank" class="text-primary">docs_gm</a></span>
-            </div>
+        <footer class="footer bg-light text-center text-muted py-4">
+            <div>Documentation generated with <a href="https://jhm-ciberman.github.io/docs_gm/" target="_blank" class="text-primary">docs_gm</a></div>
+            <div>Last updated at {{ date.toDateString() }}</div>
         </footer>
 
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-        <script>
-            /*
-            $(document).ready(function () {
-                $('label.tree-toggler').click(function () {
-                    console.log("JJAJAJAJ");
-                    $(this).parent().children('ul.tree').collapse('toggle');
-                });
-            });
-            */
-        </script>
     </body>
 </html>

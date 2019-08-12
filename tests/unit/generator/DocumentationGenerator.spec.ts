@@ -45,7 +45,8 @@ class MockTemplateLoader implements ITemplateLoader {
 			name: "My design name",
 			copy: ["aaa"],
 			pages: {
-				index: "index-foo.njk",
+				script: "index-foo.njk",
+				folder: "index-foo.njk",
 			},
 		});
 	}

@@ -12,6 +12,8 @@ export default class Page {
 
 	public readonly resource: DocResource;
 
+	public type: DocResourceType;
+
 	private _subresources: Set<DocResource> = new Set();
 
 	constructor(resource: DocResource) {
@@ -20,6 +22,7 @@ export default class Page {
 		}
 		this.project = resource.project;
 		this.resource = resource;
+		this.type = resource.type;
 	}
 
 	public getContext(): IRenderingContext {
@@ -29,6 +32,7 @@ export default class Page {
 			script: (this.resource.type === DocResourceType.Script) ? this.resource as DocScript : undefined,
 			folder: (this.resource.type === DocResourceType.Folder) ? this.resource as DocFolder : undefined,
 			subresources: this.subresources,
+			printFolderToc: !this.isRoot,
 		};
 	}
 
@@ -76,17 +80,21 @@ export default class Page {
 	}
 
 	public getAnchor(element: DocResource) {
-		if (element === this.resource || this.hasSubresource(element)) {
+		if (element === this.resource || !this.hasSubresource(element)) {
 			return "";
 		}
-		return element.type !== "folder" ? "#" + element.name : "";
+		return "#" + element.name;
 	}
 
-	public getRelativePath(page: Page) {
+	public getRelativePathToPage(page: Page) {
 		if (page === this) {
 			return this.name + ".html";
 		}
+		return this.getRelativePath(page.getFilename());
+	}
+
+	public getRelativePath(filename: string) {
 		const dir = path.dirname(this.getFilename());
-		return path.relative(dir, page.getFilename()).replace("\\", "/");
+		return path.relative(dir, filename).replace(/\\/g, "/");
 	}
 }

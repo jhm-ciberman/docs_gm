@@ -8,7 +8,7 @@
 
 				{% if (subresource === resource) %}
 					<div class="btn">
-						<i class="material-icons float-left mr-3">folder</i><span>{{ subresource.name }}</span>
+						<i class="material-icons float-left mr-3">folder</i><span>{{ subresource.name }}</span><span class="sr-only">(current)</span>
 					</div>
 				{% else %}
 					<a class="btn btn-link" href="{{ linkTo(subresource) }}" >
@@ -29,7 +29,7 @@
 		{% elif subresource.type === "script" %}
 			<li class="list-group-item {{ "active" if (subresource === resource) }}">
 				{% if (subresource === resource) %}
-					<div class="btn ml-4">{{ subresource.name }}</div>
+					<div class="btn ml-4">{{ subresource.name }}<span class="sr-only">(current)</span></div>
 				{% else %}
 					<a class="btn btn-link ml-4" href="{{ linkTo(subresource) }}" >{{ subresource.name }}</a>
 				{% endif %}

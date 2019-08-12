@@ -6,7 +6,7 @@ and it's INCLUDED from another njk files.
 
 
 {# Shows the script name #}
-<h3 id="{{ script.name }}">{{ script.name }}</h3>
+<h3 id="{{ script.anchor }}">{{ script.name }}</h3>
 
 <p><b>Syntax: </b></p>
 <pre class="lang-js"><code>{{ script.signature }}</code></pre>
@@ -26,8 +26,8 @@ and it's INCLUDED from another njk files.
                 {# Loop all over the scripts arguments (params) and shows them #}
                 {% for param in script.params %}
                     <tr>
-                        <td>{{ param.name }}</td>
-                        <td>{{ param.type }}</td>
+                        <td><code>{{ param.name }}</code></td>
+                        <td><code>{{ param.type }}</code></td>
                         <td>{{ param.description }}</td>
                     </tr>
                 {% endfor %}
@@ -38,7 +38,7 @@ and it's INCLUDED from another njk files.
 
 {# Shows the script return value #}
 {% if script.returns %}
-    <p><b>Returns:</b> ({{ script.returns.type }}) {{ script.returns.description }} </p>
+    <p><b>Returns:</b> (<code>{{ script.returns.type }}</code>) {{ script.returns.description }} </p>
 {% endif %}
 
 {# Show the script description #}

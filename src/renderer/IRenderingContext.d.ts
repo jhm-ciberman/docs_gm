@@ -9,4 +9,5 @@ export default interface IRenderingContext {
 	script?: DocScript;
 	folder?: DocFolder;
 	subresources: IterableIterator<DocResource>;
+	printFolderToc: boolean;
 }

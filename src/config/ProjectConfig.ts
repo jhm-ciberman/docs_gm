@@ -12,6 +12,11 @@ import {
 export class ProjectConfig implements IProjectConfig {
 
 	/**
+	 * The project's name to display
+	 */
+	public name?: string = undefined;
+
+	/**
 	 * The output configuration
 	 */
 	public output: IOutputConfig = new OutputConfig();

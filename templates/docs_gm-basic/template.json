@@ -4,7 +4,6 @@
     "web": "https://github.com/jhm-ciberman/docs_gm-basic",
     "name": "One Page",
     "pages": {
-        "index": "src/index.njk",
         "script": "src/script.njk",
         "folder": "src/folder.njk"
     }

@@ -78,6 +78,9 @@ export default class Template {
 	}
 
 	public getTemplatePathFor(type: DocResourceType): string | undefined {
+		if (type === DocResourceType.Resource) {
+			throw new Error("Unrecognized resource type");
+		}
 		return this._pages[type];
 	}
 

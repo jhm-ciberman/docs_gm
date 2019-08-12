@@ -1,5 +1,6 @@
 
 export interface IProjectConfig {
+	name?: string;
 	output: IOutputConfig;
 	pattern: string;
 	root: string;
