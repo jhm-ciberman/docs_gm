@@ -1,0 +1,17 @@
+{% if resource.parent or resource.next %}
+	<div class="breadcrumb mt-5 row">
+		{% if (resource.parent) %}
+			<div class="col">
+				<a href="{{ linkTo(resource.parent) }}" class="float-left">Back: {{ resource.parent.name }}</a>
+			</div>
+		{% endif %}
+
+		{% if (resource.next) %}
+			<div class="col">
+				<a href="{{ linkTo(resource.next) }}"  class="float-right">Next: {{ resource.next.name }}</a>
+			</div>
+		{% endif %}
+	</div>
+{% endif %}
+
+

@@ -1,6 +1,5 @@
 import { IOutputConfig } from "../config/IProjectConfig";
 import DocFolder from "../doc_models/DocFolder";
-import DocProject from "../doc_models/DocProject";
 import DocResource from "../doc_models/DocResource";
 import { DocResourceType } from "../doc_models/DocResourceType";
 import DocScript from "../doc_models/DocScript";
@@ -9,17 +8,14 @@ import RenderingQueue from "./RenderingQueue";
 
 export default class RenderingQueueBuilder {
 
-	private _project: DocProject;
-
 	private _config: IOutputConfig;
 
 	private _pages: Page[] = [];
 
-	constructor(project: DocProject, config: IOutputConfig) {
-		this._project = project;
+	constructor(rootFolder: DocFolder, config: IOutputConfig) {
 		this._config = config;
 
-		this._addIndex(this._project.root);
+		this._addIndex(rootFolder);
 	}
 
 	public build(): RenderingQueue {
@@ -62,7 +58,7 @@ export default class RenderingQueueBuilder {
 	}
 
 	private _newPage(resource: DocResource) {
-		const page = new Page(this._project, resource);
+		const page = new Page(resource);
 		this._pages.push(page);
 		return page;
 	}

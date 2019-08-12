@@ -43,4 +43,26 @@ export default class DocResource {
 	get fullpath(): string {
 		return this.parent ? this.parent.fullpath +  this.name : this.name;
 	}
+
+	get next(): DocResource | null {
+		if (!this.parent) {
+			return null;
+		}
+		const index = this.parent.children.indexOf(this);
+		if (index >= 0 && index < this.parent.children.length - 1) {
+			return this.parent.children[index + 1];
+		}
+		return null;
+	}
+
+	get prev(): DocResource | null {
+		if (!this.parent) {
+			return null;
+		}
+		const index = this.parent.children.indexOf(this);
+		if (index > 0) {
+			return this.parent.children[index - 1];
+		}
+		return null;
+	}
 }

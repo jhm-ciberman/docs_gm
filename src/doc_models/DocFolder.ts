@@ -58,9 +58,10 @@ export default class DocFolder extends DocResource {
 			if (res.parent === this) {
 				return true;
 			} else {
-				return res.parent.isParentOf(res);
+				return this.isParentOf(res.parent);
 			}
+		} else {
+			return false;
 		}
-		return false;
 	}
 }

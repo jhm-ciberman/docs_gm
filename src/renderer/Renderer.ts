@@ -68,16 +68,8 @@ export default class Renderer implements IRenderer {
 				throw new Error(`Trying to get page for element  "${element.name}" that is not in the project.`);
 			}
 
-			if (currentPage === newPage) {
-				return newPage.getAnchorLinkToSubresource(element);
-			}
-
-			return this._relativePath(currentPage, newPage);
+			return currentPage.getRelativePath(newPage) + newPage.getAnchor(element);
 		};
-	}
-
-	private _relativePath(currentPage: Page, newPage: Page) {
-		return path.relative(path.dirname(currentPage.getFilename()), newPage.getFilename()).replace("\\", "/");
 	}
 
 }

@@ -1,15 +1,16 @@
 {% extends "src/parent.njk" %}
-{% import "src/macros/breadcrumb.njk" as breadcrumbMacro %}
 
 {# Overrides the block named "content" that is declared in the parent.njk file #}
 {% block content %}
 
-    {{ breadcrumbMacro.breadcrumb(script) }}
+    {% include "src/fragments/breadcrumb.njk" %}
 
     {# If the current element is a script, prints the script documentation #}
     {#<a href="{{ linkTo(project.root) }}">Back to index page</a>#}
 
     {% include "src/fragments/script.njk" %}
+
+    {% include "src/fragments/bottom-navigation.njk" %}
 
 {% endblock content %}
 

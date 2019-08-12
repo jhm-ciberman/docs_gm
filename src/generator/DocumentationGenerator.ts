@@ -52,7 +52,7 @@ export default class DocumentationGenerator implements IDocumentationGenerator {
 	}
 
 	private async _render(docProject: DocProject, template: Template, outputConfig: IOutputConfig): Promise<string> {
-		const builder = new RenderingQueueBuilder(docProject, outputConfig);
+		const builder = new RenderingQueueBuilder(docProject.root, outputConfig);
 		const queue = builder.build();
 
 		await this._renderer.render(template, queue, outputConfig.outputFolder);

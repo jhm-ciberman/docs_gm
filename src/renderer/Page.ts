@@ -1,3 +1,4 @@
+import * as path from "path";
 import DocFolder from "../doc_models/DocFolder";
 import DocProject from "../doc_models/DocProject";
 import DocResource from "../doc_models/DocResource";
@@ -13,8 +14,11 @@ export default class Page {
 
 	private _subresources: Set<DocResource> = new Set();
 
-	constructor(project: DocProject, resource: DocResource) {
-		this.project = project;
+	constructor(resource: DocResource) {
+		if (!resource.project) {
+			throw new Error("The resource has no project property");
+		}
+		this.project = resource.project;
 		this.resource = resource;
 	}
 
@@ -49,23 +53,40 @@ export default class Page {
 	 * @param element The doc element
 	 */
 	public getLink() {
+		const name = this.fullpath;
+		return (name.endsWith("/")) ? name.slice(0, -1) : name;
+	}
+
+	public get fullpath() {
 		if (this.isRoot) {
 			return "index";
 		}
-		const p = this.resource.fullpath;
-		return (p.endsWith("/")) ? p.slice(0, -1) : p;
+		return this.resource.fullpath;
+	}
+
+	public get name() {
+		if (this.isRoot) {
+			return "index";
+		}
+		return this.resource.name;
 	}
 
 	public getFilename() {
 		return this.getLink() + ".html";
 	}
 
-	public getAnchorLinkToSubresource(element: DocResource) {
-		if (this.hasSubresource(element)) {
-			// tslint:disable-next-line:max-line-length
-			throw new Error("Cannot generate an anchor link to a subresource that is not meant be shown on the page. Resource: " + element.name);
+	public getAnchor(element: DocResource) {
+		if (element === this.resource || this.hasSubresource(element)) {
+			return "";
 		}
-		const anchor = element.type !== "folder" ? "#" + element.name : "";
-		return this.getFilename() + anchor;
+		return element.type !== "folder" ? "#" + element.name : "";
+	}
+
+	public getRelativePath(page: Page) {
+		if (page === this) {
+			return this.name + ".html";
+		}
+		const dir = path.dirname(this.getFilename());
+		return path.relative(dir, page.getFilename()).replace("\\", "/");
 	}
 }
