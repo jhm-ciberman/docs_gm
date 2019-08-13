@@ -8,6 +8,7 @@ import {
 
 import { Container, injectable } from "inversify";
 import { OutputConfig } from "../../../src/config/ProjectConfig";
+import { IPkgDir } from "../../../src/npmmodules";
 import IModuleFinder from "../../../src/template/IModuleFinder";
 import { IRoot } from "../../../src/template/TemplateJSON";
 import TemplateLoader from "../../../src/template/TemplateLoader";
@@ -90,10 +91,24 @@ export class TemplateLoaderFixture {
 		Expect(folder).toBe("foo-folder");
 	}
 
+	@Test()
+	public async shouldThrowAnErrorWhenCannotDetermineThePackageRoot() {
+		const container = new Container();
+		container.bind<IModuleFinder>(TYPES.IModuleFinder).to(MockModuleFinder);
+		container.bind<IPkgDir>(TYPES.IPkgDir).toFunction(async () => undefined);
+		const templateLoader = container.resolve(TemplateLoader);
+
+		const output = new OutputConfig();
+		output.templatesFolder = "";
+		output.template = "foo";
+
+		Expect(() => templateLoader.getFolder(output)).toThrowAsync();
+	}
+
 	private _getTL() {
 		const container = new Container();
 		container.bind<IModuleFinder>(TYPES.IModuleFinder).to(MockModuleFinder);
+		container.bind<IPkgDir>(TYPES.IPkgDir).toFunction(async () => "mockDir");
 		return container.resolve(TemplateLoader);
 	}
-
 }

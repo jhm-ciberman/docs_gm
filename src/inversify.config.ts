@@ -18,8 +18,9 @@ import IJSDocParser from "./parser/IJSDocParser";
 import { getInstalledPath } from "get-installed-path";
 import open = require("open");
 
+import pkgDir = require("pkg-dir");
 import DocumentationGenerator from "../src/generator/DocumentationGenerator";
-import { IGetInstalledPath, IOpen } from "../src/npmmodules";
+import { IGetInstalledPath, IOpen, IPkgDir } from "../src/npmmodules";
 import ConsoleReporter from "../src/reporter/ConsoleReporter";
 import TemplateLoader from "../src/template/TemplateLoader";
 import IRuleValidator from "../src/validation/interfaces/IRuleValidator";
@@ -87,5 +88,6 @@ container.bind<IRulesProvider>(TYPES.IRulesProvider).to(RulesProvider);
 // npm modules
 container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(getInstalledPath);
 container.bind<IOpen>(TYPES.IOpen).toFunction(open);
+container.bind<IPkgDir>(TYPES.IOpen).toFunction(pkgDir);
 
 export default container;

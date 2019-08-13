@@ -72,9 +72,6 @@ export default class Template {
 		this.copy = data.copy || this.copy;
 		this.name = data.name;
 		this._pages = data.pages;
-		if (!data.pages) {
-			throw new Error("No pages property defined in template.json file.");
-		}
 	}
 
 	public getTemplatePathFor(type: DocResourceType): string | undefined {

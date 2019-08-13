@@ -22,6 +22,8 @@ export class ConfigOverriderFixture {
 
 	@TestCase("template")
 	@TestCase("outputFolder")
+	@TestCase("scriptPages")
+	@TestCase("folderPages")
 	@Test()
 	public async override_output(key: string) {
 		const confOverrider = (new Container()).resolve(ConfigOverrider);
