@@ -1,4 +1,3 @@
-import { IOutputConfig } from "../config/IProjectConfig";
 import DocFolder from "../doc_models/DocFolder";
 import DocResource from "../doc_models/DocResource";
 import { DocResourceType } from "../doc_models/DocResourceType";
@@ -6,13 +5,15 @@ import DocScript from "../doc_models/DocScript";
 import Page from "./Page";
 import RenderingQueue from "./RenderingQueue";
 
+export interface IRenderingQueueBuilderOptions {scriptPages: boolean; folderPages: boolean; }
+
 export default class RenderingQueueBuilder {
 
-	private _config: IOutputConfig;
+	private _config: IRenderingQueueBuilderOptions;
 
 	private _pages: Page[] = [];
 
-	constructor(rootFolder: DocFolder, config: IOutputConfig) {
+	constructor(rootFolder: DocFolder, config: IRenderingQueueBuilderOptions) {
 		this._config = config;
 
 		if (!config.folderPages && rootFolder.project) {
@@ -51,8 +52,6 @@ export default class RenderingQueueBuilder {
 	private _addFolder(currentPage: Page, folder: DocFolder): Page {
 		if (this._config.folderPages) {
 			currentPage = this._newPage(folder);
-		} else {
-			currentPage.addSubresource(folder);
 		}
 
 		for (const resource of folder.children) {

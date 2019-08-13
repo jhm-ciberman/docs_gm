@@ -2,13 +2,13 @@ import * as fse from "fs-extra";
 import { inject, injectable } from "inversify";
 import * as path from "path";
 import { IOutputConfig } from "../config/IProjectConfig";
+import { IPkgDir } from "../npmmodules";
 import { TYPES } from "../types";
 import IModuleFinder from "./IModuleFinder";
 import ITemplateLoader from "./ITemplateLoader";
 import ModuleFinderConfig from "./ModuleFinderConfig";
 import Template from "./Template";
 import { IRoot } from "./TemplateJSON";
-import { IPkgDir } from "../npmmodules";
 /**
  * This class is used to load a Template from disk.
  * It can be installed as an npm module or in a local folder.

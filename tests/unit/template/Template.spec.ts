@@ -5,10 +5,10 @@ import {
 	Test,
 	TestFixture,
 } from "alsatian";
-import { IRoot } from "../../../src/template/TemplateJSON";
-import Template from "../../../src/template/Template";
-import { TempDir } from "../../_testing_helpers/TempDir.help";
 import { DocResourceType } from "../../../src/doc_models/DocResourceType";
+import Template from "../../../src/template/Template";
+import { IRoot } from "../../../src/template/TemplateJSON";
+import { TempDir } from "../../_testing_helpers/TempDir.help";
 
 const json: IRoot = {
 	author: "Darth Vader",
@@ -51,6 +51,15 @@ export class TemplateLoaderFixture {
 		Expect(template.getTemplatePathFor(DocResourceType.Folder)).toBe("folder-foo.njk");
 		Expect(template.getTemplatePathFor(DocResourceType.Script)).toBe("script-foo.njk");
 		Expect(() => template.getTemplatePathFor(DocResourceType.Resource)).toThrow();
+	}
+
+	@Test()
+	public defaultCopyValue() {
+		const json2 = Object.create(json) as IRoot;
+		json2.copy = undefined;
+		const template = new Template(this.folderProject.dir, json2);
+
+		Expect(template.copy).toBe(Template.DEFAULT_COPY);
 	}
 
 	@Test()
