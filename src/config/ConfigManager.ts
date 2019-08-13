@@ -1,11 +1,13 @@
 import { injectable } from "inversify";
 
 import * as fse from "fs-extra";
+import { Validator } from "jsonschema";
 import * as path from "path";
 import IConfigManager from "./IConfigManager";
 import { IProjectConfig } from "./IProjectConfig";
 import { ProjectConfig } from "./ProjectConfig";
 
+import schema = require("../../schema/docs_gm.json");
 /**
  * This class exports and loads the configuration
  */
@@ -40,12 +42,23 @@ export default class ConfigManager implements IConfigManager {
 		} else {
 			jsonPath = path.resolve(jsonOrProjectPath, "datafiles/docs_gm.json");
 		}
+
+		let data: IProjectConfig;
 		try {
-			const data: IProjectConfig = await fse.readJSON(jsonPath);
-			const config: IProjectConfig = new ProjectConfig();
-			return Object.assign(config, data);
+			data = await fse.readJSON(jsonPath);
 		} catch (e) {
 			return undefined;
 		}
+
+		this._validateSchema(data);
+
+		const config: IProjectConfig = new ProjectConfig();
+		return Object.assign(config, data);
+
+	}
+
+	private _validateSchema(data: any): void {
+		const validator = new Validator();
+		validator.validate(data, schema, {throwError: true});
 	}
 }

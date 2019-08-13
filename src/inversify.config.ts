@@ -88,6 +88,6 @@ container.bind<IRulesProvider>(TYPES.IRulesProvider).to(RulesProvider);
 // npm modules
 container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(getInstalledPath);
 container.bind<IOpen>(TYPES.IOpen).toFunction(open);
-container.bind<IPkgDir>(TYPES.IOpen).toFunction(pkgDir);
+container.bind<IPkgDir>(TYPES.IPkgDir).toFunction(pkgDir);
 
 export default container;
