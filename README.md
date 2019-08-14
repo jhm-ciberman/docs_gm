@@ -40,7 +40,7 @@ Check the project wiki to get started!
 - [Getting Started](https://github.com/jhm-ciberman/docs_gm/wiki/Getting-started)
 - [Changing the theme (template) of the documentation](https://github.com/jhm-ciberman/docs_gm/wiki/Changing-the-theme-(template)-of-the-documentation)
 - [Creating custom templates](https://github.com/jhm-ciberman/docs_gm/wiki/Creating-custom-templates)
-- [Folder scoped documentation](https://github.com/jhm-ciberman/docs_gm/wiki/Folder-scoped-documentation)
+- [Documentation for folders](https://github.com/jhm-ciberman/docs_gm/wiki/Documentation-for-folders)
 - [docs_gm.json configuration file](https://github.com/jhm-ciberman/docs_gm/wiki/docs_gm.json-configuration-file)
 - [Contribute with docs_gm](https://github.com/jhm-ciberman/docs_gm/wiki/docs_gm.json-configuration-file)
 
