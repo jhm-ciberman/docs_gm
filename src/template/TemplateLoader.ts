@@ -35,13 +35,9 @@ export default class TemplateLoader implements ITemplateLoader {
 	 * @returns A promise
 	 */
 	public async loadFrom(folder: string): Promise<Template> {
-		let data: IRoot;
 		const jsonPath = path.resolve(folder, "template.json");
-		try {
-			data = await fse.readJSON(jsonPath);
-		} catch (e) {
-			throw new Error(`Error loading Template from "${jsonPath}"`);
-		}
+
+		const data: IRoot = JSON.parse(await this._loadString(jsonPath));
 
 		this._schemaValidator.validate(data, schema);
 
@@ -72,4 +68,11 @@ export default class TemplateLoader implements ITemplateLoader {
 		return config;
 	}
 
+	protected async _loadString(p: string) {
+		try {
+			return await fse.readFile(p, "utf8");
+		} catch (e) {
+			throw new Error(`Error loading Template from "${p}"`);
+		}
+	}
 }

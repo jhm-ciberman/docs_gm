@@ -50,17 +50,24 @@ export default class ConfigManager implements IConfigManager {
 			jsonPath = path.resolve(jsonOrProjectPath, "datafiles/docs_gm.json");
 		}
 
-		let data: IProjectConfig;
-		try {
-			data = await fse.readJSON(jsonPath);
-		} catch (e) {
-			return undefined;
+		const str = await this._loadString(jsonPath);
+		if (str === undefined) {
+			return;
 		}
+		const data: IProjectConfig = JSON.parse(str);
 
 		this._schemaValidator.validate(data, schema);
 
 		const config: IProjectConfig = new ProjectConfig();
 		return Object.assign(config, data);
 
+	}
+
+	private async _loadString(p: string) {
+		try {
+			return await fse.readFile(p, "utf8");
+		} catch (e) {
+			return undefined;
+		}
 	}
 }
