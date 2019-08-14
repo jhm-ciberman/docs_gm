@@ -53,6 +53,6 @@ export class LinkResolverFixture {
 
 	@Test()
 	public asset() {
-		Expect(this._linkResolver.asset("css/my_css.css")).toBe("../css/my_css.css");
+		Expect(this._linkResolver.asset("css/my_css.css")).toBe("css/my_css.css");
 	}
 }

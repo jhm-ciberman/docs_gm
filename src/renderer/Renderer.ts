@@ -22,21 +22,26 @@ export default class Renderer implements IRenderer {
 		const compiler = new NunjucksCompiler(template.folder);
 
 		outputFolder = path.resolve(outputFolder);
-		this._reporter.info(`Output folder: ${outputFolder}`);
+		this._reporter.info(`Rendering documentation to output folder: ${outputFolder}`);
 
 		for (const page of queue.pages) {
 			const filename = page.getFilename();
-			this._reporter.info(`Rendering ${filename}`);
 
-			const linkResolver = new LinkResolver(queue, page);
-			compiler.addGlobal("linkTo", (resource: DocResource) => linkResolver.linkTo(resource));
-			compiler.addGlobal("asset", (assetName: string) => linkResolver.asset(assetName));
+			try {
+				const linkResolver = new LinkResolver(queue, page);
+				compiler.addGlobal("linkTo", (resource: DocResource) => linkResolver.linkTo(resource));
+				compiler.addGlobal("asset", (assetName: string) => linkResolver.asset(assetName));
 
-			const templatePath = template.getTemplatePathFor(page.type);
-			const html = compiler.render(templatePath, page.getContext());
+				const templatePath = template.getTemplatePathFor(page.type);
+				const html = compiler.render(templatePath, page.getContext());
 
-			const fullPath = path.resolve(outputFolder, filename);
-			await fse.outputFile(fullPath, html);
+				const fullPath = path.resolve(outputFolder, filename);
+				await fse.outputFile(fullPath, html);
+			} catch (e) {
+				this._reporter.error(`Error rendering ${filename}`);
+				throw e;
+			}
+
 		}
 	}
 }

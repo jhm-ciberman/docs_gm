@@ -57,7 +57,7 @@ export class RendererFixture {
 
 		await this._getRenderer().render(template, queue, this.outputFolder.dir);
 
-		const htmlScript = this.outputFolder.read("my_folder/my_script.html");
+		const htmlScript = this.outputFolder.read("my_script.html");
 		Expect(htmlScript).toContain("my_script");
 		Expect(htmlScript).toContain("my project");
 

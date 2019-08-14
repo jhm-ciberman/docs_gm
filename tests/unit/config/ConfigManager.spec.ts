@@ -18,7 +18,7 @@ import { TYPES } from "../../../src/types";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
-@TestFixture("GMScript")
+@TestFixture()
 export class GMS1ProjectFactoryFixture {
 
 	public input: TempDir;
@@ -45,29 +45,28 @@ export class GMS1ProjectFactoryFixture {
 		TempDir.removeAll();
 	}
 
-	@Test("exportConfig")
+	@Test()
 	public async exportConfig() {
 		await this.configManager.exportConfig(this.output.dir);
 		Expect(this.output.exists("docs_gm.json")).toBe(true);
 	}
 
-	@Test("exportConfig from dir")
+	@Test()
 	public async loadConfig_fromDir() {
 		const conf = await this.configManager.loadConfig(this.input.dir);
 		Expect(conf).toBeDefined();
 		Expect((conf as IProjectConfig).output.template).toBe("my_template_foo");
 	}
 
-	@Test("exportConfig from json")
+	@Test()
 	public async loadConfig_fromJson() {
 		const conf = await this.configManager.loadConfig(this.input.join("datafiles/docs_gm.json"));
 		Expect(conf).toBeDefined();
 		Expect((conf as IProjectConfig).output.template).toBe("my_template_foo");
 	}
 
-	@Test("exportConfig invalid json")
+	@Test()
 	public async loadConfig_invalid() {
-		const conf = await this.configManager.loadConfig(this.input.join("invalid.json"));
-		Expect(conf).not.toBeDefined();
+		Expect(() => this.configManager.loadConfig(this.input.join("invalid.json"))).toThrowAsync();
 	}
 }

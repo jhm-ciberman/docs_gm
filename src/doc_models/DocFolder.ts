@@ -46,6 +46,9 @@ export default class DocFolder extends DocResource {
 	 * Returns the fullpath of the resource
 	 */
 	get fullpath(): string {
+		if (this.project && this.project.root === this) {
+			return "";
+		}
 		return this.parent ? this.parent.fullpath + this.name + "/" : this.name + "/";
 	}
 
