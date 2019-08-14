@@ -26,7 +26,9 @@ export default class ConfigManager implements IConfigManager {
 	 */
 	public async exportConfig(outputPath: string): Promise<string> {
 		outputPath = path.resolve(outputPath, "docs_gm.json");
-		await fse.writeJSON(outputPath, new ProjectConfig(), {
+		const config = new ProjectConfig();
+		config.name = "Your project name";
+		await fse.writeJSON(outputPath, config, {
 			spaces: "\t",
 		});
 		return outputPath;

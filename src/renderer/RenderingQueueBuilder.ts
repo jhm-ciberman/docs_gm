@@ -1,4 +1,5 @@
 import DocFolder from "../doc_models/DocFolder";
+import DocProject from "../doc_models/DocProject";
 import DocResource from "../doc_models/DocResource";
 import { DocResourceType } from "../doc_models/DocResourceType";
 import DocScript from "../doc_models/DocScript";
@@ -13,11 +14,13 @@ export default class RenderingQueueBuilder {
 
 	private _pages: Page[] = [];
 
-	constructor(rootFolder: DocFolder, config: IRenderingQueueBuilderOptions) {
+	constructor(project: DocProject, config: IRenderingQueueBuilderOptions) {
 		this._config = config;
+		const rootFolder = project.root;
 
-		if (!config.folderPages && rootFolder.project) {
-			const project = rootFolder.project;
+		project.root.name = project.name;
+
+		if (!config.folderPages) {
 			project.root.children = this._flattenFolder(project.root, project.root);
 			project.root.parent = null;
 		}
