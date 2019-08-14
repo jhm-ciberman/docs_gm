@@ -1,4 +1,3 @@
-import IValidationRuleConfig from "../../config/IValidationRuleConfig";
 import IValidableScript from "./IValidableScript";
 
 export default interface IRule {

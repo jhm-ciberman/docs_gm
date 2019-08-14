@@ -1,11 +1,11 @@
 import { inject, injectable } from "inversify";
-import IProjectConfig from "../config/IProjectConfig";
+import { IOutputConfig, IProjectConfig } from "../config/IProjectConfig";
 import DocProject from "../doc_models/DocProject";
 import IGMProject from "../gm_project/IGMProject";
-import IDesignFilesCopier from "../renderer/IDesignFilesCopier";
-import INunjucksRenderer from "../renderer/INunjucksRenderer";
-import Design from "../template/Design";
+import IRenderer from "../renderer/IRenderer";
+import RenderingQueueBuilder from "../renderer/RenderingQueueBuilder";
 import ITemplateLoader from "../template/ITemplateLoader";
+import Template from "../template/Template";
 import { TYPES } from "../types";
 import IDocFolderGenerator from "./IDocFolderGenerator";
 import IDocumentationGenerator from "./IDocumentationGenerator";
@@ -18,10 +18,7 @@ import IProjectRootFinder from "./IProjectRootFinder";
 export default class DocumentationGenerator implements IDocumentationGenerator {
 
 	@inject(TYPES.INunjucksRenderer)
-	private _renderer: INunjucksRenderer;
-
-	@inject(TYPES.IDesignFilesCopier)
-	private _filesCopier: IDesignFilesCopier;
+	private _renderer: IRenderer;
 
 	@inject(TYPES.ITemplateLoader)
 	private _templateLoader: ITemplateLoader;
@@ -38,27 +35,29 @@ export default class DocumentationGenerator implements IDocumentationGenerator {
 	 */
 	public async generate(project: IGMProject, config: IProjectConfig): Promise<string> {
 		const docProject = await this._createDocProject(project, config);
-		const design = await this._loadDesign(config);
-		return await this._render(docProject, design, config.output.outputFolder);
+		const design = await this._loadTemplate(config);
+		return await this._render(docProject, design, config.output);
 	}
 
 	private async _createDocProject(project: IGMProject, config: IProjectConfig): Promise<DocProject> {
 		const rootFolder = this._projectRootFinder.find(project, config.root);
-		const docProject = new DocProject(project.name);
-		docProject.root = await this._docFolderGenerator.generate(rootFolder, config, project);
+		const docProject = new DocProject(config.name || project.name);
+		docProject.root = await this._docFolderGenerator.generate(rootFolder, config, project, docProject);
 		return docProject;
 	}
 
-	private async _loadDesign(config: IProjectConfig): Promise<Design> {
+	private async _loadTemplate(config: IProjectConfig): Promise<Template> {
 		const templateFolder = await this._templateLoader.getFolder(config.output);
-		const template = await this._templateLoader.loadFrom(templateFolder);
-		return template.findDesign(config.output.design);
+		return this._templateLoader.loadFrom(templateFolder);
 	}
 
-	private async _render(docProject: DocProject, design: Design, outFolder: string): Promise<string> {
-		await this._renderer.render(design, docProject, outFolder);
-		await this._filesCopier.copy(outFolder, design);
-		return outFolder;
+	private async _render(docProject: DocProject, template: Template, outputConfig: IOutputConfig): Promise<string> {
+		const builder = new RenderingQueueBuilder(docProject, outputConfig);
+		const queue = builder.build();
+
+		await this._renderer.render(template, queue, outputConfig.outputFolder);
+		await template.copyFiles(outputConfig.outputFolder);
+		return outputConfig.outputFolder;
 	}
 
 }

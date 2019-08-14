@@ -1,11 +1,41 @@
-import Design from "./Design";
-import { ITemplate } from "./ITemplate";
+import * as fg from "fast-glob";
+import * as fse from "fs-extra";
+import * as path from "path";
+import { DocResourceType } from "../doc_models/DocResourceType";
 import * as TemplateJSON from "./TemplateJSON";
 
 /**
  * Represents a Documentation HTML Template
  */
-export default class Template implements ITemplate {
+export default class Template {
+
+	public static DEFAULT_COPY: string[] = [
+		"**/*",
+	];
+
+	public static DEFAULT_IGNORE: string[] = [
+		"**/template.json",
+		"**/*.njk",
+		"**/package.json",
+		"**/package-lock.json",
+		"**/.gitignore",
+	];
+
+	/**
+	 * The design display name
+	 */
+	public name: string | null;
+
+	/**
+	 * An array with the globs used when copying files from the input template folder to the
+	 * output documentation folder.
+	 */
+	public copy: string[] = Template.DEFAULT_COPY;
+
+	/**
+	 * The input file for the design
+	 */
+	public index: string;
 
 	/**
 	 * The folder of the template
@@ -20,11 +50,6 @@ export default class Template implements ITemplate {
 	/**
 	 * The default design name
 	 */
-	public defaultDesign: Design;
-
-	/**
-	 * The default design name
-	 */
 	public description: string | undefined;
 
 	/**
@@ -32,10 +57,7 @@ export default class Template implements ITemplate {
 	 */
 	public web: string | undefined;
 
-	/**
-	 * A map containing with the designs. Each key is the name of the design.
-	 */
-	private _designs: Map<string, Design> = new Map();
+	private _pages: TemplateJSON.IPages;
 
 	/**
 	 * Creates an instance of Template.
@@ -44,62 +66,37 @@ export default class Template implements ITemplate {
 	 */
 	public constructor(folder: string, data: TemplateJSON.IRoot) {
 		this.folder = folder;
-		this.folder = folder;
 		this.author = data.author;
 		this.description = data.description;
 		this.web = data.web;
+		this.copy = data.copy || this.copy;
+		this.name = data.name;
+		this._pages = data.pages;
+	}
 
-		for (const name of Object.keys(data.designs)) {
-			const design = new Design(this, data.designs[name]);
-			this._designs.set(name, design);
+	public getTemplatePathFor(type: DocResourceType): string {
+		if (type === DocResourceType.Resource) {
+			throw new Error("Unrecognized resource type");
 		}
-
-		const d = this.getDesign(data.defaultDesign);
-		if (!d) {
-			throw new Error("Default design name is invalid");
-		} else {
-			this.defaultDesign = d;
-		}
+		return this._pages[type];
 	}
 
 	/**
-	 * Finds a design by name. Returns the default design if not found
-	 * @param design The design name.
+	 * Copy the Design files inside the outputFolder. By default, it will copy
+	 * all files except the package.json, template.json and *.njk files.
+	 * @param outputFolder The output folder
 	 */
-	public getDesign(design: string): Design | undefined {
-		return this._designs.get(design);
-	}
+	public async copyFiles(outputFolder: string): Promise<void> {
+		const files = await fg(this.copy, {
+			cwd: this.folder,
+			baseNameMatch: true,
+			ignore: Template.DEFAULT_IGNORE,
+		});
 
-	/**
-	 * Returns if the design exists in the template
-	 * @param design The design name
-	 */
-	public hasDesign(design: string): boolean {
-		return this._designs.has(design);
-	}
-
-	/**
-	 * Iterator function to get all the designs of the template
-	 */
-	public designs(): IterableIterator<Design> {
-		return this._designs.values();
-	}
-
-	/**
-	 * Tries to return an specific design if specified, or the default design if a empty string is passed
-	 * @param designName The design name. If empty, the default design will be returned
-	 */
-	public findDesign(designName: string): Design {
-		if (designName === "") {
-			return this.defaultDesign;
-		} else {
-			const d = this.getDesign(designName);
-			if (d) {
-				return d;
-			} else {
-				throw new Error(`Design "${designName}" not found`);
-			}
+		for (const file of files) {
+			const outputFile = path.resolve(outputFolder, file);
+			const inputFile = path.resolve(this.folder, file);
+			await fse.copy(inputFile, outputFile);
 		}
 	}
-
 }

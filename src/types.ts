@@ -1,6 +1,9 @@
 // file types.ts
 
 const TYPES = {
+	// Other
+	ISchemaValidator: Symbol.for("ISchemaValidator"),
+
 	// Cli
 	ICliGenerateFacade: Symbol.for("ICliGenerateFacade"),
 
@@ -43,6 +46,7 @@ const TYPES = {
 	// npm modules
 	IGetInstalledPath: Symbol.for("IGetInstalledPath"),
 	IOpen: Symbol.for("IOpen"),
+	IPkgDir: Symbol.for("IPkgDir"),
 };
 
 export {TYPES};

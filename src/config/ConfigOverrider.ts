@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import ICliParamsConfig from "./ICliParamsConfig";
-import IProjectConfig from "./IProjectConfig";
+import { IOutputConfig, IProjectConfig } from "./IProjectConfig";
 
 @injectable()
 export default class ConfigOverrider {
@@ -9,21 +9,31 @@ export default class ConfigOverrider {
 	 * @param config The config
 	 */
 	public override(config: IProjectConfig, overrideConfig: ICliParamsConfig): IProjectConfig {
-		if (overrideConfig.design) {
-			config.output.design = overrideConfig.design;
-		}
-		if (overrideConfig.template) {
-			config.output.template = overrideConfig.template;
-		}
-		if (overrideConfig.outputFolder) {
-			config.output.outputFolder = overrideConfig.outputFolder;
-		}
-		if (overrideConfig.pattern) {
+
+		this._overrideOutputConfig(config.output, overrideConfig);
+
+		if (overrideConfig.pattern !== undefined) {
 			config.pattern = overrideConfig.pattern;
 		}
-		if (overrideConfig.root) {
+		if (overrideConfig.root !== undefined) {
 			config.root = overrideConfig.root;
 		}
+
 		return config;
+	}
+
+	private _overrideOutputConfig(output: IOutputConfig, overrideConfig: ICliParamsConfig): void {
+		if (overrideConfig.template !== undefined) {
+			output.template = overrideConfig.template;
+		}
+		if (overrideConfig.outputFolder !== undefined) {
+			output.outputFolder = overrideConfig.outputFolder;
+		}
+		if (overrideConfig.folderPages !== undefined) {
+			output.folderPages = overrideConfig.folderPages;
+		}
+		if (overrideConfig.scriptPages !== undefined) {
+			output.scriptPages = overrideConfig.scriptPages;
+		}
 	}
 }

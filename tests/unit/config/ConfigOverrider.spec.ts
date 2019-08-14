@@ -4,7 +4,7 @@ import {
 
 import { Container } from "inversify";
 import ConfigOverrider from "../../../src/config/ConfigOverrider";
-import ProjectConfig from "../../../src/config/ProjectConfig";
+import { ProjectConfig } from "../../../src/config/ProjectConfig";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
@@ -20,9 +20,10 @@ export class ConfigOverriderFixture {
 		Expect((out as any)[key]).toBe("foo");
 	}
 
-	@TestCase("design")
 	@TestCase("template")
 	@TestCase("outputFolder")
+	@TestCase("scriptPages")
+	@TestCase("folderPages")
 	@Test()
 	public async override_output(key: string) {
 		const confOverrider = (new Container()).resolve(ConfigOverrider);

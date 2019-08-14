@@ -1,8 +1,7 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
 
-import IParsingConfig from "../config/IParsingConfig";
-import IScriptValidationRules from "../config/IScriptValidationRules";
+import { IParsingConfig, IScriptValidationRules } from "../config/IProjectConfig";
 import DocScript from "../doc_models/DocScript";
 import GMSubscript from "../gm_project/GMSubscript";
 import JSDocParser from "../parser/JSDocParser";

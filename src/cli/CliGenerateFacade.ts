@@ -7,7 +7,7 @@ import * as os from "os";
 import ICliParamsConfig from "../config/ICliParamsConfig";
 import IConfigManager from "../config/IConfigManager";
 import IConfigOverrider from "../config/IConfigOverrider";
-import ProjectConfig from "../config/ProjectConfig";
+import { ProjectConfig } from "../config/ProjectConfig";
 import IDocumentationGenerator from "../generator/IDocumentationGenerator";
 import IGMProjectLoader from "../gm_project/IGMProjectLoader";
 import { IOpen } from "../npmmodules";

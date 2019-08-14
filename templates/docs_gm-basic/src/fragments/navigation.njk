@@ -1,0 +1,44 @@
+
+
+{% macro showFolderItems(folder) %}
+	{% for subresource in folder.children %}
+		{% if subresource.type === "folder" %}
+			<li class="list-group-item d-flex justify-content-between {{ "active" if (subresource === resource) }}">
+				{% set expanded = subresource.isParentOf(resource) %}
+
+				{% if (subresource === resource) %}
+					<div class="btn">
+						<i class="material-icons float-left mr-3">folder</i><span>{{ subresource.name }}</span><span class="sr-only">(current)</span>
+					</div>
+				{% else %}
+					<a class="btn btn-link" href="{{ linkTo(subresource) }}" >
+						<i class="material-icons float-left mr-3">folder</i><span>{{ subresource.name }}</span>
+					</a>
+				{% endif %}
+
+				<button class="btn btn-link text-dark {{ 'collapsed' if not expanded }}" data-toggle="collapse" data-target="#tree-{{ subresource.name }}" aria-expanded="{{ 'true' if expanded else 'false' }}" aria-controls="tree-{{ subresource.name }}">
+					<i class="material-icons" >expand_more</i>
+					<span class="sr-only">Expand folder {{ subresource.name }}</span>
+				</button>
+			</li>
+			<div class="collapse {{ 'show' if expanded }}" id="tree-{{ subresource.name }}">
+				<ul class="list-group list-group" >
+					{{ showFolderItems(subresource) }}
+				</ul>
+			</div>
+		{% elif subresource.type === "script" %}
+			<li class="list-group-item {{ "active" if (subresource === resource) }}">
+				{% if (subresource === resource) %}
+					<div class="btn ml-4">{{ subresource.name }}<span class="sr-only">(current)</span></div>
+				{% else %}
+					<a class="btn btn-link ml-4" href="{{ linkTo(subresource) }}" >{{ subresource.name }}</a>
+				{% endif %}
+			</li>
+		{% endif %}
+	{% endfor %}
+
+{% endmacro %}
+
+<ul class="list-group list-group-flush" id="navigation">
+	{{ showFolderItems(project.root, resource) }}
+</ul>

@@ -15,6 +15,7 @@
     "sourceMap": true,
     //"inlineSourceMap": true,
     "outDir": "./dist/",
+    "resolveJsonModule": true,
     "strict": true,
     "strictPropertyInitialization": false, /* TODO: allow strict property initialization. Must wait to tslint to support the new definite assignment */
     "noUnusedLocals": true,

@@ -61,12 +61,13 @@ export default class Cli {
 
 	private _commandGenerateBuilder(builder: yargs.Argv<IGenerateCommand>, lang: StringsEnglish) {
 		return builder
-			.option("design", {type: "string", describe: lang.OPTION_DESIGN})
 			.option("template", {type: "string", describe: lang.OPTION_TEMPLATE})
 			.option("outputFolder", {type: "string", describe: lang.OPTION_OUTPUT_FOLDER})
 			.option("pattern", {alias: "p", type: "string", describe: lang.OPTION_PATTERN})
 			.option("root", {type: "string", describe: lang.OPTION_ROOT})
-			.option("noOpen", {type: "boolean", default: false, describe: lang.OPTION_NO_OPEN});
+			.option("noOpen", {type: "boolean", default: false, describe: lang.OPTION_NO_OPEN})
+			.option("scriptPages", {type: "boolean", default: true, describe: lang.OPTION_SCRIPT_PAGES})
+			.option("folderPages", {type: "boolean", default: true, describe: lang.OPTION_FOLDER_PAGES});
 	}
 
 	/**

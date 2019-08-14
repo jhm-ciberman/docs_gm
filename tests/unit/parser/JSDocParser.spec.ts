@@ -7,8 +7,8 @@ import {
 } from "alsatian";
 
 import { Container } from "inversify";
-import IParsingConfig from "../../../src/config/IParsingConfig";
-import ParsingConfig from "../../../src/config/ParsingConfig";
+import { IParsingConfig } from "../../../src/config/IProjectConfig";
+import { ParsingConfig } from "../../../src/config/ProjectConfig";
 import DocReturns from "../../../src/doc_models/DocReturns";
 import JSDocParser from "../../../src/parser/JSDocParser";
 import IReporter from "../../../src/reporter/IReporter";

@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import IValidationRuleConfig from "../config/IValidationRuleConfig";
+import { IValidationRuleConfig } from "../config/IProjectConfig";
 import IReporter from "../reporter/IReporter";
 import { TYPES } from "../types";
 import IRule from "./interfaces/IRule";

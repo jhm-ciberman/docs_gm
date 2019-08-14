@@ -6,8 +6,9 @@ import {
 } from "alsatian";
 
 import { Container, injectable } from "inversify";
-import IProjectConfig from "../../../src/config/IProjectConfig";
-import ProjectConfig from "../../../src/config/ProjectConfig";
+import { IProjectConfig } from "../../../src/config/IProjectConfig";
+import { ProjectConfig } from "../../../src/config/ProjectConfig";
+import DocProject from "../../../src/doc_models/DocProject";
 import DocScript from "../../../src/doc_models/DocScript";
 import DocFolderGenerator from "../../../src/generator/DocFolderGenerator";
 import IScriptLoader from "../../../src/generator/IScriptLoader";
@@ -42,7 +43,8 @@ export class DocFolderGeneratorFixture {
 			]),
 		]);
 
-		const docFolder = await this._get().generate(f, new ProjectConfig(), new MockGMProject("My project", []));
+		const docFolder = await this._get()
+				.generate(f, new ProjectConfig(), new MockGMProject("My project", []), new DocProject("MyProject"));
 
 		Expect(docFolder.description).toBe("");
 		Expect(docFolder.children.length).toBe(3);
@@ -58,7 +60,8 @@ export class DocFolderGeneratorFixture {
 		const f = new MockGMFolder("my_folder", []);
 		f.moduleScript = moduleScript;
 
-		const docFolder = await this._get().generate(f, new ProjectConfig(), new MockGMProject("My project", []));
+		const docFolder = await this._get()
+				.generate(f, new ProjectConfig(), new MockGMProject("My project", []), new DocProject("MyProject"));
 
 		Expect(docFolder.description).toBe(expectedDescription);
 	}
@@ -75,7 +78,8 @@ export class DocFolderGeneratorFixture {
 			]),
 		]);
 
-		const docFolder = await this._get().generate(f, new ProjectConfig(), new MockGMProject("My project", []));
+		const docFolder = await this._get()
+				.generate(f, new ProjectConfig(), new MockGMProject("My project", []), new DocProject("MyProject"));
 
 		Expect(docFolder.children.length).toBe(2);
 		Expect(docFolder.children[0].name).toBe("my_script1");
@@ -88,7 +92,9 @@ export class DocFolderGeneratorFixture {
 			new GMResource("my_script"),
 		]);
 
-		return await this._get().generate(f, new ProjectConfig(), new MockGMProject("My project", [])).then(() => {
+		return await this._get()
+		.generate(f, new ProjectConfig(), new MockGMProject("My project", []), new DocProject("MyProject"))
+		.then(() => {
 			throw new Error("generate() did not throw on project with no root scripts folder");
 		}).catch((e: Error) => {
 			Expect(e).toBeDefined();

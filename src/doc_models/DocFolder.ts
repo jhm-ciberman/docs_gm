@@ -27,15 +27,6 @@ export default class DocFolder extends DocResource {
 	public name: string;
 
 	/**
-	 * Creates an instance of DocFolder.
-	 * @param {string} name
-	 * @memberof DocFolder
-	 */
-	constructor(name: string) {
-		super(name);
-	}
-
-	/**
 	 * Returns an array with all the leaf elements of the folder
 	 * (The resources excluding the subfolders)
 	 */
@@ -63,13 +54,14 @@ export default class DocFolder extends DocResource {
 	 * @param res The resource
 	 */
 	public isParentOf(res: DocResource): boolean {
-		if (res.parent) {
-			if (res.parent === this) {
-				return true;
-			} else {
-				return res.parent.isParentOf(res);
-			}
+		if (!res.parent) {
+			return false;
 		}
-		return false;
+
+		if (res.parent === this) {
+			return true;
+		}
+
+		return this.isParentOf(res.parent);
 	}
 }

@@ -1,0 +1,14 @@
+{% extends "src/parent.njk" %}
+
+{# Overrides the block named "content" that is declared in the parent.njk file #}
+{% block content %}
+
+    {% include "src/fragments/breadcrumb.njk" %}
+
+    {% include "src/fragments/script.njk" %}
+
+    {% include "src/fragments/bottom-navigation.njk" %}
+
+{% endblock content %}
+
+

@@ -32,10 +32,16 @@ export class CliFixture {
 	@Test("generate")
 	@Timeout(10000)
 	public generate(folder: string) {
-		const result = exec(
-			`docs_gm generate "./tests/integration/${ folder }"`
-			+ ` --outputFolder "${ this.dir.dir }" --noOpen`,
-		);
+		const result = exec([
+			"docs_gm",
+			"generate",
+			`"./tests/integration/${ folder }"`,
+			`--outputFolder="${ this.dir.dir }"`,
+			"--noOpen",
+			"--folderPages=false",
+			"--scriptPages=false",
+		].join(" "));
+
 		let stdoutStr = "";
 		let stderrStr = "";
 

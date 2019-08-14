@@ -4,7 +4,7 @@ import { TYPES } from "../types";
 import * as fse from "fs-extra";
 import * as path from "path";
 
-import IProjectConfig from "../config/IProjectConfig";
+import { IProjectConfig } from "../config/IProjectConfig";
 import DocScript from "../doc_models/DocScript";
 import IGMProject from "../gm_project/IGMProject";
 import IGMScript from "../gm_project/IGMScript";

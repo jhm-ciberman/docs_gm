@@ -1,0 +1,139 @@
+{
+	"definitions": {
+		"rule": {
+			"type": "object",
+			"properties": {
+				"ignore": {
+					"type": "boolean",
+					"title": "Should ignore the script if the script fails the validation rule?",
+					"default": true
+				},
+				"warn": {
+					"type": "boolean",
+					"title": "Should output a warning message if the script fails the validation rule?",
+					"default": true
+				}
+			}
+		}
+	},
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+	  "name": {
+		"type": "string",
+		"title": "The project's name to display"
+	  },
+	  "output": {
+		"$id": "#/properties/output",
+		"type": "object",
+		"title": "The output configuration",
+		"properties": {
+		  "template": {
+			"type": "string",
+			"title": "The template name to use"
+		  },
+		  "outputFolder": {
+			"type": "string",
+			"title": "The output folder of the documentation"
+		  },
+		  "templatesFolder": {
+			"type": "string",
+			"title": "The folder where the templates are located. If empty, the default templates folder will be used"
+		  },
+		  "scriptPages": {
+			"type": "boolean",
+			"title": "Specifies if individual pages for each gamemaker script sould be generated"
+		  },
+		  "folderPages": {
+			"type": "boolean",
+			"title": "Specifies if individual pages for each gamemaker folder sould be generated"
+		  }
+		}
+	  },
+	  "pattern": {
+		"type": "string",
+		"title": "The glob pattern to use to include files in the project documentation"
+	  },
+	  "root": {
+		"type": "string",
+		"title": "The documentation root folder"
+	  },
+	  "parser": {
+		"type": "object",
+		"title": "The parser configuration",
+		"properties": {
+		  "warnUnrecognizedTags": {
+			"type": "boolean",
+			"title": "Warn about unrecognized JSDoc tags"
+		  },
+		  "mergeDuplicateParams": {
+			"type": "boolean",
+			"title": "If true, the arguments with the same name will be merged."
+		  }
+		}
+	  },
+	  "scripts": {
+		"type": "object",
+		"title": "Rules for validating scripts",
+		"properties": {
+		  "markUnderscoreScriptsAsPrivate": {
+			"type": "boolean",
+			"title": "Mark scripts names starting with underscore as private scripts",
+			"default": false
+		  },
+		  "ignorePrivate": {
+			"type": "boolean",
+			"title": "Ignore private scripts when generating documentation",
+			"default": false
+		  },
+		  "undocumented": {
+            "$ref": "#/definitions/rule",
+			"title": "This rule will fail if the script has undocumented scripts"
+		  },
+		  "mismatchingFunctionName": {
+            "$ref": "#/definitions/rule",
+			"title": "This rule will fail if the script has a mismatching script name and \"function\" JSDoc tags."
+		  },
+		  "noDescription": {
+            "$ref": "#/definitions/rule",
+			"title": "This rule will fail if the script has no description"
+		  },
+		  "undocumentedArguments": {
+            "$ref": "#/definitions/rule",
+			"title": "This rule will fail if the script has undocumented arguments.",
+			"description": "For example, if a script has documentation for 0 arguments, but the GML code uses arguments."
+		  },
+		  "mismatchingArguments": {
+            "$ref": "#/definitions/rule",
+			"title": "This rule will fail if the script has a mismatching number of arguments. ",
+			"description": "For example, if the scripts has documentation for 4 arguments but the GML code uses 6 arguments."
+		  },
+		  "noParamDescription": {
+            "$ref": "#/definitions/rule",
+			"title": "This rule will fail if the script has some argument without description."
+		  },
+		  "noParamType": {
+            "$ref": "#/definitions/rule",
+			"title": "This rule will fail if the script has some argument without argument data type."
+		  },
+		  "functionSignatureInDescription": {
+            "$ref": "#/definitions/rule",
+			"title": "This rule should detect and fail if the \"description\" JSDoc tag has a function signature instead of the actual function description.",
+			"description": "This is because, when you import a GMS1 project into GMS2, the \"description\" tag is filled with the function generated signature."
+		  },
+		  "noReturnDescription": {
+            "$ref": "#/definitions/rule",
+			"title": "This rule fails if the script has a return statement but has not documentation for the returned value"
+		  },
+		  "noReturnType": {
+            "$ref": "#/definitions/rule",
+			"title": "This rule fails if the script has no data type for the returned value"
+		  },
+		  "duplicatedParams": {
+            "$ref": "#/definitions/rule",
+			"title": "This rule fails if the script has one or more duplicated params names"
+		  }
+		}
+	  }
+	}
+  }

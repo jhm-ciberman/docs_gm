@@ -1,7 +1,7 @@
 import parse = require("comment-parser");
 import { inject, injectable } from "inversify";
-import IParsingConfig from "../config/IParsingConfig";
-import ParsingConfig from "../config/ParsingConfig";
+import { IParsingConfig } from "../config/IProjectConfig";
+import { ParsingConfig } from "../config/ProjectConfig";
 import DocScript from "../doc_models/DocScript";
 import IReporter from "../reporter/IReporter";
 import { TYPES } from "../types";

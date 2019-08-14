@@ -1,16 +1,23 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 
 import * as fse from "fs-extra";
 import * as path from "path";
+import SchemaValidator from "../SchemaValidator";
+import { TYPES } from "../types";
 import IConfigManager from "./IConfigManager";
-import IProjectConfig from "./IProjectConfig";
-import ProjectConfig from "./ProjectConfig";
+import { IProjectConfig } from "./IProjectConfig";
+import { ProjectConfig } from "./ProjectConfig";
+
+import schema = require("../../schema/docs_gm.json");
 
 /**
  * This class exports and loads the configuration
  */
 @injectable()
 export default class ConfigManager implements IConfigManager {
+
+	@inject(TYPES.ISchemaValidator)
+	private _schemaValidator: SchemaValidator;
 
 	/**
 	 * Copy the docs_gm.json file to the specified outputPath.
@@ -19,7 +26,9 @@ export default class ConfigManager implements IConfigManager {
 	 */
 	public async exportConfig(outputPath: string): Promise<string> {
 		outputPath = path.resolve(outputPath, "docs_gm.json");
-		await fse.writeJSON(outputPath, new ProjectConfig(), {
+		const config = new ProjectConfig();
+		config.name = "Your project name";
+		await fse.writeJSON(outputPath, config, {
 			spaces: "\t",
 		});
 		return outputPath;
@@ -40,12 +49,18 @@ export default class ConfigManager implements IConfigManager {
 		} else {
 			jsonPath = path.resolve(jsonOrProjectPath, "datafiles/docs_gm.json");
 		}
+
+		let data: IProjectConfig;
 		try {
-			const data: IProjectConfig = await fse.readJSON(jsonPath);
-			const config: IProjectConfig = new ProjectConfig();
-			return Object.assign(config, data);
+			data = await fse.readJSON(jsonPath);
 		} catch (e) {
 			return undefined;
 		}
+
+		this._schemaValidator.validate(data, schema);
+
+		const config: IProjectConfig = new ProjectConfig();
+		return Object.assign(config, data);
+
 	}
 }

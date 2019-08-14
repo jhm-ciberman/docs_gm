@@ -1,4 +1,5 @@
 import DocFolder from "./DocFolder";
+import DocProject from "./DocProject";
 import { DocResourceType } from "./DocResourceType";
 
 /**
@@ -22,12 +23,18 @@ export default class DocResource {
 	public parent: DocFolder | null = null;
 
 	/**
+	 * The project of this resource
+	 */
+	public project: DocProject | null = null;
+
+	/**
 	 * Creates an instance of DocResource.
 	 * @param {string} name The resource name
 	 * @memberof DocResource
 	 */
-	constructor(name: string) {
+	constructor(name: string, docProject?: DocProject) {
 		this.name = name;
+		this.project = docProject || null;
 	}
 
 	/**
@@ -35,5 +42,31 @@ export default class DocResource {
 	 */
 	get fullpath(): string {
 		return this.parent ? this.parent.fullpath +  this.name : this.name;
+	}
+
+	get anchor(): string {
+		return this.name;
+	}
+
+	get next(): DocResource | null {
+		if (!this.parent) {
+			return null;
+		}
+		const index = this.parent.children.indexOf(this);
+		if (index >= 0 && index < this.parent.children.length - 1) {
+			return this.parent.children[index + 1];
+		}
+		return null;
+	}
+
+	get prev(): DocResource | null {
+		if (!this.parent) {
+			return null;
+		}
+		const index = this.parent.children.indexOf(this);
+		if (index > 0) {
+			return this.parent.children[index - 1];
+		}
+		return null;
 	}
 }

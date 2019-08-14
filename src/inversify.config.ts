@@ -18,8 +18,9 @@ import IJSDocParser from "./parser/IJSDocParser";
 import { getInstalledPath } from "get-installed-path";
 import open = require("open");
 
+import pkgDir = require("pkg-dir");
 import DocumentationGenerator from "../src/generator/DocumentationGenerator";
-import { IGetInstalledPath, IOpen } from "../src/npmmodules";
+import { IGetInstalledPath, IOpen, IPkgDir } from "../src/npmmodules";
 import ConsoleReporter from "../src/reporter/ConsoleReporter";
 import TemplateLoader from "../src/template/TemplateLoader";
 import IRuleValidator from "../src/validation/interfaces/IRuleValidator";
@@ -37,23 +38,21 @@ import ProjectRootFinder from "./generator/ProjectRootFinder";
 import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
 import IGMProjectLoader from "./gm_project/IGMProjectLoader";
-import DesignFilesCopier from "./renderer/DesignFilesCopier";
-import IDesignFilesCopier from "./renderer/IDesignFilesCopier";
-import ILinkToBuilder from "./renderer/ILinkToBuilder";
-import INunjucksRenderer from "./renderer/INunjucksRenderer";
-import LinkToBuilder from "./renderer/LinkToBuilder";
-import NunjucksRenderer from "./renderer/NunjucksRenderer";
+import IRenderer from "./renderer/IRenderer";
+import Renderer from "./renderer/Renderer";
 import IReporter from "./reporter/IReporter";
+import SchemaValidator from "./SchemaValidator";
 import IModuleFinder from "./template/IModuleFinder";
-import ITemplateFactory from "./template/ITemplateFactory";
 import ITemplateLoader from "./template/ITemplateLoader";
 import ModuleFinder from "./template/ModuleFinder";
-import TemplateFactory from "./template/TemplateFactory";
 import IRulesProvider from "./validation/interfaces/IRulesProvider";
 import RulesProvider from "./validation/RulesProvider";
 
 /* tslint:disable:max-line-length */
 const container = new Container();
+
+// Other
+container.bind(TYPES.ISchemaValidator).to(SchemaValidator);
 
 // Cli
 container.bind<ICliGenerateFacade>(TYPES.ICliGenerateFacade).to(CliGenerateFacade);
@@ -76,9 +75,7 @@ container.bind<IGMProjectLoader>(TYPES.IGMProjectLoader).to(GMProjectLoader);
 container.bind<IJSDocParser>(TYPES.IJSDocParser).to(JSDocParser);
 
 // Renderer
-container.bind<INunjucksRenderer>(TYPES.INunjucksRenderer).to(NunjucksRenderer);
-container.bind<IDesignFilesCopier>(TYPES.IDesignFilesCopier).to(DesignFilesCopier);
-container.bind<ILinkToBuilder>(TYPES.ILinkToBuilder).to(LinkToBuilder);
+container.bind<IRenderer>(TYPES.INunjucksRenderer).to(Renderer);
 
 // Reporter
 container.bind<IReporter>(TYPES.IReporter).to(ConsoleReporter);
@@ -86,7 +83,6 @@ container.bind<IReporter>(TYPES.IReporter).to(ConsoleReporter);
 // Template
 container.bind<IModuleFinder>(TYPES.IModuleFinder).to(ModuleFinder);
 container.bind<ITemplateLoader>(TYPES.ITemplateLoader).to(TemplateLoader);
-container.bind<ITemplateFactory>(TYPES.ITemplateFactory).to(TemplateFactory);
 
 // Validation
 container.bind<IScriptValidator>(TYPES.IScriptValidator).to(ScriptValidator);
@@ -96,5 +92,6 @@ container.bind<IRulesProvider>(TYPES.IRulesProvider).to(RulesProvider);
 // npm modules
 container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(getInstalledPath);
 container.bind<IOpen>(TYPES.IOpen).toFunction(open);
+container.bind<IPkgDir>(TYPES.IPkgDir).toFunction(pkgDir);
 
 export default container;

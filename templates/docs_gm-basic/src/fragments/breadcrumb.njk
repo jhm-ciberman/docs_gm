@@ -1,0 +1,23 @@
+
+{% macro item(element) %}
+
+	{# Call item() macro recursively #}
+	{% if element.parent %}
+		{{ item(element.parent, resource)}}
+	{% endif %}
+
+	{% if element === resource %}
+		<li class="breadcrumb-item active" aria-current="page">{{ element.name }}</li>
+	{% else %}
+		<li class="breadcrumb-item"><a href="{{ linkTo(element) }}">{{ element.name if element !== project.root else "Main" }}</a></li>
+	{% endif %}
+
+{% endmacro %}
+
+{% if resource !== project.root %}
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			{{ item(resource, resource) }}
+		</ol>
+	</nav>
+{% endif %}

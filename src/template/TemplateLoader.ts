@@ -1,15 +1,18 @@
 import * as fse from "fs-extra";
 import { inject, injectable } from "inversify";
 import * as path from "path";
-import * as pkgDir from "pkg-dir";
-import IOutputConfig from "../config/IOutputConfig";
+import { IOutputConfig } from "../config/IProjectConfig";
+import { IPkgDir } from "../npmmodules";
+import SchemaValidator from "../SchemaValidator";
 import { TYPES } from "../types";
 import IModuleFinder from "./IModuleFinder";
-import { ITemplate } from "./ITemplate";
-import ITemplateFactory from "./ITemplateFactory";
 import ITemplateLoader from "./ITemplateLoader";
 import ModuleFinderConfig from "./ModuleFinderConfig";
+import Template from "./Template";
 import { IRoot } from "./TemplateJSON";
+
+import schema = require("../../schema/template.json");
+
 /**
  * This class is used to load a Template from disk.
  * It can be installed as an npm module or in a local folder.
@@ -17,18 +20,21 @@ import { IRoot } from "./TemplateJSON";
 @injectable()
 export default class TemplateLoader implements ITemplateLoader {
 
-	@inject(TYPES.ITemplateFactory)
-	private _templateFactory: ITemplateFactory;
-
 	@inject(TYPES.IModuleFinder)
 	private _moduleFinder: IModuleFinder;
+
+	@inject(TYPES.IPkgDir)
+	private _pkgDir: IPkgDir;
+
+	@inject(TYPES.ISchemaValidator)
+	private _schemaValidator: SchemaValidator;
 
 	/**
 	 * Factory method to load the template from a folder
 	 * @param folder The folder name
 	 * @returns A promise
 	 */
-	public async loadFrom(folder: string): Promise<ITemplate> {
+	public async loadFrom(folder: string): Promise<Template> {
 		let data: IRoot;
 		const jsonPath = path.resolve(folder, "template.json");
 		try {
@@ -36,7 +42,10 @@ export default class TemplateLoader implements ITemplateLoader {
 		} catch (e) {
 			throw new Error(`Error loading Template from "${jsonPath}"`);
 		}
-		return this._templateFactory.create(folder, data);
+
+		this._schemaValidator.validate(data, schema);
+
+		return new Template(folder, data);
 	}
 
 	/**
@@ -52,8 +61,13 @@ export default class TemplateLoader implements ITemplateLoader {
 	}
 
 	protected async _createConfig() {
+		const packageRoot = await this._pkgDir(__dirname);
+		if (!packageRoot) {
+			throw new Error("Cannot determine package root");
+		}
+
 		const config = new ModuleFinderConfig();
-		config.packageRoot = await pkgDir() as string;
+		config.packageRoot = packageRoot;
 		config.templatesPath = config.packageRoot + "/templates/";
 		return config;
 	}

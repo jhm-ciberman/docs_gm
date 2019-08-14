@@ -1,24 +1,10 @@
 {
+    "name": "docs_gm Basic",
     "author": "Javier \"Ciberman\" Mora",
     "description": "A basic HTML documentation template",
     "web": "https://github.com/jhm-ciberman/docs_gm-basic",
-    "defaultDesign": "onepage",
-    "designs": {
-        "onepage": {
-            "displayName": "One Page",
-            "index": "src/onepage.njk"
-        },
-        "multipage": {
-            "displayName": "MultiPage",
-            "index": "src/multipage.njk"
-        },
-        "modules-onepage": {
-            "displayName": "Onepage Modules",
-            "index": "src/modules-onepage.njk"
-        },
-        "modules-multipage": {
-            "displayName": "Multipage Modules",
-            "index": "src/modules-multipage.njk"
-        }
+    "pages": {
+        "script": "src/script.njk",
+        "folder": "src/folder.njk"
     }
 }
