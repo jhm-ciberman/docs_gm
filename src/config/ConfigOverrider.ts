@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import ICliParamsConfig from "./ICliParamsConfig";
-import { IProjectConfig, IOutputConfig } from "./IProjectConfig";
+import { IOutputConfig, IProjectConfig } from "./IProjectConfig";
 
 @injectable()
 export default class ConfigOverrider {
