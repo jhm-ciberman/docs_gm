@@ -41,6 +41,7 @@ import IGMProjectLoader from "./gm_project/IGMProjectLoader";
 import IRenderer from "./renderer/IRenderer";
 import Renderer from "./renderer/Renderer";
 import IReporter from "./reporter/IReporter";
+import SchemaValidator from "./SchemaValidator";
 import IModuleFinder from "./template/IModuleFinder";
 import ITemplateLoader from "./template/ITemplateLoader";
 import ModuleFinder from "./template/ModuleFinder";
@@ -49,6 +50,9 @@ import RulesProvider from "./validation/RulesProvider";
 
 /* tslint:disable:max-line-length */
 const container = new Container();
+
+// Other
+container.bind(TYPES.ISchemaValidator).to(SchemaValidator);
 
 // Cli
 container.bind<ICliGenerateFacade>(TYPES.ICliGenerateFacade).to(CliGenerateFacade);

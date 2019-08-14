@@ -1,6 +1,9 @@
 // file types.ts
 
 const TYPES = {
+	// Other
+	ISchemaValidator: Symbol.for("ISchemaValidator"),
+
 	// Cli
 	ICliGenerateFacade: Symbol.for("ICliGenerateFacade"),
 

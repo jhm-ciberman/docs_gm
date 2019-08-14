@@ -13,6 +13,8 @@ import ConfigManager from "../../../src/config/ConfigManager";
 import IConfigManager from "../../../src/config/IConfigManager";
 import { IProjectConfig } from "../../../src/config/IProjectConfig";
 import { ProjectConfig } from "../../../src/config/ProjectConfig";
+import SchemaValidator from "../../../src/SchemaValidator";
+import { TYPES } from "../../../src/types";
 
 /* tslint:disable:max-classes-per-file completed-docs */
 
@@ -34,6 +36,7 @@ export class GMS1ProjectFactoryFixture {
 		});
 		this.output = TempDir.create("output", {});
 		const container = new Container();
+		container.bind(TYPES.ISchemaValidator).to(SchemaValidator);
 		this.configManager = container.resolve(ConfigManager);
 	}
 

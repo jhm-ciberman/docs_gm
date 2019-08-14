@@ -3,12 +3,16 @@ import { inject, injectable } from "inversify";
 import * as path from "path";
 import { IOutputConfig } from "../config/IProjectConfig";
 import { IPkgDir } from "../npmmodules";
+import SchemaValidator from "../SchemaValidator";
 import { TYPES } from "../types";
 import IModuleFinder from "./IModuleFinder";
 import ITemplateLoader from "./ITemplateLoader";
 import ModuleFinderConfig from "./ModuleFinderConfig";
 import Template from "./Template";
 import { IRoot } from "./TemplateJSON";
+
+import schema = require("../../schema/template.json");
+
 /**
  * This class is used to load a Template from disk.
  * It can be installed as an npm module or in a local folder.
@@ -21,6 +25,9 @@ export default class TemplateLoader implements ITemplateLoader {
 
 	@inject(TYPES.IPkgDir)
 	private _pkgDir: IPkgDir;
+
+	@inject(TYPES.ISchemaValidator)
+	private _schemaValidator: SchemaValidator;
 
 	/**
 	 * Factory method to load the template from a folder
@@ -35,6 +42,9 @@ export default class TemplateLoader implements ITemplateLoader {
 		} catch (e) {
 			throw new Error(`Error loading Template from "${jsonPath}"`);
 		}
+
+		this._schemaValidator.validate(data, schema);
+
 		return new Template(folder, data);
 	}
 

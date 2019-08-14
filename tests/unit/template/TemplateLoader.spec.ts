@@ -9,6 +9,7 @@ import {
 import { Container, injectable } from "inversify";
 import { OutputConfig } from "../../../src/config/ProjectConfig";
 import { IPkgDir } from "../../../src/npmmodules";
+import SchemaValidator from "../../../src/SchemaValidator";
 import IModuleFinder from "../../../src/template/IModuleFinder";
 import { IRoot } from "../../../src/template/TemplateJSON";
 import TemplateLoader from "../../../src/template/TemplateLoader";
@@ -34,6 +35,15 @@ const json: IRoot = {
 		folder: "index-foo.njk",
 	},
 };
+
+@injectable()
+class MockSchemaValidator implements SchemaValidator {
+
+	public validate(_data: any, _schema: any): void {
+		// do nothing!
+	}
+
+}
 
 @TestFixture("TemplateLoader")
 export class TemplateLoaderFixture {
@@ -96,6 +106,7 @@ export class TemplateLoaderFixture {
 		const container = new Container();
 		container.bind<IModuleFinder>(TYPES.IModuleFinder).to(MockModuleFinder);
 		container.bind<IPkgDir>(TYPES.IPkgDir).toFunction(async () => undefined);
+		container.bind<SchemaValidator>(TYPES.ISchemaValidator).to(MockSchemaValidator);
 		const templateLoader = container.resolve(TemplateLoader);
 
 		const output = new OutputConfig();
@@ -109,6 +120,7 @@ export class TemplateLoaderFixture {
 		const container = new Container();
 		container.bind<IModuleFinder>(TYPES.IModuleFinder).to(MockModuleFinder);
 		container.bind<IPkgDir>(TYPES.IPkgDir).toFunction(async () => "mockDir");
+		container.bind(TYPES.ISchemaValidator).to(SchemaValidator);
 		return container.resolve(TemplateLoader);
 	}
 }

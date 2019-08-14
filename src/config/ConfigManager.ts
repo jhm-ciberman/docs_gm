@@ -1,18 +1,23 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 
 import * as fse from "fs-extra";
-import { Validator } from "jsonschema";
 import * as path from "path";
+import SchemaValidator from "../SchemaValidator";
+import { TYPES } from "../types";
 import IConfigManager from "./IConfigManager";
 import { IProjectConfig } from "./IProjectConfig";
 import { ProjectConfig } from "./ProjectConfig";
 
 import schema = require("../../schema/docs_gm.json");
+
 /**
  * This class exports and loads the configuration
  */
 @injectable()
 export default class ConfigManager implements IConfigManager {
+
+	@inject(TYPES.ISchemaValidator)
+	private _schemaValidator: SchemaValidator;
 
 	/**
 	 * Copy the docs_gm.json file to the specified outputPath.
@@ -50,15 +55,10 @@ export default class ConfigManager implements IConfigManager {
 			return undefined;
 		}
 
-		this._validateSchema(data);
+		this._schemaValidator.validate(data, schema);
 
 		const config: IProjectConfig = new ProjectConfig();
 		return Object.assign(config, data);
 
-	}
-
-	private _validateSchema(data: any): void {
-		const validator = new Validator();
-		validator.validate(data, schema, {throwError: true});
 	}
 }

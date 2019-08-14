@@ -1,8 +1,8 @@
 {
+    "name": "docs_gm Basic",
     "author": "Javier \"Ciberman\" Mora",
     "description": "A basic HTML documentation template",
     "web": "https://github.com/jhm-ciberman/docs_gm-basic",
-    "name": "One Page",
     "pages": {
         "script": "src/script.njk",
         "folder": "src/folder.njk"
