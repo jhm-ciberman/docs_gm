@@ -54,14 +54,14 @@ export default class DocFolder extends DocResource {
 	 * @param res The resource
 	 */
 	public isParentOf(res: DocResource): boolean {
-		if (res.parent) {
-			if (res.parent === this) {
-				return true;
-			} else {
-				return this.isParentOf(res.parent);
-			}
-		} else {
+		if (!res.parent) {
 			return false;
 		}
+
+		if (res.parent === this) {
+			return true;
+		}
+
+		return this.isParentOf(res.parent);
 	}
 }
