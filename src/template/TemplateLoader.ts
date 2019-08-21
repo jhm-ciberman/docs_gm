@@ -11,7 +11,7 @@ import ModuleFinderConfig from "./ModuleFinderConfig";
 import Template from "./Template";
 import { IRoot } from "./TemplateJSON";
 
-import schema = require("../../schema/template.json");
+import schema = require("../schema/template.json");
 
 /**
  * This class is used to load a Template from disk.

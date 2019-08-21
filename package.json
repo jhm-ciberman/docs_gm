@@ -2,20 +2,18 @@
   "name": "docs_gm",
   "version": "4.1.0",
   "description": "The fantastic documentation generator for GameMaker:Studio and GameMaker Studio 2",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "npm run lint && npm run coverage",
-    "test-only": "npm run build && npm run unit-tests",
-    "unit-tests": "alsatian \"./dist/tests/unit/**/*.spec.js\"",
+    "test": "npm run lint && nyc npm run unit-tests",
+    "unit-tests": "alsatian \"./tests/unit/**/*.spec.ts\"",
     "build": "tsc -p .",
     "watch": "tsc -p . --watch",
     "clean": "rimraf ./dist/ ./coverage/ ./.nyc_output/",
-    "coverage": "npm run build && nyc npm run unit-tests",
     "report-coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint --project . -t verbose",
     "prepublishOnly": "npm run clean && npm run build",
-    "integration": "npm run build && npm link && alsatian \"./dist/tests/integration/**/*.spec.js\""
+    "integration": "npm run build && npm link && alsatian \"./tests/integration/**/*.spec.js\""
   },
   "repository": {
     "type": "git",
@@ -41,7 +39,7 @@
   },
   "homepage": "https://github.com/jhm-ciberman/docs_gm#readme",
   "bin": {
-    "docs_gm": "dist/src/docs_gm.js"
+    "docs_gm": "dist/docs_gm.js"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.0.0",

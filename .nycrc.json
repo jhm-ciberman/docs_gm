@@ -1,6 +1,6 @@
 {
 	"include": [
-		"dist/src/**/*"
+		"src/**/*"
 	],
 	"exclude": [
 		"**/index.js",

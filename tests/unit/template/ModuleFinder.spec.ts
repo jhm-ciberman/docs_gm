@@ -35,13 +35,14 @@ export class ModuleFinderFixture {
 	@Test("find_Global")
 	public async find_Global() {
 		const container = new Container();
-		container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(async (name, opts) => {
+		const f = async (name: string, opts: GetInstalledPath.Options | undefined) => {
 			if (name === "foo" && opts === undefined) {
 				return "a";
 			} else {
 				throw new Error("not found");
 			}
-		});
+		};
+		container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(f);
 
 		const mf = container.resolve(ModuleFinder);
 		const result = await mf.find("foo", this._makeConfig());
@@ -51,13 +52,14 @@ export class ModuleFinderFixture {
 	@Test("find_Local")
 	public async find_Local() {
 		const container = new Container();
-		container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(async (name, opts) => {
+		const func = async (name: string, opts: GetInstalledPath.Options | undefined) => {
 			if (name === "bar" && opts !== undefined && opts.cwd !== undefined && opts.local === true) {
 				return "b";
 			} else {
 				throw new Error("not found");
 			}
-		});
+		};
+		container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(func);
 		const mf = container.resolve(ModuleFinder);
 
 		const result = await mf.find("bar", this._makeConfig());
@@ -67,9 +69,10 @@ export class ModuleFinderFixture {
 	@Test("find_Local_Bundled")
 	public async find_Local_Bundled() {
 		const container = new Container();
-		container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(async (_name, _opts) => {
+		const func = async (_name: string, _opts: GetInstalledPath.Options | undefined) => {
 			throw new Error("not found");
-		});
+		};
+		container.bind<IGetInstalledPath>(TYPES.IGetInstalledPath).toFunction(func);
 		const mf = container.resolve(ModuleFinder);
 
 		const result = await mf.find("bar", this._makeConfig("", this._templatesDir.dir));

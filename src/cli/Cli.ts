@@ -8,9 +8,6 @@ import StringsEnglish from "../i18n/StringsEnglish";
 import IReporter from "../reporter/IReporter";
 import ICliGenerateFacade from "./ICliGenerateFacade";
 
-// tslint:disable-next-line: no-var-requires
-const packageJSON = require("../../../package.json");
-
 interface IGenerateCommand extends ICliParamsConfig {
 	folder: string;
 }
@@ -41,7 +38,6 @@ export default class Cli {
 		const lang = new StringsEnglish();
 		// tslint:disable-next-line:no-unused-expression
 		(yargs as yargs.Argv<IGenerateCommand>)
-			.version(packageJSON.version)
 			.command({
 				command: "init",
 				describe: lang.COMMAND_INIT,

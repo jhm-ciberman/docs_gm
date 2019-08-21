@@ -1,7 +1,6 @@
 {
   "include": [
     "src/**/*.ts",
-    "tests/**/*.ts"
   ],
   "exclude": [
     "node_modules"
@@ -10,6 +9,10 @@
   "compilerOptions": {
     "noEmitOnError": true,
     "target": "es2016",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/@types/*", "*"]
+    },
     "module": "commonjs",
     "declaration": true,
     "sourceMap": true,
@@ -21,9 +24,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "types": [
-      "reflect-metadata"
-    ],
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,

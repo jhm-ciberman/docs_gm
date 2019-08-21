@@ -8,7 +8,7 @@ import IConfigManager from "./IConfigManager";
 import { IProjectConfig } from "./IProjectConfig";
 import { ProjectConfig } from "./ProjectConfig";
 
-import schema = require("../../schema/docs_gm.json");
+import schema = require("../schema/docs_gm.json");
 
 /**
  * This class exports and loads the configuration
