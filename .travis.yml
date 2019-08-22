@@ -16,8 +16,10 @@ before_install:
 # ===== TEST ========
 
 script:
+  - npm run lint
   - npm test
-  - npm run integration
+  - npm run unit-tests-ci
+  - npm run integration-ci
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
