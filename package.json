@@ -7,13 +7,13 @@
   "scripts": {
     "test": "npm run lint && nyc npm run unit-tests",
     "unit-tests": "alsatian \"./tests/unit/**/*.spec.ts\"",
-    "build": "tsc -p .",
-    "watch": "tsc -p . --watch",
+    "build": "tsc -b src",
+    "watch": "tsc -b src --watch",
     "clean": "rimraf ./dist/ ./coverage/ ./.nyc_output/",
     "report-coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint --project . -t verbose",
     "prepublishOnly": "npm run clean && npm run build",
-    "integration": "npm run build && npm link && alsatian \"./tests/integration/**/*.spec.js\""
+    "integration": "npm run build && npm link && alsatian \"./tests/integration/**/*.spec.ts\""
   },
   "repository": {
     "type": "git",

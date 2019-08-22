@@ -3,33 +3,26 @@ import "reflect-metadata";
 import { Container } from "inversify";
 import { TYPES } from "./types";
 
-import CliGenerateFacade from "../src/cli/CliGenerateFacade";
+import CliGenerateFacade from "./cli/CliGenerateFacade";
 import ICliGenerateFacade from "./cli/ICliGenerateFacade";
 
-import ConfigManager from "../src/config/ConfigManager";
+import ConfigManager from "./config/ConfigManager";
 import IConfigManager from "./config/IConfigManager";
 
-import DocumentationExtractor from "../src/generator/DocumentationExtractor";
+import DocumentationExtractor from "./generator/DocumentationExtractor";
 import IDocumentationExtractor from "./generator/IDocumentationExtractor";
 
-import JSDocParser from "../src/parser/JSDocParser";
 import IJSDocParser from "./parser/IJSDocParser";
+import JSDocParser from "./parser/JSDocParser";
 
 import { getInstalledPath } from "get-installed-path";
 import open = require("open");
 
 import pkgDir = require("pkg-dir");
-import DocumentationGenerator from "../src/generator/DocumentationGenerator";
-import { IGetInstalledPath, IOpen, IPkgDir } from "../src/npmmodules";
-import ConsoleReporter from "../src/reporter/ConsoleReporter";
-import TemplateLoader from "../src/template/TemplateLoader";
-import IRuleValidator from "../src/validation/interfaces/IRuleValidator";
-import IScriptValidator from "../src/validation/interfaces/IScriptValidator";
-import RuleValidator from "../src/validation/RuleValidator";
-import ScriptValidator from "../src/validation/ScriptValidator";
 import ConfigOverrider from "./config/ConfigOverrider";
 import IConfigOverrider from "./config/IConfigOverrider";
 import DocFolderGenerator from "./generator/DocFolderGenerator";
+import DocumentationGenerator from "./generator/DocumentationGenerator";
 import IDocFolderGenerator from "./generator/IDocFolderGenerator";
 import IDocumentationGenerator from "./generator/IDocumentationGenerator";
 import IProjectRootFinder from "./generator/IProjectRootFinder";
@@ -38,15 +31,22 @@ import ProjectRootFinder from "./generator/ProjectRootFinder";
 import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
 import IGMProjectLoader from "./gm_project/IGMProjectLoader";
+import { IGetInstalledPath, IOpen, IPkgDir } from "./npmmodules";
 import IRenderer from "./renderer/IRenderer";
 import Renderer from "./renderer/Renderer";
+import ConsoleReporter from "./reporter/ConsoleReporter";
 import IReporter from "./reporter/IReporter";
 import SchemaValidator from "./SchemaValidator";
 import IModuleFinder from "./template/IModuleFinder";
 import ITemplateLoader from "./template/ITemplateLoader";
 import ModuleFinder from "./template/ModuleFinder";
+import TemplateLoader from "./template/TemplateLoader";
 import IRulesProvider from "./validation/interfaces/IRulesProvider";
+import IRuleValidator from "./validation/interfaces/IRuleValidator";
+import IScriptValidator from "./validation/interfaces/IScriptValidator";
 import RulesProvider from "./validation/RulesProvider";
+import RuleValidator from "./validation/RuleValidator";
+import ScriptValidator from "./validation/ScriptValidator";
 
 /* tslint:disable:max-line-length */
 const container = new Container();

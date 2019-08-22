@@ -1,32 +1,24 @@
 {
-  "include": [
-    "src/**/*.ts",
-  ],
-  "exclude": [
-    "node_modules"
-  ],
-  "compileOnSave": true,
-  "compilerOptions": {
-    "noEmitOnError": true,
-    "target": "es2016",
-    "baseUrl": ".",
-    "paths": {
-      "*": ["src/@types/*", "*"]
-    },
-    "module": "commonjs",
-    "declaration": true,
-    "sourceMap": true,
-    //"inlineSourceMap": true,
-    "outDir": "./dist/",
-    "resolveJsonModule": true,
-    "strict": true,
-    "strictPropertyInitialization": false, /* TODO: allow strict property initialization. Must wait to tslint to support the new definite assignment */
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  }
+	"compileOnSave": true,
+	"compilerOptions": {
+	  "noEmitOnError": true,
+	  "target": "es2016",
+	  "baseUrl": ".",
+	  "paths": {
+		"*": ["src/@types/*", "*"]
+	  },
+	  "module": "commonjs",
+	  "declaration": true,
+	  "sourceMap": true,
+	  "resolveJsonModule": true,
+	  "strict": true,
+	  "strictPropertyInitialization": false, /* TODO: allow strict property initialization. Must wait to tslint to support the new definite assignment */
+	  "noUnusedLocals": true,
+	  "noUnusedParameters": true,
+	  "noImplicitReturns": true,
+	  "noFallthroughCasesInSwitch": true,
+	  "forceConsistentCasingInFileNames": true,
+	  "experimentalDecorators": true,
+	  "emitDecoratorMetadata": true
+	}
 }
