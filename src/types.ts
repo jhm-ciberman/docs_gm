@@ -20,6 +20,7 @@ const TYPES = {
 
 	// parser
 	IJSDocParser: Symbol.for("IJSDocParser"),
+	IScriptCommentParser: Symbol.for("IScriptCommentParser"),
 
 	// Rendering
 	INunjucksRenderer: Symbol.for("INunjucksRenderer"),

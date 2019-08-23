@@ -10,7 +10,9 @@ import { Container } from "inversify";
 import { IParsingConfig } from "../../../src/config/IProjectConfig";
 import { ParsingConfig } from "../../../src/config/ProjectConfig";
 import DocReturns from "../../../src/doc_models/DocReturns";
+import IScriptCommentParser from "../../../src/parser/IScriptCommentParser";
 import JSDocParser from "../../../src/parser/JSDocParser";
+import ScriptCommentParser from "../../../src/parser/ScriptCommentParser";
 import IReporter from "../../../src/reporter/IReporter";
 import { TYPES } from "../../../src/types";
 import MockReporter from "../__mock__/MockReporter.mock";
@@ -24,6 +26,7 @@ export class JSDocParserFixture {
 	public setup() {
 		const container = new Container();
 		container.bind<IReporter>(TYPES.IReporter).toConstantValue(new MockReporter());
+		container.bind<IScriptCommentParser>(TYPES.IScriptCommentParser).to(ScriptCommentParser);
 		this.p = container.resolve(JSDocParser);
 	}
 
@@ -121,6 +124,7 @@ export class JSDocParserFixture {
 
 		const container = new Container();
 		container.bind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
+		container.bind<IScriptCommentParser>(TYPES.IScriptCommentParser).to(ScriptCommentParser);
 		this.p = container.resolve(JSDocParser);
 
 		const config: IParsingConfig = new ParsingConfig();
@@ -140,6 +144,7 @@ export class JSDocParserFixture {
 
 		const container = new Container();
 		container.bind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
+		container.bind<IScriptCommentParser>(TYPES.IScriptCommentParser).to(ScriptCommentParser);
 
 		const config: IParsingConfig = new ParsingConfig();
 		config.warnUnrecognizedTags = false;

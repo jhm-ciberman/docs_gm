@@ -32,6 +32,8 @@ import ScriptLoader from "./generator/ScriptLoader";
 import GMProjectLoader from "./gm_project/GMProjectLoader";
 import IGMProjectLoader from "./gm_project/IGMProjectLoader";
 import { IGetInstalledPath, IOpen, IPkgDir } from "./npmmodules";
+import IScriptCommentParser from "./parser/IScriptCommentParser";
+import ScriptCommentParser from "./parser/ScriptCommentParser";
 import IRenderer from "./renderer/IRenderer";
 import Renderer from "./renderer/Renderer";
 import ConsoleReporter from "./reporter/ConsoleReporter";
@@ -73,6 +75,7 @@ container.bind<IGMProjectLoader>(TYPES.IGMProjectLoader).to(GMProjectLoader);
 
 // Parser
 container.bind<IJSDocParser>(TYPES.IJSDocParser).to(JSDocParser);
+container.bind<IScriptCommentParser>(TYPES.IScriptCommentParser).to(ScriptCommentParser);
 
 // Renderer
 container.bind<IRenderer>(TYPES.INunjucksRenderer).to(Renderer);
