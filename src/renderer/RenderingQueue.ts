@@ -12,23 +12,33 @@ export default class RenderingQueue {
 	 */
 	private _queue: Page[] = [];
 
-	private _resoucesMap: Map<DocResource, Page> = new Map();
+	private _resoucesToPagesMap: Map<DocResource, Page> = new Map();
+	private _resoucesNamesMap: Map<string, DocResource> = new Map();
 
 	public findPage(resource: DocResource): Page | undefined {
-		return this._resoucesMap.get(resource);
+		return this._resoucesToPagesMap.get(resource);
+	}
+
+	public findResourceByName(name: string): DocResource | undefined {
+		return this._resoucesNamesMap.get(name);
 	}
 
 	public addPage(page: Page) {
-		if (this._resoucesMap.has(page.resource)) {
+		if (this._resoucesToPagesMap.has(page.resource)) {
 			return;
 		}
 
-		this._resoucesMap.set(page.resource, page);
+		this._addResource(page.resource, page);
 
 		for (const res of page.subresources) {
-			this._resoucesMap.set(res, page);
+			this._addResource(res, page);
 		}
 		this._queue.push(page);
+	}
+
+	private _addResource(resource: DocResource, page: Page) {
+		this._resoucesToPagesMap.set(resource, page);
+		this._resoucesNamesMap.set(resource.name, resource);
 	}
 
 	public get pages(): IterableIterator<Page> {

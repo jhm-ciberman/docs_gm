@@ -44,15 +44,17 @@ export default class DocScriptFactory {
 	 * @param exampleString The example text
 	 */
 	public addExample(exampleString: string): void {
-		if (exampleString !== "") {
-			const example = new DocExample();
-			const str = StringUtils.stripInitialLineFeeds(exampleString);
-			example.code = StringUtils.escapeHtml(str);
-			example.caption = "";
-
-			this._script.examples.push(example);
-			this._script.undocumented = false;
+		if (exampleString === "") {
+			return;
 		}
+
+		const example = new DocExample();
+		const str = StringUtils.stripInitialLineFeeds(exampleString);
+		example.code = StringUtils.escapeHtml(str);
+		example.caption = "";
+
+		this._script.examples.push(example);
+		this._script.undocumented = false;
 	}
 
 	/**
@@ -88,7 +90,7 @@ export default class DocScriptFactory {
 	 */
 	public setDescription(descriptionText: string) {
 		if (descriptionText !== "") {
-			this._script.description = StringUtils.markdown2Html(descriptionText);
+			this._script.description = descriptionText;
 			this._script.undocumented = false;
 		}
 	}

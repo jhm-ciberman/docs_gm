@@ -15,13 +15,16 @@ export default class LinkResolver {
 		this._currentPage = currentPage;
 	}
 
-	public linkTo(element: DocResource): string {
-		if (!element) {
+	public linkTo(element: DocResource | string): string {
+		const resource = (typeof element === "string") ? this._queue.findResourceByName(element) : element;
+
+		if (!resource) {
 			throw new Error("Invalid Element passed to linkTo(docElement) function: " + element);
 		}
-		const newPage = this._findPage(element);
 
-		return this._currentPage.getRelativePathToPage(newPage) + newPage.getAnchor(element);
+		const newPage = this._findPage(resource);
+
+		return this._currentPage.getRelativePathToPage(newPage) + newPage.getAnchor(resource);
 	}
 
 	public asset(assetName: string): string {
