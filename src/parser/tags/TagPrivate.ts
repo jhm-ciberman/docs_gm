@@ -1,11 +1,7 @@
 import DocScriptFactory from "../DocScriptFactory";
-import Tag from "./Tag";
+import TagDescription from "./TagDescription";
 
-export default class TagPrivate extends Tag {
-
-	constructor(private _description: string) {
-		super();
-	}
+export default class TagPrivate extends TagDescription {
 
 	public accept(factory: DocScriptFactory) {
 		factory.setDescription(this._description);
