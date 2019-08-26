@@ -3,8 +3,11 @@ import Tag from "./Tag";
 
 export default class TagExample  extends Tag {
 
-	constructor(private _example: string) {
+	private _example: string;
+
+	constructor(example: string) {
 		super();
+		this._example = example;
 	}
 
 	public accept(factory: DocScriptFactory) {

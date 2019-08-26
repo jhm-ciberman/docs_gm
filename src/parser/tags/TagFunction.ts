@@ -3,8 +3,11 @@ import Tag from "./Tag";
 
 export default class TagFunction extends Tag {
 
-	constructor(private _function: string) {
+	private _function: string;
+
+	constructor(functionName: string) {
 		super();
+		this._function = functionName;
 	}
 
 	public accept(factory: DocScriptFactory) {
