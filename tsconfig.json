@@ -1,5 +1,6 @@
 {
 	"compileOnSave": true,
+	"include": [],
 	"compilerOptions": {
 	  "noEmitOnError": true,
 	  "target": "es2016",
@@ -12,7 +13,7 @@
 	  "sourceMap": true,
 	  "resolveJsonModule": true,
 	  "strict": true,
-	  "strictPropertyInitialization": false, /* TODO: allow strict property initialization. Must wait to tslint to support the new definite assignment */
+	  "strictPropertyInitialization": false,
 	  "noUnusedLocals": true,
 	  "noUnusedParameters": true,
 	  "noImplicitReturns": true,

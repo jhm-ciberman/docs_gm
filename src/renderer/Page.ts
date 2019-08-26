@@ -12,8 +12,6 @@ export default class Page {
 
 	public readonly resource: DocResource;
 
-	public type: DocResourceType;
-
 	private _subresources: Set<DocResource> = new Set();
 
 	constructor(resource: DocResource) {
@@ -22,15 +20,18 @@ export default class Page {
 		}
 		this.project = resource.project;
 		this.resource = resource;
-		this.type = resource.type;
+	}
+
+	public get type() {
+		return this.resource.type;
 	}
 
 	public getContext(): IRenderingContext {
 		return {
 			project: this.project,
 			resource: this.resource,
-			script: (this.resource.type === DocResourceType.Script) ? this.resource as DocScript : undefined,
-			folder: (this.resource.type === DocResourceType.Folder) ? this.resource as DocFolder : undefined,
+			script: (this.type === DocResourceType.Script) ? this.resource as DocScript : undefined,
+			folder: (this.type === DocResourceType.Folder) ? this.resource as DocFolder : undefined,
 			subresources: this.subresources,
 			printFolderToc: !this.isRoot,
 		};

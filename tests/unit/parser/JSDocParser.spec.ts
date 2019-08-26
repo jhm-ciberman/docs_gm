@@ -10,7 +10,9 @@ import { Container } from "inversify";
 import { IParsingConfig } from "../../../src/config/IProjectConfig";
 import { ParsingConfig } from "../../../src/config/ProjectConfig";
 import DocReturns from "../../../src/doc_models/DocReturns";
+import IScriptCommentParser from "../../../src/parser/IScriptCommentParser";
 import JSDocParser from "../../../src/parser/JSDocParser";
+import ScriptCommentParser from "../../../src/parser/ScriptCommentParser";
 import IReporter from "../../../src/reporter/IReporter";
 import { TYPES } from "../../../src/types";
 import MockReporter from "../__mock__/MockReporter.mock";
@@ -24,6 +26,7 @@ export class JSDocParserFixture {
 	public setup() {
 		const container = new Container();
 		container.bind<IReporter>(TYPES.IReporter).toConstantValue(new MockReporter());
+		container.bind<IScriptCommentParser>(TYPES.IScriptCommentParser).to(ScriptCommentParser);
 		this.p = container.resolve(JSDocParser);
 	}
 
@@ -34,7 +37,7 @@ export class JSDocParserFixture {
 			" * This is a simple description",
 			" */",
 		].join("\n"));
-		Expect(doc.description).toBe("<p>This is a simple description</p>");
+		Expect(doc.description).toBe("This is a simple description");
 		Expect(doc.undocumented).toBe(false);
 	}
 
@@ -46,7 +49,7 @@ export class JSDocParserFixture {
 			" * This is a simple description",
 			" */",
 		].join("\n"));
-		Expect(doc.description).toBe("<p>This is a simple description</p>");
+		Expect(doc.description).toBe("This is a simple description");
 		Expect(doc.undocumented).toBe(false);
 	}
 
@@ -58,7 +61,7 @@ export class JSDocParserFixture {
 			" * This is a private description",
 			" */",
 		].join("\n"));
-		Expect(doc.description).toBe("<p>This is a private description</p>");
+		Expect(doc.description).toBe("This is a private description");
 		Expect(doc.undocumented).toBe(false);
 		Expect(doc.private).toBe(true);
 	}
@@ -100,7 +103,7 @@ export class JSDocParserFixture {
 			" * @description {This is} [The] description",
 			" */",
 		].join("\n"));
-		Expect(doc.description).toBe("<p>{This is} [The] description</p>");
+		Expect(doc.description).toBe("{This is} [The] description");
 	}
 
 	@Test("parser should parse an empty description tag as undocumented")
@@ -121,6 +124,7 @@ export class JSDocParserFixture {
 
 		const container = new Container();
 		container.bind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
+		container.bind<IScriptCommentParser>(TYPES.IScriptCommentParser).to(ScriptCommentParser);
 		this.p = container.resolve(JSDocParser);
 
 		const config: IParsingConfig = new ParsingConfig();
@@ -140,6 +144,7 @@ export class JSDocParserFixture {
 
 		const container = new Container();
 		container.bind<IReporter>(TYPES.IReporter).toConstantValue(mockReporter);
+		container.bind<IScriptCommentParser>(TYPES.IScriptCommentParser).to(ScriptCommentParser);
 
 		const config: IParsingConfig = new ParsingConfig();
 		config.warnUnrecognizedTags = false;

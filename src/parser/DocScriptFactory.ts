@@ -2,7 +2,7 @@ import DocExample from "../doc_models/DocExample";
 import DocParam from "../doc_models/DocParam";
 import DocReturns from "../doc_models/DocReturns";
 import DocScript from "../doc_models/DocScript";
-import StringUtils from "./StringUtils";
+import StringUtils from "../StringUtils";
 
 /**
  * Factory class to create DocScript instances.
@@ -44,15 +44,17 @@ export default class DocScriptFactory {
 	 * @param exampleString The example text
 	 */
 	public addExample(exampleString: string): void {
-		if (exampleString !== "") {
-			const example = new DocExample();
-			const str = StringUtils.stripInitialLineFeeds(exampleString);
-			example.code = StringUtils.escapeHtml(str);
-			example.caption = "";
-
-			this._script.examples.push(example);
-			this._script.undocumented = false;
+		if (exampleString === "") {
+			return;
 		}
+
+		const example = new DocExample();
+		const str = StringUtils.stripInitialLineFeeds(exampleString);
+		example.code = StringUtils.escapeHtml(str);
+		example.caption = "";
+
+		this._script.examples.push(example);
+		this._script.undocumented = false;
 	}
 
 	/**
@@ -88,7 +90,7 @@ export default class DocScriptFactory {
 	 */
 	public setDescription(descriptionText: string) {
 		if (descriptionText !== "") {
-			this._script.description = StringUtils.markdown2Html(descriptionText);
+			this._script.description = StringUtils.stripInitialLineFeeds(descriptionText);
 			this._script.undocumented = false;
 		}
 	}
@@ -131,10 +133,8 @@ export default class DocScriptFactory {
 		param.name = StringUtils.escapeHtml(name);
 		param.type = type ? StringUtils.escapeHtml(type) : "";
 		param.optional = optional;
-		let str = StringUtils.stripInitialHypen(description);
-		str = StringUtils.markdown2Html(str);
-		str = StringUtils.compactHtmlSingleParagraph(str);
-		param.description = str;
+		description = StringUtils.stripInitialLineFeeds(description);
+		param.description = StringUtils.stripInitialHypen(description);
 		return param;
 	}
 

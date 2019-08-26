@@ -9,6 +9,7 @@ import { TYPES } from "../types";
 import IRenderer from "./IRenderer";
 import LinkResolver from "./LinkResolver";
 import NunjucksCompiler from "./NunjucksCompiler";
+import PagePreprocesor from "./PagePreprocesor";
 import RenderingQueue from "./RenderingQueue";
 
 @injectable()
@@ -29,6 +30,9 @@ export default class Renderer implements IRenderer {
 
 			try {
 				const linkResolver = new LinkResolver(queue, page);
+				const pagePreprocesor = new PagePreprocesor(linkResolver);
+				pagePreprocesor.preprocessPage(page);
+
 				compiler.addGlobal("linkTo", (resource: DocResource) => linkResolver.linkTo(resource));
 				compiler.addGlobal("asset", (assetName: string) => linkResolver.asset(assetName));
 
@@ -44,4 +48,5 @@ export default class Renderer implements IRenderer {
 
 		}
 	}
+
 }

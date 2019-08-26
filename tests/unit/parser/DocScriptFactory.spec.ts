@@ -30,7 +30,7 @@ export class DocScriptFactoryFixture {
 	public description() {
 		this.factory.setDescription("my description");
 		const script = this.factory.make();
-		Expect(script.description).toBe("<p>my description</p>");
+		Expect(script.description).toBe("my description");
 	}
 
 	@Test("Should set the script as private")
