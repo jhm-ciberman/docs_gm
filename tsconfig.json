@@ -1,5 +1,6 @@
 {
 	"compileOnSave": true,
+	"include": [],
 	"compilerOptions": {
 	  "noEmitOnError": true,
 	  "target": "es2016",

@@ -2,7 +2,7 @@ import DocFolder from "../doc_models/DocFolder";
 import DocResource from "../doc_models/DocResource";
 import { DocResourceType } from "../doc_models/DocResourceType";
 import DocScript from "../doc_models/DocScript";
-import StringUtils from "../parser/StringUtils";
+import StringUtils from "../StringUtils";
 import LinkResolver from "./LinkResolver";
 import Page from "./Page";
 
@@ -62,7 +62,7 @@ export default class PagePreprocesor {
 		const newStr = str.replace(PagePreprocesor._regexInlineTags,
 			(_str: string, tagType: string, data: string) => this._inlineTagReplacer(tagType, data));
 
-		return StringUtils.markdown2Html(newStr);
+		return StringUtils.compactHtmlSingleParagraph(StringUtils.markdown2Html(newStr));
 	}
 
 	private _inlineTagReplacer(tagType: string, data: string): string {

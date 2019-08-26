@@ -37,7 +37,7 @@ export class JSDocParserFixture {
 			" * This is a simple description",
 			" */",
 		].join("\n"));
-		Expect(doc.description).toBe("<p>This is a simple description</p>");
+		Expect(doc.description).toBe("This is a simple description");
 		Expect(doc.undocumented).toBe(false);
 	}
 
@@ -49,7 +49,7 @@ export class JSDocParserFixture {
 			" * This is a simple description",
 			" */",
 		].join("\n"));
-		Expect(doc.description).toBe("<p>This is a simple description</p>");
+		Expect(doc.description).toBe("This is a simple description");
 		Expect(doc.undocumented).toBe(false);
 	}
 
@@ -61,7 +61,7 @@ export class JSDocParserFixture {
 			" * This is a private description",
 			" */",
 		].join("\n"));
-		Expect(doc.description).toBe("<p>This is a private description</p>");
+		Expect(doc.description).toBe("This is a private description");
 		Expect(doc.undocumented).toBe(false);
 		Expect(doc.private).toBe(true);
 	}
@@ -103,7 +103,7 @@ export class JSDocParserFixture {
 			" * @description {This is} [The] description",
 			" */",
 		].join("\n"));
-		Expect(doc.description).toBe("<p>{This is} [The] description</p>");
+		Expect(doc.description).toBe("{This is} [The] description");
 	}
 
 	@Test("parser should parse an empty description tag as undocumented")
