@@ -47,6 +47,11 @@
             "type": "npm",
             "script": "integration",
             "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "build",
+            "problemMatcher": []
         }
     ]
 }

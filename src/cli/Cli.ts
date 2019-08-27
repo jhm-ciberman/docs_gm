@@ -62,8 +62,8 @@ export default class Cli {
 			.option("pattern", {alias: "p", type: "string", describe: lang.OPTION_PATTERN})
 			.option("root", {type: "string", describe: lang.OPTION_ROOT})
 			.option("noOpen", {type: "boolean", default: false, describe: lang.OPTION_NO_OPEN})
-			.option("scriptPages", {type: "boolean", default: true, describe: lang.OPTION_SCRIPT_PAGES})
-			.option("folderPages", {type: "boolean", default: true, describe: lang.OPTION_FOLDER_PAGES});
+			.option("scriptPages", {type: "boolean", describe: lang.OPTION_SCRIPT_PAGES})
+			.option("folderPages", {type: "boolean", describe: lang.OPTION_FOLDER_PAGES});
 	}
 
 	/**
