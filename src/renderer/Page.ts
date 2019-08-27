@@ -33,8 +33,13 @@ export default class Page {
 			script: (this.type === DocResourceType.Script) ? this.resource as DocScript : undefined,
 			folder: (this.type === DocResourceType.Folder) ? this.resource as DocFolder : undefined,
 			subresources: this.subresources,
-			printFolderToc: !this.isRoot,
+			printFolderToc: !this.isRoot || (this.folderDescription === ""),
 		};
+	}
+
+	public get folderDescription() {
+		return (this.type === DocResourceType.Folder)
+			? (this.resource as DocFolder).description : "";
 	}
 
 	public get subresources(): IterableIterator<DocResource> {
