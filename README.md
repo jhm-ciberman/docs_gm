@@ -24,6 +24,8 @@
 
 ![Generated documentation example](img/docs_gm-screenshot.png)
 
+> Do you enjoy docs_gm? Click the "Star" button at the top of the github page <3 
+
 ## Projects using docs_gm
 
 Documentations created with docs_gm:
