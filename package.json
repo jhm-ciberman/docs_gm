@@ -57,7 +57,7 @@
     "@types/yargs": "^13.0.2",
     "alsatian": "^3.0.1",
     "coveralls": "^3.0.6",
-    "nyc": "^13.3.0",
+    "nyc": "^15.0.0",
     "rimraf": "^3.0.0",
     "tslint": "^5.19.0",
     "typescript": "^3.5.3"
