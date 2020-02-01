@@ -72,7 +72,7 @@
     "jsonschema": "^1.2.4",
     "minimatch": "^3.0.4",
     "nunjucks": "^3.2.0",
-    "open": "6.4.0",
+    "open": "7.0.2",
     "pkg-dir": "^4.2.0",
     "reflect-metadata": "^0.1.13",
     "showdown": "^1.9.0",
