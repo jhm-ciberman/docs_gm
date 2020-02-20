@@ -65,7 +65,7 @@
   "dependencies": {
     "comment-parser": "^0.6.2",
     "del": "^5.1.0",
-    "fast-glob": "^3.0.4",
+    "fast-glob": "^3.2.1",
     "fs-extra": "^8.1.0",
     "get-installed-path": "^4.0.8",
     "inversify": "^5.0.1",
