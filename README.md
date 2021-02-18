@@ -14,7 +14,7 @@
 
 ## ✅ Features
 
-- Supports both GMS1 and GMS2 projects.
+- Supports both GMS1 and GMS2 projects. (WARNING: It does not supports the newer GMS2.3 format. See [this issue](https://github.com/jhm-ciberman/docs_gm/issues/86) for more info)
 - It's Multiplatform! Windows, OSX and Linux supported.
 - Easily customizable template engine.
 - OnePage and Multipage documentations.
